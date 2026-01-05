@@ -41,7 +41,12 @@
                 return;
             }
 
-            document.getElementById('repo-title').innerText = repoName;
+            // Custom title for Profile Repo
+            if (repoName === 'MutenRos') {
+                document.getElementById('repo-title').innerText = 'PLAYER PROFILE: MUTENROS';
+            } else {
+                document.getElementById('repo-title').innerText = repoName;
+            }
 
             try {
                 // 1. Get Repo Details (for URL)
