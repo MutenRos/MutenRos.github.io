@@ -34,6 +34,7 @@
         async function loadRepoDetails() {
             const urlParams = new URLSearchParams(window.location.search);
             const repoName = urlParams.get('repo');
+            const type = urlParams.get('type'); // Check if it's manual
             const username = 'MutenRos';
 
             if (!repoName) {
@@ -48,6 +49,27 @@
                 document.getElementById('repo-title').innerText = repoName;
             }
 
+            // Handle Manual/Private Repos
+            if (type === 'manual') {
+                // Hide GitHub Link button since it's private
+                document.getElementById('github-link').style.display = 'none';
+                
+                // Fetch local markdown file
+                try {
+                    const readmeRes = await fetch(`data/${repoName}.md`);
+                    if (readmeRes.ok) {
+                        const markdown = await readmeRes.text();
+                        document.getElementById('readme-content').innerHTML = marked.parse(markdown);
+                    } else {
+                        document.getElementById('readme-content').innerHTML = '<p>NO MANUAL FOUND (Local file missing)</p>';
+                    }
+                } catch (error) {
+                    document.getElementById('readme-content').innerHTML = `<p style="color: red">READ ERROR: ${error.message}</p>`;
+                }
+                return; // Stop here for manual repos
+            }
+
+            // Handle Public GitHub Repos
             try {
                 // 1. Get Repo Details (for URL)
                 const repoRes = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
