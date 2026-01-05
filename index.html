@@ -72,6 +72,7 @@
             max-width: 800px;
             width: 90%;
             position: relative;
+            z-index: 20; /* Ensure it's above scanlines */
             text-transform: uppercase;
             animation: flicker 4s infinite;
             margin-top: 10vh;
@@ -242,7 +243,7 @@
             <h1>MutenRos<br>System Online</h1>
             <p>Bienvenido al portfolio retro-futurista</p>
             <p>Level 1: Loading...</p>
-            <br>
+            <button id="start-btn" class="insert-coin">INSERT COIN TO START</button
             <div id="start-btn" class="insert-coin">INSERT COIN TO START</div>
         </div>
     </div>
@@ -268,8 +269,10 @@
         const mainContent = document.getElementById('main-content');
 
         startBtn.addEventListener('click', () => {
-            introScreen.classList.add('hidden');
+            console.log('Coin Inserted!');
+            introScreen.style.display = 'none'; // Force hide
             mainContent.classList.remove('hidden');
+            mainContent.style.display = 'flex'; // Force show
             loadRepos();
         });
 
