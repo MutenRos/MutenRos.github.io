@@ -9,6 +9,7 @@
         :root {
             --neon-pink: #ff00ff;
             --neon-blue: #00ffff;
+            --neon-green: #0f0;
             --bg-dark: #0a0a12;
             --grid-color: rgba(255, 0, 255, 0.2);
         }
@@ -18,7 +19,7 @@
             background-color: var(--bg-dark);
             color: #fff;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
             margin: 0;
@@ -43,6 +44,23 @@
             z-index: -1;
         }
 
+        .screen {
+            width: 100%;
+            max-width: 1000px;
+            padding: 2rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .hidden {
+            display: none !important;
+            opacity: 0;
+        }
+
+        /* Intro Screen Styles */
         .arcade-cabinet {
             text-align: center;
             padding: 3rem;
@@ -56,6 +74,7 @@
             position: relative;
             text-transform: uppercase;
             animation: flicker 4s infinite;
+            margin-top: 10vh;
         }
 
         h1 {
@@ -89,6 +108,7 @@
             transition: all 0.3s;
             animation: blink 1s infinite;
             cursor: pointer;
+            margin-top: 2rem;
         }
 
         .insert-coin:hover {
@@ -97,6 +117,87 @@
             box-shadow: 0 0 20px var(--neon-pink);
         }
 
+        /* Main Content Styles */
+        .header-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 2px solid var(--neon-blue);
+            margin-bottom: 2rem;
+            background: rgba(0,0,0,0.8);
+        }
+
+        .player-info {
+            color: var(--neon-green);
+        }
+
+        .score {
+            color: var(--neon-pink);
+        }
+
+        .repo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .repo-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--neon-blue);
+            padding: 1.5rem;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px var(--neon-blue);
+            background: rgba(0, 20, 40, 0.9);
+        }
+
+        .repo-card::before {
+            content: 'GAME CARTRIDGE';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-dark);
+            padding: 0 10px;
+            font-size: 0.6rem;
+            color: var(--neon-blue);
+        }
+
+        .repo-name {
+            color: var(--neon-pink);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .repo-desc {
+            color: #fff;
+            font-size: 0.7rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            min-height: 3em;
+        }
+
+        .repo-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            color: var(--neon-green);
+            border-top: 1px dashed var(--neon-blue);
+            padding-top: 0.5rem;
+        }
+
+        /* Animations */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -134,12 +235,84 @@
 </head>
 <body>
     <div class="scanline"></div>
-    <div class="arcade-cabinet">
-        <h1>MutenRos<br>System Online</h1>
-        <p>Bienvenido al portfolio retro-futurista</p>
-        <p>Level 1: Loading...</p>
-        <br>
-        <a href="#" class="insert-coin">INSERT COIN TO START</a>
+
+    <!-- Intro Screen -->
+    <div id="intro-screen" class="screen">
+        <div class="arcade-cabinet">
+            <h1>MutenRos<br>System Online</h1>
+            <p>Bienvenido al portfolio retro-futurista</p>
+            <p>Level 1: Loading...</p>
+            <br>
+            <div id="start-btn" class="insert-coin">INSERT COIN TO START</div>
+        </div>
     </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <div id="main-content" class="screen hidden">
+        <div class="header-bar">
+            <div class="player-info">PLAYER: MUTENROS</div>
+            <div class="score">CREDITS: ∞</div>
+        </div>
+        
+        <h2 style="color: var(--neon-pink); margin-bottom: 2rem; text-shadow: 0 0 10px var(--neon-pink);">SELECT GAME (REPOS)</h2>
+        
+        <div id="repo-container" class="repo-grid">
+            <p>Loading cartridges...</p>
+        </div>
+    </div>
+
+    <script>
+        // Start Button Logic
+        const startBtn = document.getElementById('start-btn');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-content');
+
+        startBtn.addEventListener('click', () => {
+            introScreen.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            loadRepos();
+        });
+
+        // GitHub API Logic
+        async function loadRepos() {
+            const container = document.getElementById('repo-container');
+            const username = 'MutenRos';
+            
+            try {
+                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
+                const repos = await response.json();
+
+                container.innerHTML = ''; // Clear loading message
+
+                repos.forEach(repo => {
+                    // Skip forked repos if you want, or keep them
+                    // if (repo.fork) return;
+
+                    const card = document.createElement('a');
+                    card.href = repo.html_url;
+                    card.target = '_blank';
+                    card.className = 'repo-card';
+                    
+                    const lang = repo.language ? repo.language : 'Binary';
+                    const desc = repo.description ? repo.description : 'No description available.';
+                    
+                    card.innerHTML = `
+                        <span class="repo-name">${repo.name}</span>
+                        <div class="repo-desc">${desc}</div>
+                        <div class="repo-stats">
+                            <span>LANG: ${lang}</span>
+                            <span>★ ${repo.stargazers_count}</span>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+
+            } catch (error) {
+                container.innerHTML = '<p style="color: red">ERROR LOADING DATA. CHECK CONNECTION.</p>';
+                console.error('Error fetching repos:', error);
+            }
+        }
+    </script>
 </body>
 </html>
