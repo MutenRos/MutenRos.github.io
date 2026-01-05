@@ -270,7 +270,6 @@
         const mainContent = document.getElementById('main-content');
 
         startBtn.addEventListener('click', () => {
-            console.log('Coin Inserted!');
             introScreen.style.display = 'none'; // Force hide
             mainContent.classList.remove('hidden');
             mainContent.style.display = 'flex'; // Force show
@@ -282,18 +281,14 @@
             const container = document.getElementById('repo-container');
             const username = 'MutenRos';
             
-            console.log('Starting loadRepos...');
-
             try {
                 const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
-                console.log('Response status:', response.status);
                 
                 if (!response.ok) {
                     throw new Error(`GitHub API Error: ${response.status} ${response.statusText}`);
                 }
 
                 const repos = await response.json();
-                console.log('Repos data:', repos);
 
                 if (!Array.isArray(repos)) {
                     throw new Error('Data is not an array. Rate limit might be exceeded.');
