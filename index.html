@@ -272,6 +272,142 @@
             background: #604020;
         }
 
+        /* House roof (top part) */
+        .house-roof {
+            background: #c04040;
+        }
+        .house-roof::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #e06060 0%, #a02020 100%);
+            border-bottom: 3px solid #801010;
+        }
+
+        /* House wall */
+        .house-wall {
+            background: #e8d8c0;
+            border: 2px solid #a08060;
+        }
+
+        /* House door (entrada) */
+        .house-door {
+            background: #e8d8c0;
+            border: 2px solid #a08060;
+            cursor: pointer;
+        }
+        .house-door::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 24px;
+            left: 8px; top: 4px;
+            background: #604020;
+            border: 2px solid #402010;
+        }
+        .house-door::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            left: 20px; top: 14px;
+            background: #f0d020;
+            border-radius: 50%;
+        }
+
+        /* Interior tiles */
+        .floor {
+            background: #d0c0a0;
+            border: 1px solid #b0a080;
+        }
+        .interior-wall {
+            background: #a08060;
+            border: 2px solid #604020;
+        }
+        .carpet {
+            background: #c04040;
+            border: 1px solid #a02020;
+        }
+        .table {
+            background: #d0c0a0;
+        }
+        .table::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 20px;
+            left: 4px; top: 6px;
+            background: #805030;
+            border: 2px solid #603010;
+        }
+        .bookshelf {
+            background: #a08060;
+        }
+        .bookshelf::before {
+            content: '';
+            position: absolute;
+            width: 28px; height: 28px;
+            left: 2px; top: 2px;
+            background: #604020;
+            border: 2px solid #402010;
+        }
+        .bookshelf::after {
+            content: '';
+            position: absolute;
+            width: 24px; height: 6px;
+            left: 4px; top: 6px;
+            background: linear-gradient(90deg, #d04040 0%, #40a040 33%, #4040d0 66%, #d0d040 100%);
+            box-shadow: 0 8px 0 linear-gradient(90deg, #40a040, #d04040, #d0d040, #4040d0);
+        }
+        .exit-mat {
+            background: #d0c0a0;
+        }
+        .exit-mat::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 8px;
+            left: 4px; top: 20px;
+            background: #c04040;
+            border: 1px solid #802020;
+        }
+
+        /* NPC name label */
+        .npc-label {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gbc-green-darkest);
+            color: var(--gbc-green-light);
+            padding: 2px 6px;
+            font-size: 0.4rem;
+            white-space: nowrap;
+            border-radius: 3px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+        .npc.nearby .npc-label {
+            opacity: 1;
+        }
+
+        /* House label */
+        .house-label {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gbc-green-darkest);
+            color: var(--gbc-green-light);
+            padding: 3px 8px;
+            font-size: 0.35rem;
+            white-space: nowrap;
+            border-radius: 3px;
+            z-index: 60;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .house-label.visible {
+            opacity: 1;
+        }
+
         /* Player Sprite - Pixel Art */
         #player {
             position: absolute;
@@ -279,11 +415,6 @@
             height: var(--tile-size);
             z-index: 50;
             image-rendering: pixelated;
-            transition: none;
-        }
-
-        #player.walking {
-            transition: left 0.15s linear, top 0.15s linear;
         }
 
         .sprite {
@@ -293,7 +424,7 @@
             image-rendering: crisp-edges;
         }
 
-        /* Player sprite using CSS pixel art */
+        /* Player sprite using CSS pixel art - Frame 1 (standing/left foot) */
         .player-sprite {
             width: 100%; height: 100%;
             position: relative;
@@ -314,17 +445,40 @@
                 /* Body */
                 4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #6080c0, 16px 20px #6080c0, 20px 20px #3050a0, 24px 20px #3050a0,
                 4px 24px #3050a0, 8px 24px #6080c0, 12px 24px #6080c0, 16px 24px #6080c0, 20px 24px #6080c0, 24px 24px #3050a0,
-                /* Legs */
+                /* Legs - standing */
                 8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
         }
         
-        /* Walk animation */
-        @keyframes walk {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
+        /* Walk animation - alternating leg positions */
+        @keyframes walk-legs {
+            0%, 100% { 
+                box-shadow:
+                    8px 0 #0f380f, 12px 0 #0f380f, 16px 0 #0f380f, 20px 0 #0f380f,
+                    4px 4px #0f380f, 8px 4px #0f380f, 12px 4px #0f380f, 16px 4px #0f380f, 20px 4px #0f380f, 24px 4px #0f380f,
+                    4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
+                    4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
+                    8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
+                    4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #6080c0, 16px 20px #6080c0, 20px 20px #3050a0, 24px 20px #3050a0,
+                    4px 24px #3050a0, 8px 24px #6080c0, 12px 24px #6080c0, 16px 24px #6080c0, 20px 24px #6080c0, 24px 24px #3050a0,
+                    /* Left leg forward */
+                    4px 28px #0f380f, 8px 28px #306230, 20px 28px #306230, 24px 28px #0f380f;
+            }
+            50% { 
+                box-shadow:
+                    8px 0 #0f380f, 12px 0 #0f380f, 16px 0 #0f380f, 20px 0 #0f380f,
+                    4px 4px #0f380f, 8px 4px #0f380f, 12px 4px #0f380f, 16px 4px #0f380f, 20px 4px #0f380f, 24px 4px #0f380f,
+                    4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
+                    4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
+                    8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
+                    4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #6080c0, 16px 20px #6080c0, 20px 20px #3050a0, 24px 20px #3050a0,
+                    4px 24px #3050a0, 8px 24px #6080c0, 12px 24px #6080c0, 16px 24px #6080c0, 20px 24px #6080c0, 24px 24px #3050a0,
+                    /* Right leg forward */
+                    8px 28px #306230, 12px 28px #0f380f, 16px 28px #0f380f, 20px 28px #306230;
+            }
         }
+        
         #player.walking .player-sprite::before {
-            animation: walk 0.3s infinite;
+            animation: walk-legs 0.25s steps(2) infinite;
         }
 
         /* NPC Sprites (Projects) - Pixel Art */
@@ -339,69 +493,101 @@
             align-items: center;
         }
 
-        /* NPC Pokeball sprite */
+        /* NPC Person sprites - different colors */
         .npc-sprite {
-            background: transparent;
-            box-shadow:
-                /* Top red half */
-                8px 0 #d03030, 12px 0 #d03030, 16px 0 #d03030,
-                4px 4px #d03030, 8px 4px #f04040, 12px 4px #f04040, 16px 4px #f04040, 20px 4px #d03030,
-                0 8px #d03030, 4px 8px #f04040, 8px 8px #f04040, 12px 8px #f04040, 16px 8px #f04040, 20px 8px #f04040, 24px 8px #d03030,
-                /* Middle black line */
-                0 12px var(--gbc-green-darkest), 4px 12px var(--gbc-green-darkest), 8px 12px var(--gbc-green-darkest), 12px 12px #ffffff, 16px 12px var(--gbc-green-darkest), 20px 12px var(--gbc-green-darkest), 24px 12px var(--gbc-green-darkest),
-                /* Bottom white half */
-                0 16px #e0e0e0, 4px 16px #ffffff, 8px 16px #ffffff, 12px 16px #ffffff, 16px 16px #ffffff, 20px 16px #ffffff, 24px 16px #e0e0e0,
-                4px 20px #e0e0e0, 8px 20px #ffffff, 12px 20px #ffffff, 16px 20px #ffffff, 20px 20px #e0e0e0,
-                8px 24px #e0e0e0, 12px 24px #e0e0e0, 16px 24px #e0e0e0;
-            width: 4px;
-            height: 4px;
-            transform: scale(0.85);
+            width: 100%; height: 100%;
+            position: relative;
         }
-
-        /* Alternative NPC sprites */
-        .npc-sprite-green {
+        .npc-sprite::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                8px 0 #208020, 12px 0 #208020, 16px 0 #208020,
-                4px 4px #208020, 8px 4px #40a040, 12px 4px #40a040, 16px 4px #40a040, 20px 4px #208020,
-                0 8px #208020, 4px 8px #40a040, 8px 8px #40a040, 12px 8px #40a040, 16px 8px #40a040, 20px 8px #40a040, 24px 8px #208020,
-                0 12px var(--gbc-green-darkest), 4px 12px var(--gbc-green-darkest), 8px 12px var(--gbc-green-darkest), 12px 12px #ffffff, 16px 12px var(--gbc-green-darkest), 20px 12px var(--gbc-green-darkest), 24px 12px var(--gbc-green-darkest),
-                0 16px #e0e0e0, 4px 16px #ffffff, 8px 16px #ffffff, 12px 16px #ffffff, 16px 16px #ffffff, 20px 16px #ffffff, 24px 16px #e0e0e0,
-                4px 20px #e0e0e0, 8px 20px #ffffff, 12px 20px #ffffff, 16px 20px #ffffff, 20px 20px #e0e0e0,
-                8px 24px #e0e0e0, 12px 24px #e0e0e0, 16px 24px #e0e0e0;
-            width: 4px;
-            height: 4px;
-            transform: scale(0.85);
+                /* Hair - Red */
+                8px 0 #a02020, 12px 0 #a02020, 16px 0 #a02020, 20px 0 #a02020,
+                4px 4px #c04040, 8px 4px #c04040, 12px 4px #c04040, 16px 4px #c04040, 20px 4px #c04040, 24px 4px #a02020,
+                /* Face */
+                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
+                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
+                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
+                /* Body - Red shirt */
+                4px 20px #c04040, 8px 20px #c04040, 12px 20px #e06060, 16px 20px #e06060, 20px 20px #c04040, 24px 20px #c04040,
+                4px 24px #c04040, 8px 24px #e06060, 12px 24px #e06060, 16px 24px #e06060, 20px 24px #e06060, 24px 24px #c04040,
+                /* Legs */
+                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
         }
 
         .npc-sprite-blue {
+            width: 100%; height: 100%;
+            position: relative;
+        }
+        .npc-sprite-blue::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                8px 0 #2040a0, 12px 0 #2040a0, 16px 0 #2040a0,
-                4px 4px #2040a0, 8px 4px #4080e0, 12px 4px #4080e0, 16px 4px #4080e0, 20px 4px #2040a0,
-                0 8px #2040a0, 4px 8px #4080e0, 8px 8px #4080e0, 12px 8px #4080e0, 16px 8px #4080e0, 20px 8px #4080e0, 24px 8px #2040a0,
-                0 12px var(--gbc-green-darkest), 4px 12px var(--gbc-green-darkest), 8px 12px var(--gbc-green-darkest), 12px 12px #ffffff, 16px 12px var(--gbc-green-darkest), 20px 12px var(--gbc-green-darkest), 24px 12px var(--gbc-green-darkest),
-                0 16px #e0e0e0, 4px 16px #ffffff, 8px 16px #ffffff, 12px 16px #ffffff, 16px 16px #ffffff, 20px 16px #ffffff, 24px 16px #e0e0e0,
-                4px 20px #e0e0e0, 8px 20px #ffffff, 12px 20px #ffffff, 16px 20px #ffffff, 20px 20px #e0e0e0,
-                8px 24px #e0e0e0, 12px 24px #e0e0e0, 16px 24px #e0e0e0;
-            width: 4px;
-            height: 4px;
-            transform: scale(0.85);
+                /* Hair - Brown */
+                8px 0 #604020, 12px 0 #604020, 16px 0 #604020, 20px 0 #604020,
+                4px 4px #805030, 8px 4px #805030, 12px 4px #805030, 16px 4px #805030, 20px 4px #805030, 24px 4px #604020,
+                /* Face */
+                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
+                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
+                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
+                /* Body - Blue shirt */
+                4px 20px #2050a0, 8px 20px #2050a0, 12px 20px #4080d0, 16px 20px #4080d0, 20px 20px #2050a0, 24px 20px #2050a0,
+                4px 24px #2050a0, 8px 24px #4080d0, 12px 24px #4080d0, 16px 24px #4080d0, 20px 24px #4080d0, 24px 24px #2050a0,
+                /* Legs */
+                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
         }
 
-        .npc-sprite-yellow {
+        .npc-sprite-green {
+            width: 100%; height: 100%;
+            position: relative;
+        }
+        .npc-sprite-green::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                8px 0 #c0a000, 12px 0 #c0a000, 16px 0 #c0a000,
-                4px 4px #c0a000, 8px 4px #f0d020, 12px 4px #f0d020, 16px 4px #f0d020, 20px 4px #c0a000,
-                0 8px #c0a000, 4px 8px #f0d020, 8px 8px #f0d020, 12px 8px #f0d020, 16px 8px #f0d020, 20px 8px #f0d020, 24px 8px #c0a000,
-                0 12px var(--gbc-green-darkest), 4px 12px var(--gbc-green-darkest), 8px 12px var(--gbc-green-darkest), 12px 12px #ffffff, 16px 12px var(--gbc-green-darkest), 20px 12px var(--gbc-green-darkest), 24px 12px var(--gbc-green-darkest),
-                0 16px #e0e0e0, 4px 16px #ffffff, 8px 16px #ffffff, 12px 16px #ffffff, 16px 16px #ffffff, 20px 16px #ffffff, 24px 16px #e0e0e0,
-                4px 20px #e0e0e0, 8px 20px #ffffff, 12px 20px #ffffff, 16px 20px #ffffff, 20px 20px #e0e0e0,
-                8px 24px #e0e0e0, 12px 24px #e0e0e0, 16px 24px #e0e0e0;
-            width: 4px;
-            height: 4px;
-            transform: scale(0.85);
+                /* Hair - Blonde */
+                8px 0 #c0a020, 12px 0 #c0a020, 16px 0 #c0a020, 20px 0 #c0a020,
+                4px 4px #e0c040, 8px 4px #e0c040, 12px 4px #e0c040, 16px 4px #e0c040, 20px 4px #e0c040, 24px 4px #c0a020,
+                /* Face */
+                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
+                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
+                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
+                /* Body - Green shirt */
+                4px 20px #208040, 8px 20px #208040, 12px 20px #40a060, 16px 20px #40a060, 20px 20px #208040, 24px 20px #208040,
+                4px 24px #208040, 8px 24px #40a060, 12px 24px #40a060, 16px 24px #40a060, 20px 24px #40a060, 24px 24px #208040,
+                /* Legs */
+                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
+        }
+
+        .npc-sprite-purple {
+            width: 100%; height: 100%;
+            position: relative;
+        }
+        .npc-sprite-purple::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Hair - Black */
+                8px 0 #202020, 12px 0 #202020, 16px 0 #202020, 20px 0 #202020,
+                4px 4px #303030, 8px 4px #303030, 12px 4px #303030, 16px 4px #303030, 20px 4px #303030, 24px 4px #202020,
+                /* Face */
+                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
+                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
+                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
+                /* Body - Purple shirt */
+                4px 20px #602080, 8px 20px #602080, 12px 20px #8040a0, 16px 20px #8040a0, 20px 20px #602080, 24px 20px #602080,
+                4px 24px #602080, 8px 24px #8040a0, 12px 24px #8040a0, 16px 24px #8040a0, 20px 24px #8040a0, 24px 24px #602080,
+                /* Legs */
+                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
         }
 
         /* Dialog Box */
@@ -849,13 +1035,16 @@
         // ============== GAME STATE ==============
         const TILE_SIZE = 32;
         
-        let playerX = 9;
-        let playerY = 9;
+        let playerX = 15;
+        let playerY = 15;
         let cameraX = 0;
         let cameraY = 0;
         let npcs = [];
+        let houses = [];
         let currentNpc = null;
+        let currentHouse = null;
         let gameState = 'intro'; // intro, walking, dialog, battle, info
+        let currentLocation = 'outside'; // outside, inside
         let isMoving = false;
         
         // DOM Elements
@@ -883,33 +1072,60 @@
         }
 
         // ============== MAP DATA ==============
-        // 0=grass, 1=path, 2=tree, 3=water, 4=tall-grass, 5=flower, 6=fence, 7=sign, 8=house
+        // 0=grass, 1=path, 2=tree, 3=water, 4=tall-grass, 5=flower, 6=fence, 7=sign
+        // 10=house-roof, 11=house-wall, 12=house-door
         const MAP_DATA = [
-            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-            [2,0,0,0,0,0,0,2,2,2,2,2,0,0,0,0,0,0,0,2],
-            [2,0,5,0,0,0,0,0,0,0,0,0,0,0,5,0,0,5,0,2],
-            [2,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,2],
-            [2,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,2],
-            [2,2,0,0,1,0,7,0,0,0,0,7,0,1,0,0,0,2,2,2],
-            [2,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,2],
-            [2,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,2],
-            [2,0,5,0,0,0,0,1,0,0,1,0,0,0,0,5,0,0,0,2],
-            [2,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,2],
-            [2,0,0,0,6,6,6,1,0,0,1,6,6,6,0,0,0,0,0,2],
-            [2,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,2],
-            [2,2,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,2,2,2],
-            [2,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,0,0,2],
-            [2,0,0,4,4,4,0,0,0,0,0,0,0,0,4,4,4,0,0,2],
-            [2,0,0,4,4,4,0,0,0,0,0,0,0,0,4,4,4,0,0,2],
-            [2,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0,0,0,2],
-            [2,0,0,0,0,0,0,3,3,3,3,3,3,0,0,0,0,0,0,2],
-            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+            [2,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,2],
+            [2,0,5,0,10,10,10,0,0,0,0,0,0,0,0,10,10,10,0,0,0,0,0,0,0,0,5,0,0,2],
+            [2,0,0,0,11,11,11,0,0,0,0,0,0,0,0,11,11,11,0,0,0,10,10,10,0,0,0,0,0,2],
+            [2,0,0,0,11,12,11,0,0,5,0,0,0,0,0,11,12,11,0,0,0,11,11,11,0,0,0,0,0,2],
+            [2,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,11,12,11,0,0,0,0,0,2],
+            [2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,2],
+            [2,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,2,2],
+            [2,0,0,0,1,0,0,10,10,10,0,0,0,0,0,0,10,10,10,0,0,0,0,0,0,0,1,0,0,2],
+            [2,0,5,0,1,0,0,11,11,11,0,0,0,0,0,0,11,11,11,0,0,0,0,0,5,0,1,0,0,2],
+            [2,0,0,0,1,0,0,11,12,11,0,0,7,0,0,0,11,12,11,0,0,0,0,0,0,0,1,0,0,2],
+            [2,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+            [2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+            [2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+            [2,0,0,6,6,6,6,0,0,0,0,0,1,0,0,0,0,0,6,6,6,6,0,0,0,0,0,0,0,2],
+            [2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+            [2,0,0,10,10,10,0,0,0,0,0,0,1,0,0,0,0,0,0,10,10,10,0,0,0,0,0,0,0,2],
+            [2,0,0,11,11,11,0,0,0,0,0,0,1,0,0,0,0,0,0,11,11,11,0,0,0,0,0,0,0,2],
+            [2,0,0,11,12,11,0,0,0,4,4,0,1,0,4,4,0,0,0,11,12,11,0,0,0,0,0,0,0,2],
+            [2,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,2],
+            [2,0,0,0,0,0,0,0,0,0,4,4,1,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+            [2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,3,3,3,3,0,0,0,2],
+            [2,2,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,3,3,3,3,3,3,0,2,2],
+            [2,0,0,5,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,3,3,3,3,3,3,3,0,0,2],
+            [2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,2],
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
         ];
         const MAP_ROWS = MAP_DATA.length;
         const MAP_COLS = MAP_DATA[0].length;
         
-        const TILE_TYPES = ['grass', 'path', 'tree', 'water', 'tall-grass', 'flower', 'fence', 'sign', 'house'];
-        const SOLID_TILES = [2, 3, 6, 8]; // Can't walk on these
+        const TILE_TYPES = {
+            0: 'grass', 1: 'path', 2: 'tree', 3: 'water', 4: 'tall-grass', 
+            5: 'flower', 6: 'fence', 7: 'sign',
+            10: 'house-roof', 11: 'house-wall', 12: 'house-door'
+        };
+        const SOLID_TILES = [2, 3, 6, 10, 11]; // Can't walk on these
+        
+        // Interior map template (7x7)
+        const INTERIOR_MAP = [
+            [20,20,20,20,20,20,20],
+            [20,22,21,21,21,23,20],
+            [20,21,21,21,21,21,20],
+            [20,21,21,24,21,21,20],
+            [20,21,21,24,21,21,20],
+            [20,21,21,25,21,21,20],
+            [20,20,20,20,20,20,20]
+        ];
+        const INTERIOR_TYPES = {
+            20: 'interior-wall', 21: 'floor', 22: 'bookshelf', 23: 'table', 24: 'carpet', 25: 'exit-mat'
+        };
+        const INTERIOR_SOLID = [20, 22, 23];
 
         // ============== MAP GENERATION ==============
         function generateMap() {
@@ -921,72 +1137,107 @@
                 for (let x = 0; x < MAP_COLS; x++) {
                     const tileType = MAP_DATA[y][x];
                     const tile = document.createElement('div');
-                    tile.className = 'tile ' + TILE_TYPES[tileType];
+                    tile.className = 'tile ' + (TILE_TYPES[tileType] || 'grass');
                     tile.style.left = x * TILE_SIZE + 'px';
                     tile.style.top = y * TILE_SIZE + 'px';
                     map.appendChild(tile);
                 }
             }
         }
+        
+        function generateInterior(house) {
+            map.innerHTML = '';
+            const rows = INTERIOR_MAP.length;
+            const cols = INTERIOR_MAP[0].length;
+            map.style.width = cols * TILE_SIZE + 'px';
+            map.style.height = rows * TILE_SIZE + 'px';
 
-        // ============== LOAD REPOS AS NPCs ==============
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    const tileType = INTERIOR_MAP[y][x];
+                    const tile = document.createElement('div');
+                    tile.className = 'tile ' + (INTERIOR_TYPES[tileType] || 'floor');
+                    tile.style.left = x * TILE_SIZE + 'px';
+                    tile.style.top = y * TILE_SIZE + 'px';
+                    map.appendChild(tile);
+                }
+            }
+            
+            // Add NPC inside
+            const npcData = {
+                x: 3,
+                y: 2,
+                name: house.name,
+                description: house.description,
+                language: house.language,
+                stars: house.stars,
+                url: house.url,
+                spriteClass: house.spriteClass
+            };
+            npcs = [npcData];
+            renderNpc(npcData);
+        }
+
+        // ============== LOAD REPOS AS HOUSES ==============
         async function loadReposAsNpcs() {
             const username = 'MutenRos';
-const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc-sprite-yellow', 'npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc-sprite-yellow', 'npc-sprite', 'npc-sprite-blue'];
+            const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc-sprite-purple'];
+            
+            // Door positions in the map (where tile type is 12)
+            const doorPositions = [
+                {x: 5, y: 4},   // House 1
+                {x: 16, y: 4},  // House 2
+                {x: 22, y: 5},  // House 3
+                {x: 8, y: 10},  // House 4
+                {x: 17, y: 10}, // House 5
+                {x: 4, y: 18},  // House 6
+                {x: 20, y: 18}  // House 7
+            ];
             
             try {
-                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=10`);
+                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=7`);
                 if (!response.ok) throw new Error('API Error');
                 
                 const repos = await response.json();
                 
-                // Predefined positions for NPCs along paths
-                const positions = [
-                    {x: 5, y: 3}, {x: 8, y: 3}, {x: 11, y: 3},
-                    {x: 5, y: 7}, {x: 8, y: 7}, {x: 11, y: 7},
-                    {x: 7, y: 9}, {x: 10, y: 9},
-                    {x: 7, y: 11}, {x: 10, y: 11}
-                ];
-                
                 repos.forEach((repo, index) => {
-                    if (index >= positions.length) return;
+                    if (index >= doorPositions.length) return;
                     
-                    const pos = positions[index];
-                    const npc = {
-                        x: pos.x,
-                        y: pos.y,
+                    const pos = doorPositions[index];
+                    const house = {
+                        doorX: pos.x,
+                        doorY: pos.y,
                         name: repo.name,
-                        description: repo.description || 'Sin descripción',
+                        description: repo.description || 'Sin descripcion',
                         language: repo.language || 'Unknown',
                         stars: repo.stargazers_count,
                         url: repo.html_url,
                         spriteClass: spriteClasses[index % spriteClasses.length]
                     };
                     
-                    npcs.push(npc);
-                    renderNpc(npc);
+                    houses.push(house);
+                    renderHouseLabel(house);
                 });
                 
             } catch (error) {
                 console.error('Error loading repos:', error);
-                // Add a default NPC if API fails
-                const defaultNpc = {
-                    x: 10, y: 7,
-                    name: 'Error',
-                    description: 'No se pudieron cargar los repos',
-                    language: '???',
-                    stars: 0,
-                    url: 'https://github.com/MutenRos',
-                    spriteClass: 'npc-sprite'
-                };
-                npcs.push(defaultNpc);
-                renderNpc(defaultNpc);
             }
+        }
+        
+        function renderHouseLabel(house) {
+            const label = document.createElement('div');
+            label.className = 'house-label';
+            label.id = `label-${house.doorX}-${house.doorY}`;
+            label.textContent = house.name;
+            label.style.left = house.doorX * TILE_SIZE + 'px';
+            label.style.top = (house.doorY - 1) * TILE_SIZE + 'px';
+            map.appendChild(label);
         }
 
         function renderNpc(npc) {
             const npcEl = document.createElement('div');
             npcEl.className = 'npc';
+            npcEl.id = `npc-${npc.x}-${npc.y}`;
             npcEl.style.left = npc.x * TILE_SIZE + 'px';
             npcEl.style.top = npc.y * TILE_SIZE + 'px';
             
@@ -994,6 +1245,12 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
             const spriteEl = document.createElement('div');
             spriteEl.className = npc.spriteClass;
             npcEl.appendChild(spriteEl);
+            
+            // Add name label
+            const label = document.createElement('div');
+            label.className = 'npc-label';
+            label.textContent = npc.name;
+            npcEl.appendChild(label);
             
             npcEl.dataset.name = npc.name;
             map.appendChild(npcEl);
@@ -1068,25 +1325,56 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
             if (!moved) return;
             e.preventDefault();
             
-            // Check bounds
+            // Handle interior movement
+            if (currentLocation === 'inside') {
+                const rows = INTERIOR_MAP.length;
+                const cols = INTERIOR_MAP[0].length;
+                if (newX < 0 || newX >= cols || newY < 0 || newY >= rows) return;
+                
+                const tileType = INTERIOR_MAP[newY][newX];
+                if (INTERIOR_SOLID.includes(tileType)) return;
+                
+                // Check exit
+                if (tileType === 25 && newY === 5) {
+                    exitHouse();
+                    return;
+                }
+                
+                // Check NPC collision
+                const npcAtPos = npcs.find(n => n.x === newX && n.y === newY);
+                if (npcAtPos) return;
+                
+                movePlayer(newX, newY);
+                updateNpcProximity();
+                return;
+            }
+            
+            // Handle outside movement
             if (newX < 0 || newX >= MAP_COLS || newY < 0 || newY >= MAP_ROWS) return;
             
-            // Check solid tiles
             const tileType = MAP_DATA[newY][newX];
+            
+            // Check if entering a house door
+            if (tileType === 12) {
+                const house = houses.find(h => h.doorX === newX && h.doorY === newY);
+                if (house) {
+                    enterHouse(house);
+                    return;
+                }
+            }
+            
             if (SOLID_TILES.includes(tileType)) return;
             
-            // Check NPC collision
-            const npcAtPos = npcs.find(n => n.x === newX && n.y === newY);
-            if (npcAtPos) return;
-            
-            // Move player with animation
+            movePlayer(newX, newY);
+            updateHouseLabels();
+        }
+        
+        function movePlayer(newX, newY) {
             isMoving = true;
             playerX = newX;
             playerY = newY;
             
             player.classList.add('walking');
-            player.style.left = playerX * TILE_SIZE + 'px';
-            player.style.top = playerY * TILE_SIZE + 'px';
             
             updateCamera();
             
@@ -1095,18 +1383,90 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
                 player.classList.remove('walking');
             }, 150);
         }
+        
+        function updateHouseLabels() {
+            houses.forEach(house => {
+                const label = document.getElementById(`label-${house.doorX}-${house.doorY}`);
+                if (label) {
+                    const dist = Math.abs(playerX - house.doorX) + Math.abs(playerY - house.doorY);
+                    if (dist <= 2) {
+                        label.classList.add('visible');
+                    } else {
+                        label.classList.remove('visible');
+                    }
+                }
+            });
+        }
+        
+        function updateNpcProximity() {
+            npcs.forEach(npc => {
+                const npcEl = document.getElementById(`npc-${npc.x}-${npc.y}`);
+                if (npcEl) {
+                    const dist = Math.abs(playerX - npc.x) + Math.abs(playerY - npc.y);
+                    if (dist <= 2) {
+                        npcEl.classList.add('nearby');
+                    } else {
+                        npcEl.classList.remove('nearby');
+                    }
+                }
+            });
+        }
+        
+        function enterHouse(house) {
+            currentHouse = house;
+            currentLocation = 'inside';
+            npcs = [];
+            
+            // Generate interior
+            generateInterior(house);
+            
+            // Position player at entrance
+            playerX = 3;
+            playerY = 5;
+            
+            updateCamera();
+            updateNpcProximity();
+        }
+        
+        function exitHouse() {
+            currentLocation = 'outside';
+            npcs = [];
+            
+            // Restore outside map
+            generateMap();
+            
+            // Re-render house labels
+            houses.forEach(h => renderHouseLabel(h));
+            
+            // Position player in front of house door
+            playerX = currentHouse.doorX;
+            playerY = currentHouse.doorY + 1;
+            currentHouse = null;
+            
+            updateCamera();
+            updateHouseLabels();
+        }
 
         function updateCamera() {
             const screenWidth = 480;
             const screenHeight = 432;
+            
+            let mapCols, mapRows;
+            if (currentLocation === 'inside') {
+                mapCols = INTERIOR_MAP[0].length;
+                mapRows = INTERIOR_MAP.length;
+            } else {
+                mapCols = MAP_COLS;
+                mapRows = MAP_ROWS;
+            }
             
             // Center camera on player
             cameraX = playerX * TILE_SIZE - screenWidth / 2 + TILE_SIZE / 2;
             cameraY = playerY * TILE_SIZE - screenHeight / 2 + TILE_SIZE / 2;
             
             // Clamp camera
-            const maxX = MAP_COLS * TILE_SIZE - screenWidth;
-            const maxY = MAP_ROWS * TILE_SIZE - screenHeight;
+            const maxX = mapCols * TILE_SIZE - screenWidth;
+            const maxY = mapRows * TILE_SIZE - screenHeight;
             cameraX = Math.max(0, Math.min(cameraX, maxX));
             cameraY = Math.max(0, Math.min(cameraY, maxY));
             
@@ -1140,7 +1500,7 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
             currentNpc = npc;
             gameState = 'dialog';
             dialogBox.style.display = 'block';
-            dialogText.innerHTML = `¡Un <strong>${npc.name}</strong> salvaje apareció!<br>¿Quieres saber más sobre este proyecto?`;
+            dialogText.innerHTML = `Hola! Soy el encargado de <strong>${npc.name}</strong>.<br>Quieres que te cuente sobre este proyecto?`;
         }
 
         // ============== BATTLE ==============
