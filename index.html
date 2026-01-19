@@ -2086,10 +2086,13 @@
             // Check if entering a house door
             if (tileType === 12) {
                 const house = houses.find(h => h.doorX === newX && h.doorY === newY);
+                console.log('Door tile found at', newX, newY, 'House:', house, 'All houses:', houses);
                 if (house) {
                     enterHouse(house);
                     return;
                 }
+                // If door but no house data, still block movement
+                return;
             }
             
             if (SOLID_TILES.includes(tileType)) return;
