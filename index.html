@@ -5,108 +5,883 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MutenRos | Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="scanline"></div>
+    <style>
+        :root {
+            --gbc-green-light: #9bbc0f;
+            --gbc-green-mid: #8bac0f;
+            --gbc-green-dark: #306230;
+            --gbc-green-darkest: #0f380f;
+            --tile-size: 32px;
+        }
 
-    <!-- Intro Screen -->
-    <div id="intro-screen" class="screen">
-        <div class="arcade-cabinet">
-            <h1>MutenRos<br>System Online</h1>
-            <p>Bienvenido al portfolio de Dario Lacal Civera</p>
-            <p>Level 1: Loading...</p>
-            <br>
-            <button id="start-btn" class="insert-coin">INSERT COIN TO START</button>
-        </div>
-    </div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Main Content (Hidden initially) -->
-    <div id="main-content" class="screen hidden">
-        <div class="header-bar">
-            <div class="player-info">PLAYER: MUTENROS</div>
-            <div class="score">CREDITS: ∞</div>
-        </div>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-        <div style="margin-bottom: 2rem; text-align: center;">
-             <a href="repo.html?repo=MutenRos" class="insert-coin" style="margin-top: 0; font-size: 0.7rem;">[ ? ] ABOUT PLAYER</a>
-        </div>
-        
-        <h2 style="color: var(--neon-pink); margin-bottom: 2rem; text-shadow: 0 0 10px var(--neon-pink);">SELECT REPO</h2>
-        
-        <div id="repo-container" class="repo-grid">
-            <p>Loading cartridges...</p>
-        </div>
-    </div>
+        /* Game Boy Color Frame */
+        .gameboy-frame {
+            background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-    <script>
-        // Start Button Logic
-        const startBtn = document.getElementById('start-btn');
-        const introScreen = document.getElementById('intro-screen');
-        const mainContent = document.getElementById('main-content');
+        .screen-bezel {
+            background: #1a1a2e;
+            padding: 15px;
+            border-radius: 10px;
+            border: 3px solid #333;
+        }
 
-        startBtn.addEventListener('click', () => {
-            introScreen.style.display = 'none'; // Force hide
-            mainContent.classList.remove('hidden');
-            mainContent.style.display = 'flex'; // Force show
-            loadRepos();
-        });
+        /* Main Game Screen */
+        #game-container {
+            width: 480px;
+            height: 432px;
+            background-color: var(--gbc-green-light);
+            position: relative;
+            overflow: hidden;
+            image-rendering: pixelated;
+            border: 4px solid var(--gbc-green-darkest);
+        }
 
-        // GitHub API Logic
-        async function loadRepos() {
-            const container = document.getElementById('repo-container');
-            const username = 'MutenRos';
-            
-            try {
-                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
-                
-                if (!response.ok) {
-                    throw new Error(`GitHub API Error: ${response.status} ${response.statusText}`);
-                }
+        /* Intro Screen */
+        #intro-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--gbc-green-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+        }
 
-                const repos = await response.json();
+        #intro-screen h1 {
+            color: var(--gbc-green-darkest);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
 
-                if (!Array.isArray(repos)) {
-                    throw new Error('Data is not an array. Rate limit might be exceeded.');
-                }
+        #intro-screen p {
+            color: var(--gbc-green-dark);
+            font-size: 0.6rem;
+            margin-bottom: 15px;
+        }
 
-                container.innerHTML = ''; // Clear loading message
+        .press-start {
+            color: var(--gbc-green-darkest);
+            font-size: 0.7rem;
+            animation: blink 1s infinite;
+            margin-top: 30px;
+            cursor: pointer;
+        }
 
-                if (repos.length === 0) {
-                    container.innerHTML = '<p>No cartridges found (No public repos).</p>';
-                    return;
-                }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
 
-                repos.forEach(repo => {
-                    // Skip forked repos if you want, or keep them
-                    // if (repo.fork) return;
+        /* Game World */
+        #game-world {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
 
-                    const card = document.createElement('a');
-                    // Link to internal detail page instead of external GitHub URL
-                    card.href = `repo.html?repo=${repo.name}`;
-                    // card.target = '_blank'; // Open in same tab for SPA feel
-                    card.className = 'repo-card';
-                    
-                    const lang = repo.language ? repo.language : 'Binary';
-                    const desc = repo.description ? repo.description : 'No description available.';
-                    
-                    card.innerHTML = `
-                        <span class="repo-name">${repo.name}</span>
-                        <div class="repo-desc">${desc}</div>
-                        <div class="repo-stats">
-                            <span>LANG: ${lang}</span>
-                            <span>★ ${repo.stargazers_count}</span>
-                        </div>
-                    `;
-                    
-                    container.appendChild(card);
-                });
+        #map {
+            position: absolute;
+            width: 960px;
+            height: 864px;
+            background-color: var(--gbc-green-mid);
+            transition: transform 0.1s linear;
+        }
 
-            } catch (error) {
-                container.innerHTML = `<p style="color: red; text-align: center;">SYSTEM ERROR: ${error.message}<br>Try refreshing later.</p>`;
-                console.error('Error fetching repos:', error);
+        /* Grass Pattern */
+        .grass-tile {
+            position: absolute;
+            width: var(--tile-size);
+            height: var(--tile-size);
+            background: var(--gbc-green-mid);
+        }
+
+        .grass-tile::after {
+            content: '""';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            color: var(--gbc-green-dark);
+        }
+
+        /* Path tiles */
+        .path-tile {
+            position: absolute;
+            width: var(--tile-size);
+            height: var(--tile-size);
+            background: #c4a484;
+            border: 1px solid #a08060;
+        }
+
+        /* Player Sprite */
+        #player {
+            position: absolute;
+            width: var(--tile-size);
+            height: var(--tile-size);
+            background: var(--gbc-green-darkest);
+            z-index: 50;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        #player::after {
+            content: '🧑';
+        }
+
+        /* NPC Sprites (Projects) */
+        .npc {
+            position: absolute;
+            width: var(--tile-size);
+            height: var(--tile-size);
+            background: var(--gbc-green-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 40;
+        }
+
+        /* Dialog Box */
+        #dialog-box {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: white;
+            border-top: 4px solid var(--gbc-green-darkest);
+            padding: 15px;
+            display: none;
+            z-index: 200;
+        }
+
+        #dialog-text {
+            color: var(--gbc-green-darkest);
+            font-size: 0.6rem;
+            line-height: 1.8;
+        }
+
+        #dialog-continue {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.5rem;
+            color: var(--gbc-green-dark);
+            animation: blink 0.8s infinite;
+        }
+
+        /* Battle Screen */
+        #battle-screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: none;
+            flex-direction: column;
+            z-index: 300;
+        }
+
+        .battle-top {
+            height: 50%;
+            background: linear-gradient(to bottom, #87ceeb 0%, #87ceeb 60%, var(--gbc-green-mid) 60%);
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .enemy-pokemon {
+            text-align: center;
+        }
+
+        .enemy-sprite {
+            font-size: 80px;
+            animation: enemy-appear 0.5s ease-out;
+        }
+
+        @keyframes enemy-appear {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .enemy-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #f8f8f8;
+            border: 3px solid var(--gbc-green-darkest);
+            padding: 10px;
+            min-width: 180px;
+        }
+
+        .enemy-name {
+            font-size: 0.7rem;
+            color: var(--gbc-green-darkest);
+            margin-bottom: 5px;
+        }
+
+        .enemy-level {
+            font-size: 0.5rem;
+            color: var(--gbc-green-dark);
+        }
+
+        .hp-bar {
+            margin-top: 8px;
+            height: 8px;
+            background: var(--gbc-green-darkest);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .hp-fill {
+            height: 100%;
+            background: var(--gbc-green-light);
+            width: 100%;
+        }
+
+        .battle-bottom {
+            height: 50%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-pokemon-area {
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .player-sprite {
+            font-size: 60px;
+        }
+
+        .player-info {
+            background: #f8f8f8;
+            border: 3px solid var(--gbc-green-darkest);
+            padding: 10px;
+            min-width: 180px;
+            text-align: right;
+        }
+
+        .battle-menu {
+            height: 40%;
+            border-top: 4px solid var(--gbc-green-darkest);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .battle-option {
+            background: white;
+            border: 2px solid var(--gbc-green-darkest);
+            font-family: inherit;
+            font-size: 0.6rem;
+            color: var(--gbc-green-darkest);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .battle-option:hover {
+            background: var(--gbc-green-light);
+        }
+
+        /* Info Panel (README display) */
+        #info-panel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: none;
+            flex-direction: column;
+            z-index: 350;
+            overflow-y: auto;
+        }
+
+        .info-header {
+            background: var(--gbc-green-dark);
+            color: var(--gbc-green-light);
+            padding: 15px;
+            font-size: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-content {
+            padding: 15px;
+            font-size: 0.5rem;
+            line-height: 2;
+            color: var(--gbc-green-darkest);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .info-content a {
+            color: var(--gbc-green-dark);
+        }
+
+        .back-btn {
+            background: var(--gbc-green-light);
+            border: none;
+            padding: 8px 15px;
+            font-family: inherit;
+            font-size: 0.5rem;
+            cursor: pointer;
+            color: var(--gbc-green-darkest);
+        }
+
+        /* Controls hint */
+        .controls-hint {
+            text-align: center;
+            margin-top: 15px;
+            color: #888;
+            font-size: 0.5rem;
+        }
+
+        /* Mobile Controls */
+        .mobile-controls {
+            display: none;
+            margin-top: 15px;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .dpad {
+            display: grid;
+            grid-template-columns: repeat(3, 40px);
+            grid-template-rows: repeat(3, 40px);
+            gap: 2px;
+        }
+
+        .dpad-btn {
+            background: #333;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .dpad-btn:active {
+            background: #555;
+        }
+
+        .dpad-center {
+            background: #222;
+            border-radius: 50%;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 30px;
+        }
+
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            font-family: inherit;
+            font-size: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-a {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-b {
+            background: #dc2626;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .gameboy-frame {
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            #game-container {
+                width: 320px;
+                height: 288px;
+            }
+
+            :root {
+                --tile-size: 24px;
+            }
+
+            .mobile-controls {
+                display: flex;
+            }
+
+            .enemy-sprite {
+                font-size: 50px;
+            }
+
+            .player-sprite {
+                font-size: 40px;
             }
         }
+    </style>
+</head>
+<body>
+    <div class="gameboy-frame">
+        <div class="screen-bezel">
+            <div id="game-container">
+                <!-- Intro Screen -->
+                <div id="intro-screen">
+                    <h1>PORTFOLIO<br>QUEST</h1>
+                    <p>Por Dario Lacal Civera</p>
+                    <p>Versión 1.0</p>
+                    <div class="press-start" id="start-btn">PRESS START</div>
+                </div>
+
+                <!-- Game World -->
+                <div id="game-world">
+                    <div id="map"></div>
+                    <div id="player"></div>
+                </div>
+
+                <!-- Dialog Box -->
+                <div id="dialog-box">
+                    <div id="dialog-text"></div>
+                    <div id="dialog-continue">▼ SPACE</div>
+                </div>
+
+                <!-- Battle Screen -->
+                <div id="battle-screen">
+                    <div class="battle-top">
+                        <div class="enemy-info">
+                            <div class="enemy-name" id="battle-enemy-name">PROYECTO</div>
+                            <div class="enemy-level" id="battle-enemy-level">Lv.99</div>
+                            <div class="hp-bar"><div class="hp-fill"></div></div>
+                        </div>
+                        <div class="enemy-pokemon">
+                            <div class="enemy-sprite" id="battle-enemy-sprite">📦</div>
+                        </div>
+                    </div>
+                    <div class="battle-bottom">
+                        <div class="player-pokemon-area">
+                            <div class="player-sprite">🧑‍💻</div>
+                            <div class="player-info">
+                                <div class="enemy-name">MUTENROS</div>
+                                <div class="enemy-level">Lv.∞</div>
+                                <div class="hp-bar"><div class="hp-fill"></div></div>
+                            </div>
+                        </div>
+                        <div class="battle-menu">
+                            <button class="battle-option" id="btn-info">📖 INFO</button>
+                            <button class="battle-option" id="btn-github">🌐 GITHUB</button>
+                            <button class="battle-option" id="btn-stats">📊 STATS</button>
+                            <button class="battle-option" id="btn-run">🏃 HUIR</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Panel -->
+                <div id="info-panel">
+                    <div class="info-header">
+                        <span id="info-title">README.md</span>
+                        <button class="back-btn" id="info-back">✕ CERRAR</button>
+                    </div>
+                    <div class="info-content" id="info-content">
+                        Cargando...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="controls-hint">
+            ← ↑ ↓ → para moverse | SPACE para interactuar
+        </div>
+        <div class="mobile-controls">
+            <div class="dpad">
+                <div></div>
+                <button class="dpad-btn" id="btn-up">▲</button>
+                <div></div>
+                <button class="dpad-btn" id="btn-left">◄</button>
+                <div class="dpad-center"></div>
+                <button class="dpad-btn" id="btn-right">►</button>
+                <div></div>
+                <button class="dpad-btn" id="btn-down">▼</button>
+                <div></div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn btn-a" id="btn-action">A</button>
+                <button class="action-btn btn-b" id="btn-cancel">B</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // ============== GAME STATE ==============
+        const TILE_SIZE = window.innerWidth <= 600 ? 24 : 32;
+        const MAP_COLS = 30;
+        const MAP_ROWS = 27;
+        
+        let playerX = 7;
+        let playerY = 7;
+        let cameraX = 0;
+        let cameraY = 0;
+        let npcs = [];
+        let currentNpc = null;
+        let gameState = 'intro'; // intro, walking, dialog, battle, info
+        
+        // DOM Elements
+        const introScreen = document.getElementById('intro-screen');
+        const gameWorld = document.getElementById('game-world');
+        const map = document.getElementById('map');
+        const player = document.getElementById('player');
+        const dialogBox = document.getElementById('dialog-box');
+        const dialogText = document.getElementById('dialog-text');
+        const battleScreen = document.getElementById('battle-screen');
+        const infoPanel = document.getElementById('info-panel');
+
+        // ============== INIT ==============
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        document.addEventListener('keydown', handleKeyDown);
+
+        async function startGame() {
+            introScreen.style.display = 'none';
+            gameWorld.style.display = 'block';
+            gameState = 'walking';
+            
+            generateMap();
+            await loadReposAsNpcs();
+            updateCamera();
+        }
+
+        // ============== MAP GENERATION ==============
+        function generateMap() {
+            map.innerHTML = '';
+            map.style.width = MAP_COLS * TILE_SIZE + 'px';
+            map.style.height = MAP_ROWS * TILE_SIZE + 'px';
+
+            // Generate grass tiles with some variation
+            for (let y = 0; y < MAP_ROWS; y++) {
+                for (let x = 0; x < MAP_COLS; x++) {
+                    const tile = document.createElement('div');
+                    
+                    // Create paths
+                    if ((y === 7 && x >= 3 && x <= 25) || 
+                        (x === 7 && y >= 3 && y <= 20) ||
+                        (x === 15 && y >= 7 && y <= 20) ||
+                        (x === 23 && y >= 7 && y <= 15)) {
+                        tile.className = 'path-tile';
+                    } else {
+                        tile.className = 'grass-tile';
+                    }
+                    
+                    tile.style.left = x * TILE_SIZE + 'px';
+                    tile.style.top = y * TILE_SIZE + 'px';
+                    map.appendChild(tile);
+                }
+            }
+        }
+
+        // ============== LOAD REPOS AS NPCs ==============
+        async function loadReposAsNpcs() {
+            const username = 'MutenRos';
+            const emojis = ['📦', '🎮', '🤖', '📱', '💻', '🔧', '🎨', '📊', '🌐', '⚡'];
+            
+            try {
+                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=10`);
+                if (!response.ok) throw new Error('API Error');
+                
+                const repos = await response.json();
+                
+                // Predefined positions for NPCs along paths
+                const positions = [
+                    {x: 10, y: 7}, {x: 13, y: 7}, {x: 17, y: 7}, {x: 20, y: 7},
+                    {x: 7, y: 10}, {x: 7, y: 14}, {x: 7, y: 18},
+                    {x: 15, y: 12}, {x: 15, y: 16},
+                    {x: 23, y: 10}
+                ];
+                
+                repos.forEach((repo, index) => {
+                    if (index >= positions.length) return;
+                    
+                    const pos = positions[index];
+                    const npc = {
+                        x: pos.x,
+                        y: pos.y,
+                        name: repo.name,
+                        description: repo.description || 'Sin descripción',
+                        language: repo.language || 'Unknown',
+                        stars: repo.stargazers_count,
+                        url: repo.html_url,
+                        emoji: emojis[index % emojis.length]
+                    };
+                    
+                    npcs.push(npc);
+                    renderNpc(npc);
+                });
+                
+            } catch (error) {
+                console.error('Error loading repos:', error);
+                // Add a default NPC if API fails
+                const defaultNpc = {
+                    x: 10, y: 7,
+                    name: 'Error',
+                    description: 'No se pudieron cargar los repos',
+                    language: '???',
+                    stars: 0,
+                    url: 'https://github.com/MutenRos',
+                    emoji: '❓'
+                };
+                npcs.push(defaultNpc);
+                renderNpc(defaultNpc);
+            }
+        }
+
+        function renderNpc(npc) {
+            const npcEl = document.createElement('div');
+            npcEl.className = 'npc';
+            npcEl.style.left = npc.x * TILE_SIZE + 'px';
+            npcEl.style.top = npc.y * TILE_SIZE + 'px';
+            npcEl.innerHTML = npc.emoji;
+            npcEl.dataset.name = npc.name;
+            map.appendChild(npcEl);
+        }
+
+        // ============== PLAYER MOVEMENT ==============
+        function handleKeyDown(e) {
+            if (gameState === 'intro') {
+                if (e.code === 'Space' || e.code === 'Enter') {
+                    startGame();
+                }
+                return;
+            }
+            
+            if (gameState === 'dialog') {
+                if (e.code === 'Space') {
+                    startBattle(currentNpc);
+                }
+                return;
+            }
+            
+            if (gameState === 'battle') {
+                if (e.code === 'Escape' || e.code === 'KeyB') {
+                    closeBattle();
+                }
+                return;
+            }
+            
+            if (gameState === 'info') {
+                if (e.code === 'Escape' || e.code === 'Space' || e.code === 'KeyB') {
+                    closeInfo();
+                }
+                return;
+            }
+            
+            if (gameState !== 'walking') return;
+            
+            let newX = playerX;
+            let newY = playerY;
+            
+            switch(e.code) {
+                case 'ArrowUp':
+                case 'KeyW':
+                    newY--;
+                    break;
+                case 'ArrowDown':
+                case 'KeyS':
+                    newY++;
+                    break;
+                case 'ArrowLeft':
+                case 'KeyA':
+                    newX--;
+                    break;
+                case 'ArrowRight':
+                case 'KeyD':
+                    newX++;
+                    break;
+                case 'Space':
+                    checkInteraction();
+                    return;
+            }
+            
+            // Check bounds
+            if (newX >= 0 && newX < MAP_COLS && newY >= 0 && newY < MAP_ROWS) {
+                // Check NPC collision
+                const npcAtPos = npcs.find(n => n.x === newX && n.y === newY);
+                if (!npcAtPos) {
+                    playerX = newX;
+                    playerY = newY;
+                    updateCamera();
+                }
+            }
+        }
+
+        function updateCamera() {
+            const screenWidth = window.innerWidth <= 600 ? 320 : 480;
+            const screenHeight = window.innerWidth <= 600 ? 288 : 432;
+            
+            // Center camera on player
+            cameraX = playerX * TILE_SIZE - screenWidth / 2 + TILE_SIZE / 2;
+            cameraY = playerY * TILE_SIZE - screenHeight / 2 + TILE_SIZE / 2;
+            
+            // Clamp camera
+            const maxX = MAP_COLS * TILE_SIZE - screenWidth;
+            const maxY = MAP_ROWS * TILE_SIZE - screenHeight;
+            cameraX = Math.max(0, Math.min(cameraX, maxX));
+            cameraY = Math.max(0, Math.min(cameraY, maxY));
+            
+            map.style.transform = `translate(${-cameraX}px, ${-cameraY}px)`;
+        }
+
+        // ============== INTERACTION ==============
+        function checkInteraction() {
+            // Check adjacent tiles for NPCs
+            const adjacentPositions = [
+                {x: playerX, y: playerY - 1},
+                {x: playerX, y: playerY + 1},
+                {x: playerX - 1, y: playerY},
+                {x: playerX + 1, y: playerY}
+            ];
+            
+            for (const pos of adjacentPositions) {
+                const npc = npcs.find(n => n.x === pos.x && n.y === pos.y);
+                if (npc) {
+                    showDialog(npc);
+                    return;
+                }
+            }
+        }
+
+        function showDialog(npc) {
+            currentNpc = npc;
+            gameState = 'dialog';
+            dialogBox.style.display = 'block';
+            dialogText.innerHTML = `¡Un <strong>${npc.name}</strong> salvaje apareció!<br>¿Quieres saber más sobre este proyecto?`;
+        }
+
+        // ============== BATTLE ==============
+        function startBattle(npc) {
+            dialogBox.style.display = 'none';
+            battleScreen.style.display = 'flex';
+            gameState = 'battle';
+            
+            document.getElementById('battle-enemy-name').textContent = npc.name.toUpperCase();
+            document.getElementById('battle-enemy-level').textContent = `Lang: ${npc.language}`;
+            document.getElementById('battle-enemy-sprite').textContent = npc.emoji;
+        }
+
+        function closeBattle() {
+            battleScreen.style.display = 'none';
+            gameState = 'walking';
+            currentNpc = null;
+        }
+
+        // Battle menu buttons
+        document.getElementById('btn-info').addEventListener('click', () => {
+            showInfo(currentNpc);
+        });
+
+        document.getElementById('btn-github').addEventListener('click', () => {
+            if (currentNpc) {
+                window.open(currentNpc.url, '_blank');
+            }
+        });
+
+        document.getElementById('btn-stats').addEventListener('click', () => {
+            if (currentNpc) {
+                alert(`📊 STATS de ${currentNpc.name}\n\n⭐ Stars: ${currentNpc.stars}\n💻 Lenguaje: ${currentNpc.language}\n📝 ${currentNpc.description}`);
+            }
+        });
+
+        document.getElementById('btn-run').addEventListener('click', closeBattle);
+
+        // ============== INFO PANEL ==============
+        async function showInfo(npc) {
+            battleScreen.style.display = 'none';
+            infoPanel.style.display = 'flex';
+            gameState = 'info';
+            
+            document.getElementById('info-title').textContent = `${npc.name} - README.md`;
+            document.getElementById('info-content').innerHTML = 'Cargando README...';
+            
+            try {
+                const readmeRes = await fetch(`https://api.github.com/repos/MutenRos/${npc.name}/readme`, {
+                    headers: { 'Accept': 'application/vnd.github.raw' }
+                });
+                
+                if (readmeRes.ok) {
+                    const markdown = await readmeRes.text();
+                    document.getElementById('info-content').innerHTML = marked.parse(markdown);
+                } else {
+                    document.getElementById('info-content').innerHTML = `<p>No se encontró README.md</p><p>${npc.description}</p>`;
+                }
+            } catch (error) {
+                document.getElementById('info-content').innerHTML = `<p>Error al cargar: ${error.message}</p>`;
+            }
+        }
+
+        function closeInfo() {
+            infoPanel.style.display = 'none';
+            battleScreen.style.display = 'flex';
+            gameState = 'battle';
+        }
+
+        document.getElementById('info-back').addEventListener('click', closeInfo);
+
+        // ============== MOBILE CONTROLS ==============
+        document.getElementById('btn-up')?.addEventListener('click', () => simulateKey('ArrowUp'));
+        document.getElementById('btn-down')?.addEventListener('click', () => simulateKey('ArrowDown'));
+        document.getElementById('btn-left')?.addEventListener('click', () => simulateKey('ArrowLeft'));
+        document.getElementById('btn-right')?.addEventListener('click', () => simulateKey('ArrowRight'));
+        document.getElementById('btn-action')?.addEventListener('click', () => simulateKey('Space'));
+        document.getElementById('btn-cancel')?.addEventListener('click', () => simulateKey('Escape'));
+
+        function simulateKey(code) {
+            handleKeyDown({ code });
+        }
+
+        // Resize handling
+        window.addEventListener('resize', updateCamera);
     </script>
 </body>
 </html>
