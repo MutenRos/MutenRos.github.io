@@ -106,37 +106,170 @@
 
         #map {
             position: absolute;
-            width: 960px;
-            height: 864px;
             background-color: var(--gbc-green-mid);
-            transition: transform 0.1s linear;
         }
 
-        /* Grass Pattern */
-        .grass-tile {
+        /* Tile base */
+        .tile {
             position: absolute;
             width: var(--tile-size);
             height: var(--tile-size);
+            image-rendering: pixelated;
+        }
+
+        /* Grass tile with pattern */
+        .grass {
             background: var(--gbc-green-mid);
         }
-
-        .grass-tile::after {
-            content: '""';
+        .grass::before {
+            content: '';
             position: absolute;
-            bottom: 4px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 8px;
-            color: var(--gbc-green-dark);
+            width: 6px; height: 8px;
+            left: 4px; top: 6px;
+            background: var(--gbc-green-dark);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+        }
+        .grass::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 8px;
+            right: 6px; bottom: 8px;
+            background: var(--gbc-green-dark);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
         }
 
-        /* Path tiles */
-        .path-tile {
+        /* Tall grass (encounters) */
+        .tall-grass {
+            background: var(--gbc-green-dark);
+        }
+        .tall-grass::before, .tall-grass::after {
+            content: '';
             position: absolute;
-            width: var(--tile-size);
-            height: var(--tile-size);
-            background: #c4a484;
-            border: 1px solid #a08060;
+            width: 4px; height: 12px;
+            background: var(--gbc-green-darkest);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+        }
+        .tall-grass::before { left: 6px; top: 2px; }
+        .tall-grass::after { right: 6px; top: 4px; }
+
+        /* Path/Road */
+        .path {
+            background: #c8b896;
+            border: 1px solid #a89878;
+        }
+
+        /* Tree tile */
+        .tree {
+            background: var(--gbc-green-mid);
+        }
+        .tree::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 18px;
+            left: 4px; top: 2px;
+            background: var(--gbc-green-dark);
+            border-radius: 50% 50% 40% 40%;
+            border: 2px solid var(--gbc-green-darkest);
+        }
+        .tree::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 10px;
+            left: 12px; bottom: 0;
+            background: #604020;
+            border: 1px solid var(--gbc-green-darkest);
+        }
+
+        /* Water tile */
+        .water {
+            background: #3080c0;
+            animation: water-anim 1s infinite;
+        }
+        .water::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, #60a0e0 50%, transparent 100%);
+            animation: wave 2s infinite linear;
+        }
+        @keyframes water-anim {
+            0%, 100% { background: #3080c0; }
+            50% { background: #4090d0; }
+        }
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Flower tile */
+        .flower {
+            background: var(--gbc-green-mid);
+        }
+        .flower::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            left: 6px; top: 10px;
+            background: #f04040;
+            border-radius: 50%;
+            box-shadow: 14px 4px 0 #f0f040, 6px -6px 0 #f0f040;
+        }
+
+        /* House/Building */
+        .house {
+            background: #d04040;
+            border: 2px solid var(--gbc-green-darkest);
+        }
+        .house::before {
+            content: '';
+            position: absolute;
+            width: 0; height: 0;
+            left: 0; top: -10px;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-bottom: 12px solid #802020;
+        }
+        .house::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 12px;
+            left: 11px; bottom: 0;
+            background: #604020;
+            border: 1px solid var(--gbc-green-darkest);
+        }
+
+        /* Fence */
+        .fence {
+            background: var(--gbc-green-mid);
+        }
+        .fence::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 16px;
+            left: 0; top: 8px;
+            background: repeating-linear-gradient(90deg, #c0a080 0px, #c0a080 4px, #a08060 4px, #a08060 6px, #c0a080 6px, #c0a080 10px);
+            border-top: 2px solid #806040;
+            border-bottom: 2px solid #806040;
+        }
+
+        /* Sign post */
+        .sign {
+            background: var(--gbc-green-mid);
+        }
+        .sign::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 14px;
+            left: 6px; top: 4px;
+            background: #c0a080;
+            border: 2px solid #604020;
+        }
+        .sign::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 12px;
+            left: 14px; bottom: 0;
+            background: #604020;
         }
 
         /* Player Sprite - Pixel Art */
@@ -145,10 +278,12 @@
             width: var(--tile-size);
             height: var(--tile-size);
             z-index: 50;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
             image-rendering: pixelated;
+            transition: none;
+        }
+
+        #player.walking {
+            transition: left 0.15s linear, top 0.15s linear;
         }
 
         .sprite {
@@ -160,23 +295,36 @@
 
         /* Player sprite using CSS pixel art */
         .player-sprite {
+            width: 100%; height: 100%;
+            position: relative;
+        }
+        .player-sprite::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
             background: transparent;
             box-shadow:
                 /* Hair */
-                4px 0 var(--gbc-green-darkest), 8px 0 var(--gbc-green-darkest), 12px 0 var(--gbc-green-darkest), 16px 0 var(--gbc-green-darkest), 20px 0 var(--gbc-green-darkest),
-                0 4px var(--gbc-green-darkest), 4px 4px var(--gbc-green-darkest), 8px 4px var(--gbc-green-darkest), 12px 4px var(--gbc-green-darkest), 16px 4px var(--gbc-green-darkest), 20px 4px var(--gbc-green-darkest), 24px 4px var(--gbc-green-darkest),
+                8px 0 #0f380f, 12px 0 #0f380f, 16px 0 #0f380f, 20px 0 #0f380f,
+                4px 4px #0f380f, 8px 4px #0f380f, 12px 4px #0f380f, 16px 4px #0f380f, 20px 4px #0f380f, 24px 4px #0f380f,
                 /* Face */
-                0 8px var(--gbc-green-darkest), 4px 8px #f0d0a0, 8px 8px #f0d0a0, 12px 8px #f0d0a0, 16px 8px #f0d0a0, 20px 8px #f0d0a0, 24px 8px var(--gbc-green-darkest),
-                0 12px var(--gbc-green-darkest), 4px 12px #f0d0a0, 8px 12px var(--gbc-green-darkest), 12px 12px #f0d0a0, 16px 12px var(--gbc-green-darkest), 20px 12px #f0d0a0, 24px 12px var(--gbc-green-darkest),
-                4px 16px #f0d0a0, 8px 16px #f0d0a0, 12px 16px #f0d0a0, 16px 16px #f0d0a0, 20px 16px #f0d0a0,
+                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
+                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
+                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
                 /* Body */
-                4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #3050a0, 16px 20px #3050a0, 20px 20px #3050a0,
-                0 24px #3050a0, 4px 24px #3050a0, 8px 24px #3050a0, 12px 24px #3050a0, 16px 24px #3050a0, 20px 24px #3050a0, 24px 24px #3050a0,
+                4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #6080c0, 16px 20px #6080c0, 20px 20px #3050a0, 24px 20px #3050a0,
+                4px 24px #3050a0, 8px 24px #6080c0, 12px 24px #6080c0, 16px 24px #6080c0, 20px 24px #6080c0, 24px 24px #3050a0,
                 /* Legs */
-                4px 28px var(--gbc-green-darkest), 8px 28px var(--gbc-green-darkest), 16px 28px var(--gbc-green-darkest), 20px 28px var(--gbc-green-darkest);
-            width: 4px;
-            height: 4px;
-            transform: scale(0.9);
+                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
+        }
+        
+        /* Walk animation */
+        @keyframes walk {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+        #player.walking .player-sprite::before {
+            animation: walk 0.3s infinite;
         }
 
         /* NPC Sprites (Projects) - Pixel Art */
@@ -699,17 +847,16 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // ============== GAME STATE ==============
-        const TILE_SIZE = window.innerWidth <= 600 ? 24 : 32;
-        const MAP_COLS = 30;
-        const MAP_ROWS = 27;
+        const TILE_SIZE = 32;
         
-        let playerX = 7;
-        let playerY = 7;
+        let playerX = 9;
+        let playerY = 9;
         let cameraX = 0;
         let cameraY = 0;
         let npcs = [];
         let currentNpc = null;
         let gameState = 'intro'; // intro, walking, dialog, battle, info
+        let isMoving = false;
         
         // DOM Elements
         const introScreen = document.getElementById('intro-screen');
@@ -735,27 +882,46 @@
             updateCamera();
         }
 
+        // ============== MAP DATA ==============
+        // 0=grass, 1=path, 2=tree, 3=water, 4=tall-grass, 5=flower, 6=fence, 7=sign, 8=house
+        const MAP_DATA = [
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+            [2,0,0,0,0,0,0,2,2,2,2,2,0,0,0,0,0,0,0,2],
+            [2,0,5,0,0,0,0,0,0,0,0,0,0,0,5,0,0,5,0,2],
+            [2,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,2],
+            [2,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,2],
+            [2,2,0,0,1,0,7,0,0,0,0,7,0,1,0,0,0,2,2,2],
+            [2,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,2],
+            [2,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,2],
+            [2,0,5,0,0,0,0,1,0,0,1,0,0,0,0,5,0,0,0,2],
+            [2,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,2],
+            [2,0,0,0,6,6,6,1,0,0,1,6,6,6,0,0,0,0,0,2],
+            [2,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,2],
+            [2,2,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,2,2,2],
+            [2,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,0,0,2],
+            [2,0,0,4,4,4,0,0,0,0,0,0,0,0,4,4,4,0,0,2],
+            [2,0,0,4,4,4,0,0,0,0,0,0,0,0,4,4,4,0,0,2],
+            [2,0,0,0,0,0,0,0,3,3,3,3,0,0,0,0,0,0,0,2],
+            [2,0,0,0,0,0,0,3,3,3,3,3,3,0,0,0,0,0,0,2],
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+        ];
+        const MAP_ROWS = MAP_DATA.length;
+        const MAP_COLS = MAP_DATA[0].length;
+        
+        const TILE_TYPES = ['grass', 'path', 'tree', 'water', 'tall-grass', 'flower', 'fence', 'sign', 'house'];
+        const SOLID_TILES = [2, 3, 6, 8]; // Can't walk on these
+
         // ============== MAP GENERATION ==============
         function generateMap() {
             map.innerHTML = '';
             map.style.width = MAP_COLS * TILE_SIZE + 'px';
             map.style.height = MAP_ROWS * TILE_SIZE + 'px';
 
-            // Generate grass tiles with some variation
             for (let y = 0; y < MAP_ROWS; y++) {
                 for (let x = 0; x < MAP_COLS; x++) {
+                    const tileType = MAP_DATA[y][x];
                     const tile = document.createElement('div');
-                    
-                    // Create paths
-                    if ((y === 7 && x >= 3 && x <= 25) || 
-                        (x === 7 && y >= 3 && y <= 20) ||
-                        (x === 15 && y >= 7 && y <= 20) ||
-                        (x === 23 && y >= 7 && y <= 15)) {
-                        tile.className = 'path-tile';
-                    } else {
-                        tile.className = 'grass-tile';
-                    }
-                    
+                    tile.className = 'tile ' + TILE_TYPES[tileType];
                     tile.style.left = x * TILE_SIZE + 'px';
                     tile.style.top = y * TILE_SIZE + 'px';
                     map.appendChild(tile);
@@ -776,10 +942,10 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
                 
                 // Predefined positions for NPCs along paths
                 const positions = [
-                    {x: 10, y: 7}, {x: 13, y: 7}, {x: 17, y: 7}, {x: 20, y: 7},
-                    {x: 7, y: 10}, {x: 7, y: 14}, {x: 7, y: 18},
-                    {x: 15, y: 12}, {x: 15, y: 16},
-                    {x: 23, y: 10}
+                    {x: 5, y: 3}, {x: 8, y: 3}, {x: 11, y: 3},
+                    {x: 5, y: 7}, {x: 8, y: 7}, {x: 11, y: 7},
+                    {x: 7, y: 9}, {x: 10, y: 9},
+                    {x: 7, y: 11}, {x: 10, y: 11}
                 ];
                 
                 repos.forEach((repo, index) => {
@@ -866,27 +1032,32 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
                 return;
             }
             
-            if (gameState !== 'walking') return;
+            if (gameState !== 'walking' || isMoving) return;
             
             let newX = playerX;
             let newY = playerY;
+            let moved = false;
             
             switch(e.code) {
                 case 'ArrowUp':
                 case 'KeyW':
                     newY--;
+                    moved = true;
                     break;
                 case 'ArrowDown':
                 case 'KeyS':
                     newY++;
+                    moved = true;
                     break;
                 case 'ArrowLeft':
                 case 'KeyA':
                     newX--;
+                    moved = true;
                     break;
                 case 'ArrowRight':
                 case 'KeyD':
                     newX++;
+                    moved = true;
                     break;
                 case 'Space':
                 case 'Enter':
@@ -894,21 +1065,40 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
                     return;
             }
             
+            if (!moved) return;
+            e.preventDefault();
+            
             // Check bounds
-            if (newX >= 0 && newX < MAP_COLS && newY >= 0 && newY < MAP_ROWS) {
-                // Check NPC collision
-                const npcAtPos = npcs.find(n => n.x === newX && n.y === newY);
-                if (!npcAtPos) {
-                    playerX = newX;
-                    playerY = newY;
-                    updateCamera();
-                }
-            }
+            if (newX < 0 || newX >= MAP_COLS || newY < 0 || newY >= MAP_ROWS) return;
+            
+            // Check solid tiles
+            const tileType = MAP_DATA[newY][newX];
+            if (SOLID_TILES.includes(tileType)) return;
+            
+            // Check NPC collision
+            const npcAtPos = npcs.find(n => n.x === newX && n.y === newY);
+            if (npcAtPos) return;
+            
+            // Move player with animation
+            isMoving = true;
+            playerX = newX;
+            playerY = newY;
+            
+            player.classList.add('walking');
+            player.style.left = playerX * TILE_SIZE + 'px';
+            player.style.top = playerY * TILE_SIZE + 'px';
+            
+            updateCamera();
+            
+            setTimeout(() => {
+                isMoving = false;
+                player.classList.remove('walking');
+            }, 150);
         }
 
         function updateCamera() {
-            const screenWidth = window.innerWidth <= 600 ? 320 : 480;
-            const screenHeight = window.innerWidth <= 600 ? 288 : 432;
+            const screenWidth = 480;
+            const screenHeight = 432;
             
             // Center camera on player
             cameraX = playerX * TILE_SIZE - screenWidth / 2 + TILE_SIZE / 2;
@@ -921,6 +1111,10 @@ const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc
             cameraY = Math.max(0, Math.min(cameraY, maxY));
             
             map.style.transform = `translate(${-cameraX}px, ${-cameraY}px)`;
+            
+            // Position player relative to camera
+            player.style.left = (playerX * TILE_SIZE - cameraX) + 'px';
+            player.style.top = (playerY * TILE_SIZE - cameraY) + 'px';
         }
 
         // ============== INTERACTION ==============
