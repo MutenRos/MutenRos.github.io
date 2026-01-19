@@ -2146,6 +2146,7 @@
         
         // Screen transition effect
         function screenTransition(callback) {
+            const container = document.getElementById('game-container');
             const transition = document.createElement('div');
             transition.style.cssText = `
                 position: absolute;
@@ -2154,7 +2155,7 @@
                 z-index: 500;
                 animation: screen-wipe 0.5s steps(8);
             `;
-            gameContainer.appendChild(transition);
+            container.appendChild(transition);
             
             setTimeout(() => {
                 callback();
