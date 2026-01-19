@@ -321,38 +321,32 @@
             image-rendering: pixelated;
         }
 
-        /* Grass tile - clean simple pattern */
+        /* Grass tile - Pokemon GBC style */
         .grass {
             background: var(--gb-light);
         }
         .grass::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
+            width: 4px; height: 6px;
             background: transparent;
             box-shadow:
-                4px 8px var(--gb-dark),
-                20px 4px var(--gb-dark),
-                12px 20px var(--gb-dark),
-                24px 24px var(--gb-dark);
+                6px 10px var(--gb-dark),
+                14px 6px var(--gb-dark),
+                22px 14px var(--gb-dark),
+                10px 22px var(--gb-dark),
+                26px 8px var(--gb-dark);
         }
         
-        /* Some grass tiles have extra detail */
-        .grass:nth-child(5n)::after {
+        /* Some grass tiles have extra grass blades */
+        .grass:nth-child(3n)::after {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
+            width: 4px; height: 6px;
             background: transparent;
             box-shadow:
                 8px 16px var(--gb-dark),
                 16px 8px var(--gb-dark);
-        }
-            animation: grass-sway 2s ease-in-out infinite;
-        }
-
-        @keyframes grass-sway {
-            0%, 100% { transform: skewX(0deg); }
-            50% { transform: skewX(10deg); }
         }
 
         /* Tall grass - with rustle animation */
@@ -548,72 +542,88 @@
             background: #604020;
         }
 
-        /* House roof (top part) - clean tiles */
+        /* House roof (top part) - Pokemon style with tile lines */
         .house-roof {
-            background: var(--roof-mid);
-            border: 2px solid var(--roof-dark);
-            border-top: none;
+            background: linear-gradient(180deg, 
+                #e06060 0%, #e06060 30%,
+                #c04040 30%, #c04040 60%,
+                #a02020 60%, #a02020 100%);
+            border: 2px solid #801010;
+            border-top: 4px solid #ff8080;
         }
         .house-roof::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 50%;
-            background: var(--roof-light);
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                180deg,
+                transparent 0px, transparent 6px,
+                rgba(0,0,0,0.2) 6px, rgba(0,0,0,0.2) 8px
+            );
         }
         .house-roof::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: -4px; left: 2px; right: 2px;
             height: 4px;
-            background: var(--roof-dark);
+            background: #801010;
         }
 
-        /* House wall - clean with centered window */
+        /* House wall - Pokemon style with window */
         .house-wall {
-            background: #f0e8d8;
-            border: 2px solid #c0a080;
+            background: #f8f0e0;
+            border: 2px solid #a08060;
+            border-bottom: 4px solid #806040;
         }
         .house-wall::before {
             content: '';
             position: absolute;
-            width: 16px; height: 16px;
-            left: 8px; top: 8px;
-            background: #80c0f0;
-            border: 2px solid #404040;
-            box-shadow: inset 4px 4px 0 rgba(255,255,255,0.3);
+            width: 14px; height: 14px;
+            left: 9px; top: 6px;
+            background: linear-gradient(135deg, #b0e0ff 0%, #80c0f0 50%, #60a0d0 100%);
+            border: 3px solid #404040;
+            box-shadow: 
+                inset 2px 2px 0 rgba(255,255,255,0.5),
+                2px 2px 0 rgba(0,0,0,0.3);
         }
         .house-wall::after {
             content: '';
             position: absolute;
-            width: 2px; height: 16px;
-            left: 15px; top: 8px;
-            background: #404040;
+            width: 2px; height: 14px;
+            left: 15px; top: 6px;
+            background: #303030;
         }
 
-        /* House door - clean with doorknob */
+        /* House door - Pokemon style entrance */
         .house-door {
-            background: #f0e8d8;
-            border: 2px solid #c0a080;
+            background: #f8f0e0;
+            border: 2px solid #a08060;
+            border-bottom: none;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        .house-door:hover {
+            background: #fff8f0;
         }
         .house-door::before {
             content: '';
             position: absolute;
-            width: 16px; height: 24px;
-            left: 8px; top: 4px;
-            background: var(--wood-mid);
-            border: 2px solid var(--wood-dark);
+            width: 18px; height: 26px;
+            left: 7px; top: 2px;
+            background: linear-gradient(180deg, #906030 0%, #704020 100%);
+            border: 3px solid #503010;
+            border-radius: 2px 2px 0 0;
+            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.2);
         }
         .house-door::after {
             content: '';
             position: absolute;
             width: 4px; height: 4px;
-            left: 18px; top: 14px;
-            background: #f0d020;
-            border: 1px solid #c0a000;
-            box-shadow: 0 0 6px rgba(255, 200, 100, 0.5);
-            animation: door-glow 2s ease-in-out infinite;
+            left: 20px; top: 14px;
+            background: radial-gradient(circle, #ffe040 0%, #c0a000 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 220, 100, 0.8);
+            animation: door-glow 1.5s ease-in-out infinite;
         }
 
         @keyframes door-glow {
