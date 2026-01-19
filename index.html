@@ -13,13 +13,33 @@
             --gb-dark: #306230;
             --gb-darkest: #0f380f;
             --tile-size: 32px;
+            
+            /* Extended color palette */
+            --water-light: #5090d0;
+            --water-mid: #4080c0;
+            --water-dark: #3060a0;
+            --wood-light: #a08060;
+            --wood-mid: #805030;
+            --wood-dark: #604020;
+            --roof-light: #e06060;
+            --roof-mid: #c04040;
+            --roof-dark: #801010;
+            
+            /* UI Colors */
+            --ui-bg: #f8f0e0;
+            --ui-border: #402010;
+            --ui-shadow: rgba(0,0,0,0.4);
+            
+            /* Animation speeds */
+            --anim-fast: 0.15s;
+            --anim-normal: 0.3s;
+            --anim-slow: 0.6s;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* Force pixelated rendering everywhere */
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             -ms-interpolation-mode: nearest-neighbor;
@@ -27,41 +47,56 @@
 
         body {
             font-family: 'Press Start 2P', cursive;
-            background-color: #0f0f0f;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a12 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            /* Scanline effect on body */
-            background-image: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
         }
 
-        /* Game Boy Color Frame - more blocky/8bit */
+        /* Premium Game Boy Frame with glow */
         .gameboy-frame {
-            background: #4a4a8a;
-            padding: 16px;
-            border: 4px solid #2a2a5a;
+            background: linear-gradient(145deg, #5a5a9a 0%, #3a3a6a 50%, #2a2a5a 100%);
+            padding: 20px;
+            border: 4px solid #1a1a3a;
             box-shadow: 
-                inset 2px 2px 0 #6a6aba,
+                inset 2px 2px 0 #7a7aca,
                 inset -2px -2px 0 #2a2a4a,
-                8px 8px 0 rgba(0,0,0,0.5);
+                0 0 40px rgba(155, 188, 15, 0.3),
+                0 0 80px rgba(155, 188, 15, 0.1),
+                12px 12px 0 rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        /* Power LED */
+        .gameboy-frame::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 20px;
+            width: 8px;
+            height: 8px;
+            background: #40ff40;
+            box-shadow: 0 0 8px #40ff40, 0 0 16px #40ff40;
+            animation: led-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes led-pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 8px #40ff40, 0 0 16px #40ff40; }
+            50% { opacity: 0.7; box-shadow: 0 0 4px #40ff40, 0 0 8px #40ff40; }
         }
 
         .screen-bezel {
-            background: #1a1a2e;
-            padding: 12px;
-            border: 4px solid #0a0a1a;
-            box-shadow: inset 2px 2px 0 #2a2a4e;
+            background: #0a0a16;
+            padding: 16px;
+            border: 4px solid #050508;
+            box-shadow: 
+                inset 4px 4px 8px rgba(0,0,0,0.8),
+                inset -2px -2px 4px rgba(255,255,255,0.05);
         }
 
-        /* Main Game Screen with scanlines */
+        /* Main Game Screen with CRT effect */
         #game-container {
             width: 480px;
             height: 432px;
@@ -70,9 +105,12 @@
             overflow: hidden;
             image-rendering: pixelated;
             border: 4px solid var(--gb-darkest);
+            box-shadow: 
+                inset 0 0 60px rgba(15, 56, 15, 0.3),
+                0 0 20px rgba(155, 188, 15, 0.2);
         }
 
-        /* Scanline overlay */
+        /* CRT Scanlines + Vignette */
         #game-container::after {
             content: '';
             position: absolute;
@@ -80,18 +118,44 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.03),
-                rgba(0, 0, 0, 0.03) 1px,
-                transparent 1px,
-                transparent 2px
-            );
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.06),
+                    rgba(0, 0, 0, 0.06) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                radial-gradient(
+                    ellipse at center,
+                    transparent 0%,
+                    transparent 60%,
+                    rgba(0, 0, 0, 0.15) 100%
+                );
             pointer-events: none;
             z-index: 1000;
         }
 
-        /* Intro Screen */
+        /* Screen flicker effect */
+        #game-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(155, 188, 15, 0.03);
+            animation: screen-flicker 0.1s infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes screen-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.98; }
+        }
+
+        /* Intro Screen - Premium */
         #intro-screen {
             position: absolute;
             width: 100%;
@@ -105,12 +169,39 @@
             text-align: center;
         }
 
+        /* Animated logo */
         #intro-screen h1 {
             color: var(--gb-darkest);
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             margin-bottom: 20px;
             line-height: 1.8;
-            text-shadow: 2px 2px 0 var(--gb-dark);
+            text-shadow: 
+                3px 3px 0 var(--gb-dark),
+                -1px -1px 0 var(--gb-light);
+            animation: logo-bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes logo-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Pokeball decoration */
+        #intro-screen::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            top: 40px;
+            background: 
+                linear-gradient(to bottom, #e04040 0%, #e04040 45%, #0f380f 45%, #0f380f 55%, #f0f0f0 55%, #f0f0f0 100%);
+            border: 4px solid var(--gb-darkest);
+            animation: pokeball-spin 3s linear infinite;
+        }
+
+        @keyframes pokeball-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         #intro-screen p {
@@ -121,11 +212,24 @@
 
         .press-start {
             color: var(--gb-darkest);
-            font-size: 0.7rem;
-            animation: blink 1s steps(2) infinite;
-            margin-top: 30px;
+            font-size: 0.8rem;
+            animation: blink 0.8s steps(2) infinite, press-glow 1.5s ease-in-out infinite;
+            margin-top: 40px;
             cursor: pointer;
             text-shadow: 2px 2px 0 var(--gb-dark);
+            padding: 10px 20px;
+            border: 3px solid var(--gb-darkest);
+            background: var(--gb-light);
+        }
+
+        @keyframes press-glow {
+            0%, 100% { box-shadow: 0 0 5px var(--gb-dark); }
+            50% { box-shadow: 0 0 15px var(--gb-dark), 0 0 25px var(--gb-dark); }
+        }
+
+        .press-start:hover {
+            background: var(--gb-lightest);
+            transform: scale(1.05);
         }
 
         @keyframes blink {
@@ -141,12 +245,75 @@
             display: none;
         }
 
+        /* Ambient particles (floating leaves/dust) */
+        #ambient-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 80;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gb-dark);
+            opacity: 0.6;
+            animation: particle-float 8s linear infinite;
+        }
+
+        .particle:nth-child(2n) {
+            width: 3px;
+            height: 3px;
+            background: var(--gb-darkest);
+            animation-duration: 10s;
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3n) {
+            width: 2px;
+            height: 2px;
+            background: #a0a060;
+            animation-duration: 12s;
+            animation-delay: -4s;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(-10px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(450px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Day/Night cycle overlay */
+        #day-night-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 90;
+            background: transparent;
+            mix-blend-mode: multiply;
+        }
+
         #map {
             position: absolute;
             background-color: var(--gb-light);
         }
 
-        /* Tile base - 8bit style */
+        /* Tile base - 8bit style with depth */
         .tile {
             position: absolute;
             width: var(--tile-size);
@@ -154,18 +321,32 @@
             image-rendering: pixelated;
         }
 
-        /* Grass tile - 8bit dither pattern */
+        /* Grass tile - animated with wind effect */
         .grass {
             background: var(--gb-light);
-            /* 8-bit dither pattern */
             background-image: 
                 linear-gradient(45deg, var(--gb-dark) 25%, transparent 25%),
                 linear-gradient(-45deg, var(--gb-dark) 25%, transparent 25%);
             background-size: 8px 8px;
             background-position: 0 0, 4px 0;
         }
+        
+        /* Some grass tiles animate */
+        .grass:nth-child(7n)::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 6px;
+            left: 8px; top: 4px;
+            background: var(--gb-dark);
+            animation: grass-sway 2s ease-in-out infinite;
+        }
 
-        /* Tall grass - darker with pattern */
+        @keyframes grass-sway {
+            0%, 100% { transform: skewX(0deg); }
+            50% { transform: skewX(10deg); }
+        }
+
+        /* Tall grass - with rustle animation */
         .tall-grass {
             background: var(--gb-dark);
             background-image: 
@@ -176,69 +357,129 @@
                     transparent 4px,
                     transparent 8px
                 );
+            animation: tall-grass-move 1.5s ease-in-out infinite;
+        }
+        
+        .tall-grass:nth-child(3n) {
+            animation-delay: 0.5s;
+        }
+        
+        .tall-grass:nth-child(5n) {
+            animation-delay: 1s;
         }
 
-        /* Path/Road - 8bit style */
+        @keyframes tall-grass-move {
+            0%, 100% { background-position: 0 0; }
+            50% { background-position: 2px 0; }
+        }
+
+        /* Path/Road - with footstep marks */
         .path {
-            background: #c8b080;
+            background: #d0c090;
             background-image:
-                linear-gradient(90deg, #a89060 1px, transparent 1px),
-                linear-gradient(0deg, #a89060 1px, transparent 1px);
+                linear-gradient(90deg, #b0a070 1px, transparent 1px),
+                linear-gradient(0deg, #b0a070 1px, transparent 1px);
             background-size: 8px 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Tree tile - blocky 8bit */
+        /* Tree tile - layered with shadow */
         .tree {
             background: var(--gb-light);
         }
         .tree::before {
             content: '';
             position: absolute;
-            width: 24px; height: 16px;
-            left: 4px; top: 2px;
-            background: var(--gb-dark);
-            border: 2px solid var(--gb-darkest);
-            /* Blocky tree shape */
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Tree crown - layer 1 */
+                12px 0 var(--gb-darkest), 16px 0 var(--gb-darkest),
+                8px 4px var(--gb-darkest), 12px 4px var(--gb-dark), 16px 4px var(--gb-dark), 20px 4px var(--gb-darkest),
+                4px 8px var(--gb-darkest), 8px 8px var(--gb-dark), 12px 8px #4a8a3a, 16px 8px #4a8a3a, 20px 8px var(--gb-dark), 24px 8px var(--gb-darkest),
+                4px 12px var(--gb-darkest), 8px 12px #4a8a3a, 12px 12px var(--gb-dark), 16px 12px var(--gb-dark), 20px 12px #4a8a3a, 24px 12px var(--gb-darkest),
+                8px 16px var(--gb-darkest), 12px 16px var(--gb-dark), 16px 16px var(--gb-dark), 20px 16px var(--gb-darkest);
         }
         .tree::after {
             content: '';
             position: absolute;
-            width: 8px; height: 12px;
-            left: 12px; bottom: 0;
-            background: #604020;
-            border: 2px solid var(--gb-darkest);
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Trunk */
+                12px 20px #604020, 16px 20px #805030,
+                12px 24px #604020, 16px 24px #805030,
+                12px 28px #604020, 16px 28px #805030,
+                /* Shadow on ground */
+                8px 28px rgba(0,0,0,0.2), 20px 28px rgba(0,0,0,0.2);
         }
 
-        /* Water tile - 8bit animated */
+        /* Water tile - premium wave animation */
         .water {
-            background: #4080c0;
-            background-image:
-                repeating-linear-gradient(
-                    90deg,
-                    #3060a0 0px,
-                    #3060a0 4px,
-                    #5090d0 4px,
-                    #5090d0 8px
-                );
-            animation: water-8bit 0.5s steps(2) infinite;
+            background: var(--water-mid);
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes water-8bit {
-            0%, 100% { background-position: 0 0; }
-            50% { background-position: 4px 0; }
+        .water::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                0 4px var(--water-dark), 8px 4px var(--water-light), 16px 4px var(--water-dark), 24px 4px var(--water-light),
+                4px 12px var(--water-light), 12px 12px var(--water-dark), 20px 12px var(--water-light), 28px 12px var(--water-dark),
+                0 20px var(--water-dark), 8px 20px var(--water-light), 16px 20px var(--water-dark), 24px 20px var(--water-light),
+                4px 28px var(--water-light), 12px 28px var(--water-dark), 20px 28px var(--water-light), 28px 28px var(--water-dark);
+            animation: water-wave 1s steps(4) infinite;
+        }
+        .water::after {
+            content: '';
+            position: absolute;
+            width: 2px; height: 2px;
+            background: rgba(255,255,255,0.6);
+            top: 8px; left: 12px;
+            box-shadow: 10px 16px rgba(255,255,255,0.4);
+            animation: water-sparkle 2s ease-in-out infinite;
         }
 
-        /* Flower tile - 8bit */
+        @keyframes water-wave {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            50% { transform: translateX(0); }
+            75% { transform: translateX(4px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes water-sparkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Flower tile - animated petals */
         .flower {
             background: var(--gb-light);
         }
         .flower::before {
             content: '';
             position: absolute;
-            width: 8px; height: 8px;
-            left: 6px; top: 10px;
-            background: #f04040;
-            box-shadow: 14px 4px 0 #f0f040, 6px -6px 0 #40c0f0;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Red flower */
+                8px 8px #e04040, 12px 6px #e04040, 8px 12px #e04040, 4px 8px #e04040,
+                8px 10px #f0d040,
+                /* Yellow flower */
+                20px 16px #f0e040, 24px 14px #f0e040, 20px 20px #f0e040, 16px 16px #f0e040,
+                20px 18px #e08020,
+                /* Blue flower */
+                6px 22px #4080e0, 10px 20px #4080e0, 6px 26px #4080e0, 2px 22px #4080e0,
+                6px 24px #f0f040;
+            animation: flower-sway 3s ease-in-out infinite;
+        }
+
+        @keyframes flower-sway {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(1px); }
         }
 
         /* House/Building - 8bit */
@@ -298,90 +539,146 @@
             background: #604020;
         }
 
-        /* House roof (top part) - 8bit blocky */
+        /* House roof (top part) - detailed pixel art */
         .house-roof {
-            background: #c04040;
-            border: 2px solid #801010;
+            background: var(--gb-light);
         }
         .house-roof::before {
             content: '';
             position: absolute;
-            width: 100%; height: 50%;
-            top: 0; left: 0;
-            background: #e06060;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Roof tiles pattern */
+                0 0 var(--roof-dark), 4px 0 var(--roof-mid), 8px 0 var(--roof-light), 12px 0 var(--roof-mid), 16px 0 var(--roof-dark), 20px 0 var(--roof-mid), 24px 0 var(--roof-light), 28px 0 var(--roof-mid),
+                0 4px var(--roof-mid), 4px 4px var(--roof-light), 8px 4px var(--roof-mid), 12px 4px var(--roof-light), 16px 4px var(--roof-mid), 20px 4px var(--roof-light), 24px 4px var(--roof-mid), 28px 4px var(--roof-light),
+                0 8px var(--roof-dark), 4px 8px var(--roof-mid), 8px 8px var(--roof-light), 12px 8px var(--roof-mid), 16px 8px var(--roof-dark), 20px 8px var(--roof-mid), 24px 8px var(--roof-light), 28px 8px var(--roof-mid),
+                0 12px var(--roof-mid), 4px 12px var(--roof-light), 8px 12px var(--roof-mid), 12px 12px var(--roof-light), 16px 12px var(--roof-mid), 20px 12px var(--roof-light), 24px 12px var(--roof-mid), 28px 12px var(--roof-light),
+                0 16px var(--roof-dark), 4px 16px var(--roof-mid), 8px 16px var(--roof-light), 12px 16px var(--roof-mid), 16px 16px var(--roof-dark), 20px 16px var(--roof-mid), 24px 16px var(--roof-light), 28px 16px var(--roof-mid),
+                0 20px var(--roof-mid), 4px 20px var(--roof-light), 8px 20px var(--roof-mid), 12px 20px var(--roof-light), 16px 20px var(--roof-mid), 20px 20px var(--roof-light), 24px 20px var(--roof-mid), 28px 20px var(--roof-light),
+                0 24px var(--roof-dark), 4px 24px var(--roof-mid), 8px 24px var(--roof-light), 12px 24px var(--roof-mid), 16px 24px var(--roof-dark), 20px 24px var(--roof-mid), 24px 24px var(--roof-light), 28px 24px var(--roof-mid),
+                0 28px var(--roof-mid), 4px 28px var(--roof-dark), 8px 28px var(--roof-dark), 12px 28px var(--roof-dark), 16px 28px var(--roof-dark), 20px 28px var(--roof-dark), 24px 28px var(--roof-dark), 28px 28px var(--roof-mid);
         }
 
-        /* House wall - 8bit brick pattern */
+        /* House wall - detailed brick with window */
         .house-wall {
-            background: #e8d8c0;
-            background-image:
-                repeating-linear-gradient(
-                    0deg,
-                    #c0a080 0px,
-                    #c0a080 2px,
-                    transparent 2px,
-                    transparent 8px
-                ),
-                repeating-linear-gradient(
-                    90deg,
-                    #c0a080 0px,
-                    #c0a080 2px,
-                    transparent 2px,
-                    transparent 16px
-                );
-            border: 2px solid #a08060;
+            background: #f0e8d0;
+        }
+        .house-wall::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Brick pattern */
+                0 0 #d0c0a0, 4px 0 #e0d0b0, 8px 0 #d0c0a0, 12px 0 #e0d0b0, 16px 0 #d0c0a0, 20px 0 #e0d0b0, 24px 0 #d0c0a0, 28px 0 #e0d0b0,
+                0 4px #c0b090, 4px 4px #d0c0a0, 8px 4px #c0b090, 12px 4px #d0c0a0, 16px 4px #c0b090, 20px 4px #d0c0a0, 24px 4px #c0b090, 28px 4px #d0c0a0,
+                /* Window */
+                8px 8px #4080c0, 12px 8px #4080c0, 16px 8px #4080c0, 20px 8px #4080c0,
+                8px 12px #60a0e0, 12px 12px #303030, 16px 12px #303030, 20px 12px #60a0e0,
+                8px 16px #60a0e0, 12px 16px #303030, 16px 16px #303030, 20px 16px #60a0e0,
+                8px 20px #4080c0, 12px 20px #4080c0, 16px 20px #4080c0, 20px 20px #4080c0,
+                /* More bricks */
+                0 24px #d0c0a0, 4px 24px #e0d0b0, 8px 24px #d0c0a0, 12px 24px #e0d0b0, 16px 24px #d0c0a0, 20px 24px #e0d0b0, 24px 24px #d0c0a0, 28px 24px #e0d0b0,
+                0 28px #c0b090, 4px 28px #d0c0a0, 8px 28px #c0b090, 12px 28px #d0c0a0, 16px 28px #c0b090, 20px 28px #d0c0a0, 24px 28px #c0b090, 28px 28px #d0c0a0;
         }
 
-        /* House door (entrada) - 8bit */
+        /* House door - detailed with light */
         .house-door {
-            background: #e8d8c0;
-            border: 2px solid #a08060;
+            background: #f0e8d0;
             cursor: pointer;
+            position: relative;
         }
         .house-door::before {
             content: '';
             position: absolute;
-            width: 16px; height: 24px;
-            left: 8px; top: 4px;
-            background: #604020;
-            border: 2px solid #402010;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Door frame */
+                8px 0 var(--wood-dark), 12px 0 var(--wood-dark), 16px 0 var(--wood-dark), 20px 0 var(--wood-dark),
+                8px 4px var(--wood-dark), 12px 4px var(--wood-mid), 16px 4px var(--wood-mid), 20px 4px var(--wood-dark),
+                8px 8px var(--wood-dark), 12px 8px var(--wood-mid), 16px 8px var(--wood-mid), 20px 8px var(--wood-dark),
+                8px 12px var(--wood-dark), 12px 12px var(--wood-mid), 16px 12px #f0d020, 20px 12px var(--wood-dark),
+                8px 16px var(--wood-dark), 12px 16px var(--wood-mid), 16px 16px var(--wood-mid), 20px 16px var(--wood-dark),
+                8px 20px var(--wood-dark), 12px 20px var(--wood-mid), 16px 20px var(--wood-mid), 20px 20px var(--wood-dark),
+                8px 24px var(--wood-dark), 12px 24px var(--wood-mid), 16px 24px var(--wood-mid), 20px 24px var(--wood-dark),
+                8px 28px var(--wood-dark), 12px 28px var(--wood-dark), 16px 28px var(--wood-dark), 20px 28px var(--wood-dark);
         }
+        /* Door light glow */
         .house-door::after {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            left: 20px; top: 14px;
-            background: #f0d020;
+            width: 16px; height: 24px;
+            left: 8px; top: 4px;
+            box-shadow: 0 0 8px rgba(255, 200, 100, 0.5);
+            animation: door-glow 2s ease-in-out infinite;
+        }
+        @keyframes door-glow {
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 200, 100, 0.3); }
+            50% { box-shadow: 0 0 16px rgba(255, 200, 100, 0.6); }
         }
 
-        /* Interior tiles - 8bit */
+        /* Interior tiles - premium */
         .floor {
-            background: #d0c0a0;
-            background-image:
-                repeating-linear-gradient(
-                    45deg,
-                    #c0b090 0px,
-                    #c0b090 4px,
-                    transparent 4px,
-                    transparent 8px
-                );
-            border: 1px solid #b0a080;
+            background: #e0d0b0;
         }
+        .floor::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Wooden floor pattern */
+                0 0 #d0c0a0, 4px 0 #c8b898, 8px 0 #d0c0a0, 12px 0 #c8b898, 16px 0 #d0c0a0, 20px 0 #c8b898, 24px 0 #d0c0a0, 28px 0 #c8b898,
+                0 4px #d8c8a8, 4px 4px #d0c0a0, 8px 4px #d8c8a8, 12px 4px #d0c0a0, 16px 4px #d8c8a8, 20px 4px #d0c0a0, 24px 4px #d8c8a8, 28px 4px #d0c0a0,
+                0 8px #c8b898, 4px 8px #d0c0a0, 8px 8px #c8b898, 12px 8px #d0c0a0, 16px 8px #c8b898, 20px 8px #d0c0a0, 24px 8px #c8b898, 28px 8px #d0c0a0,
+                0 12px #d0c0a0, 4px 12px #d8c8a8, 8px 12px #d0c0a0, 12px 12px #d8c8a8, 16px 12px #d0c0a0, 20px 12px #d8c8a8, 24px 12px #d0c0a0, 28px 12px #d8c8a8,
+                0 16px #d0c0a0, 4px 16px #c8b898, 8px 16px #d0c0a0, 12px 16px #c8b898, 16px 16px #d0c0a0, 20px 16px #c8b898, 24px 16px #d0c0a0, 28px 16px #c8b898,
+                0 20px #d8c8a8, 4px 20px #d0c0a0, 8px 20px #d8c8a8, 12px 20px #d0c0a0, 16px 20px #d8c8a8, 20px 20px #d0c0a0, 24px 20px #d8c8a8, 28px 20px #d0c0a0,
+                0 24px #c8b898, 4px 24px #d0c0a0, 8px 24px #c8b898, 12px 24px #d0c0a0, 16px 24px #c8b898, 20px 24px #d0c0a0, 24px 24px #c8b898, 28px 24px #d0c0a0,
+                0 28px #d0c0a0, 4px 28px #d8c8a8, 8px 28px #d0c0a0, 12px 28px #d8c8a8, 16px 28px #d0c0a0, 20px 28px #d8c8a8, 24px 28px #d0c0a0, 28px 28px #d8c8a8;
+        }
+
         .interior-wall {
-            background: #a08060;
-            border: 2px solid #604020;
+            background: #8a7050;
         }
+        .interior-wall::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Wall panel pattern */
+                0 0 #9a8060, 4px 0 #8a7050, 8px 0 #9a8060, 12px 0 #8a7050, 16px 0 #9a8060, 20px 0 #8a7050, 24px 0 #9a8060, 28px 0 #8a7050,
+                0 4px #7a6040, 4px 4px #8a7050, 8px 4px #7a6040, 12px 4px #8a7050, 16px 4px #7a6040, 20px 4px #8a7050, 24px 4px #7a6040, 28px 4px #8a7050,
+                /* Picture frame */
+                8px 8px #604020, 12px 8px #604020, 16px 8px #604020, 20px 8px #604020,
+                8px 12px #604020, 12px 12px #90c090, 16px 12px #70a070, 20px 12px #604020,
+                8px 16px #604020, 12px 16px #80b080, 16px 16px #90c090, 20px 16px #604020,
+                8px 20px #604020, 12px 20px #604020, 16px 20px #604020, 20px 20px #604020,
+                0 24px #9a8060, 4px 24px #8a7050, 8px 24px #9a8060, 12px 24px #8a7050, 16px 24px #9a8060, 20px 24px #8a7050, 24px 24px #9a8060, 28px 24px #8a7050,
+                0 28px #7a6040, 4px 28px #8a7050, 8px 28px #7a6040, 12px 28px #8a7050, 16px 28px #7a6040, 20px 28px #8a7050, 24px 28px #7a6040, 28px 28px #8a7050;
+        }
+
         .carpet {
             background: #c04040;
-            background-image:
-                repeating-linear-gradient(
-                    45deg,
-                    #a02020 0px,
-                    #a02020 2px,
-                    transparent 2px,
-                    transparent 4px
-                );
-            border: 2px solid #802020;
+        }
+        .carpet::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Persian rug pattern */
+                0 0 #a02020, 4px 0 #c04040, 8px 0 #d05050, 12px 0 #f0d040, 16px 0 #d05050, 20px 0 #c04040, 24px 0 #a02020, 28px 0 #c04040,
+                0 4px #c04040, 4px 4px #d05050, 8px 4px #f0d040, 12px 4px #f0e060, 16px 4px #f0d040, 20px 4px #d05050, 24px 4px #c04040, 28px 4px #a02020,
+                0 8px #d05050, 4px 8px #f0d040, 8px 8px #f0e060, 12px 8px #f0d040, 16px 8px #f0e060, 20px 8px #f0d040, 24px 8px #d05050, 28px 8px #c04040,
+                0 12px #f0d040, 4px 12px #f0e060, 8px 12px #f0d040, 12px 12px #c04040, 16px 12px #f0d040, 20px 12px #f0e060, 24px 12px #f0d040, 28px 12px #d05050,
+                0 16px #d05050, 4px 16px #f0d040, 8px 16px #f0e060, 12px 16px #f0d040, 16px 16px #f0e060, 20px 16px #f0d040, 24px 16px #d05050, 28px 16px #c04040,
+                0 20px #c04040, 4px 20px #d05050, 8px 20px #f0d040, 12px 20px #f0e060, 16px 20px #f0d040, 20px 20px #d05050, 24px 20px #c04040, 28px 20px #a02020,
+                0 24px #a02020, 4px 24px #c04040, 8px 24px #d05050, 12px 24px #f0d040, 16px 24px #d05050, 20px 24px #c04040, 24px 24px #a02020, 28px 24px #c04040,
+                0 28px #802020, 4px 28px #a02020, 8px 28px #c04040, 12px 28px #d05050, 16px 28px #c04040, 20px 28px #a02020, 24px 28px #802020, 28px 28px #a02020;
         }
         .table {
             background: #d0c0a0;
@@ -431,10 +728,10 @@
             bottom: 100%;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--gb-darkest);
+            background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
             color: var(--gb-lightest);
-            padding: 2px 6px;
-            font-size: 0.4rem;
+            padding: 3px 8px;
+            font-size: 0.35rem;
             white-space: nowrap;
             border: 2px solid var(--gb-dark);
             opacity: 0;
@@ -443,26 +740,47 @@
         }
         .npc.nearby .npc-label {
             opacity: 1;
+            animation: label-pop 0.2s ease-out;
         }
 
-        /* House label - 8bit blocky */
+        @keyframes label-pop {
+            0% { transform: translateX(-50%) scale(0.5); }
+            50% { transform: translateX(-50%) scale(1.1); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        /* House label - AAA style with animation */
         .house-label {
             position: absolute;
-            top: -20px;
+            top: -24px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--gb-darkest);
+            background: linear-gradient(180deg, rgba(15, 56, 15, 0.95) 0%, rgba(10, 40, 10, 0.98) 100%);
             color: var(--gb-lightest);
-            padding: 3px 8px;
+            padding: 4px 12px;
             font-size: 0.35rem;
             white-space: nowrap;
-            border: 2px solid var(--gb-dark);
+            border: 2px solid var(--gb-light);
             z-index: 60;
             opacity: 0;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            box-shadow: 
+                0 0 10px rgba(155, 188, 15, 0.3),
+                2px 2px 0 rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
         }
         .house-label.visible {
             opacity: 1;
+            animation: label-pop 0.2s ease-out;
+        }
+
+        /* Interaction indicator */
+        .house-label::after {
+            content: '▼';
+            display: block;
+            text-align: center;
+            font-size: 0.4rem;
+            margin-top: 2px;
+            animation: arrow-bounce 0.5s steps(2) infinite;
         }
 
         /* Player Sprite - Pixel Art */
@@ -472,6 +790,7 @@
             height: var(--tile-size);
             z-index: 50;
             image-rendering: pixelated;
+            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
         }
 
         .sprite {
@@ -538,7 +857,28 @@
             animation: walk-legs 0.25s steps(2) infinite;
         }
 
-        /* NPC Sprites (Projects) - Pixel Art */
+        /* Walking dust effect */
+        #player.walking::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: rgba(200, 180, 140, 0.6);
+            box-shadow: 
+                -4px 0 rgba(200, 180, 140, 0.4),
+                4px 0 rgba(200, 180, 140, 0.4);
+            animation: dust-puff 0.3s ease-out;
+        }
+
+        @keyframes dust-puff {
+            0% { opacity: 1; transform: translateX(-50%) scale(1); }
+            100% { opacity: 0; transform: translateX(-50%) scale(2); }
+        }
+
+        /* NPC Sprites (Projects) - Pixel Art with idle animation */
         .npc {
             position: absolute;
             width: var(--tile-size);
@@ -548,6 +888,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+        }
+
+        .npc:hover {
+            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3)) brightness(1.1);
+        }
+
+        /* NPC idle animation */
+        .npc-sprite,
+        .npc-sprite-blue,
+        .npc-sprite-green,
+        .npc-sprite-purple {
+            animation: npc-idle 2s ease-in-out infinite;
+        }
+
+        @keyframes npc-idle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
         }
 
         /* NPC Person sprites - different colors */
@@ -647,38 +1005,56 @@
                 8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
         }
 
-        /* Dialog Box - 8bit style */
+        /* Dialog Box - AAA style with decorative frame */
         #dialog-box {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            width: calc(100% - 20px);
             height: 100px;
-            background: var(--gb-lightest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
             border: 4px solid var(--gb-darkest);
-            border-bottom: none;
-            padding: 15px;
+            padding: 15px 20px;
             display: none;
             z-index: 200;
-            box-shadow: inset 0 0 0 4px var(--gb-dark);
+            box-shadow: 
+                inset 0 0 0 2px var(--gb-dark),
+                inset 0 0 0 4px var(--gb-light),
+                4px 4px 0 rgba(0,0,0,0.4);
+        }
+
+        /* Decorative corners */
+        #dialog-box::before {
+            content: '';
+            position: absolute;
+            top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border: 2px solid var(--gb-dark);
+            pointer-events: none;
         }
 
         #dialog-text {
             color: var(--gb-darkest);
-            font-size: 0.6rem;
-            line-height: 1.8;
+            font-size: 0.55rem;
+            line-height: 2;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
         }
 
         #dialog-continue {
             position: absolute;
-            bottom: 10px;
-            right: 15px;
-            font-size: 0.5rem;
-            color: var(--gb-dark);
-            animation: blink 0.5s steps(2) infinite;
+            bottom: 8px;
+            right: 12px;
+            font-size: 0.6rem;
+            color: var(--gb-darkest);
+            animation: arrow-bounce 0.5s steps(2) infinite;
         }
 
-        /* Battle Screen - 8bit style */
+        @keyframes arrow-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+        }
+
+        /* Battle Screen - AAA with dramatic effects */
         #battle-screen {
             position: absolute;
             width: 100%;
@@ -687,17 +1063,49 @@
             display: none;
             flex-direction: column;
             z-index: 300;
+            animation: battle-flash 0.3s steps(3);
+        }
+
+        @keyframes battle-flash {
+            0% { filter: brightness(3) invert(1); }
+            33% { filter: brightness(1) invert(0); }
+            66% { filter: brightness(2) invert(1); }
+            100% { filter: brightness(1) invert(0); }
         }
 
         .battle-top {
             height: 50%;
-            background: var(--gb-light);
+            background: 
+                linear-gradient(180deg, 
+                    #88ccff 0%, 
+                    #88ccff 40%, 
+                    var(--gb-light) 40%, 
+                    var(--gb-dark) 100%);
             position: relative;
             display: flex;
             justify-content: flex-end;
             align-items: flex-start;
             padding: 20px;
             border-bottom: 4px solid var(--gb-darkest);
+        }
+
+        /* Animated clouds in battle background */
+        .battle-top::before {
+            content: '';
+            position: absolute;
+            width: 40px; height: 16px;
+            top: 20px; left: 30px;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 
+                60px 10px 0 rgba(255,255,255,0.6),
+                120px -5px 0 rgba(255,255,255,0.7),
+                -20px 15px 0 rgba(255,255,255,0.5);
+            animation: clouds-move 10s linear infinite;
+        }
+
+        @keyframes clouds-move {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50px); }
         }
 
         .enemy-pokemon {
@@ -710,7 +1118,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: enemy-appear 0.3s steps(5);
+            animation: enemy-appear 0.5s ease-out;
+            filter: drop-shadow(4px 4px 0 rgba(0,0,0,0.3));
         }
 
         /* Pokemon-style monster sprite */
@@ -736,48 +1145,65 @@
         }
 
         @keyframes enemy-appear {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            0% { transform: translateX(100px) scale(0.5); opacity: 0; }
+            50% { transform: translateX(-10px) scale(1.1); opacity: 1; }
+            100% { transform: translateX(0) scale(1); opacity: 1; }
         }
 
         .enemy-info {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background: var(--gb-lightest);
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(180deg, #f8f0e0 0%, #e0d8c8 100%);
             border: 4px solid var(--gb-darkest);
-            padding: 10px;
+            padding: 10px 15px;
             min-width: 180px;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            box-shadow: 
+                inset 0 0 0 2px var(--gb-dark),
+                4px 4px 0 rgba(0,0,0,0.4);
         }
 
         .enemy-name {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--gb-darkest);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
         }
 
         .enemy-level {
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             color: var(--gb-dark);
         }
 
         .hp-bar {
             margin-top: 8px;
-            height: 8px;
+            height: 10px;
             background: var(--gb-darkest);
             border: 2px solid var(--gb-darkest);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hp-bar::before {
+            content: 'HP';
+            position: absolute;
+            left: -24px;
+            top: -2px;
+            font-size: 0.4rem;
+            color: var(--gb-darkest);
         }
 
         .hp-fill {
             height: 100%;
-            background: var(--gb-light);
+            background: linear-gradient(180deg, #70e070 0%, #40c040 50%, #30a030 100%);
             width: 100%;
+            transition: width 0.3s ease-out;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2);
         }
 
         .battle-bottom {
             height: 50%;
-            background: var(--gb-lightest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
             display: flex;
             flex-direction: column;
         }
@@ -820,12 +1246,20 @@
         }
 
         .player-info {
-            background: var(--gb-lightest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e0d8c8 100%);
             border: 4px solid var(--gb-darkest);
-            padding: 10px;
+            padding: 10px 15px;
             min-width: 180px;
             text-align: right;
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            box-shadow: 
+                inset 0 0 0 2px var(--gb-dark),
+                4px 4px 0 rgba(0,0,0,0.4);
+            animation: player-info-slide 0.3s ease-out;
+        }
+
+        @keyframes player-info-slide {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .battle-menu {
@@ -833,16 +1267,16 @@
             border-top: 4px solid var(--gb-darkest);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            padding: 10px;
-            gap: 10px;
-            background: var(--gb-lightest);
+            padding: 12px;
+            gap: 8px;
+            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
         }
 
         .battle-option {
-            background: var(--gb-lightest);
-            border: 4px solid var(--gb-darkest);
+            background: linear-gradient(180deg, #f0e8d8 0%, #e0d8c8 100%);
+            border: 3px solid var(--gb-darkest);
             font-family: inherit;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--gb-darkest);
             cursor: pointer;
             display: flex;
@@ -852,58 +1286,90 @@
 
         .battle-option:hover, .battle-option.selected {
             background: var(--gb-light);
-            box-shadow: inset 0 0 0 2px var(--gb-dark);
+            box-shadow: 
+                inset 0 0 0 2px var(--gb-dark),
+                0 0 10px rgba(155, 188, 15, 0.5);
+            transform: scale(1.02);
         }
 
-        /* Info Panel (README display) - 8bit style */
+        .battle-option::before {
+            content: '\25B6';
+            margin-right: 6px;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .battle-option:hover::before,
+        .battle-option.selected::before {
+            opacity: 1;
+        }
+
+        /* Info Panel (README display) - AAA style */
         #info-panel {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: var(--gb-lightest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
             display: none;
             flex-direction: column;
             z-index: 350;
             overflow-y: auto;
+            animation: panel-slide-in 0.3s ease-out;
+        }
+
+        @keyframes panel-slide-in {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
         }
 
         .info-header {
-            background: var(--gb-darkest);
+            background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
             color: var(--gb-lightest);
-            padding: 15px;
-            font-size: 0.7rem;
+            padding: 15px 20px;
+            font-size: 0.65rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 4px solid var(--gb-dark);
+            border-bottom: 4px solid var(--gb-darkest);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
         }
 
         .info-content {
-            padding: 15px;
-            font-size: 0.5rem;
-            line-height: 2;
+            padding: 20px;
+            font-size: 0.45rem;
+            line-height: 2.2;
             color: var(--gb-darkest);
             flex: 1;
             overflow-y: auto;
-            background: var(--gb-lightest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
         }
 
         .info-content a {
-            color: var(--gb-dark);
+            color: #3060a0;
+            text-decoration: underline;
+        }
+
+        .info-content a:hover {
+            color: #4080c0;
         }
 
         .back-btn {
-            background: var(--gb-light);
+            background: linear-gradient(180deg, var(--gb-light) 0%, var(--gb-dark) 100%);
             border: 2px solid var(--gb-darkest);
-            padding: 8px 15px;
+            padding: 8px 20px;
             font-family: inherit;
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             cursor: pointer;
-            color: var(--gb-darkest);
+            color: var(--gb-lightest);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
         }
 
         .back-btn:hover {
-            background: var(--gb-lightest);
+            background: linear-gradient(180deg, var(--gb-lightest) 0%, var(--gb-light) 100%);
+            color: var(--gb-darkest);
+            text-shadow: none;
         }
 
         /* Controls hint */
@@ -988,6 +1454,25 @@
             100% { background: var(--gb-lightest); }
         }
 
+        /* Screen wipe transitions */
+        @keyframes screen-wipe {
+            0% { clip-path: inset(0 100% 0 0); }
+            100% { clip-path: inset(0 0 0 0); }
+        }
+
+        @keyframes screen-wipe-out {
+            0% { clip-path: inset(0 0 0 0); }
+            100% { clip-path: inset(0 0 0 100%); }
+        }
+
+        /* Loading dots animation */
+        @keyframes loading-dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: '....'; }
+        }
+
         @media (max-width: 600px) {
             .gameboy-frame {
                 padding: 10px;
@@ -1024,22 +1509,24 @@
                 <div id="intro-screen">
                     <h1>PORTFOLIO<br>QUEST</h1>
                     <p>Por Dario Lacal Civera</p>
-                    <p>Versión 1.0</p>
-                    <div class="press-start" id="start-btn">PRESS START</div>
+                    <p>Versión 2.0 AAA</p>
+                    <div class="press-start" id="start-btn">▶ PRESS START</div>
                 </div>
 
                 <!-- Game World -->
                 <div id="game-world">
+                    <div id="ambient-particles"></div>
                     <div id="map"></div>
                     <div id="player">
                         <div class="player-sprite"></div>
                     </div>
+                    <div id="day-night-overlay"></div>
                 </div>
 
                 <!-- Dialog Box -->
                 <div id="dialog-box">
                     <div id="dialog-text"></div>
-                    <div id="dialog-continue">▼ SPACE</div>
+                    <div id="dialog-continue">▼ CONTINUAR</div>
                 </div>
 
                 <!-- Battle Screen -->
@@ -1068,10 +1555,10 @@
                             </div>
                         </div>
                         <div class="battle-menu">
-                            <button class="battle-option selected" id="btn-info">▶ INFO</button>
-                            <button class="battle-option" id="btn-github">  GITHUB</button>
-                            <button class="battle-option" id="btn-stats">  STATS</button>
-                            <button class="battle-option" id="btn-run">  HUIR</button>
+                            <button class="battle-option selected" id="btn-info">INFO</button>
+                            <button class="battle-option" id="btn-github">GITHUB</button>
+                            <button class="battle-option" id="btn-stats">STATS</button>
+                            <button class="battle-option" id="btn-run">HUIR</button>
                         </div>
                     </div>
                 </div>
@@ -1136,6 +1623,40 @@
         const dialogText = document.getElementById('dialog-text');
         const battleScreen = document.getElementById('battle-screen');
         const infoPanel = document.getElementById('info-panel');
+        const ambientParticles = document.getElementById('ambient-particles');
+        const dayNightOverlay = document.getElementById('day-night-overlay');
+
+        // ============== AMBIENT EFFECTS ==============
+        function createParticles() {
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = -Math.random() * 10 + 's';
+                ambientParticles.appendChild(particle);
+            }
+        }
+
+        function updateDayNightCycle() {
+            const hour = new Date().getHours();
+            let overlay = 'transparent';
+            
+            if (hour >= 6 && hour < 8) {
+                // Dawn - warm orange
+                overlay = 'rgba(255, 180, 100, 0.15)';
+            } else if (hour >= 8 && hour < 17) {
+                // Day - clear
+                overlay = 'transparent';
+            } else if (hour >= 17 && hour < 20) {
+                // Dusk - warm orange/red
+                overlay = 'rgba(255, 120, 80, 0.2)';
+            } else {
+                // Night - blue tint
+                overlay = 'rgba(50, 80, 150, 0.25)';
+            }
+            
+            dayNightOverlay.style.background = overlay;
+        }
 
         // ============== INIT ==============
         document.getElementById('start-btn').addEventListener('click', startGame);
@@ -1145,6 +1666,11 @@
             introScreen.style.display = 'none';
             gameWorld.style.display = 'block';
             gameState = 'walking';
+            
+            // Initialize ambient effects
+            createParticles();
+            updateDayNightCycle();
+            setInterval(updateDayNightCycle, 60000); // Update every minute
             
             await loadReposAndGenerateMap();
             updateCamera();
@@ -1613,39 +2139,62 @@
             });
         }
         
+        // Screen transition effect
+        function screenTransition(callback) {
+            const transition = document.createElement('div');
+            transition.style.cssText = `
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: var(--gb-darkest);
+                z-index: 500;
+                animation: screen-wipe 0.5s steps(8);
+            `;
+            gameContainer.appendChild(transition);
+            
+            setTimeout(() => {
+                callback();
+                transition.style.animation = 'screen-wipe-out 0.5s steps(8)';
+                setTimeout(() => transition.remove(), 500);
+            }, 300);
+        }
+        
         function enterHouse(house) {
-            currentHouse = house;
-            currentLocation = 'inside';
-            npcs = [];
-            
-            // Generate interior
-            generateInterior(house);
-            
-            // Position player at entrance
-            playerX = 3;
-            playerY = 5;
-            
-            updateCamera();
-            updateNpcProximity();
+            screenTransition(() => {
+                currentHouse = house;
+                currentLocation = 'inside';
+                npcs = [];
+                
+                // Generate interior
+                generateInterior(house);
+                
+                // Position player at entrance
+                playerX = 3;
+                playerY = 5;
+                
+                updateCamera();
+                updateNpcProximity();
+            });
         }
         
         function exitHouse() {
-            currentLocation = 'outside';
-            npcs = [];
-            
-            // Restore outside map
-            generateMap();
-            
-            // Re-render house labels
-            houses.forEach(h => renderHouseLabel(h));
-            
-            // Position player in front of house door
-            playerX = currentHouse.doorX;
-            playerY = currentHouse.doorY + 1;
-            currentHouse = null;
-            
-            updateCamera();
-            updateHouseLabels();
+            screenTransition(() => {
+                currentLocation = 'outside';
+                npcs = [];
+                
+                // Restore outside map
+                generateMap();
+                
+                // Re-render house labels
+                houses.forEach(h => renderHouseLabel(h));
+                
+                // Position player in front of house door
+                playerX = currentHouse.doorX;
+                playerY = currentHouse.doorY + 1;
+                currentHouse = null;
+                
+                updateCamera();
+                updateHouseLabels();
+            });
         }
 
         function updateCamera() {
