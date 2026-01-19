@@ -321,23 +321,32 @@
             image-rendering: pixelated;
         }
 
-        /* Grass tile - animated with wind effect */
+        /* Grass tile - clean simple pattern */
         .grass {
             background: var(--gb-light);
-            background-image: 
-                linear-gradient(45deg, var(--gb-dark) 25%, transparent 25%),
-                linear-gradient(-45deg, var(--gb-dark) 25%, transparent 25%);
-            background-size: 8px 8px;
-            background-position: 0 0, 4px 0;
         }
-        
-        /* Some grass tiles animate */
-        .grass:nth-child(7n)::before {
+        .grass::before {
             content: '';
             position: absolute;
-            width: 4px; height: 6px;
-            left: 8px; top: 4px;
-            background: var(--gb-dark);
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                4px 8px var(--gb-dark),
+                20px 4px var(--gb-dark),
+                12px 20px var(--gb-dark),
+                24px 24px var(--gb-dark);
+        }
+        
+        /* Some grass tiles have extra detail */
+        .grass:nth-child(5n)::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                8px 16px var(--gb-dark),
+                16px 8px var(--gb-dark);
+        }
             animation: grass-sway 2s ease-in-out infinite;
         }
 
@@ -539,89 +548,83 @@
             background: #604020;
         }
 
-        /* House roof (top part) - detailed pixel art */
+        /* House roof (top part) - clean tiles */
         .house-roof {
-            background: var(--gb-light);
+            background: var(--roof-mid);
+            border: 2px solid var(--roof-dark);
+            border-top: none;
         }
         .house-roof::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Roof tiles pattern */
-                0 0 var(--roof-dark), 4px 0 var(--roof-mid), 8px 0 var(--roof-light), 12px 0 var(--roof-mid), 16px 0 var(--roof-dark), 20px 0 var(--roof-mid), 24px 0 var(--roof-light), 28px 0 var(--roof-mid),
-                0 4px var(--roof-mid), 4px 4px var(--roof-light), 8px 4px var(--roof-mid), 12px 4px var(--roof-light), 16px 4px var(--roof-mid), 20px 4px var(--roof-light), 24px 4px var(--roof-mid), 28px 4px var(--roof-light),
-                0 8px var(--roof-dark), 4px 8px var(--roof-mid), 8px 8px var(--roof-light), 12px 8px var(--roof-mid), 16px 8px var(--roof-dark), 20px 8px var(--roof-mid), 24px 8px var(--roof-light), 28px 8px var(--roof-mid),
-                0 12px var(--roof-mid), 4px 12px var(--roof-light), 8px 12px var(--roof-mid), 12px 12px var(--roof-light), 16px 12px var(--roof-mid), 20px 12px var(--roof-light), 24px 12px var(--roof-mid), 28px 12px var(--roof-light),
-                0 16px var(--roof-dark), 4px 16px var(--roof-mid), 8px 16px var(--roof-light), 12px 16px var(--roof-mid), 16px 16px var(--roof-dark), 20px 16px var(--roof-mid), 24px 16px var(--roof-light), 28px 16px var(--roof-mid),
-                0 20px var(--roof-mid), 4px 20px var(--roof-light), 8px 20px var(--roof-mid), 12px 20px var(--roof-light), 16px 20px var(--roof-mid), 20px 20px var(--roof-light), 24px 20px var(--roof-mid), 28px 20px var(--roof-light),
-                0 24px var(--roof-dark), 4px 24px var(--roof-mid), 8px 24px var(--roof-light), 12px 24px var(--roof-mid), 16px 24px var(--roof-dark), 20px 24px var(--roof-mid), 24px 24px var(--roof-light), 28px 24px var(--roof-mid),
-                0 28px var(--roof-mid), 4px 28px var(--roof-dark), 8px 28px var(--roof-dark), 12px 28px var(--roof-dark), 16px 28px var(--roof-dark), 20px 28px var(--roof-dark), 24px 28px var(--roof-dark), 28px 28px var(--roof-mid);
+            top: 0; left: 0; right: 0;
+            height: 50%;
+            background: var(--roof-light);
+        }
+        .house-roof::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--roof-dark);
         }
 
-        /* House wall - detailed brick with window */
+        /* House wall - clean with centered window */
         .house-wall {
-            background: #f0e8d0;
+            background: #f0e8d8;
+            border: 2px solid #c0a080;
         }
         .house-wall::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Brick pattern */
-                0 0 #d0c0a0, 4px 0 #e0d0b0, 8px 0 #d0c0a0, 12px 0 #e0d0b0, 16px 0 #d0c0a0, 20px 0 #e0d0b0, 24px 0 #d0c0a0, 28px 0 #e0d0b0,
-                0 4px #c0b090, 4px 4px #d0c0a0, 8px 4px #c0b090, 12px 4px #d0c0a0, 16px 4px #c0b090, 20px 4px #d0c0a0, 24px 4px #c0b090, 28px 4px #d0c0a0,
-                /* Window */
-                8px 8px #4080c0, 12px 8px #4080c0, 16px 8px #4080c0, 20px 8px #4080c0,
-                8px 12px #60a0e0, 12px 12px #303030, 16px 12px #303030, 20px 12px #60a0e0,
-                8px 16px #60a0e0, 12px 16px #303030, 16px 16px #303030, 20px 16px #60a0e0,
-                8px 20px #4080c0, 12px 20px #4080c0, 16px 20px #4080c0, 20px 20px #4080c0,
-                /* More bricks */
-                0 24px #d0c0a0, 4px 24px #e0d0b0, 8px 24px #d0c0a0, 12px 24px #e0d0b0, 16px 24px #d0c0a0, 20px 24px #e0d0b0, 24px 24px #d0c0a0, 28px 24px #e0d0b0,
-                0 28px #c0b090, 4px 28px #d0c0a0, 8px 28px #c0b090, 12px 28px #d0c0a0, 16px 28px #c0b090, 20px 28px #d0c0a0, 24px 28px #c0b090, 28px 28px #d0c0a0;
+            width: 16px; height: 16px;
+            left: 8px; top: 8px;
+            background: #80c0f0;
+            border: 2px solid #404040;
+            box-shadow: inset 4px 4px 0 rgba(255,255,255,0.3);
+        }
+        .house-wall::after {
+            content: '';
+            position: absolute;
+            width: 2px; height: 16px;
+            left: 15px; top: 8px;
+            background: #404040;
         }
 
-        /* House door - detailed with light */
+        /* House door - clean with doorknob */
         .house-door {
-            background: #f0e8d0;
+            background: #f0e8d8;
+            border: 2px solid #c0a080;
             cursor: pointer;
-            position: relative;
         }
         .house-door::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Door frame */
-                8px 0 var(--wood-dark), 12px 0 var(--wood-dark), 16px 0 var(--wood-dark), 20px 0 var(--wood-dark),
-                8px 4px var(--wood-dark), 12px 4px var(--wood-mid), 16px 4px var(--wood-mid), 20px 4px var(--wood-dark),
-                8px 8px var(--wood-dark), 12px 8px var(--wood-mid), 16px 8px var(--wood-mid), 20px 8px var(--wood-dark),
-                8px 12px var(--wood-dark), 12px 12px var(--wood-mid), 16px 12px #f0d020, 20px 12px var(--wood-dark),
-                8px 16px var(--wood-dark), 12px 16px var(--wood-mid), 16px 16px var(--wood-mid), 20px 16px var(--wood-dark),
-                8px 20px var(--wood-dark), 12px 20px var(--wood-mid), 16px 20px var(--wood-mid), 20px 20px var(--wood-dark),
-                8px 24px var(--wood-dark), 12px 24px var(--wood-mid), 16px 24px var(--wood-mid), 20px 24px var(--wood-dark),
-                8px 28px var(--wood-dark), 12px 28px var(--wood-dark), 16px 28px var(--wood-dark), 20px 28px var(--wood-dark);
+            width: 16px; height: 24px;
+            left: 8px; top: 4px;
+            background: var(--wood-mid);
+            border: 2px solid var(--wood-dark);
         }
-        /* Door light glow */
         .house-door::after {
             content: '';
             position: absolute;
-            width: 16px; height: 24px;
-            left: 8px; top: 4px;
-            box-shadow: 0 0 8px rgba(255, 200, 100, 0.5);
+            width: 4px; height: 4px;
+            left: 18px; top: 14px;
+            background: #f0d020;
+            border: 1px solid #c0a000;
+            box-shadow: 0 0 6px rgba(255, 200, 100, 0.5);
             animation: door-glow 2s ease-in-out infinite;
         }
+
         @keyframes door-glow {
-            0%, 100% { box-shadow: 0 0 8px rgba(255, 200, 100, 0.3); }
-            50% { box-shadow: 0 0 16px rgba(255, 200, 100, 0.6); }
+            0%, 100% { box-shadow: 0 0 4px rgba(255, 200, 100, 0.3); }
+            50% { box-shadow: 0 0 10px rgba(255, 200, 100, 0.6); }
         }
 
-        /* Interior tiles - premium */
+        /* Interior tiles - simplified */
         .floor {
-            background: #e0d0b0;
+            background: #d8c8a8;
+            border: 1px solid #c0b090;
         }
         .floor::before {
             content: '';
@@ -629,40 +632,29 @@
             width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                /* Wooden floor pattern */
-                0 0 #d0c0a0, 4px 0 #c8b898, 8px 0 #d0c0a0, 12px 0 #c8b898, 16px 0 #d0c0a0, 20px 0 #c8b898, 24px 0 #d0c0a0, 28px 0 #c8b898,
-                0 4px #d8c8a8, 4px 4px #d0c0a0, 8px 4px #d8c8a8, 12px 4px #d0c0a0, 16px 4px #d8c8a8, 20px 4px #d0c0a0, 24px 4px #d8c8a8, 28px 4px #d0c0a0,
-                0 8px #c8b898, 4px 8px #d0c0a0, 8px 8px #c8b898, 12px 8px #d0c0a0, 16px 8px #c8b898, 20px 8px #d0c0a0, 24px 8px #c8b898, 28px 8px #d0c0a0,
-                0 12px #d0c0a0, 4px 12px #d8c8a8, 8px 12px #d0c0a0, 12px 12px #d8c8a8, 16px 12px #d0c0a0, 20px 12px #d8c8a8, 24px 12px #d0c0a0, 28px 12px #d8c8a8,
-                0 16px #d0c0a0, 4px 16px #c8b898, 8px 16px #d0c0a0, 12px 16px #c8b898, 16px 16px #d0c0a0, 20px 16px #c8b898, 24px 16px #d0c0a0, 28px 16px #c8b898,
-                0 20px #d8c8a8, 4px 20px #d0c0a0, 8px 20px #d8c8a8, 12px 20px #d0c0a0, 16px 20px #d8c8a8, 20px 20px #d0c0a0, 24px 20px #d8c8a8, 28px 20px #d0c0a0,
-                0 24px #c8b898, 4px 24px #d0c0a0, 8px 24px #c8b898, 12px 24px #d0c0a0, 16px 24px #c8b898, 20px 24px #d0c0a0, 24px 24px #c8b898, 28px 24px #d0c0a0,
-                0 28px #d0c0a0, 4px 28px #d8c8a8, 8px 28px #d0c0a0, 12px 28px #d8c8a8, 16px 28px #d0c0a0, 20px 28px #d8c8a8, 24px 28px #d0c0a0, 28px 28px #d8c8a8;
+                8px 8px #c8b898,
+                24px 8px #c8b898,
+                16px 16px #c8b898,
+                8px 24px #c8b898,
+                24px 24px #c8b898;
         }
 
         .interior-wall {
             background: #8a7050;
+            border-bottom: 4px solid #6a5030;
         }
         .interior-wall::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Wall panel pattern */
-                0 0 #9a8060, 4px 0 #8a7050, 8px 0 #9a8060, 12px 0 #8a7050, 16px 0 #9a8060, 20px 0 #8a7050, 24px 0 #9a8060, 28px 0 #8a7050,
-                0 4px #7a6040, 4px 4px #8a7050, 8px 4px #7a6040, 12px 4px #8a7050, 16px 4px #7a6040, 20px 4px #8a7050, 24px 4px #7a6040, 28px 4px #8a7050,
-                /* Picture frame */
-                8px 8px #604020, 12px 8px #604020, 16px 8px #604020, 20px 8px #604020,
-                8px 12px #604020, 12px 12px #90c090, 16px 12px #70a070, 20px 12px #604020,
-                8px 16px #604020, 12px 16px #80b080, 16px 16px #90c090, 20px 16px #604020,
-                8px 20px #604020, 12px 20px #604020, 16px 20px #604020, 20px 20px #604020,
-                0 24px #9a8060, 4px 24px #8a7050, 8px 24px #9a8060, 12px 24px #8a7050, 16px 24px #9a8060, 20px 24px #8a7050, 24px 24px #9a8060, 28px 24px #8a7050,
-                0 28px #7a6040, 4px 28px #8a7050, 8px 28px #7a6040, 12px 28px #8a7050, 16px 28px #7a6040, 20px 28px #8a7050, 24px 28px #7a6040, 28px 28px #8a7050;
+            width: 12px; height: 10px;
+            left: 10px; top: 8px;
+            background: #90c090;
+            border: 3px solid #604020;
         }
 
         .carpet {
             background: #c04040;
+            border: 2px solid #a02020;
         }
         .carpet::before {
             content: '';
@@ -670,15 +662,15 @@
             width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                /* Persian rug pattern */
-                0 0 #a02020, 4px 0 #c04040, 8px 0 #d05050, 12px 0 #f0d040, 16px 0 #d05050, 20px 0 #c04040, 24px 0 #a02020, 28px 0 #c04040,
-                0 4px #c04040, 4px 4px #d05050, 8px 4px #f0d040, 12px 4px #f0e060, 16px 4px #f0d040, 20px 4px #d05050, 24px 4px #c04040, 28px 4px #a02020,
-                0 8px #d05050, 4px 8px #f0d040, 8px 8px #f0e060, 12px 8px #f0d040, 16px 8px #f0e060, 20px 8px #f0d040, 24px 8px #d05050, 28px 8px #c04040,
-                0 12px #f0d040, 4px 12px #f0e060, 8px 12px #f0d040, 12px 12px #c04040, 16px 12px #f0d040, 20px 12px #f0e060, 24px 12px #f0d040, 28px 12px #d05050,
-                0 16px #d05050, 4px 16px #f0d040, 8px 16px #f0e060, 12px 16px #f0d040, 16px 16px #f0e060, 20px 16px #f0d040, 24px 16px #d05050, 28px 16px #c04040,
-                0 20px #c04040, 4px 20px #d05050, 8px 20px #f0d040, 12px 20px #f0e060, 16px 20px #f0d040, 20px 20px #d05050, 24px 20px #c04040, 28px 20px #a02020,
-                0 24px #a02020, 4px 24px #c04040, 8px 24px #d05050, 12px 24px #f0d040, 16px 24px #d05050, 20px 24px #c04040, 24px 24px #a02020, 28px 24px #c04040,
-                0 28px #802020, 4px 28px #a02020, 8px 28px #c04040, 12px 28px #d05050, 16px 28px #c04040, 20px 28px #a02020, 24px 28px #802020, 28px 28px #a02020;
+                8px 8px #f0d040,
+                16px 8px #f0d040,
+                24px 8px #f0d040,
+                8px 16px #f0d040,
+                16px 16px #f0e060,
+                24px 16px #f0d040,
+                8px 24px #f0d040,
+                16px 24px #f0d040,
+                24px 24px #f0d040;
         }
         .table {
             background: #d0c0a0;
