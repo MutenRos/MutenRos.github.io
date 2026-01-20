@@ -155,81 +155,119 @@
             50% { opacity: 0.98; }
         }
 
-        /* Intro Screen - Premium */
+        /* Intro Screen - Premium AAA Style */
         #intro-screen {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: var(--gb-lightest);
+            background: 
+                radial-gradient(ellipse at center, var(--gb-lightest) 0%, var(--gb-light) 60%, var(--gb-dark) 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
             text-align: center;
+            overflow: hidden;
+        }
+
+        /* Decorative frame border */
+        #intro-screen::after {
+            content: '';
+            position: absolute;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 4px solid var(--gb-darkest);
+            box-shadow: 
+                inset 0 0 0 4px var(--gb-dark),
+                inset 0 0 0 8px var(--gb-light),
+                0 0 20px rgba(0,0,0,0.3);
+            pointer-events: none;
         }
 
         /* Animated logo */
         #intro-screen h1 {
             color: var(--gb-darkest);
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            line-height: 1.8;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
             text-shadow: 
-                3px 3px 0 var(--gb-dark),
-                -1px -1px 0 var(--gb-light);
-            animation: logo-bounce 2s ease-in-out infinite;
+                4px 4px 0 var(--gb-dark),
+                -1px -1px 0 var(--gb-light),
+                0 0 20px rgba(155, 188, 15, 0.5);
+            animation: logo-bounce 2s ease-in-out infinite, title-shimmer 3s linear infinite;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes logo-bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-6px); }
         }
 
-        /* Pokeball decoration */
-        #intro-screen::before {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            top: 40px;
-            background: 
-                linear-gradient(to bottom, #e04040 0%, #e04040 45%, #0f380f 45%, #0f380f 55%, #f0f0f0 55%, #f0f0f0 100%);
-            border: 4px solid var(--gb-darkest);
-            animation: pokeball-spin 3s linear infinite;
+        @keyframes title-shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1); }
         }
 
-        @keyframes pokeball-spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        /* Version badge */
         #intro-screen p {
-            color: var(--gb-dark);
-            font-size: 0.6rem;
-            margin-bottom: 15px;
+            color: var(--gb-darkest);
+            font-size: 0.55rem;
+            margin-bottom: 12px;
+            padding: 4px 12px;
+            background: var(--gb-light);
+            border: 2px solid var(--gb-dark);
+            position: relative;
+            z-index: 1;
+        }
+        
+        #intro-screen p:first-of-type {
+            margin-bottom: 8px;
         }
 
         .press-start {
             color: var(--gb-darkest);
-            font-size: 0.8rem;
-            animation: blink 0.8s steps(2) infinite, press-glow 1.5s ease-in-out infinite;
+            font-size: 0.75rem;
+            animation: blink 1s steps(2) infinite, press-glow 2s ease-in-out infinite;
             margin-top: 40px;
             cursor: pointer;
             text-shadow: 2px 2px 0 var(--gb-dark);
-            padding: 10px 20px;
-            border: 3px solid var(--gb-darkest);
-            background: var(--gb-light);
+            padding: 14px 28px;
+            border: 4px solid var(--gb-darkest);
+            background: linear-gradient(180deg, var(--gb-lightest) 0%, var(--gb-light) 100%);
+            position: relative;
+            z-index: 1;
+            transition: all 0.2s ease;
+        }
+
+        .press-start::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: var(--gb-dark);
+            z-index: -1;
+            animation: button-border-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes button-border-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
         }
 
         @keyframes press-glow {
-            0%, 100% { box-shadow: 0 0 5px var(--gb-dark); }
-            50% { box-shadow: 0 0 15px var(--gb-dark), 0 0 25px var(--gb-dark); }
+            0%, 100% { box-shadow: 0 4px 0 var(--gb-darkest), 0 0 5px var(--gb-dark); }
+            50% { box-shadow: 0 4px 0 var(--gb-darkest), 0 0 20px var(--gb-dark), 0 0 30px var(--gb-dark); }
         }
 
         .press-start:hover {
-            background: var(--gb-lightest);
-            transform: scale(1.05);
+            background: linear-gradient(180deg, #ffffff 0%, var(--gb-lightest) 100%);
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 6px 0 var(--gb-darkest), 0 0 25px var(--gb-dark);
+        }
+
+        .press-start:active {
+            transform: scale(1.02) translateY(2px);
+            box-shadow: 0 2px 0 var(--gb-darkest);
         }
 
         @keyframes blink {
@@ -631,80 +669,362 @@
             50% { box-shadow: 0 0 10px rgba(255, 200, 100, 0.6); }
         }
 
-        /* Train tiles */
+        /* Train tiles - Premium station style */
         .train-track {
-            background: #606060;
+            background: linear-gradient(180deg, #505050 0%, #606060 50%, #707070 100%);
             border: none;
+            position: relative;
         }
         .train-track::before {
             content: '';
             position: absolute;
-            width: 100%; height: 4px;
-            top: 8px; left: 0;
-            background: #404040;
-            box-shadow: 0 12px 0 #404040;
+            width: 100%; height: 6px;
+            top: 6px; left: 0;
+            background: linear-gradient(180deg, #303030 0%, #505050 100%);
+            box-shadow: 0 14px 0 0 #303030, 0 15px 0 0 #505050;
+            border-radius: 2px;
         }
         .train-track::after {
             content: '';
             position: absolute;
-            width: 4px; height: 20px;
-            top: 6px; left: 4px;
-            background: #806040;
-            box-shadow: 8px 0 0 #806040, 16px 0 0 #806040, 24px 0 0 #806040;
+            width: 6px; height: 22px;
+            top: 4px; left: 3px;
+            background: linear-gradient(90deg, #604020 0%, #906040 50%, #604020 100%);
+            box-shadow: 
+                8px 0 0 #604020, 8px 0 0 #906040,
+                16px 0 0 #604020, 16px 0 0 #906040,
+                24px 0 0 #604020;
+            border-radius: 1px;
         }
 
         .train-sign {
             background: var(--gb-light);
             cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+        }
+        .train-sign:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
         }
         .train-sign::before {
             content: '';
             position: absolute;
-            width: 4px; height: 20px;
-            left: 14px; bottom: 0;
-            background: #604020;
+            width: 6px; height: 20px;
+            left: 13px; bottom: 0;
+            background: linear-gradient(90deg, #503010 0%, #705030 50%, #503010 100%);
+            border-radius: 1px;
         }
         .train-sign::after {
             content: '🚂';
             position: absolute;
-            font-size: 16px;
-            top: 2px; left: 6px;
+            font-size: 18px;
+            top: 0px; left: 5px;
+            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.3));
+            animation: train-wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes train-wiggle {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-1px); }
+            75% { transform: translateX(1px); }
         }
 
         .train-return {
             background: var(--gb-light);
             cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+        }
+        .train-return:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
         }
         .train-return::before {
             content: '';
             position: absolute;
-            width: 4px; height: 20px;
-            left: 14px; bottom: 0;
-            background: #604020;
+            width: 6px; height: 20px;
+            left: 13px; bottom: 0;
+            background: linear-gradient(90deg, #503010 0%, #705030 50%, #503010 100%);
+            border-radius: 1px;
         }
         .train-return::after {
             content: '🏠';
             position: absolute;
-            font-size: 16px;
-            top: 2px; left: 6px;
+            font-size: 18px;
+            top: 0px; left: 5px;
+            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.3));
+            animation: home-pulse 2s ease-in-out infinite;
         }
 
-        /* City label */
+        @keyframes home-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ===== STATION BUILDING TILES ===== */
+        
+        /* Station roof - grand style */
+        .station-roof {
+            background: linear-gradient(180deg, 
+                #4a6a8a 0%, #4a6a8a 40%,
+                #3a5a7a 40%, #3a5a7a 70%,
+                #2a4a6a 70%, #2a4a6a 100%);
+            border: 2px solid #1a3a5a;
+            border-top: 4px solid #6a8aaa;
+        }
+        .station-roof::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                180deg,
+                transparent 0px, transparent 8px,
+                rgba(0,0,0,0.15) 8px, rgba(0,0,0,0.15) 10px
+            );
+        }
+        .station-roof::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; left: 3px; right: 3px;
+            height: 3px;
+            background: #1a3a5a;
+        }
+
+        /* Station wall - brick style */
+        .station-wall {
+            background: linear-gradient(180deg, #d8c8b0 0%, #c8b8a0 100%);
+            border: 2px solid #a89880;
+            border-bottom: 4px solid #887860;
+        }
+        .station-wall::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px, transparent 14px,
+                    #a89880 14px, #a89880 16px
+                ),
+                repeating-linear-gradient(
+                    180deg,
+                    transparent 0px, transparent 7px,
+                    #a89880 7px, #a89880 8px
+                );
+        }
+        .station-wall::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 14px;
+            left: 10px; top: 6px;
+            background: linear-gradient(135deg, #90d0ff 0%, #60a0d0 100%);
+            border: 3px solid #404040;
+            box-shadow: inset 1px 1px 0 rgba(255,255,255,0.5);
+        }
+
+        /* Station door - grand entrance */
+        .station-door {
+            background: linear-gradient(180deg, #d8c8b0 0%, #c8b8a0 100%);
+            border: 2px solid #a89880;
+            border-bottom: none;
+        }
+        .station-door::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 28px;
+            left: 6px; top: 2px;
+            background: linear-gradient(180deg, #604830 0%, #503820 100%);
+            border: 4px solid #302010;
+            border-radius: 8px 8px 0 0;
+            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.15);
+        }
+        .station-door::after {
+            content: '🚪';
+            position: absolute;
+            font-size: 10px;
+            left: 10px; top: 10px;
+            filter: brightness(0.8);
+        }
+
+        /* Platform - waiting area */
+        .platform {
+            background: linear-gradient(180deg, #a0a0a0 0%, #909090 50%, #808080 100%);
+            border: 2px solid #606060;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.2);
+        }
+        .platform::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 3px;
+            top: 0; left: 0;
+            background: #c0c0c0;
+        }
+        .platform::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            bottom: 4px; left: 6px;
+            background: #ffff00;
+            box-shadow: 16px 0 #ffff00;
+            border-radius: 50%;
+        }
+
+        /* Bench - for waiting */
+        .bench {
+            background: var(--gb-light);
+        }
+        .bench::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 8px;
+            left: 4px; top: 10px;
+            background: linear-gradient(180deg, #906030 0%, #704020 100%);
+            border: 2px solid #503010;
+            border-radius: 2px;
+        }
+        .bench::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 10px;
+            left: 6px; bottom: 4px;
+            background: #604020;
+            box-shadow: 18px 0 #604020;
+        }
+
+        /* Return to station label */
+        .return-label {
+            position: absolute;
+            font-size: 0.38rem;
+            color: var(--gb-lightest);
+            background: linear-gradient(90deg, #c04040 0%, #a02020 100%);
+            padding: 4px 10px;
+            border: 2px solid #f0f0f0;
+            border-radius: 3px;
+            z-index: 61;
+            pointer-events: none;
+            white-space: nowrap;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            animation: return-pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes return-pulse {
+            0%, 100% { box-shadow: 2px 2px 0 rgba(0,0,0,0.5), 0 0 5px rgba(192, 64, 64, 0.3); }
+            50% { box-shadow: 2px 2px 0 rgba(0,0,0,0.5), 0 0 15px rgba(192, 64, 64, 0.6); }
+        }
+
+        /* City label - Platform destination sign */
         .city-label {
             position: absolute;
-            font-size: 0.4rem;
-            color: var(--gb-darkest);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 4px 8px;
-            border: 2px solid var(--gb-darkest);
+            font-size: 0.42rem;
+            color: #ffffff;
+            background: linear-gradient(180deg, #2a4a6a 0%, #1a3a5a 50%, #0a2a4a 100%);
+            padding: 8px 14px;
+            border: 3px solid #6a9aca;
             text-align: center;
             z-index: 60;
             pointer-events: none;
             white-space: nowrap;
+            box-shadow: 
+                0 6px 12px rgba(0,0,0,0.5),
+                inset 0 2px 0 rgba(255,255,255,0.15),
+                inset 0 -2px 0 rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            border-radius: 4px;
+            animation: sign-glow 3s ease-in-out infinite;
         }
+        
+        @keyframes sign-glow {
+            0%, 100% { box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.15), 0 0 5px rgba(100, 150, 200, 0.2); }
+            50% { box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.15), 0 0 15px rgba(100, 150, 200, 0.5); }
+        }
+        
+        .city-label::before {
+            content: '🚆';
+            display: block;
+            font-size: 0.7rem;
+            margin-bottom: 4px;
+            animation: train-arrive 4s ease-in-out infinite;
+        }
+        
+        @keyframes train-arrive {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+        
         .city-label small {
             font-size: 0.35rem;
-            opacity: 0.8;
+            opacity: 0.85;
+            display: block;
+            margin-top: 3px;
+            color: #a0c0e0;
+            letter-spacing: 0.5px;
+        }
+        
+        .city-label strong {
+            letter-spacing: 1px;
+        }
+
+        /* Station title banner */
+        .station-title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 0.55rem;
+            color: var(--gb-lightest);
+            z-index: 100;
+            background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
+            padding: 10px 20px;
+            border: 4px solid var(--gb-light);
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 10px rgba(0,0,0,0.5),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+        .station-title::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border: 2px solid var(--gb-darkest);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+        .station-title small {
+            font-size: 0.4rem;
+            color: var(--gb-light);
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* City title banner - when inside a language city */
+        .city-title {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 0.5rem;
+            color: var(--gb-lightest);
+            z-index: 100;
+            background: linear-gradient(180deg, #4060a0 0%, #304080 100%);
+            padding: 8px 16px;
+            border: 3px solid #a0c0f0;
+            border-radius: 4px;
+            box-shadow: 
+                0 3px 8px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+        .city-title small {
+            font-size: 0.38rem;
+            color: #c0d0f0;
+            display: block;
+            margin-top: 3px;
         }
 
         /* Interior tiles - simplified */
@@ -808,13 +1128,17 @@
             transform: translateX(-50%);
             background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
             color: var(--gb-lightest);
-            padding: 3px 8px;
+            padding: 4px 10px;
             font-size: 0.35rem;
             white-space: nowrap;
-            border: 2px solid var(--gb-dark);
+            border: 2px solid var(--gb-light);
+            border-radius: 2px;
             opacity: 0;
             pointer-events: none;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            box-shadow: 
+                2px 2px 0 rgba(0,0,0,0.5),
+                0 0 8px rgba(155, 188, 15, 0.3);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
         }
         .npc.nearby .npc-label {
             opacity: 1;
@@ -822,43 +1146,61 @@
         }
 
         @keyframes label-pop {
-            0% { transform: translateX(-50%) scale(0.5); }
+            0% { transform: translateX(-50%) scale(0.5); opacity: 0; }
             50% { transform: translateX(-50%) scale(1.1); }
-            100% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
         }
 
-        /* House label - AAA style with animation */
+        /* House label - Premium AAA style */
         .house-label {
             position: absolute;
-            top: -24px;
+            top: -28px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(180deg, rgba(15, 56, 15, 0.95) 0%, rgba(10, 40, 10, 0.98) 100%);
+            background: linear-gradient(180deg, rgba(15, 56, 15, 0.97) 0%, rgba(10, 40, 10, 0.99) 100%);
             color: var(--gb-lightest);
-            padding: 4px 12px;
-            font-size: 0.35rem;
+            padding: 6px 14px;
+            font-size: 0.38rem;
             white-space: nowrap;
-            border: 2px solid var(--gb-light);
+            border: 3px solid var(--gb-light);
+            border-radius: 3px;
             z-index: 60;
             opacity: 0;
             box-shadow: 
-                0 0 10px rgba(155, 188, 15, 0.3),
-                2px 2px 0 rgba(0,0,0,0.5);
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+                0 0 15px rgba(155, 188, 15, 0.4),
+                3px 3px 0 rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.7);
         }
         .house-label.visible {
             opacity: 1;
-            animation: label-pop 0.2s ease-out;
+            animation: house-label-appear 0.25s ease-out;
         }
 
-        /* Interaction indicator */
+        @keyframes house-label-appear {
+            0% { transform: translateX(-50%) translateY(10px) scale(0.8); opacity: 0; }
+            60% { transform: translateX(-50%) translateY(-2px) scale(1.05); }
+            100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* Interaction indicator - pulsing arrow */
         .house-label::after {
             content: '▼';
             display: block;
             text-align: center;
-            font-size: 0.4rem;
-            margin-top: 2px;
+            font-size: 0.45rem;
+            margin-top: 3px;
             animation: arrow-bounce 0.5s steps(2) infinite;
+            color: var(--gb-light);
+        }
+
+        .house-label::before {
+            content: '🏠';
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.5rem;
         }
 
         /* Player Sprite - Pixel Art */
@@ -1156,48 +1498,74 @@
             z-index: 50;
         }
 
-        /* Dialog Box - AAA style with decorative frame */
+        /* Dialog Box - Premium AAA style */
         #dialog-box {
             position: absolute;
             bottom: 10px;
             left: 10px;
             right: 10px;
             width: calc(100% - 20px);
-            height: 100px;
+            height: 110px;
             background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
-            border: 4px solid var(--gb-darkest);
+            border: 5px solid var(--gb-darkest);
             padding: 15px 20px;
             display: none;
             z-index: 200;
             box-shadow: 
-                inset 0 0 0 2px var(--gb-dark),
-                inset 0 0 0 4px var(--gb-light),
-                4px 4px 0 rgba(0,0,0,0.4);
+                inset 0 0 0 3px var(--gb-dark),
+                inset 0 0 0 6px var(--gb-light),
+                6px 6px 0 rgba(0,0,0,0.5),
+                0 0 20px rgba(0,0,0,0.3);
+            animation: dialog-appear 0.2s ease-out;
         }
 
-        /* Decorative corners */
+        @keyframes dialog-appear {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Decorative corners - pixel art style */
         #dialog-box::before {
             content: '';
             position: absolute;
-            top: -4px; left: -4px; right: -4px; bottom: -4px;
-            border: 2px solid var(--gb-dark);
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border: 3px solid var(--gb-dark);
             pointer-events: none;
+            background: transparent;
+        }
+
+        /* Corner decorations */
+        #dialog-box::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            top: -2px; left: -2px;
+            background: var(--gb-darkest);
+            box-shadow: 
+                calc(100% - 4px) 0 var(--gb-darkest),
+                0 calc(100% - 4px) var(--gb-darkest),
+                calc(100% - 4px) calc(100% - 4px) var(--gb-darkest);
         }
 
         #dialog-text {
             color: var(--gb-darkest);
             font-size: 0.55rem;
-            line-height: 2;
+            line-height: 2.2;
             text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            max-height: 70px;
+            overflow: hidden;
         }
 
         #dialog-continue {
             position: absolute;
-            bottom: 8px;
-            right: 12px;
-            font-size: 0.6rem;
+            bottom: 10px;
+            right: 14px;
+            font-size: 0.55rem;
             color: var(--gb-darkest);
             animation: arrow-bounce 0.5s steps(2) infinite;
+            background: var(--gb-light);
+            padding: 3px 8px;
+            border: 2px solid var(--gb-darkest);
         }
 
         @keyframes arrow-bounce {
@@ -1312,44 +1680,63 @@
             box-shadow: 
                 inset 0 0 0 2px var(--gb-dark),
                 4px 4px 0 rgba(0,0,0,0.4);
+            animation: info-appear 0.4s ease-out;
+        }
+
+        @keyframes info-appear {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .enemy-name {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--gb-darkest);
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            letter-spacing: 0.5px;
         }
 
         .enemy-level {
-            font-size: 0.45rem;
+            font-size: 0.42rem;
             color: var(--gb-dark);
+            background: var(--gb-light);
+            padding: 2px 6px;
+            display: inline-block;
+            border: 1px solid var(--gb-dark);
         }
 
         .hp-bar {
-            margin-top: 8px;
-            height: 10px;
+            margin-top: 10px;
+            height: 12px;
             background: var(--gb-darkest);
             border: 2px solid var(--gb-darkest);
             position: relative;
             overflow: hidden;
+            border-radius: 2px;
         }
 
         .hp-bar::before {
             content: 'HP';
             position: absolute;
-            left: -24px;
-            top: -2px;
+            left: -26px;
+            top: -1px;
             font-size: 0.4rem;
             color: var(--gb-darkest);
+            font-weight: bold;
         }
 
         .hp-fill {
             height: 100%;
-            background: linear-gradient(180deg, #70e070 0%, #40c040 50%, #30a030 100%);
+            background: linear-gradient(180deg, #80f080 0%, #40c040 50%, #30a030 100%);
             width: 100%;
             transition: width 0.3s ease-out;
-            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2);
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.3);
+            animation: hp-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes hp-pulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1); }
         }
 
         .battle-bottom {
@@ -1415,33 +1802,68 @@
 
         .battle-menu {
             height: 45%;
-            border-top: 4px solid var(--gb-darkest);
+            border-top: 5px solid var(--gb-darkest);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            padding: 10px 16px;
-            gap: 8px;
+            padding: 12px 18px;
+            gap: 10px;
             background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .battle-option {
-            background: linear-gradient(180deg, #f0e8d8 0%, #e0d8c8 100%);
-            border: 3px solid var(--gb-darkest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e0d8c8 100%);
+            border: 4px solid var(--gb-darkest);
             font-family: inherit;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--gb-darkest);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6px 4px;
+            padding: 8px 6px;
             text-align: center;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            box-shadow: 
+                2px 2px 0 rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.5);
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .battle-option::before {
+            content: '▶';
+            position: absolute;
+            left: 6px;
+            opacity: 0;
+            transition: opacity 0.15s;
+            font-size: 0.4rem;
         }
 
         .battle-option:hover, .battle-option.selected {
-            background: var(--gb-light);
+            background: linear-gradient(180deg, var(--gb-light) 0%, var(--gb-dark) 100%);
+            color: var(--gb-lightest);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
             box-shadow: 
-                inset 0 0 0 3px var(--gb-dark),
-                0 0 10px rgba(155, 188, 15, 0.5);
+                inset 0 0 0 2px var(--gb-dark),
+                0 0 15px rgba(155, 188, 15, 0.6),
+                3px 3px 0 rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        .battle-option:hover::before, .battle-option.selected::before {
+            opacity: 1;
+            animation: arrow-blink 0.5s steps(2) infinite;
+        }
+
+        @keyframes arrow-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .battle-option:active {
+            transform: translateY(1px);
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
         }
 
         /* Info Panel (README display) - AAA style */
@@ -1454,70 +1876,91 @@
             flex-direction: column;
             z-index: 350;
             overflow-y: auto;
-            animation: panel-slide-in 0.3s ease-out;
+            animation: panel-slide-in 0.35s ease-out;
         }
 
         @keyframes panel-slide-in {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+            from { transform: translateY(100%); opacity: 0.5; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .info-header {
             background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
             color: var(--gb-lightest);
-            padding: 15px 20px;
-            font-size: 0.65rem;
+            padding: 16px 22px;
+            font-size: 0.6rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 4px solid var(--gb-darkest);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            border-bottom: 5px solid var(--gb-darkest);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
             text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .info-header::before {
+            content: '📖';
+            margin-right: 10px;
+            font-size: 0.7rem;
         }
 
         .info-content {
-            padding: 20px;
+            padding: 22px;
             font-size: 0.45rem;
-            line-height: 2.2;
+            line-height: 2.4;
             color: var(--gb-darkest);
             flex: 1;
             overflow-y: auto;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
+            background: 
+                linear-gradient(180deg, #f8f0e0 0%, #f0e8d8 50%, #e8e0d0 100%);
         }
 
         .info-content a {
             color: #3060a0;
             text-decoration: underline;
+            padding: 1px 4px;
+            background: rgba(48, 96, 160, 0.1);
+            border-radius: 2px;
         }
 
         .info-content a:hover {
             color: #4080c0;
+            background: rgba(48, 96, 160, 0.2);
         }
 
         .back-btn {
             background: linear-gradient(180deg, var(--gb-light) 0%, var(--gb-dark) 100%);
-            border: 2px solid var(--gb-darkest);
-            padding: 8px 20px;
+            border: 3px solid var(--gb-darkest);
+            padding: 10px 24px;
             font-family: inherit;
             font-size: 0.45rem;
             cursor: pointer;
             color: var(--gb-lightest);
             text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+            transition: all 0.15s ease;
         }
 
         .back-btn:hover {
             background: linear-gradient(180deg, var(--gb-lightest) 0%, var(--gb-light) 100%);
             color: var(--gb-darkest);
             text-shadow: none;
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+        }
+
+        .back-btn:active {
+            transform: translateY(1px);
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.4);
         }
 
         /* Controls hint */
         .controls-hint {
             text-align: center;
             margin-top: 15px;
-            color: #888;
+            color: #666;
             font-size: 0.5rem;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
         }
 
         /* Mobile Controls */
@@ -1603,6 +2046,60 @@
         @keyframes screen-wipe-out {
             0% { clip-path: inset(0 0 0 0); }
             100% { clip-path: inset(0 0 0 100%); }
+        }
+
+        /* Premium screen transition */
+        .screen-transition {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--gb-darkest);
+            z-index: 500;
+            animation: transition-in 0.35s steps(6) forwards;
+        }
+        
+        .screen-transition .transition-flash {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--gb-lightest);
+            animation: flash-pulse 0.15s ease-out;
+            opacity: 0;
+        }
+        
+        .screen-transition.fade-out {
+            animation: transition-out 0.4s steps(6) forwards;
+        }
+        
+        @keyframes transition-in {
+            0% { 
+                clip-path: circle(0% at 50% 50%); 
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% { 
+                clip-path: circle(100% at 50% 50%);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes transition-out {
+            0% { 
+                clip-path: circle(100% at 50% 50%);
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% { 
+                clip-path: circle(0% at 50% 50%);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes flash-pulse {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         /* Loading dots animation */
@@ -1821,14 +2318,17 @@
         // Tile types: 0=grass, 1=path, 2=tree, 3=water, 4=tall-grass, 5=flower, 6=fence, 7=sign
         // 10=house-roof, 11=house-wall, 12=house-door
         // 13=train-track, 14=train-sign (destino), 15=train-return (volver)
+        // 16=station-roof, 17=station-wall, 18=station-door, 19=platform, 30=bench
         
         const TILE_TYPES = {
             0: 'grass', 1: 'path', 2: 'tree', 3: 'water', 4: 'tall-grass', 
             5: 'flower', 6: 'fence', 7: 'sign',
             10: 'house-roof', 11: 'house-wall', 12: 'house-door',
-            13: 'train-track', 14: 'train-sign', 15: 'train-return'
+            13: 'train-track', 14: 'train-sign', 15: 'train-return',
+            16: 'station-roof', 17: 'station-wall', 18: 'station-door',
+            19: 'platform', 30: 'bench'
         };
-        const SOLID_TILES = [2, 3, 6, 10, 11];
+        const SOLID_TILES = [2, 3, 6, 10, 11, 16, 17, 30];
         
         // Interior map template (7x7)
         const INTERIOR_MAP = [
@@ -2008,6 +2508,16 @@
                     tile.style.left = x * TILE_SIZE + 'px';
                     tile.style.top = y * TILE_SIZE + 'px';
                     map.appendChild(tile);
+                    
+                    // Añadir etiqueta al tile de retorno a estación
+                    if (tileType === 15 && currentCity !== 'STATION') {
+                        const returnLabel = document.createElement('div');
+                        returnLabel.className = 'return-label';
+                        returnLabel.textContent = '← ESTACIÓN';
+                        returnLabel.style.left = (x * TILE_SIZE - 10) + 'px';
+                        returnLabel.style.top = ((y - 1) * TILE_SIZE) + 'px';
+                        map.appendChild(returnLabel);
+                    }
                 }
             }
         }
@@ -2087,16 +2597,16 @@
             }
         }
         
-        // Estación de tren central
+        // Estación de tren central - Diseño completo
         function loadTrainStation(languages) {
             currentCity = 'STATION';
             currentLocation = 'outside';
             houses = [];
             wanderingNpcs = [];
             
-            // Mapa para la estación
-            MAP_COLS = 25;
-            MAP_ROWS = 18;
+            // Mapa más grande para la estación
+            MAP_COLS = 28;
+            MAP_ROWS = 20;
             MAP_DATA = [];
             
             // Inicializar con césped
@@ -2117,58 +2627,134 @@
                 MAP_DATA[y][MAP_COLS - 1] = 2;
             }
             
-            // Plataforma central (camino)
+            // ===== EDIFICIO DE LA ESTACIÓN (arriba) =====
+            const stationStartX = 8;
+            const stationWidth = 12;
+            
+            // Techo de la estación (fila 2)
+            for (let x = stationStartX; x < stationStartX + stationWidth; x++) {
+                MAP_DATA[2][x] = 16; // station-roof
+            }
+            
+            // Paredes de la estación (fila 3)
+            for (let x = stationStartX; x < stationStartX + stationWidth; x++) {
+                MAP_DATA[3][x] = 17; // station-wall
+            }
+            // Puerta central
+            MAP_DATA[3][stationStartX + Math.floor(stationWidth / 2)] = 18; // station-door
+            
+            // Camino desde la estación
+            for (let x = stationStartX; x < stationStartX + stationWidth; x++) {
+                MAP_DATA[4][x] = 1; // path
+            }
+            
+            // ===== PLATAFORMAS Y VÍAS =====
+            
+            // Plataforma superior (andén 1)
             for (let x = 2; x < MAP_COLS - 2; x++) {
-                MAP_DATA[8][x] = 1;
-                MAP_DATA[9][x] = 1;
+                MAP_DATA[6][x] = 19; // platform
             }
             
-            // Vías de tren
-            for (let x = 1; x < MAP_COLS - 1; x++) {
-                MAP_DATA[5][x] = 13; // Vía superior
+            // Vía de tren 1
+            for (let x = 2; x < MAP_COLS - 2; x++) {
+                MAP_DATA[7][x] = 13; // train-track
             }
             
-            // Posiciones de carteles de ciudades
+            // Plataforma central (andén 2) - donde están los destinos
+            for (let x = 2; x < MAP_COLS - 2; x++) {
+                MAP_DATA[8][x] = 19; // platform
+                MAP_DATA[9][x] = 19; // platform
+            }
+            
+            // Vía de tren 2
+            for (let x = 2; x < MAP_COLS - 2; x++) {
+                MAP_DATA[10][x] = 13; // train-track
+            }
+            
+            // Plataforma inferior (andén 3)
+            for (let x = 2; x < MAP_COLS - 2; x++) {
+                MAP_DATA[11][x] = 19; // platform
+            }
+            
+            // ===== BANCOS EN LOS ANDENES =====
+            MAP_DATA[6][4] = 30;  // bench
+            MAP_DATA[6][10] = 30;
+            MAP_DATA[6][17] = 30;
+            MAP_DATA[6][23] = 30;
+            MAP_DATA[11][4] = 30;
+            MAP_DATA[11][10] = 30;
+            MAP_DATA[11][17] = 30;
+            MAP_DATA[11][23] = 30;
+            
+            // ===== CARTELES DE DESTINOS en la plataforma central =====
             window.availableCities = [];
             const maxCities = Math.min(languages.length, 8);
-            const startX = 3;
-            const spacing = 2;
+            const startX = 4;
+            const spacing = 3;
             
             for (let i = 0; i < maxCities; i++) {
-                const x = startX + i * spacing + Math.floor(i / 4) * 2;
-                const y = 7;
+                const x = startX + (i * spacing);
+                const y = 8; // En la plataforma central
                 
-                MAP_DATA[y][x] = 14; // Señal de destino
-                
-                window.availableCities.push({
-                    x: x,
-                    y: y,
-                    language: languages[i],
-                    repoCount: citiesByLanguage[languages[i]].length
-                });
+                if (x < MAP_COLS - 3) {
+                    MAP_DATA[y][x] = 14; // Señal de destino
+                    
+                    window.availableCities.push({
+                        x: x,
+                        y: y,
+                        language: languages[i],
+                        repoCount: citiesByLanguage[languages[i]].length
+                    });
+                }
             }
             
-            // Decoración
-            MAP_DATA[3][3] = 5; // Flores
-            MAP_DATA[3][MAP_COLS - 4] = 5;
-            MAP_DATA[MAP_ROWS - 3][3] = 5;
-            MAP_DATA[MAP_ROWS - 3][MAP_COLS - 4] = 5;
+            // ===== ZONA DE ESPERA (abajo) =====
+            // Camino principal
+            for (let x = 4; x < MAP_COLS - 4; x++) {
+                MAP_DATA[13][x] = 1;
+                MAP_DATA[14][x] = 1;
+            }
+            // Camino de conexión a la estación
+            const centerX = Math.floor(MAP_COLS / 2);
+            for (let y = 4; y < 14; y++) {
+                MAP_DATA[y][centerX] = 1;
+                MAP_DATA[y][centerX + 1] = 1;
+            }
             
-            // Posición inicial del jugador
-            playerX = 12;
-            playerY = 12;
+            // ===== DECORACIÓN =====
+            // Flores decorativas
+            MAP_DATA[5][3] = 5;
+            MAP_DATA[5][MAP_COLS - 4] = 5;
+            MAP_DATA[12][3] = 5;
+            MAP_DATA[12][MAP_COLS - 4] = 5;
+            
+            // Más árboles decorativos
+            MAP_DATA[15][3] = 2;
+            MAP_DATA[15][MAP_COLS - 4] = 2;
+            MAP_DATA[16][4] = 2;
+            MAP_DATA[16][MAP_COLS - 5] = 2;
+            
+            // Hierba alta decorativa
+            MAP_DATA[17][6] = 4;
+            MAP_DATA[17][8] = 4;
+            MAP_DATA[17][MAP_COLS - 7] = 4;
+            MAP_DATA[17][MAP_COLS - 9] = 4;
+            
+            // Posición inicial del jugador (en la zona de espera)
+            playerX = centerX;
+            playerY = 14;
             
             // Renderizar mapa
             generateMap();
             
-            // Crear etiquetas de ciudades
+            // Crear etiquetas de ciudades flotantes sobre los carteles
             window.availableCities.forEach(city => {
                 const label = document.createElement('div');
                 label.className = 'city-label visible';
                 label.id = `city-${city.language}`;
-                label.innerHTML = `<strong>${city.language}</strong><br>${city.repoCount} repos`;
-                label.style.left = (city.x * TILE_SIZE - 20) + 'px';
-                label.style.top = (city.y - 2) * TILE_SIZE + 'px';
+                label.innerHTML = `<strong>${city.language}</strong><small>${city.repoCount} repos</small>`;
+                label.style.left = (city.x * TILE_SIZE - 15) + 'px';
+                label.style.top = ((city.y - 2) * TILE_SIZE + 5) + 'px';
                 label.dataset.language = city.language;
                 map.appendChild(label);
             });
@@ -2176,8 +2762,7 @@
             // Título de estación
             const stationTitle = document.createElement('div');
             stationTitle.className = 'station-title';
-            stationTitle.innerHTML = '🚂 ESTACIÓN CENTRAL<br><small>Selecciona un destino</small>';
-            stationTitle.style.cssText = 'position: absolute; top: 8px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 0.5rem; color: var(--gb-darkest); z-index: 100; background: rgba(255,255,255,0.8); padding: 4px 8px; border: 2px solid var(--gb-darkest);';
+            stationTitle.innerHTML = '🚂 ESTACIÓN CENTRAL<small>Selecciona un destino</small>';
             map.appendChild(stationTitle);
             
             console.log(`Train station loaded with ${maxCities} destinations`);
@@ -2227,8 +2812,7 @@
                 // Etiqueta de ciudad
                 const cityTitle = document.createElement('div');
                 cityTitle.className = 'city-title';
-                cityTitle.innerHTML = `🏙️ Ciudad ${language}<br><small>${repos.length} proyectos</small>`;
-                cityTitle.style.cssText = 'position: absolute; top: 8px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 0.5rem; color: var(--gb-darkest); z-index: 100; background: rgba(255,255,255,0.8); padding: 4px 8px; border: 2px solid var(--gb-darkest);';
+                cityTitle.innerHTML = `🏙️ Ciudad ${language}<small>${repos.length} proyectos</small>`;
                 map.appendChild(cityTitle);
                 
                 // Posición inicial
@@ -2254,20 +2838,42 @@
         
         // Añadir mini estación de tren al mapa de la ciudad
         function addTrainStationToMap() {
-            // Añadir en parte inferior
-            const stationY = MAP_ROWS - 3;
-            const stationX = Math.floor(MAP_COLS / 2) - 2;
+            // Añadir en parte inferior del mapa
+            const stationY = MAP_ROWS - 4;
+            const stationX = Math.floor(MAP_COLS / 2) - 3;
+            
+            // Mini edificio de estación (2x1)
+            if (MAP_DATA[stationY - 2]) {
+                MAP_DATA[stationY - 2][stationX + 2] = 16; // roof
+                MAP_DATA[stationY - 2][stationX + 3] = 16; // roof
+            }
+            if (MAP_DATA[stationY - 1]) {
+                MAP_DATA[stationY - 1][stationX + 2] = 17; // wall
+                MAP_DATA[stationY - 1][stationX + 3] = 18; // door
+            }
+            
+            // Plataforma
+            for (let x = stationX; x < stationX + 8; x++) {
+                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY]) {
+                    MAP_DATA[stationY][x] = 19; // platform
+                }
+            }
             
             // Vías horizontales
-            for (let x = stationX - 2; x < stationX + 6; x++) {
-                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY]) {
-                    MAP_DATA[stationY][x] = 13;
+            for (let x = stationX - 1; x < stationX + 9; x++) {
+                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY + 1]) {
+                    MAP_DATA[stationY + 1][x] = 13; // track
                 }
             }
             
             // Señal para volver (tile 15)
-            if (MAP_DATA[stationY - 1] && stationX >= 0) {
-                MAP_DATA[stationY - 1][stationX] = 15;
+            if (MAP_DATA[stationY] && stationX >= 0) {
+                MAP_DATA[stationY][stationX + 1] = 15;
+            }
+            
+            // Banco
+            if (MAP_DATA[stationY] && stationX + 5 < MAP_COLS) {
+                MAP_DATA[stationY][stationX + 5] = 30;
             }
         }
         
@@ -2468,24 +3074,19 @@
             });
         }
         
-        // Screen transition effect
+        // Screen transition effect - Premium style
         function screenTransition(callback) {
             const container = document.getElementById('game-container');
             const transition = document.createElement('div');
-            transition.style.cssText = `
-                position: absolute;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: var(--gb-darkest);
-                z-index: 500;
-                animation: screen-wipe 0.5s steps(8);
-            `;
+            transition.className = 'screen-transition';
+            transition.innerHTML = '<div class="transition-flash"></div>';
             container.appendChild(transition);
             
             setTimeout(() => {
                 callback();
-                transition.style.animation = 'screen-wipe-out 0.5s steps(8)';
-                setTimeout(() => transition.remove(), 500);
-            }, 300);
+                transition.classList.add('fade-out');
+                setTimeout(() => transition.remove(), 400);
+            }, 350);
         }
         
         function enterHouse(house) {
