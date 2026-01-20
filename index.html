@@ -631,6 +631,82 @@
             50% { box-shadow: 0 0 10px rgba(255, 200, 100, 0.6); }
         }
 
+        /* Train tiles */
+        .train-track {
+            background: #606060;
+            border: none;
+        }
+        .train-track::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 4px;
+            top: 8px; left: 0;
+            background: #404040;
+            box-shadow: 0 12px 0 #404040;
+        }
+        .train-track::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 20px;
+            top: 6px; left: 4px;
+            background: #806040;
+            box-shadow: 8px 0 0 #806040, 16px 0 0 #806040, 24px 0 0 #806040;
+        }
+
+        .train-sign {
+            background: var(--gb-light);
+            cursor: pointer;
+        }
+        .train-sign::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 20px;
+            left: 14px; bottom: 0;
+            background: #604020;
+        }
+        .train-sign::after {
+            content: '🚂';
+            position: absolute;
+            font-size: 16px;
+            top: 2px; left: 6px;
+        }
+
+        .train-return {
+            background: var(--gb-light);
+            cursor: pointer;
+        }
+        .train-return::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 20px;
+            left: 14px; bottom: 0;
+            background: #604020;
+        }
+        .train-return::after {
+            content: '🏠';
+            position: absolute;
+            font-size: 16px;
+            top: 2px; left: 6px;
+        }
+
+        /* City label */
+        .city-label {
+            position: absolute;
+            font-size: 0.4rem;
+            color: var(--gb-darkest);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 8px;
+            border: 2px solid var(--gb-darkest);
+            text-align: center;
+            z-index: 60;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .city-label small {
+            font-size: 0.35rem;
+            opacity: 0.8;
+        }
+
         /* Interior tiles - simplified */
         .floor {
             background: #d8c8a8;
@@ -1744,11 +1820,13 @@
         // ============== PROCEDURAL MAP GENERATION ==============
         // Tile types: 0=grass, 1=path, 2=tree, 3=water, 4=tall-grass, 5=flower, 6=fence, 7=sign
         // 10=house-roof, 11=house-wall, 12=house-door
+        // 13=train-track, 14=train-sign (destino), 15=train-return (volver)
         
         const TILE_TYPES = {
             0: 'grass', 1: 'path', 2: 'tree', 3: 'water', 4: 'tall-grass', 
             5: 'flower', 6: 'fence', 7: 'sign',
-            10: 'house-roof', 11: 'house-wall', 12: 'house-door'
+            10: 'house-roof', 11: 'house-wall', 12: 'house-door',
+            13: 'train-track', 14: 'train-sign', 15: 'train-return'
         };
         const SOLID_TILES = [2, 3, 6, 10, 11];
         
@@ -1968,25 +2046,164 @@
         }
 
         // ============== LOAD REPOS AND GENERATE MAP ==============
+        let allRepos = [];
+        let citiesByLanguage = {};
+        let currentCity = null;
+        let collaboratorsCache = {}; // Cache para no repetir peticiones API
+        const USERNAME = 'MutenRos';
+        
         async function loadReposAndGenerateMap() {
-            const username = 'MutenRos';
-            const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc-sprite-purple'];
-            
             try {
                 // Fetch all repos (up to 100)
-                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+                const response = await fetch(`https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=100`);
                 if (!response.ok) throw new Error('API Error');
                 
-                const repos = await response.json();
-                const numRepos = repos.length;
+                allRepos = await response.json();
                 
-                // Generate procedural map based on number of repos
-                const housePositions = generateProceduralMap(numRepos);
+                // Agrupar repos por lenguaje
+                citiesByLanguage = {};
+                allRepos.forEach(repo => {
+                    const lang = repo.language || 'Other';
+                    if (!citiesByLanguage[lang]) {
+                        citiesByLanguage[lang] = [];
+                    }
+                    citiesByLanguage[lang].push(repo);
+                });
                 
-                // Render the map
+                // Ordenar ciudades por cantidad de repos
+                const sortedLanguages = Object.keys(citiesByLanguage).sort(
+                    (a, b) => citiesByLanguage[b].length - citiesByLanguage[a].length
+                );
+                
+                console.log('Cities by language:', sortedLanguages.map(l => `${l}: ${citiesByLanguage[l].length} repos`));
+                
+                // Cargar la estación de tren central
+                loadTrainStation(sortedLanguages);
+                
+            } catch (error) {
+                console.error('Error loading repos:', error);
+                generateProceduralMap(1);
+                generateMap();
+            }
+        }
+        
+        // Estación de tren central
+        function loadTrainStation(languages) {
+            currentCity = 'STATION';
+            currentLocation = 'outside';
+            houses = [];
+            wanderingNpcs = [];
+            
+            // Mapa para la estación
+            MAP_COLS = 25;
+            MAP_ROWS = 18;
+            MAP_DATA = [];
+            
+            // Inicializar con césped
+            for (let y = 0; y < MAP_ROWS; y++) {
+                MAP_DATA[y] = [];
+                for (let x = 0; x < MAP_COLS; x++) {
+                    MAP_DATA[y][x] = 0;
+                }
+            }
+            
+            // Borde de árboles
+            for (let x = 0; x < MAP_COLS; x++) {
+                MAP_DATA[0][x] = 2;
+                MAP_DATA[MAP_ROWS - 1][x] = 2;
+            }
+            for (let y = 0; y < MAP_ROWS; y++) {
+                MAP_DATA[y][0] = 2;
+                MAP_DATA[y][MAP_COLS - 1] = 2;
+            }
+            
+            // Plataforma central (camino)
+            for (let x = 2; x < MAP_COLS - 2; x++) {
+                MAP_DATA[8][x] = 1;
+                MAP_DATA[9][x] = 1;
+            }
+            
+            // Vías de tren
+            for (let x = 1; x < MAP_COLS - 1; x++) {
+                MAP_DATA[5][x] = 13; // Vía superior
+            }
+            
+            // Posiciones de carteles de ciudades
+            window.availableCities = [];
+            const maxCities = Math.min(languages.length, 8);
+            const startX = 3;
+            const spacing = 2;
+            
+            for (let i = 0; i < maxCities; i++) {
+                const x = startX + i * spacing + Math.floor(i / 4) * 2;
+                const y = 7;
+                
+                MAP_DATA[y][x] = 14; // Señal de destino
+                
+                window.availableCities.push({
+                    x: x,
+                    y: y,
+                    language: languages[i],
+                    repoCount: citiesByLanguage[languages[i]].length
+                });
+            }
+            
+            // Decoración
+            MAP_DATA[3][3] = 5; // Flores
+            MAP_DATA[3][MAP_COLS - 4] = 5;
+            MAP_DATA[MAP_ROWS - 3][3] = 5;
+            MAP_DATA[MAP_ROWS - 3][MAP_COLS - 4] = 5;
+            
+            // Posición inicial del jugador
+            playerX = 12;
+            playerY = 12;
+            
+            // Renderizar mapa
+            generateMap();
+            
+            // Crear etiquetas de ciudades
+            window.availableCities.forEach(city => {
+                const label = document.createElement('div');
+                label.className = 'city-label visible';
+                label.id = `city-${city.language}`;
+                label.innerHTML = `<strong>${city.language}</strong><br>${city.repoCount} repos`;
+                label.style.left = (city.x * TILE_SIZE - 20) + 'px';
+                label.style.top = (city.y - 2) * TILE_SIZE + 'px';
+                label.dataset.language = city.language;
+                map.appendChild(label);
+            });
+            
+            // Título de estación
+            const stationTitle = document.createElement('div');
+            stationTitle.className = 'station-title';
+            stationTitle.innerHTML = '🚂 ESTACIÓN CENTRAL<br><small>Selecciona un destino</small>';
+            stationTitle.style.cssText = 'position: absolute; top: 8px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 0.5rem; color: var(--gb-darkest); z-index: 100; background: rgba(255,255,255,0.8); padding: 4px 8px; border: 2px solid var(--gb-darkest);';
+            map.appendChild(stationTitle);
+            
+            console.log(`Train station loaded with ${maxCities} destinations`);
+        }
+        
+        // Cargar una ciudad específica
+        function loadCity(language) {
+            screenTransition(() => {
+                currentCity = language;
+                currentLocation = 'outside';
+                houses = [];
+                wanderingNpcs = [];
+                
+                const repos = citiesByLanguage[language] || [];
+                const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc-sprite-purple'];
+                
+                // Generar mapa para esta ciudad
+                const housePositions = generateProceduralMap(repos.length);
+                
+                // Añadir estación de tren en el mapa
+                addTrainStationToMap();
+                
+                // Renderizar mapa
                 generateMap();
                 
-                // Create houses from repos
+                // Crear casas
                 repos.forEach((repo, index) => {
                     if (index >= housePositions.length) return;
                     
@@ -1995,6 +2212,7 @@
                         doorX: pos.doorX,
                         doorY: pos.doorY,
                         name: repo.name,
+                        fullName: repo.full_name,
                         description: repo.description || 'Sin descripcion',
                         language: repo.language || 'Unknown',
                         stars: repo.stargazers_count,
@@ -2006,124 +2224,51 @@
                     renderHouseLabel(house);
                 });
                 
-                console.log(`Generated map with ${numRepos} houses (${MAP_COLS}x${MAP_ROWS} tiles)`);
+                // Etiqueta de ciudad
+                const cityTitle = document.createElement('div');
+                cityTitle.className = 'city-title';
+                cityTitle.innerHTML = `🏙️ Ciudad ${language}<br><small>${repos.length} proyectos</small>`;
+                cityTitle.style.cssText = 'position: absolute; top: 8px; left: 50%; transform: translateX(-50%); text-align: center; font-size: 0.5rem; color: var(--gb-darkest); z-index: 100; background: rgba(255,255,255,0.8); padding: 4px 8px; border: 2px solid var(--gb-darkest);';
+                map.appendChild(cityTitle);
                 
-                // Crear colaboradores (hardcodeados para evitar límites de API)
-                createWanderingCollaborators();
+                // Posición inicial
+                playerX = Math.floor(MAP_COLS / 2);
+                playerY = MAP_ROWS - 4;
                 
-            } catch (error) {
-                console.error('Error loading repos:', error);
-                // Generate minimal map with error message
-                generateProceduralMap(1);
-                generateMap();
+                updateCamera();
+                
+                console.log(`Loaded city ${language} with ${repos.length} houses`);
+            });
+        }
+        
+        // Volver a la estación
+        function returnToStation() {
+            screenTransition(() => {
+                const languages = Object.keys(citiesByLanguage).sort(
+                    (a, b) => citiesByLanguage[b].length - citiesByLanguage[a].length
+                );
+                loadTrainStation(languages);
+                updateCamera();
+            });
+        }
+        
+        // Añadir mini estación de tren al mapa de la ciudad
+        function addTrainStationToMap() {
+            // Añadir en parte inferior
+            const stationY = MAP_ROWS - 3;
+            const stationX = Math.floor(MAP_COLS / 2) - 2;
+            
+            // Vías horizontales
+            for (let x = stationX - 2; x < stationX + 6; x++) {
+                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY]) {
+                    MAP_DATA[stationY][x] = 13;
+                }
             }
-        }
-        
-        // Colaboradores hardcodeados - edita esta lista con tus colaboradores reales
-        function createWanderingCollaborators() {
-            const collaboratorSprites = ['npc-sprite-red', 'npc-sprite-yellow', 'npc-sprite-cyan', 'npc-sprite-pink'];
             
-            // Lista de colaboradores - EDITA ESTO con usuarios reales de GitHub
-            const collaborators = [
-                { login: 'colaborador1', url: 'https://github.com/colaborador1' },
-                { login: 'colaborador2', url: 'https://github.com/colaborador2' },
-                { login: 'colaborador3', url: 'https://github.com/colaborador3' },
-                { login: 'amigo-dev', url: 'https://github.com/amigo-dev' }
-            ];
-            
-            collaborators.forEach((collab, index) => {
-                // Encontrar posición válida para el NPC
-                let x, y, attempts = 0;
-                do {
-                    x = 3 + Math.floor(Math.random() * (MAP_COLS - 6));
-                    y = 3 + Math.floor(Math.random() * (MAP_ROWS - 6));
-                    attempts++;
-                } while ((MAP_DATA[y][x] !== 0 && MAP_DATA[y][x] !== 1) && attempts < 50);
-                
-                if (attempts < 50) {
-                    const wanderingNpc = {
-                        id: `collab-${collab.login}`,
-                        x: x,
-                        y: y,
-                        name: collab.login,
-                        url: collab.url,
-                        spriteClass: collaboratorSprites[index % collaboratorSprites.length],
-                        isCollaborator: true
-                    };
-                    
-                    wanderingNpcs.push(wanderingNpc);
-                    renderWanderingNpc(wanderingNpc);
-                }
-            });
-            
-            console.log(`Created ${wanderingNpcs.length} collaborator NPCs`);
-            
-            // Iniciar movimiento aleatorio de los NPCs
-            setInterval(moveWanderingNpcs, 2000);
-        }
-        
-        function renderWanderingNpc(npc) {
-            const npcEl = document.createElement('div');
-            npcEl.className = 'npc wandering-npc';
-            npcEl.id = npc.id;
-            npcEl.style.left = npc.x * TILE_SIZE + 'px';
-            npcEl.style.top = npc.y * TILE_SIZE + 'px';
-            npcEl.style.transition = 'left 0.5s, top 0.5s';
-            
-            // Sprite
-            const spriteEl = document.createElement('div');
-            spriteEl.className = npc.spriteClass;
-            npcEl.appendChild(spriteEl);
-            
-            // Etiqueta con nombre
-            const label = document.createElement('div');
-            label.className = 'npc-label';
-            label.textContent = npc.name;
-            npcEl.appendChild(label);
-            
-            npcEl.dataset.name = npc.name;
-            npcEl.dataset.url = npc.url;
-            map.appendChild(npcEl);
-        }
-        
-        function moveWanderingNpcs() {
-            if (currentLocation !== 'outside' || gameState !== 'walking') return;
-            
-            wanderingNpcs.forEach(npc => {
-                // 50% de probabilidad de moverse
-                if (Math.random() < 0.5) return;
-                
-                const directions = [
-                    { dx: 0, dy: -1 },
-                    { dx: 0, dy: 1 },
-                    { dx: -1, dy: 0 },
-                    { dx: 1, dy: 0 }
-                ];
-                
-                const dir = directions[Math.floor(Math.random() * 4)];
-                const newX = npc.x + dir.dx;
-                const newY = npc.y + dir.dy;
-                
-                // Verificar si puede moverse
-                if (newX >= 2 && newX < MAP_COLS - 2 && 
-                    newY >= 2 && newY < MAP_ROWS - 2 &&
-                    (MAP_DATA[newY][newX] === 0 || MAP_DATA[newY][newX] === 1) &&
-                    !(newX === playerX && newY === playerY)) {
-                    
-                    // Verificar colisión con otros NPCs
-                    const collision = wanderingNpcs.some(other => other !== npc && other.x === newX && other.y === newY);
-                    if (!collision) {
-                        npc.x = newX;
-                        npc.y = newY;
-                        
-                        const npcEl = document.getElementById(npc.id);
-                        if (npcEl) {
-                            npcEl.style.left = npc.x * TILE_SIZE + 'px';
-                            npcEl.style.top = npc.y * TILE_SIZE + 'px';
-                        }
-                    }
-                }
-            });
+            // Señal para volver (tile 15)
+            if (MAP_DATA[stationY - 1] && stationX >= 0) {
+                MAP_DATA[stationY - 1][stationX] = 15;
+            }
         }
         
         function renderHouseLabel(house) {
@@ -2276,13 +2421,8 @@
             
             if (SOLID_TILES.includes(tileType)) return;
             
-            // Verificar colisión con NPCs vagantes
-            const wanderingNpcAtPos = wanderingNpcs.find(n => n.x === newX && n.y === newY);
-            if (wanderingNpcAtPos) return;
-            
             movePlayer(newX, newY);
             updateHouseLabels();
-            updateWanderingNpcLabels();
         }
         
         function movePlayer(newX, newY) {
@@ -2309,20 +2449,6 @@
                         label.classList.add('visible');
                     } else {
                         label.classList.remove('visible');
-                    }
-                }
-            });
-        }
-        
-        function updateWanderingNpcLabels() {
-            wanderingNpcs.forEach(npc => {
-                const npcEl = document.getElementById(npc.id);
-                if (npcEl) {
-                    const dist = Math.abs(playerX - npc.x) + Math.abs(playerY - npc.y);
-                    if (dist <= 2) {
-                        npcEl.classList.add('nearby');
-                    } else {
-                        npcEl.classList.remove('nearby');
                     }
                 }
             });
@@ -2363,7 +2489,7 @@
         }
         
         function enterHouse(house) {
-            screenTransition(() => {
+            screenTransition(async () => {
                 currentHouse = house;
                 currentLocation = 'inside';
                 npcs = [];
@@ -2371,12 +2497,73 @@
                 // Generate interior
                 generateInterior(house);
                 
+                // Cargar colaboradores de este repo (con cache)
+                await loadHouseCollaborators(house);
+                
                 // Position player at entrance
                 playerX = 3;
                 playerY = 5;
                 
                 updateCamera();
                 updateNpcProximity();
+            });
+        }
+        
+        // Cargar colaboradores para una casa específica
+        async function loadHouseCollaborators(house) {
+            const repoName = house.name;
+            const collaboratorSprites = ['npc-sprite-red', 'npc-sprite-yellow', 'npc-sprite-cyan', 'npc-sprite-pink'];
+            
+            // Verificar cache
+            if (collaboratorsCache[repoName]) {
+                renderCollaboratorsInHouse(collaboratorsCache[repoName], collaboratorSprites);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${USERNAME}/${repoName}/contributors?per_page=5`);
+                if (!response.ok) return;
+                
+                const contributors = await response.json();
+                
+                // Filtrar al dueño
+                const collabs = contributors.filter(c => c.login.toLowerCase() !== USERNAME.toLowerCase()).slice(0, 3);
+                
+                // Guardar en cache
+                collaboratorsCache[repoName] = collabs;
+                
+                // Renderizar
+                renderCollaboratorsInHouse(collabs, collaboratorSprites);
+                
+                console.log(`Loaded ${collabs.length} collaborators for ${repoName}`);
+            } catch (e) {
+                console.log(`Could not fetch collaborators for ${repoName}:`, e);
+            }
+        }
+        
+        // Renderizar colaboradores dentro de la casa
+        function renderCollaboratorsInHouse(collabs, sprites) {
+            const positions = [
+                {x: 1, y: 2},
+                {x: 5, y: 2},
+                {x: 1, y: 4}
+            ];
+            
+            collabs.forEach((collab, index) => {
+                if (index >= positions.length) return;
+                
+                const pos = positions[index];
+                const npcData = {
+                    x: pos.x,
+                    y: pos.y,
+                    name: collab.login,
+                    url: collab.html_url,
+                    spriteClass: sprites[index % sprites.length],
+                    isCollaborator: true
+                };
+                
+                npcs.push(npcData);
+                renderNpc(npcData);
             });
         }
         
@@ -2433,7 +2620,7 @@
 
         // ============== INTERACTION ==============
         function checkInteraction() {
-            // Check adjacent tiles for NPCs
+            // Check adjacent tiles
             const adjacentPositions = [
                 {x: playerX, y: playerY - 1},
                 {x: playerX, y: playerY + 1},
@@ -2441,7 +2628,31 @@
                 {x: playerX + 1, y: playerY}
             ];
             
-            // Primero verificar NPCs dentro de casas
+            // Verificar señales de tren
+            if (currentLocation === 'outside') {
+                for (const pos of adjacentPositions) {
+                    if (pos.y >= 0 && pos.y < MAP_ROWS && pos.x >= 0 && pos.x < MAP_COLS) {
+                        const tileType = MAP_DATA[pos.y][pos.x];
+                        
+                        // Señal de destino (ir a ciudad)
+                        if (tileType === 14 && currentCity === 'STATION') {
+                            const city = window.availableCities.find(c => c.x === pos.x && c.y === pos.y);
+                            if (city) {
+                                loadCity(city.language);
+                                return;
+                            }
+                        }
+                        
+                        // Señal de retorno (volver a estación)
+                        if (tileType === 15 && currentCity !== 'STATION') {
+                            returnToStation();
+                            return;
+                        }
+                    }
+                }
+            }
+            
+            // Verificar NPCs dentro de casas
             for (const pos of adjacentPositions) {
                 const npc = npcs.find(n => n.x === pos.x && n.y === pos.y);
                 if (npc) {
@@ -2450,10 +2661,10 @@
                 }
             }
             
-            // Verificar colaboradores vagantes (solo afuera)
-            if (currentLocation === 'outside') {
+            // Verificar colaboradores (NPCs adicionales dentro de casas)
+            if (currentLocation === 'inside') {
                 for (const pos of adjacentPositions) {
-                    const collab = wanderingNpcs.find(n => n.x === pos.x && n.y === pos.y);
+                    const collab = npcs.find(n => n.x === pos.x && n.y === pos.y && n.isCollaborator);
                     if (collab) {
                         showCollaboratorDialog(collab);
                         return;
