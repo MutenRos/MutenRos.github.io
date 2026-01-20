@@ -467,6 +467,14 @@
             border-radius: 3px;
             transition: all 0.3s ease;
         }
+        .hud-stats {
+            font-size: 0.32rem;
+            color: var(--gb-lightest);
+            background: rgba(15, 56, 15, 0.85);
+            padding: 3px 8px;
+            border: 2px solid var(--gb-dark);
+            border-radius: 3px;
+        }
         .hud-controls {
             font-size: 0.3rem;
             color: var(--gb-light);
@@ -475,6 +483,136 @@
             border: 1px solid var(--gb-dark);
             border-radius: 2px;
             opacity: 0.8;
+        }
+        
+        /* Achievement popup */
+        .achievement-popup {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(180deg, #ffd700 0%, #ffb800 100%);
+            color: #402000;
+            font-size: 0.4rem;
+            padding: 12px 20px;
+            border: 4px solid #805000;
+            border-radius: 6px;
+            z-index: 1000;
+            box-shadow: 
+                4px 4px 0 rgba(0,0,0,0.4),
+                0 0 20px rgba(255, 215, 0, 0.6);
+            text-align: center;
+            opacity: 0;
+            animation: achievement-slide 3s ease-out forwards;
+        }
+        .achievement-popup::before {
+            content: '🏆';
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        @keyframes achievement-slide {
+            0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+            15% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            85% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+        }
+        
+        /* Mini-mapa */
+        #minimap {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(15, 56, 15, 0.9);
+            border: 3px solid var(--gb-dark);
+            border-radius: 4px;
+            z-index: 100;
+            overflow: hidden;
+            image-rendering: pixelated;
+        }
+        #minimap-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        #minimap-player {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ff4444;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            box-shadow: 0 0 4px #ff4444;
+            animation: minimap-blink 1s infinite;
+        }
+        @keyframes minimap-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        #minimap-label {
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 6px;
+            color: var(--gb-lightest);
+            text-shadow: 1px 1px 0 var(--gb-dark);
+            white-space: nowrap;
+        }
+        
+        /* Sparkle effect para casas visitadas */
+        .house-visited::after {
+            content: '✓';
+            position: absolute;
+            top: -8px;
+            right: -4px;
+            font-size: 10px;
+            color: #00ff00;
+            text-shadow: 0 0 4px #00ff00;
+            z-index: 10;
+        }
+        
+        /* Footstep dust effect */
+        .footstep-dust {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+        }
+        .footstep-dust::before,
+        .footstep-dust::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(139, 119, 101, 0.6);
+            border-radius: 50%;
+            animation: dust-fade 0.4s ease-out forwards;
+        }
+        .footstep-dust::before {
+            left: 4px;
+            bottom: 2px;
+        }
+        .footstep-dust::after {
+            right: 4px;
+            bottom: 4px;
+            animation-delay: 0.05s;
+        }
+        @keyframes dust-fade {
+            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            100% { transform: translateY(-8px) scale(0.3); opacity: 0; }
+        }
+        
+        /* Grass rustle effect */
+        .grass-rustle {
+            animation: rustle 0.3s ease-out;
+        }
+        @keyframes rustle {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
         }
 
         #map {
@@ -2714,8 +2852,14 @@
                     <div id="interior-light-overlay"></div>
                     <div id="game-hud">
                         <div class="hud-location">📍 <span id="hud-location-text">ESTACIÓN</span></div>
+                        <div class="hud-stats">🏠 <span id="hud-visited">0</span>/<span id="hud-total">0</span> proyectos</div>
                         <div class="hud-weather" id="hud-weather">☀️</div>
-                        <div class="hud-controls">WASD/Flechas: Mover | ESPACIO: Interactuar</div>
+                        <div class="hud-controls">WASD/Flechas: Mover | M: Mapa</div>
+                    </div>
+                    <div id="minimap">
+                        <canvas id="minimap-canvas"></canvas>
+                        <div id="minimap-player"></div>
+                        <div id="minimap-label">MAPA</div>
                     </div>
                 </div>
 
@@ -3297,6 +3441,8 @@
         let citiesByLanguage = {};
         let currentCity = null;
         let collaboratorsCache = {}; // Cache para no repetir peticiones API
+        let visitedProjects = new Set(); // Track visited projects
+        let totalProjects = 0; // Total number of projects
         const USERNAME = 'MutenRos';
         
         async function loadReposAndGenerateMap() {
@@ -3306,6 +3452,7 @@
                 if (!response.ok) throw new Error('API Error');
                 
                 allRepos = await response.json();
+                totalProjects = allRepos.length; // Contar total de proyectos
                 
                 // Agrupar repos por lenguaje
                 citiesByLanguage = {};
@@ -3323,6 +3470,9 @@
                 );
                 
                 console.log('Cities by language:', sortedLanguages.map(l => `${l}: ${citiesByLanguage[l].length} repos`));
+                
+                // Cargar progreso guardado
+                loadVisitedProjects();
                 
                 // Cargar la estación de tren central
                 loadTrainStation(sortedLanguages);
@@ -3785,6 +3935,12 @@
             
             if (gameState !== 'walking' || isMoving) return;
             
+            // Toggle minimap
+            if (e.code === 'KeyM') {
+                toggleMinimap();
+                return;
+            }
+            
             let newX = playerX;
             let newY = playerY;
             let moved = false;
@@ -3861,12 +4017,16 @@
             
             if (SOLID_TILES.includes(tileType)) return;
             
-            movePlayer(newX, newY);
+            movePlayer(newX, newY, playerX, playerY);
             updateHouseLabels();
         }
         
-        function movePlayer(newX, newY) {
+        function movePlayer(newX, newY, oldX, oldY) {
             isMoving = true;
+            
+            // Crear efecto de polvo/hierba
+            createFootstepEffect(oldX || playerX, oldY || playerY);
+            
             playerX = newX;
             playerY = newY;
             
@@ -3881,6 +4041,33 @@
                 isMoving = false;
                 player.classList.remove('walking');
             }, 150);
+        }
+        
+        function createFootstepEffect(x, y) {
+            // Solo crear efecto en ciertos tiles y en exteriores
+            if (currentLocation === 'inside') return;
+            
+            const tile = MAP_DATA[y] && MAP_DATA[y][x];
+            if (tile === undefined) return;
+            
+            // Efecto de polvo en caminos
+            if (tile === 5 || tile === 6) {
+                const dust = document.createElement('div');
+                dust.className = 'footstep-dust';
+                dust.style.left = (x * TILE_SIZE) + 'px';
+                dust.style.top = ((y + 1) * TILE_SIZE) + 'px';
+                map.appendChild(dust);
+                setTimeout(() => dust.remove(), 400);
+            }
+            
+            // Efecto de rustle en hierba
+            if (tile === 0 || tile === 1) {
+                const tileEl = document.querySelector(`.tile[style*="left: ${x * TILE_SIZE}px"][style*="top: ${y * TILE_SIZE}px"]`);
+                if (tileEl) {
+                    tileEl.classList.add('grass-rustle');
+                    setTimeout(() => tileEl.classList.remove('grass-rustle'), 300);
+                }
+            }
         }
         
         function updateHouseLabels() {
@@ -3941,6 +4128,9 @@
                 // Actualizar HUD
                 updateHUD(house.name);
                 
+                // Trackear visita al proyecto
+                trackProjectVisit(house.name);
+                
                 // Cargar colaboradores de este repo (con cache)
                 await loadHouseCollaborators(house);
                 
@@ -3951,6 +4141,58 @@
                 updateCamera();
                 updateNpcProximity();
             });
+        }
+        
+        // Sistema de tracking de proyectos visitados
+        function trackProjectVisit(projectName) {
+            const wasNew = !visitedProjects.has(projectName);
+            visitedProjects.add(projectName);
+            
+            // Guardar en localStorage
+            localStorage.setItem('visitedProjects', JSON.stringify([...visitedProjects]));
+            
+            // Actualizar HUD
+            updateVisitedCount();
+            
+            // Mostrar logro si es primera visita
+            if (wasNew) {
+                showAchievement(`¡Nuevo proyecto descubierto!<br>${projectName}`);
+            }
+            
+            // Logro especial al visitar todos
+            if (visitedProjects.size === totalProjects && totalProjects > 0) {
+                setTimeout(() => {
+                    showAchievement('🎉 ¡COMPLETADO!<br>Has visitado todos los proyectos');
+                }, 3500);
+            }
+        }
+        
+        function updateVisitedCount() {
+            document.getElementById('hud-visited').textContent = visitedProjects.size;
+            document.getElementById('hud-total').textContent = totalProjects;
+        }
+        
+        function showAchievement(text) {
+            const popup = document.createElement('div');
+            popup.className = 'achievement-popup';
+            popup.innerHTML = text;
+            document.body.appendChild(popup);
+            
+            // Remover después de la animación
+            setTimeout(() => popup.remove(), 3100);
+        }
+        
+        function loadVisitedProjects() {
+            try {
+                const saved = localStorage.getItem('visitedProjects');
+                if (saved) {
+                    const projects = JSON.parse(saved);
+                    projects.forEach(p => visitedProjects.add(p));
+                }
+            } catch (e) {
+                console.log('No saved progress');
+            }
+            updateVisitedCount();
         }
         
         // Cargar colaboradores para una casa específica
@@ -4069,6 +4311,86 @@
             // Position player relative to camera
             player.style.left = (playerX * TILE_SIZE - cameraX) + 'px';
             player.style.top = (playerY * TILE_SIZE - cameraY) + 'px';
+            
+            // Actualizar mini-mapa
+            updateMinimap(mapCols, mapRows);
+        }
+        
+        // Sistema de mini-mapa
+        function updateMinimap(mapCols, mapRows) {
+            const canvas = document.getElementById('minimap-canvas');
+            const ctx = canvas.getContext('2d');
+            const minimap = document.getElementById('minimap');
+            const playerDot = document.getElementById('minimap-player');
+            
+            // Solo mostrar en exteriores
+            if (currentLocation === 'inside') {
+                minimap.style.display = 'none';
+                return;
+            }
+            minimap.style.display = 'block';
+            
+            // Ajustar canvas
+            canvas.width = 100;
+            canvas.height = 100;
+            
+            // Calcular escala
+            const scaleX = 100 / (mapCols * TILE_SIZE);
+            const scaleY = 100 / (mapRows * TILE_SIZE);
+            const scale = Math.min(scaleX, scaleY);
+            
+            // Limpiar
+            ctx.fillStyle = '#0f380f';
+            ctx.fillRect(0, 0, 100, 100);
+            
+            // Dibujar tiles simplificados
+            const currentMap = currentLocation === 'station' ? STATION_MAP : CITY_MAP;
+            for (let y = 0; y < currentMap.length; y++) {
+                for (let x = 0; x < currentMap[y].length; x++) {
+                    const tile = currentMap[y][x];
+                    let color;
+                    
+                    if (tile === 0) color = '#306230'; // Grass
+                    else if (tile === 3 || tile === 4) color = '#8b4513'; // House
+                    else if (tile === 5) color = '#555555'; // Road
+                    else if (tile === 14 || tile === 15) color = '#4a90d9'; // Water
+                    else if (tile >= 34 && tile <= 36) color = '#cc0000'; // Train
+                    else if (tile === 7 || tile === 8) color = '#306230'; // Trees
+                    else color = '#1a5a1a';
+                    
+                    ctx.fillStyle = color;
+                    ctx.fillRect(
+                        x * TILE_SIZE * scale,
+                        y * TILE_SIZE * scale,
+                        Math.max(1, TILE_SIZE * scale),
+                        Math.max(1, TILE_SIZE * scale)
+                    );
+                }
+            }
+            
+            // Marcar casas visitadas
+            houses.forEach(house => {
+                if (visitedProjects.has(house.name)) {
+                    ctx.fillStyle = '#00ff00';
+                    ctx.fillRect(
+                        house.x * TILE_SIZE * scale - 1,
+                        house.y * TILE_SIZE * scale - 1,
+                        3, 3
+                    );
+                }
+            });
+            
+            // Posición del jugador
+            const playerPosX = (playerX * TILE_SIZE * scale);
+            const playerPosY = (playerY * TILE_SIZE * scale);
+            playerDot.style.left = playerPosX + 'px';
+            playerDot.style.top = playerPosY + 'px';
+        }
+        
+        let minimapVisible = true;
+        function toggleMinimap() {
+            minimapVisible = !minimapVisible;
+            document.getElementById('minimap').style.display = minimapVisible ? 'block' : 'none';
         }
 
         // ============== INTERACTION ==============
