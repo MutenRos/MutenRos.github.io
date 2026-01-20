@@ -941,6 +941,207 @@
             box-shadow: 18px 0 #604020;
         }
 
+        /* ===== ENHANCED STATION TILES ===== */
+        
+        /* Train car (decorative) - Front */
+        .train-front {
+            background: #505050;
+        }
+        .train-front::before {
+            content: '';
+            position: absolute;
+            width: 28px; height: 22px;
+            left: 2px; top: 4px;
+            background: linear-gradient(180deg, #e04040 0%, #c03030 50%, #a02020 100%);
+            border: 3px solid #801010;
+            border-radius: 6px 12px 4px 4px;
+            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.2);
+        }
+        .train-front::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 6px;
+            left: 12px; top: 8px;
+            background: linear-gradient(180deg, #a0d0ff 0%, #6090c0 100%);
+            border: 2px solid #404040;
+            box-shadow: 
+                0 10px 0 3px #ffcc00,
+                -4px 10px 0 3px #ffcc00;
+        }
+        
+        /* Train car - Middle wagon */
+        .train-wagon {
+            background: #505050;
+        }
+        .train-wagon::before {
+            content: '';
+            position: absolute;
+            width: 30px; height: 20px;
+            left: 1px; top: 5px;
+            background: linear-gradient(180deg, #3080d0 0%, #2060a0 50%, #104080 100%);
+            border: 2px solid #0a2040;
+            border-radius: 2px;
+            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.15);
+        }
+        .train-wagon::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 8px;
+            left: 5px; top: 8px;
+            background: linear-gradient(180deg, #a0d0ff 0%, #6090c0 100%);
+            border: 2px solid #203040;
+            box-shadow: 10px 0 0 0 #a0d0ff, 10px 0 0 2px #203040;
+        }
+        
+        /* Train car - Back */
+        .train-back {
+            background: #505050;
+        }
+        .train-back::before {
+            content: '';
+            position: absolute;
+            width: 28px; height: 22px;
+            left: 2px; top: 4px;
+            background: linear-gradient(180deg, #e04040 0%, #c03030 50%, #a02020 100%);
+            border: 3px solid #801010;
+            border-radius: 4px 4px 4px 4px;
+            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.2);
+        }
+        .train-back::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            right: 6px; top: 18px;
+            background: #ff3030;
+            border: 2px solid #800000;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #ff0000;
+            animation: tail-light 1s ease-in-out infinite;
+        }
+        @keyframes tail-light {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Platform canopy/roof */
+        .canopy {
+            background: linear-gradient(180deg, #606060 0%, #404040 100%);
+            border: 2px solid #303030;
+        }
+        .canopy::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px, transparent 6px,
+                rgba(255,255,255,0.1) 6px, rgba(255,255,255,0.1) 8px
+            );
+        }
+        .canopy::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 12px;
+            left: 14px; bottom: -10px;
+            background: #505050;
+            border: 1px solid #303030;
+        }
+        
+        /* Column/pillar for station */
+        .column {
+            background: var(--gb-light);
+        }
+        .column::before {
+            content: '';
+            position: absolute;
+            width: 10px; height: 28px;
+            left: 11px; top: 2px;
+            background: linear-gradient(90deg, #808080 0%, #c0c0c0 40%, #a0a0a0 60%, #707070 100%);
+            border: 2px solid #505050;
+            border-radius: 2px 2px 0 0;
+        }
+        .column::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 4px;
+            left: 8px; top: 0;
+            background: #909090;
+            border: 2px solid #505050;
+        }
+        
+        /* Ticket booth */
+        .ticket-booth {
+            background: var(--gb-light);
+        }
+        .ticket-booth::before {
+            content: '';
+            position: absolute;
+            width: 26px; height: 24px;
+            left: 3px; top: 4px;
+            background: linear-gradient(180deg, #f0e8d0 0%, #d8d0b8 100%);
+            border: 3px solid #a08060;
+            border-radius: 2px;
+        }
+        .ticket-booth::after {
+            content: '🎫';
+            position: absolute;
+            font-size: 14px;
+            left: 9px; top: 8px;
+        }
+        
+        /* Information board */
+        .info-board {
+            background: var(--gb-light);
+        }
+        .info-board::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 16px;
+            left: 14px; bottom: 2px;
+            background: #505050;
+        }
+        .info-board::after {
+            content: '';
+            position: absolute;
+            width: 24px; height: 16px;
+            left: 4px; top: 4px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid #404040;
+            box-shadow: inset 0 0 8px rgba(100, 200, 255, 0.3);
+            animation: board-flicker 0.1s steps(2) infinite;
+        }
+        @keyframes board-flicker {
+            0%, 90% { opacity: 1; }
+            95% { opacity: 0.8; }
+        }
+        
+        /* Decorative fountain */
+        .fountain {
+            background: var(--gb-light);
+        }
+        .fountain::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 12px;
+            left: 4px; bottom: 4px;
+            background: linear-gradient(180deg, #808080 0%, #606060 100%);
+            border: 3px solid #404040;
+            border-radius: 50%;
+        }
+        .fountain::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 8px;
+            left: 14px; top: 8px;
+            background: linear-gradient(180deg, #80c0ff 0%, #4090d0 100%);
+            border-radius: 2px 2px 0 0;
+            animation: water-spray 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes water-spray {
+            0% { height: 8px; opacity: 0.8; }
+            100% { height: 12px; opacity: 1; }
+        }
+
         /* Return to station label */
         .return-label {
             position: absolute;
@@ -2621,6 +2822,8 @@
         // 13=train-track, 14=train-sign (destino), 15=train-return (volver)
         // 16=station-roof, 17=station-wall, 18=station-door, 19=platform, 30=bench
         // 31=station-clock, 32=vending-machine, 33=lamp-post
+        // 34=train-front, 35=train-wagon, 36=train-back, 37=canopy, 38=column
+        // 39=ticket-booth, 40=info-board, 41=fountain
         
         const TILE_TYPES = {
             0: 'grass', 1: 'path', 2: 'tree', 3: 'water', 4: 'tall-grass', 
@@ -2629,9 +2832,12 @@
             13: 'train-track', 14: 'train-sign', 15: 'train-return',
             16: 'station-roof', 17: 'station-wall', 18: 'station-door',
             19: 'platform', 30: 'bench', 31: 'station-clock', 
-            32: 'vending-machine', 33: 'lamp-post'
+            32: 'vending-machine', 33: 'lamp-post',
+            34: 'train-front', 35: 'train-wagon', 36: 'train-back',
+            37: 'canopy', 38: 'column', 39: 'ticket-booth', 
+            40: 'info-board', 41: 'fountain'
         };
-        const SOLID_TILES = [2, 3, 6, 10, 11, 16, 17, 30, 32, 33];
+        const SOLID_TILES = [2, 3, 6, 10, 11, 16, 17, 30, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41];
         
         // Interior map template (9x8) - Más espacioso
         const INTERIOR_MAP = [
@@ -2915,9 +3121,9 @@
             houses = [];
             wanderingNpcs = [];
             
-            // Mapa más grande para la estación
-            MAP_COLS = 28;
-            MAP_ROWS = 20;
+            // Mapa grande para una estación impresionante
+            MAP_COLS = 32;
+            MAP_ROWS = 24;
             MAP_DATA = [];
             
             // Inicializar con césped
@@ -2938,77 +3144,99 @@
                 MAP_DATA[y][MAP_COLS - 1] = 2;
             }
             
-            // ===== EDIFICIO DE LA ESTACIÓN (arriba) =====
-            const stationStartX = 8;
-            const stationWidth = 12;
+            // ===== GRAN EDIFICIO DE LA ESTACIÓN (arriba) =====
+            const stationStartX = 6;
+            const stationWidth = 20;
+            const centerX = Math.floor(MAP_COLS / 2);
             
-            // Techo de la estación (fila 2)
+            // Techo principal (doble altura para más presencia)
             for (let x = stationStartX; x < stationStartX + stationWidth; x++) {
-                MAP_DATA[2][x] = 16; // station-roof
+                MAP_DATA[1][x] = 16; // station-roof fila superior
+                MAP_DATA[2][x] = 16; // station-roof fila inferior
             }
             
-            // Paredes de la estación (fila 3)
+            // Paredes de la estación con detalles
             for (let x = stationStartX; x < stationStartX + stationWidth; x++) {
                 MAP_DATA[3][x] = 17; // station-wall
             }
-            // Puerta central
-            MAP_DATA[3][stationStartX + Math.floor(stationWidth / 2)] = 18; // station-door
             
-            // Camino desde la estación
-            for (let x = stationStartX; x < stationStartX + stationWidth; x++) {
-                MAP_DATA[4][x] = 1; // path
+            // Detalles en las paredes: relojes, ventanas
+            MAP_DATA[3][stationStartX + 2] = 31; // clock izquierda
+            MAP_DATA[3][stationStartX + stationWidth - 3] = 31; // clock derecha
+            
+            // Puertas (3 entradas)
+            MAP_DATA[3][centerX - 3] = 18; // puerta izquierda
+            MAP_DATA[3][centerX] = 18; // puerta central
+            MAP_DATA[3][centerX + 3] = 18; // puerta derecha
+            
+            // Columnas decorativas en fachada
+            MAP_DATA[3][stationStartX] = 38; // column
+            MAP_DATA[3][stationStartX + stationWidth - 1] = 38; // column
+            
+            // ===== PLAZA DE LA ESTACIÓN =====
+            // Suelo de la plaza (pavimento)
+            for (let y = 4; y <= 6; y++) {
+                for (let x = stationStartX; x < stationStartX + stationWidth; x++) {
+                    MAP_DATA[y][x] = 1; // path
+                }
             }
             
-            // ===== PLATAFORMAS Y VÍAS =====
+            // Taquillas y servicios en la plaza
+            MAP_DATA[5][stationStartX + 2] = 39; // ticket-booth izquierda
+            MAP_DATA[5][stationStartX + stationWidth - 3] = 39; // ticket-booth derecha
             
-            // Plataforma superior (andén 1)
-            for (let x = 2; x < MAP_COLS - 2; x++) {
-                MAP_DATA[6][x] = 19; // platform
+            // Paneles de información
+            MAP_DATA[5][centerX - 1] = 40; // info-board
+            MAP_DATA[5][centerX + 2] = 40; // info-board
+            
+            // Fuente decorativa en el centro de la plaza
+            MAP_DATA[6][centerX] = 41; // fountain
+            
+            // ===== MARQUESINAS SOBRE LOS ANDENES =====
+            // Marquesina andén 1
+            for (let x = 4; x < MAP_COLS - 4; x++) {
+                MAP_DATA[7][x] = 37; // canopy
             }
             
-            // Vía de tren 1
-            for (let x = 2; x < MAP_COLS - 2; x++) {
-                MAP_DATA[7][x] = 13; // train-track
-            }
-            
-            // Plataforma central (andén 2) - donde están los destinos
-            for (let x = 2; x < MAP_COLS - 2; x++) {
+            // ===== ANDÉN 1 (superior) =====
+            for (let x = 3; x < MAP_COLS - 3; x++) {
                 MAP_DATA[8][x] = 19; // platform
-                MAP_DATA[9][x] = 19; // platform
+            }
+            // Columnas en andén 1
+            MAP_DATA[8][6] = 38;
+            MAP_DATA[8][12] = 38;
+            MAP_DATA[8][19] = 38;
+            MAP_DATA[8][25] = 38;
+            
+            // ===== VÍA 1 CON TREN ESTACIONADO =====
+            for (let x = 3; x < MAP_COLS - 3; x++) {
+                MAP_DATA[9][x] = 13; // track
+            }
+            // Tren decorativo en vía 1
+            MAP_DATA[9][4] = 34;  // train-front
+            MAP_DATA[9][5] = 35;  // train-wagon
+            MAP_DATA[9][6] = 35;  // train-wagon
+            MAP_DATA[9][7] = 35;  // train-wagon
+            MAP_DATA[9][8] = 36;  // train-back
+            
+            // ===== ANDÉN 2 (central - DESTINOS) =====
+            for (let x = 3; x < MAP_COLS - 3; x++) {
+                MAP_DATA[10][x] = 19; // platform superior
+                MAP_DATA[11][x] = 19; // platform inferior (pasillo)
             }
             
-            // Vía de tren 2
-            for (let x = 2; x < MAP_COLS - 2; x++) {
-                MAP_DATA[10][x] = 13; // train-track
-            }
-            
-            // Plataforma inferior (andén 3)
-            for (let x = 2; x < MAP_COLS - 2; x++) {
-                MAP_DATA[11][x] = 19; // platform
-            }
-            
-            // ===== BANCOS EN LOS ANDENES =====
-            MAP_DATA[6][4] = 30;  // bench
-            MAP_DATA[6][10] = 30;
-            MAP_DATA[6][17] = 30;
-            MAP_DATA[6][23] = 30;
-            MAP_DATA[11][4] = 30;
-            MAP_DATA[11][10] = 30;
-            MAP_DATA[11][17] = 30;
-            MAP_DATA[11][23] = 30;
-            
-            // ===== CARTELES DE DESTINOS en la plataforma central =====
+            // ===== CARTELES DE DESTINOS =====
             window.availableCities = [];
             const maxCities = Math.min(languages.length, 8);
-            const startX = 4;
-            const spacing = 3;
+            const signStartX = 5;
+            const signSpacing = 3;
             
             for (let i = 0; i < maxCities; i++) {
-                const x = startX + (i * spacing);
-                const y = 8; // En la plataforma central
+                const x = signStartX + (i * signSpacing);
+                const y = 10;
                 
-                if (x < MAP_COLS - 3) {
-                    MAP_DATA[y][x] = 14; // Señal de destino
+                if (x < MAP_COLS - 4) {
+                    MAP_DATA[y][x] = 14; // train-sign
                     
                     window.availableCities.push({
                         x: x,
@@ -3019,62 +3247,81 @@
                 }
             }
             
-            // ===== ZONA DE ESPERA (abajo) =====
-            // Camino principal
-            for (let x = 4; x < MAP_COLS - 4; x++) {
-                MAP_DATA[13][x] = 1;
-                MAP_DATA[14][x] = 1;
+            // Bancos en andén central
+            MAP_DATA[11][5] = 30;
+            MAP_DATA[11][14] = 30;
+            MAP_DATA[11][23] = 30;
+            
+            // ===== VÍA 2 =====
+            for (let x = 3; x < MAP_COLS - 3; x++) {
+                MAP_DATA[12][x] = 13; // track
             }
-            // Camino de conexión a la estación
-            const centerX = Math.floor(MAP_COLS / 2);
-            for (let y = 4; y < 14; y++) {
+            
+            // ===== ANDÉN 3 (inferior) =====
+            for (let x = 3; x < MAP_COLS - 3; x++) {
+                MAP_DATA[13][x] = 19; // platform
+            }
+            // Bancos en andén 3
+            MAP_DATA[13][7] = 30;
+            MAP_DATA[13][16] = 30;
+            MAP_DATA[13][25] = 30;
+            
+            // Marquesina andén 3
+            for (let x = 4; x < MAP_COLS - 4; x++) {
+                MAP_DATA[14][x] = 37; // canopy
+            }
+            
+            // ===== ZONA DE ESPERA Y JARDINES =====
+            // Camino principal
+            for (let x = 5; x < MAP_COLS - 5; x++) {
+                MAP_DATA[16][x] = 1;
+                MAP_DATA[17][x] = 1;
+            }
+            
+            // Conexión vertical
+            for (let y = 6; y < 17; y++) {
                 MAP_DATA[y][centerX] = 1;
                 MAP_DATA[y][centerX + 1] = 1;
             }
             
-            // ===== DECORACIÓN =====
-            // Reloj de la estación (junto a la puerta)
-            MAP_DATA[3][stationStartX + 2] = 31; // station-clock
-            MAP_DATA[3][stationStartX + stationWidth - 3] = 31; // station-clock
+            // Máquinas expendedoras
+            MAP_DATA[16][6] = 32;
+            MAP_DATA[16][MAP_COLS - 7] = 32;
             
-            // Máquinas expendedoras en la zona de espera
-            MAP_DATA[13][5] = 32;  // vending-machine
-            MAP_DATA[13][MAP_COLS - 6] = 32;
+            // Farolas
+            MAP_DATA[15][5] = 33;
+            MAP_DATA[15][MAP_COLS - 6] = 33;
+            MAP_DATA[15][centerX - 4] = 33;
+            MAP_DATA[15][centerX + 5] = 33;
             
-            // Farolas en los andenes
-            MAP_DATA[5][6] = 33;   // lamp-post
-            MAP_DATA[5][14] = 33;
-            MAP_DATA[5][22] = 33;
-            MAP_DATA[12][6] = 33;
-            MAP_DATA[12][14] = 33;
-            MAP_DATA[12][22] = 33;
+            // Flores y decoración
+            MAP_DATA[18][4] = 5;
+            MAP_DATA[18][6] = 5;
+            MAP_DATA[18][MAP_COLS - 5] = 5;
+            MAP_DATA[18][MAP_COLS - 7] = 5;
             
-            // Flores decorativas
-            MAP_DATA[5][3] = 5;
-            MAP_DATA[5][MAP_COLS - 4] = 5;
-            MAP_DATA[12][3] = 5;
-            MAP_DATA[12][MAP_COLS - 4] = 5;
+            // Árboles decorativos
+            MAP_DATA[19][3] = 2;
+            MAP_DATA[19][7] = 2;
+            MAP_DATA[19][MAP_COLS - 4] = 2;
+            MAP_DATA[19][MAP_COLS - 8] = 2;
+            MAP_DATA[20][5] = 2;
+            MAP_DATA[20][MAP_COLS - 6] = 2;
             
-            // Más árboles decorativos
-            MAP_DATA[15][3] = 2;
-            MAP_DATA[15][MAP_COLS - 4] = 2;
-            MAP_DATA[16][4] = 2;
-            MAP_DATA[16][MAP_COLS - 5] = 2;
+            // Hierba alta
+            MAP_DATA[21][4] = 4;
+            MAP_DATA[21][8] = 4;
+            MAP_DATA[21][MAP_COLS - 5] = 4;
+            MAP_DATA[21][MAP_COLS - 9] = 4;
             
-            // Hierba alta decorativa
-            MAP_DATA[17][6] = 4;
-            MAP_DATA[17][8] = 4;
-            MAP_DATA[17][MAP_COLS - 7] = 4;
-            MAP_DATA[17][MAP_COLS - 9] = 4;
-            
-            // Posición inicial del jugador (en la zona de espera)
+            // Posición inicial del jugador
             playerX = centerX;
-            playerY = 14;
+            playerY = 17;
             
             // Renderizar mapa
             generateMap();
             
-            // Crear etiquetas de ciudades flotantes sobre los carteles
+            // Crear etiquetas de ciudades flotantes
             window.availableCities.forEach(city => {
                 const label = document.createElement('div');
                 label.className = 'city-label visible';
@@ -3089,7 +3336,7 @@
             // Título de estación
             const stationTitle = document.createElement('div');
             stationTitle.className = 'station-title';
-            stationTitle.innerHTML = '🚂 ESTACIÓN CENTRAL<small>Selecciona un destino</small>';
+            stationTitle.innerHTML = '🚂 ESTACIÓN CENTRAL<small>Selecciona un destino en el andén</small>';
             map.appendChild(stationTitle);
             
             // Actualizar HUD
@@ -3171,50 +3418,76 @@
         
         // Añadir mini estación de tren al mapa de la ciudad
         function addTrainStationToMap() {
-            // Añadir en parte inferior del mapa
-            const stationY = MAP_ROWS - 4;
-            const stationX = Math.floor(MAP_COLS / 2) - 3;
+            // Añadir mini estación en parte inferior del mapa
+            const stationY = MAP_ROWS - 5;
+            const stationX = Math.floor(MAP_COLS / 2) - 5;
             
-            // Mini edificio de estación (2x1)
+            // Mini edificio de estación (3x2)
             if (MAP_DATA[stationY - 2]) {
-                MAP_DATA[stationY - 2][stationX + 2] = 16; // roof
-                MAP_DATA[stationY - 2][stationX + 3] = 16; // roof
+                for (let x = stationX + 2; x < stationX + 6; x++) {
+                    if (x >= 0 && x < MAP_COLS) MAP_DATA[stationY - 2][x] = 16; // roof
+                }
             }
             if (MAP_DATA[stationY - 1]) {
-                MAP_DATA[stationY - 1][stationX + 2] = 17; // wall
-                MAP_DATA[stationY - 1][stationX + 3] = 18; // door
+                MAP_DATA[stationY - 1][stationX + 2] = 38; // column
+                MAP_DATA[stationY - 1][stationX + 3] = 17; // wall
+                MAP_DATA[stationY - 1][stationX + 4] = 18; // door
+                MAP_DATA[stationY - 1][stationX + 5] = 38; // column
             }
             
-            // Plataforma
-            for (let x = stationX; x < stationX + 8; x++) {
+            // Marquesina sobre andén
+            for (let x = stationX; x < stationX + 10; x++) {
+                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY - 1]) {
+                    if (x < stationX + 2 || x > stationX + 5) {
+                        MAP_DATA[stationY - 1][x] = 37; // canopy
+                    }
+                }
+            }
+            
+            // Plataforma amplia
+            for (let x = stationX; x < stationX + 10; x++) {
                 if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY]) {
                     MAP_DATA[stationY][x] = 19; // platform
                 }
             }
             
-            // Vías horizontales
-            for (let x = stationX - 1; x < stationX + 9; x++) {
+            // Vías con mini tren decorativo
+            for (let x = stationX - 2; x < stationX + 12; x++) {
                 if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY + 1]) {
                     MAP_DATA[stationY + 1][x] = 13; // track
                 }
             }
+            // Tren decorativo
+            if (MAP_DATA[stationY + 1]) {
+                if (stationX + 7 < MAP_COLS) MAP_DATA[stationY + 1][stationX + 7] = 34; // front
+                if (stationX + 8 < MAP_COLS) MAP_DATA[stationY + 1][stationX + 8] = 35; // wagon
+                if (stationX + 9 < MAP_COLS) MAP_DATA[stationY + 1][stationX + 9] = 36; // back
+            }
             
-            // Señal para volver (tile 15)
-            if (MAP_DATA[stationY] && stationX >= 0) {
+            // Señal para volver (prominente)
+            if (MAP_DATA[stationY] && stationX + 1 >= 0) {
                 MAP_DATA[stationY][stationX + 1] = 15;
             }
             
-            // Banco
-            if (MAP_DATA[stationY] && stationX + 5 < MAP_COLS) {
-                MAP_DATA[stationY][stationX + 5] = 30;
+            // Bancos
+            if (MAP_DATA[stationY] && stationX + 3 < MAP_COLS) {
+                MAP_DATA[stationY][stationX + 3] = 30;
+            }
+            if (MAP_DATA[stationY] && stationX + 6 < MAP_COLS) {
+                MAP_DATA[stationY][stationX + 6] = 30;
             }
             
-            // Farolas decorativas a los lados de la estación
-            if (MAP_DATA[stationY - 1] && stationX > 0) {
-                MAP_DATA[stationY - 1][stationX] = 33; // lamp-post izquierda
+            // Farolas
+            if (MAP_DATA[stationY] && stationX >= 0) {
+                MAP_DATA[stationY][stationX] = 33;
             }
-            if (MAP_DATA[stationY - 1] && stationX + 6 < MAP_COLS) {
-                MAP_DATA[stationY - 1][stationX + 6] = 33; // lamp-post derecha
+            if (MAP_DATA[stationY] && stationX + 9 < MAP_COLS) {
+                MAP_DATA[stationY][stationX + 9] = 33;
+            }
+            
+            // Panel informativo
+            if (MAP_DATA[stationY] && stationX + 8 < MAP_COLS) {
+                MAP_DATA[stationY][stationX + 8] = 40;
             }
         }
         
