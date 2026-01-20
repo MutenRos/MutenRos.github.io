@@ -4046,8 +4046,9 @@
         function createFootstepEffect(x, y) {
             // Solo crear efecto en ciertos tiles y en exteriores
             if (currentLocation === 'inside') return;
+            if (!MAP_DATA || !MAP_DATA[y]) return;
             
-            const tile = MAP_DATA[y] && MAP_DATA[y][x];
+            const tile = MAP_DATA[y][x];
             if (tile === undefined) return;
             
             // Efecto de polvo en caminos
@@ -4058,15 +4059,6 @@
                 dust.style.top = ((y + 1) * TILE_SIZE) + 'px';
                 map.appendChild(dust);
                 setTimeout(() => dust.remove(), 400);
-            }
-            
-            // Efecto de rustle en hierba
-            if (tile === 0 || tile === 1) {
-                const tileEl = document.querySelector(`.tile[style*="left: ${x * TILE_SIZE}px"][style*="top: ${y * TILE_SIZE}px"]`);
-                if (tileEl) {
-                    tileEl.classList.add('grass-rustle');
-                    setTimeout(() => tileEl.classList.remove('grass-rustle'), 300);
-                }
             }
         }
         
@@ -4344,10 +4336,12 @@
             ctx.fillRect(0, 0, 100, 100);
             
             // Dibujar tiles simplificados
-            const currentMap = currentLocation === 'station' ? STATION_MAP : CITY_MAP;
-            for (let y = 0; y < currentMap.length; y++) {
-                for (let x = 0; x < currentMap[y].length; x++) {
-                    const tile = currentMap[y][x];
+            if (!MAP_DATA || MAP_DATA.length === 0) return;
+            
+            for (let y = 0; y < MAP_DATA.length; y++) {
+                if (!MAP_DATA[y]) continue;
+                for (let x = 0; x < MAP_DATA[y].length; x++) {
+                    const tile = MAP_DATA[y][x];
                     let color;
                     
                     if (tile === 0) color = '#306230'; // Grass
