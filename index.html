@@ -7,28 +7,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Classic 8-bit Game Boy palette */
-            --gb-lightest: #9bbc0f;
-            --gb-light: #8bac0f;
-            --gb-dark: #306230;
-            --gb-darkest: #0f380f;
+            /* GBA 16-bit Full Color Palette */
+            --gb-lightest: #88d850;
+            --gb-light: #60b830;
+            --gb-dark: #308020;
+            --gb-darkest: #185010;
             --tile-size: 32px;
             
-            /* Extended color palette */
-            --water-light: #5090d0;
-            --water-mid: #4080c0;
-            --water-dark: #3060a0;
-            --wood-light: #a08060;
-            --wood-mid: #805030;
-            --wood-dark: #604020;
-            --roof-light: #e06060;
-            --roof-mid: #c04040;
-            --roof-dark: #801010;
+            /* Sky & Environment */
+            --sky-day: #78c8f0;
+            --sky-sunset: #f89858;
+            --sky-night: #283048;
             
-            /* UI Colors */
-            --ui-bg: #f8f0e0;
-            --ui-border: #402010;
-            --ui-shadow: rgba(0,0,0,0.4);
+            /* Nature colors - GBA style */
+            --grass-light: #70d048;
+            --grass-mid: #50b030;
+            --grass-dark: #308818;
+            --grass-shadow: #206010;
+            
+            /* Water - vibrant GBA blue */
+            --water-light: #58c8f8;
+            --water-mid: #3898d8;
+            --water-dark: #2068a8;
+            --water-deep: #184878;
+            
+            /* Wood & Earth */
+            --wood-light: #d8a870;
+            --wood-mid: #a87840;
+            --wood-dark: #785020;
+            --earth-light: #c89860;
+            --earth-mid: #987040;
+            --earth-dark: #604020;
+            
+            /* Building materials */
+            --roof-red: #e85848;
+            --roof-red-light: #f87868;
+            --roof-red-dark: #b83020;
+            --roof-blue: #4878c8;
+            --roof-blue-light: #6898e8;
+            --roof-blue-dark: #2850a0;
+            --wall-light: #f8f0e0;
+            --wall-mid: #e8d8c0;
+            --wall-dark: #c8b898;
+            --brick-light: #d88858;
+            --brick-mid: #b86838;
+            --brick-dark: #884818;
+            
+            /* Stone & Metal */
+            --stone-light: #b8b8c0;
+            --stone-mid: #909098;
+            --stone-dark: #606068;
+            --metal-light: #d0d8e0;
+            --metal-mid: #a0a8b0;
+            --metal-dark: #707880;
+            
+            /* UI Colors - Pokemon style */
+            --ui-bg: #f8f0d8;
+            --ui-border: #584038;
+            --ui-shadow: rgba(40, 32, 24, 0.5);
+            --ui-highlight: #fff8e8;
+            --ui-text: #383030;
+            
+            /* Accent colors */
+            --accent-yellow: #f8d830;
+            --accent-orange: #f89030;
+            --accent-pink: #f87898;
+            --accent-purple: #9868c8;
+            --accent-cyan: #48d8e8;
             
             /* Animation speeds */
             --anim-fast: 0.15s;
@@ -47,7 +92,7 @@
 
         body {
             font-family: 'Press Start 2P', cursive;
-            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a12 100%);
+            background: radial-gradient(ellipse at center, #282840 0%, #101018 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -55,56 +100,60 @@
             overflow: hidden;
         }
 
-        /* Premium Game Boy Frame with glow */
+        /* GBA-style Frame - sleeker design */
         .gameboy-frame {
-            background: linear-gradient(145deg, #5a5a9a 0%, #3a3a6a 50%, #2a2a5a 100%);
-            padding: 20px;
-            border: 4px solid #1a1a3a;
+            background: linear-gradient(145deg, #4848a0 0%, #303078 50%, #202058 100%);
+            padding: 16px;
+            border: 3px solid #181838;
+            border-radius: 8px;
             box-shadow: 
-                inset 2px 2px 0 #7a7aca,
-                inset -2px -2px 0 #2a2a4a,
-                0 0 40px rgba(155, 188, 15, 0.3),
-                0 0 80px rgba(155, 188, 15, 0.1),
-                12px 12px 0 rgba(0,0,0,0.5);
+                inset 2px 2px 0 #6868c0,
+                inset -2px -2px 0 #202048,
+                0 0 50px rgba(88, 200, 248, 0.2),
+                0 0 100px rgba(88, 200, 248, 0.1),
+                10px 10px 0 rgba(0,0,0,0.5);
             position: relative;
         }
 
-        /* Power LED */
+        /* Power LED - GBA purple/blue */
         .gameboy-frame::before {
             content: '';
             position: absolute;
-            top: 8px;
-            left: 20px;
-            width: 8px;
-            height: 8px;
-            background: #40ff40;
-            box-shadow: 0 0 8px #40ff40, 0 0 16px #40ff40;
+            top: 6px;
+            left: 16px;
+            width: 6px;
+            height: 6px;
+            background: #58f8a0;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #58f8a0, 0 0 16px #58f8a0;
             animation: led-pulse 2s ease-in-out infinite;
         }
 
         @keyframes led-pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 8px #40ff40, 0 0 16px #40ff40; }
-            50% { opacity: 0.7; box-shadow: 0 0 4px #40ff40, 0 0 8px #40ff40; }
+            0%, 100% { opacity: 1; box-shadow: 0 0 8px #58f8a0, 0 0 16px #58f8a0; }
+            50% { opacity: 0.7; box-shadow: 0 0 4px #58f8a0, 0 0 8px #58f8a0; }
         }
 
         .screen-bezel {
-            background: #0a0a16;
-            padding: 16px;
-            border: 4px solid #050508;
+            background: #080810;
+            padding: 12px;
+            border: 3px solid #040408;
+            border-radius: 4px;
             box-shadow: 
-                inset 4px 4px 8px rgba(0,0,0,0.8),
-                inset -2px -2px 4px rgba(255,255,255,0.05);
+                inset 4px 4px 8px rgba(0,0,0,0.9),
+                inset -2px -2px 4px rgba(255,255,255,0.03);
         }
 
-        /* Main Game Screen with CRT effect */
+        /* Main Game Screen - GBA widescreen feel */
         #game-container {
             width: 480px;
             height: 432px;
-            background-color: var(--gb-lightest);
+            background: linear-gradient(180deg, var(--sky-day) 0%, var(--grass-light) 100%);
             position: relative;
             overflow: hidden;
             image-rendering: pixelated;
-            border: 4px solid var(--gb-darkest);
+            border: 3px solid #282830;
+            border-radius: 2px;
             box-shadow: 
                 inset 0 0 60px rgba(15, 56, 15, 0.3),
                 0 0 20px rgba(155, 188, 15, 0.2);
@@ -155,13 +204,13 @@
             50% { opacity: 0.98; }
         }
 
-        /* Intro Screen - Premium AAA Style */
+        /* Intro Screen - GBA Premium Style */
         #intro-screen {
             position: absolute;
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(ellipse at center, var(--gb-lightest) 0%, var(--gb-light) 60%, var(--gb-dark) 100%);
+                radial-gradient(ellipse at 50% 30%, #a8e0f8 0%, #78c0e8 30%, #4898d0 60%, #3070a0 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -170,30 +219,52 @@
             text-align: center;
             overflow: hidden;
         }
+        
+        /* Decorative clouds in intro */
+        #intro-screen::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 40%;
+            top: 10%;
+            left: -50%;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.8) 0%, transparent 30%),
+                radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.6) 0%, transparent 25%),
+                radial-gradient(ellipse at 80% 50%, rgba(255,255,255,0.7) 0%, transparent 28%);
+            animation: clouds-drift 20s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes clouds-drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(25%); }
+        }
 
-        /* Decorative frame border */
+        /* Decorative frame border - GBA style */
         #intro-screen::after {
             content: '';
             position: absolute;
-            top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border: 4px solid var(--gb-darkest);
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 3px solid #204080;
+            border-radius: 4px;
             box-shadow: 
-                inset 0 0 0 4px var(--gb-dark),
-                inset 0 0 0 8px var(--gb-light),
-                0 0 20px rgba(0,0,0,0.3);
+                inset 0 0 0 3px #3068b0,
+                inset 0 0 0 6px rgba(255,255,255,0.2),
+                0 0 30px rgba(64, 128, 200, 0.3);
             pointer-events: none;
         }
 
-        /* Animated logo */
+        /* Animated logo - GBA vibrant */
         #intro-screen h1 {
-            color: var(--gb-darkest);
-            font-size: 1.3rem;
+            color: #f8f8f8;
+            font-size: 1.4rem;
             margin-bottom: 15px;
             line-height: 1.6;
             text-shadow: 
-                4px 4px 0 var(--gb-dark),
-                -1px -1px 0 var(--gb-light),
-                0 0 20px rgba(155, 188, 15, 0.5);
+                3px 3px 0 #204080,
+                5px 5px 0 rgba(32, 64, 128, 0.5),
+                0 0 30px rgba(88, 200, 248, 0.6);
             animation: logo-bounce 2s ease-in-out infinite, title-shimmer 3s linear infinite;
             position: relative;
             z-index: 1;
@@ -201,22 +272,24 @@
 
         @keyframes logo-bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-8px); }
         }
 
         @keyframes title-shimmer {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.1); }
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+            50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,255,255,0.5)); }
         }
 
-        /* Version badge */
+        /* Version badge - GBA style */
         #intro-screen p {
-            color: var(--gb-darkest);
+            color: #303040;
             font-size: 0.55rem;
             margin-bottom: 12px;
-            padding: 4px 12px;
-            background: var(--gb-light);
-            border: 2px solid var(--gb-dark);
+            padding: 5px 14px;
+            background: linear-gradient(180deg, #f8f0d8 0%, #e8d8b8 100%);
+            border: 2px solid #a08860;
+            border-radius: 3px;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
             position: relative;
             z-index: 1;
         }
@@ -226,18 +299,23 @@
         }
 
         .press-start {
-            color: var(--gb-darkest);
+            color: #282830;
             font-size: 0.75rem;
             animation: blink 1s steps(2) infinite, press-glow 2s ease-in-out infinite;
             margin-top: 40px;
             cursor: pointer;
-            text-shadow: 2px 2px 0 var(--gb-dark);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
             padding: 14px 28px;
-            border: 4px solid var(--gb-darkest);
-            background: linear-gradient(180deg, var(--gb-lightest) 0%, var(--gb-light) 100%);
+            border: 3px solid #785830;
+            border-radius: 4px;
+            background: linear-gradient(180deg, #f8e880 0%, #e8c840 50%, #d8b020 100%);
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.4),
+                3px 3px 0 rgba(0,0,0,0.3),
+                0 0 20px rgba(248, 200, 64, 0.4);
             position: relative;
             z-index: 1;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .press-start::before {
@@ -437,7 +515,7 @@
             opacity: 1;
         }
 
-        /* Game HUD */
+        /* Game HUD - GBA Style */
         #game-hud {
             position: absolute;
             bottom: 8px;
@@ -452,73 +530,79 @@
         }
         .hud-location {
             font-size: 0.35rem;
-            color: var(--gb-lightest);
-            background: rgba(15, 56, 15, 0.85);
-            padding: 4px 10px;
-            border: 2px solid var(--gb-dark);
-            border-radius: 3px;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            color: #f8f8f8;
+            background: linear-gradient(180deg, rgba(48, 80, 128, 0.9) 0%, rgba(32, 56, 96, 0.9) 100%);
+            padding: 5px 12px;
+            border: 2px solid #4070b0;
+            border-radius: 4px;
+            box-shadow: 
+                inset 0 1px 0 rgba(255,255,255,0.2),
+                2px 2px 0 rgba(0,0,0,0.3);
         }
         .hud-weather {
             font-size: 16px;
-            background: rgba(15, 56, 15, 0.7);
-            padding: 2px 8px;
-            border: 2px solid var(--gb-dark);
-            border-radius: 3px;
+            background: linear-gradient(180deg, rgba(48, 80, 128, 0.85) 0%, rgba(32, 56, 96, 0.85) 100%);
+            padding: 3px 10px;
+            border: 2px solid #4070b0;
+            border-radius: 4px;
             transition: all 0.3s ease;
         }
         .hud-stats {
             font-size: 0.32rem;
-            color: var(--gb-lightest);
-            background: rgba(15, 56, 15, 0.85);
-            padding: 3px 8px;
-            border: 2px solid var(--gb-dark);
-            border-radius: 3px;
+            color: #f8f8f8;
+            background: linear-gradient(180deg, rgba(48, 80, 128, 0.9) 0%, rgba(32, 56, 96, 0.9) 100%);
+            padding: 4px 10px;
+            border: 2px solid #4070b0;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
         }
         .hud-controls {
             font-size: 0.3rem;
-            color: var(--gb-light);
-            background: rgba(15, 56, 15, 0.7);
-            padding: 3px 8px;
-            border: 1px solid var(--gb-dark);
-            border-radius: 2px;
-            opacity: 0.8;
+            color: #d0d8e0;
+            background: linear-gradient(180deg, rgba(40, 64, 96, 0.8) 0%, rgba(24, 40, 64, 0.8) 100%);
+            padding: 3px 10px;
+            border: 1px solid #3060a0;
+            border-radius: 3px;
+            opacity: 0.9;
         }
         
-        /* Achievement popup */
+        /* Achievement popup - GBA golden style */
         .achievement-popup {
             position: fixed;
             top: 50px;
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
-            background: linear-gradient(180deg, #ffd700 0%, #ffb800 100%);
-            color: #402000;
+            background: linear-gradient(180deg, #f8e060 0%, #e8c030 50%, #d8a010 100%);
+            color: #503000;
             font-size: 0.4rem;
-            padding: 12px 20px;
-            border: 4px solid #805000;
+            padding: 14px 24px;
+            border: 3px solid #906010;
             border-radius: 6px;
             z-index: 1000;
             box-shadow: 
-                4px 4px 0 rgba(0,0,0,0.4),
-                0 0 20px rgba(255, 215, 0, 0.6);
+                inset 0 2px 0 rgba(255,255,255,0.4),
+                4px 4px 0 rgba(0,0,0,0.35),
+                0 0 30px rgba(248, 200, 64, 0.5);
             text-align: center;
             opacity: 0;
             animation: achievement-slide 3s ease-out forwards;
         }
         .achievement-popup::before {
             content: '🏆';
-            font-size: 24px;
+            font-size: 26px;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
         }
         @keyframes achievement-slide {
-            0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
-            15% { transform: translateX(-50%) translateY(0); opacity: 1; }
-            85% { transform: translateX(-50%) translateY(0); opacity: 1; }
-            100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+            0% { transform: translateX(-50%) translateY(-100px) scale(0.8); opacity: 0; }
+            15% { transform: translateX(-50%) translateY(0) scale(1.05); opacity: 1; }
+            25% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+            85% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-100px) scale(0.8); opacity: 0; }
         }
         
-        /* Mini-mapa */
+        /* Mini-mapa - GBA style */
         #minimap {
             position: fixed;
             bottom: 20px;
@@ -628,9 +712,9 @@
             image-rendering: pixelated;
         }
 
-        /* Grass tile - Pokemon GBC style */
+        /* Grass tile - Pokemon GBA style with rich colors */
         .grass {
-            background: var(--gb-light);
+            background: linear-gradient(135deg, var(--grass-light) 0%, var(--grass-mid) 100%);
         }
         .grass::before {
             content: '';
@@ -638,11 +722,24 @@
             width: 4px; height: 6px;
             background: transparent;
             box-shadow:
-                6px 10px var(--gb-dark),
-                14px 6px var(--gb-dark),
-                22px 14px var(--gb-dark),
-                10px 22px var(--gb-dark),
-                26px 8px var(--gb-dark);
+                6px 10px var(--grass-dark),
+                14px 6px var(--grass-shadow),
+                22px 14px var(--grass-dark),
+                10px 22px var(--grass-shadow),
+                26px 8px var(--grass-dark),
+                18px 18px var(--grass-shadow);
+        }
+        
+        /* Some grass tiles have flowers */
+        .grass:nth-child(7n)::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                8px 16px #f8d858,
+                20px 10px #f87888,
+                12px 24px #88c8f8;
         }
         
         /* Some grass tiles have extra grass blades */
@@ -652,22 +749,32 @@
             width: 4px; height: 6px;
             background: transparent;
             box-shadow:
-                8px 16px var(--gb-dark),
-                16px 8px var(--gb-dark);
+                8px 16px var(--grass-shadow),
+                16px 8px var(--grass-dark);
         }
 
         /* Tall grass - with rustle animation */
         .tall-grass {
-            background: var(--gb-dark);
+            background: linear-gradient(180deg, var(--grass-mid) 0%, var(--grass-dark) 100%);
             background-image: 
                 repeating-linear-gradient(
                     0deg,
-                    var(--gb-darkest) 0px,
-                    var(--gb-darkest) 4px,
+                    var(--grass-shadow) 0px,
+                    var(--grass-shadow) 4px,
                     transparent 4px,
                     transparent 8px
                 );
             animation: tall-grass-move 1.5s ease-in-out infinite;
+        }
+        
+        .tall-grass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
         }
         
         .tall-grass:nth-child(3n) {
@@ -683,19 +790,29 @@
             50% { background-position: 2px 0; }
         }
 
-        /* Path/Road - with footstep marks */
+        /* Path/Road - sandy with details */
         .path {
-            background: #d0c090;
+            background: linear-gradient(135deg, #e8d8b0 0%, #d0c090 50%, #c8b880 100%);
             background-image:
-                linear-gradient(90deg, #b0a070 1px, transparent 1px),
-                linear-gradient(0deg, #b0a070 1px, transparent 1px);
+                linear-gradient(90deg, rgba(160,128,80,0.3) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(160,128,80,0.3) 1px, transparent 1px);
             background-size: 8px 8px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+        }
+        
+        .path::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 75%, rgba(180,160,120,0.4) 2px, transparent 2px),
+                radial-gradient(circle at 75% 25%, rgba(180,160,120,0.4) 2px, transparent 2px);
         }
 
-        /* Tree tile - layered with shadow */
+        /* Tree tile - GBA style with more colors */
         .tree {
-            background: var(--gb-light);
+            background: linear-gradient(135deg, var(--grass-light) 0%, var(--grass-mid) 100%);
         }
         .tree::before {
             content: '';
@@ -703,12 +820,12 @@
             width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                /* Tree crown - layer 1 */
-                12px 0 var(--gb-darkest), 16px 0 var(--gb-darkest),
-                8px 4px var(--gb-darkest), 12px 4px var(--gb-dark), 16px 4px var(--gb-dark), 20px 4px var(--gb-darkest),
-                4px 8px var(--gb-darkest), 8px 8px var(--gb-dark), 12px 8px #4a8a3a, 16px 8px #4a8a3a, 20px 8px var(--gb-dark), 24px 8px var(--gb-darkest),
-                4px 12px var(--gb-darkest), 8px 12px #4a8a3a, 12px 12px var(--gb-dark), 16px 12px var(--gb-dark), 20px 12px #4a8a3a, 24px 12px var(--gb-darkest),
-                8px 16px var(--gb-darkest), 12px 16px var(--gb-dark), 16px 16px var(--gb-dark), 20px 16px var(--gb-darkest);
+                /* Tree crown - layer 1 with highlight */
+                12px 0 #206810, 16px 0 #206810,
+                8px 4px #206810, 12px 4px #308818, 16px 4px #40a028, 20px 4px #206810,
+                4px 8px #185010, 8px 8px #308818, 12px 8px #50c038, 16px 8px #40a028, 20px 8px #308818, 24px 8px #185010,
+                4px 12px #185010, 8px 12px #40a028, 12px 12px #308818, 16px 12px #308818, 20px 12px #40a028, 24px 12px #185010,
+                8px 16px #206810, 12px 16px #308818, 16px 16px #308818, 20px 16px #206810;
         }
         .tree::after {
             content: '';
@@ -716,17 +833,17 @@
             width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                /* Trunk */
-                12px 20px #604020, 16px 20px #805030,
-                12px 24px #604020, 16px 24px #805030,
-                12px 28px #604020, 16px 28px #805030,
+                /* Trunk with gradient */
+                12px 20px #785028, 16px 20px #a87848,
+                12px 24px #604018, 16px 24px #987038,
+                12px 28px #503010, 16px 28px #886028,
                 /* Shadow on ground */
-                8px 28px rgba(0,0,0,0.2), 20px 28px rgba(0,0,0,0.2);
+                8px 28px rgba(0,0,0,0.25), 20px 28px rgba(0,0,0,0.25);
         }
 
-        /* Water tile - premium wave animation */
+        /* Water tile - GBA vibrant wave animation */
         .water {
-            background: var(--water-mid);
+            background: linear-gradient(180deg, var(--water-light) 0%, var(--water-mid) 50%, var(--water-dark) 100%);
             position: relative;
             overflow: hidden;
         }
@@ -736,9 +853,9 @@
             width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                0 4px var(--water-dark), 8px 4px var(--water-light), 16px 4px var(--water-dark), 24px 4px var(--water-light),
-                4px 12px var(--water-light), 12px 12px var(--water-dark), 20px 12px var(--water-light), 28px 12px var(--water-dark),
-                0 20px var(--water-dark), 8px 20px var(--water-light), 16px 20px var(--water-dark), 24px 20px var(--water-light),
+                0 4px var(--water-deep), 8px 4px #78d8f8, 16px 4px var(--water-deep), 24px 4px #78d8f8,
+                4px 12px #78d8f8, 12px 12px var(--water-deep), 20px 12px #78d8f8, 28px 12px var(--water-deep),
+                0 20px var(--water-deep), 8px 20px #78d8f8, 16px 20px var(--water-deep), 24px 20px #78d8f8,
                 4px 28px var(--water-light), 12px 28px var(--water-dark), 20px 28px var(--water-light), 28px 28px var(--water-dark);
             animation: water-wave 1s steps(4) infinite;
         }
@@ -849,14 +966,19 @@
             background: #604020;
         }
 
-        /* House roof (top part) - Pokemon style with tile lines */
+        /* House roof (top part) - GBA Pokemon style with rich shading */
         .house-roof {
             background: linear-gradient(180deg, 
-                #e06060 0%, #e06060 30%,
-                #c04040 30%, #c04040 60%,
-                #a02020 60%, #a02020 100%);
-            border: 2px solid #801010;
-            border-top: 4px solid #ff8080;
+                var(--roof-red-light) 0%, 
+                var(--roof-red) 25%,
+                var(--roof-red) 50%,
+                var(--roof-red-dark) 75%,
+                #901818 100%);
+            border: 2px solid var(--roof-red-dark);
+            border-top: 3px solid #ff9080;
+            box-shadow: 
+                inset 0 4px 0 rgba(255,255,255,0.15),
+                2px 2px 0 rgba(0,0,0,0.2);
         }
         .house-roof::before {
             content: '';
@@ -864,97 +986,152 @@
             width: 100%; height: 100%;
             background: repeating-linear-gradient(
                 180deg,
-                transparent 0px, transparent 6px,
-                rgba(0,0,0,0.2) 6px, rgba(0,0,0,0.2) 8px
+                transparent 0px, transparent 5px,
+                rgba(0,0,0,0.15) 5px, rgba(0,0,0,0.15) 6px
             );
         }
         .house-roof::after {
             content: '';
             position: absolute;
-            bottom: -4px; left: 2px; right: 2px;
-            height: 4px;
-            background: #801010;
+            bottom: -3px; left: 2px; right: 2px;
+            height: 3px;
+            background: linear-gradient(90deg, #681010 0%, #901818 50%, #681010 100%);
         }
 
-        /* House wall - Pokemon style with window */
+        /* House wall - GBA style with depth and texture */
         .house-wall {
-            background: #f8f0e0;
-            border: 2px solid #a08060;
-            border-bottom: 4px solid #806040;
+            background: linear-gradient(135deg, var(--wall-light) 0%, var(--wall-mid) 50%, var(--wall-dark) 100%);
+            border: 2px solid #b09870;
+            border-bottom: 4px solid #907850;
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.1);
         }
         .house-wall::before {
             content: '';
             position: absolute;
             width: 14px; height: 14px;
             left: 9px; top: 6px;
-            background: linear-gradient(135deg, #b0e0ff 0%, #80c0f0 50%, #60a0d0 100%);
-            border: 3px solid #404040;
+            background: linear-gradient(135deg, #c0e8ff 0%, #90c8f0 40%, #60a0d8 100%);
+            border: 3px solid #484850;
             box-shadow: 
-                inset 2px 2px 0 rgba(255,255,255,0.5),
-                2px 2px 0 rgba(0,0,0,0.3);
+                inset 2px 2px 0 rgba(255,255,255,0.6),
+                inset -1px -1px 0 rgba(0,0,0,0.2),
+                2px 2px 0 rgba(0,0,0,0.25);
         }
         .house-wall::after {
             content: '';
             position: absolute;
             width: 2px; height: 14px;
             left: 15px; top: 6px;
-            background: #303030;
+            background: linear-gradient(180deg, #404048 0%, #303038 100%);
         }
 
-        /* House door - Pokemon style entrance */
+        /* House door - GBA Pokemon style entrance */
         .house-door {
-            background: #f8f0e0;
-            border: 2px solid #a08060;
+            background: linear-gradient(135deg, var(--wall-light) 0%, var(--wall-mid) 100%);
+            border: 2px solid #b09870;
             border-bottom: none;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
         }
         .house-door:hover {
-            background: #fff8f0;
+            background: linear-gradient(135deg, #fffff0 0%, var(--wall-light) 100%);
+            transform: scale(1.02);
         }
         .house-door::before {
             content: '';
             position: absolute;
             width: 18px; height: 26px;
             left: 7px; top: 2px;
-            background: linear-gradient(180deg, #906030 0%, #704020 100%);
-            border: 3px solid #503010;
+            background: linear-gradient(135deg, #a87048 0%, #785028 50%, #583818 100%);
+            border: 3px solid #402810;
             border-radius: 2px 2px 0 0;
-            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.2);
+            box-shadow: 
+                inset 2px 2px 0 rgba(255,255,255,0.25),
+                inset -1px -1px 0 rgba(0,0,0,0.3);
         }
         .house-door::after {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
+            width: 5px; height: 5px;
             left: 20px; top: 14px;
-            background: radial-gradient(circle, #ffe040 0%, #c0a000 100%);
+            background: radial-gradient(circle at 30% 30%, #fff8a0 0%, #f8d830 40%, #c89800 100%);
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(255, 220, 100, 0.8);
-            animation: door-glow 1.5s ease-in-out infinite;
+            box-shadow: 
+                0 0 6px rgba(255, 220, 100, 0.6),
+                1px 1px 0 rgba(0,0,0,0.3);
+            animation: door-glow 2s ease-in-out infinite;
         }
 
         @keyframes door-glow {
-            0%, 100% { box-shadow: 0 0 4px rgba(255, 200, 100, 0.3); }
-            50% { box-shadow: 0 0 10px rgba(255, 200, 100, 0.6); }
+            0%, 100% { box-shadow: 0 0 4px rgba(255, 200, 100, 0.4), 1px 1px 0 rgba(0,0,0,0.3); }
+            50% { box-shadow: 0 0 12px rgba(255, 200, 100, 0.8), 1px 1px 0 rgba(0,0,0,0.3); }
         }
         
-        /* House color variants by language */
-        .house-roof.js-house { background: linear-gradient(180deg, #f0db4f 0%, #e0cb3f 30%, #d0bb2f 60%, #c0ab1f 100%); border-color: #a09000; }
-        .house-roof.py-house { background: linear-gradient(180deg, #3776ab 0%, #2766a0 30%, #175690 60%, #074680 100%); border-color: #053570; }
-        .house-roof.ts-house { background: linear-gradient(180deg, #3178c6 0%, #2168b6 30%, #1158a6 60%, #014896 100%); border-color: #003880; }
-        .house-roof.java-house { background: linear-gradient(180deg, #f89820 0%, #e88810 30%, #d87800 60%, #c86800 100%); border-color: #a85800; }
-        .house-roof.cpp-house { background: linear-gradient(180deg, #00599c 0%, #00498c 30%, #00397c 60%, #00296c 100%); border-color: #00195c; }
-        .house-roof.cs-house { background: linear-gradient(180deg, #9b4993 0%, #8b3983 30%, #7b2973 60%, #6b1963 100%); border-color: #5b0953; }
-        .house-roof.go-house { background: linear-gradient(180deg, #00add8 0%, #009dc8 30%, #008db8 60%, #007da8 100%); border-color: #006d98; }
-        .house-roof.rust-house { background: linear-gradient(180deg, #dea584 0%, #ce9574 30%, #be8564 60%, #ae7554 100%); border-color: #9e6544; }
-        .house-roof.ruby-house { background: linear-gradient(180deg, #cc342d 0%, #bc241d 30%, #ac140d 60%, #9c0400 100%); border-color: #8c0000; }
-        .house-roof.php-house { background: linear-gradient(180deg, #777bb4 0%, #676ba4 30%, #575b94 60%, #474b84 100%); border-color: #373b74; }
-        .house-roof.html-house { background: linear-gradient(180deg, #e34c26 0%, #d33c16 30%, #c32c06 60%, #b31c00 100%); border-color: #a30c00; }
-        .house-roof.css-house { background: linear-gradient(180deg, #264de4 0%, #163dd4 30%, #062dc4 60%, #001db4 100%); border-color: #000da4; }
+        /* House color variants by language - GBA vibrant */
+        .house-roof.js-house { 
+            background: linear-gradient(180deg, #f8e060 0%, #f0d840 25%, #e8d020 50%, #d0b800 100%); 
+            border-color: #a89000; 
+            border-top-color: #fff8a0;
+        }
+        .house-roof.py-house { 
+            background: linear-gradient(180deg, #4890c8 0%, #3880b8 25%, #2870a8 50%, #185090 100%); 
+            border-color: #104080; 
+            border-top-color: #68b0e8;
+        }
+        .house-roof.ts-house { 
+            background: linear-gradient(180deg, #4088d8 0%, #3078c8 25%, #2068b8 50%, #1050a0 100%); 
+            border-color: #083890; 
+            border-top-color: #60a8f8;
+        }
+        .house-roof.java-house { 
+            background: linear-gradient(180deg, #f8a040 0%, #f09030 25%, #e88020 50%, #d06810 100%); 
+            border-color: #a85000; 
+            border-top-color: #ffc070;
+        }
+        .house-roof.cpp-house { 
+            background: linear-gradient(180deg, #1878c0 0%, #0868b0 25%, #0058a0 50%, #004080 100%); 
+            border-color: #003070; 
+            border-top-color: #4098e0;
+        }
+        .house-roof.cs-house { 
+            background: linear-gradient(180deg, #a860a8 0%, #985098 25%, #884088 50%, #682868 100%); 
+            border-color: #501850; 
+            border-top-color: #c888c8;
+        }
+        .house-roof.go-house { 
+            background: linear-gradient(180deg, #20c8e8 0%, #10b8d8 25%, #00a8c8 50%, #0088a8 100%); 
+            border-color: #006888; 
+            border-top-color: #50e8f8;
+        }
+        .house-roof.rust-house { 
+            background: linear-gradient(180deg, #e8b898 0%, #d8a888 25%, #c89878 50%, #a87858 100%); 
+            border-color: #885838; 
+            border-top-color: #f8d8c0;
+        }
+        .house-roof.ruby-house { 
+            background: linear-gradient(180deg, #e04840 0%, #d03830 25%, #c02820 50%, #a01008 100%); 
+            border-color: #800000; 
+            border-top-color: #f87870;
+        }
+        .house-roof.php-house { 
+            background: linear-gradient(180deg, #8888c8 0%, #7878b8 25%, #6868a8 50%, #484888 100%); 
+            border-color: #383868; 
+            border-top-color: #a8a8e8;
+        }
+        .house-roof.html-house { 
+            background: linear-gradient(180deg, #f06040 0%, #e05030 25%, #d04020 50%, #b02000 100%); 
+            border-color: #901000; 
+            border-top-color: #f89070;
+        }
+        .house-roof.css-house { 
+            background: linear-gradient(180deg, #4068f0 0%, #3058e0 25%, #2048d0 50%, #1030b0 100%); 
+            border-color: #002090; 
+            border-top-color: #6090f8;
+        }
 
-        /* Train tiles - Premium station style */
+        /* Train tiles - GBA Premium station style */
         .train-track {
-            background: linear-gradient(180deg, #505050 0%, #606060 50%, #707070 100%);
+            background: linear-gradient(180deg, #686878 0%, #585868 50%, #484858 100%);
             border: none;
             position: relative;
         }
@@ -963,8 +1140,8 @@
             position: absolute;
             width: 100%; height: 6px;
             top: 6px; left: 0;
-            background: linear-gradient(180deg, #303030 0%, #505050 100%);
-            box-shadow: 0 14px 0 0 #303030, 0 15px 0 0 #505050;
+            background: linear-gradient(180deg, #404048 0%, #606068 100%);
+            box-shadow: 0 14px 0 0 #404048, 0 15px 0 0 #606068;
             border-radius: 2px;
         }
         .train-track::after {
@@ -1861,7 +2038,7 @@
             image-rendering: crisp-edges;
         }
 
-        /* Player sprite using CSS pixel art - Frame 1 (standing/left foot) */
+        /* Player sprite using CSS pixel art - GBA style with more colors */
         .player-sprite {
             width: 100%; height: 100%;
             position: relative;
@@ -1872,45 +2049,45 @@
             width: 4px; height: 4px;
             background: transparent;
             box-shadow:
-                /* Hair */
-                8px 0 #0f380f, 12px 0 #0f380f, 16px 0 #0f380f, 20px 0 #0f380f,
-                4px 4px #0f380f, 8px 4px #0f380f, 12px 4px #0f380f, 16px 4px #0f380f, 20px 4px #0f380f, 24px 4px #0f380f,
-                /* Face */
-                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
-                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
-                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
-                /* Body */
-                4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #6080c0, 16px 20px #6080c0, 20px 20px #3050a0, 24px 20px #3050a0,
-                4px 24px #3050a0, 8px 24px #6080c0, 12px 24px #6080c0, 16px 24px #6080c0, 20px 24px #6080c0, 24px 24px #3050a0,
-                /* Legs - standing */
-                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
+                /* Hair - richer brown tones */
+                8px 0 #402818, 12px 0 #503020, 16px 0 #503020, 20px 0 #402818,
+                4px 4px #503020, 8px 4px #604028, 12px 4px #705030, 16px 4px #705030, 20px 4px #604028, 24px 4px #503020,
+                /* Face - smooth skin tones */
+                4px 8px #f8d8b0, 8px 8px #f8e0c0, 12px 8px #f8e0c0, 16px 8px #f8e0c0, 20px 8px #f8e0c0, 24px 8px #f8d8b0,
+                4px 12px #f8d0a8, 8px 12px #382820, 12px 12px #f8e0c0, 16px 12px #f8e0c0, 20px 12px #382820, 24px 12px #f8d0a8,
+                8px 16px #f8c8a0, 12px 16px #f8d0a8, 16px 16px #f8d0a8, 20px 16px #f8c8a0,
+                /* Body - vibrant blue jacket */
+                4px 20px #2040a0, 8px 20px #3058c0, 12px 20px #4070e0, 16px 20px #4070e0, 20px 20px #3058c0, 24px 20px #2040a0,
+                4px 24px #1838a0, 8px 24px #3058c0, 12px 24px #5080e8, 16px 24px #5080e8, 20px 24px #3058c0, 24px 24px #1838a0,
+                /* Legs - dark jeans */
+                8px 28px #303848, 12px 28px #404858, 16px 28px #404858, 20px 28px #303848;
         }
         
         /* Walk animation - alternating leg positions */
         @keyframes walk-legs {
             0%, 100% { 
                 box-shadow:
-                    8px 0 #0f380f, 12px 0 #0f380f, 16px 0 #0f380f, 20px 0 #0f380f,
-                    4px 4px #0f380f, 8px 4px #0f380f, 12px 4px #0f380f, 16px 4px #0f380f, 20px 4px #0f380f, 24px 4px #0f380f,
-                    4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
-                    4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
-                    8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
-                    4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #6080c0, 16px 20px #6080c0, 20px 20px #3050a0, 24px 20px #3050a0,
-                    4px 24px #3050a0, 8px 24px #6080c0, 12px 24px #6080c0, 16px 24px #6080c0, 20px 24px #6080c0, 24px 24px #3050a0,
+                    8px 0 #402818, 12px 0 #503020, 16px 0 #503020, 20px 0 #402818,
+                    4px 4px #503020, 8px 4px #604028, 12px 4px #705030, 16px 4px #705030, 20px 4px #604028, 24px 4px #503020,
+                    4px 8px #f8d8b0, 8px 8px #f8e0c0, 12px 8px #f8e0c0, 16px 8px #f8e0c0, 20px 8px #f8e0c0, 24px 8px #f8d8b0,
+                    4px 12px #f8d0a8, 8px 12px #382820, 12px 12px #f8e0c0, 16px 12px #f8e0c0, 20px 12px #382820, 24px 12px #f8d0a8,
+                    8px 16px #f8c8a0, 12px 16px #f8d0a8, 16px 16px #f8d0a8, 20px 16px #f8c8a0,
+                    4px 20px #2040a0, 8px 20px #3058c0, 12px 20px #4070e0, 16px 20px #4070e0, 20px 20px #3058c0, 24px 20px #2040a0,
+                    4px 24px #1838a0, 8px 24px #3058c0, 12px 24px #5080e8, 16px 24px #5080e8, 20px 24px #3058c0, 24px 24px #1838a0,
                     /* Left leg forward */
-                    4px 28px #0f380f, 8px 28px #306230, 20px 28px #306230, 24px 28px #0f380f;
+                    4px 28px #282838, 8px 28px #384050, 20px 28px #384050, 24px 28px #282838;
             }
             50% { 
                 box-shadow:
-                    8px 0 #0f380f, 12px 0 #0f380f, 16px 0 #0f380f, 20px 0 #0f380f,
-                    4px 4px #0f380f, 8px 4px #0f380f, 12px 4px #0f380f, 16px 4px #0f380f, 20px 4px #0f380f, 24px 4px #0f380f,
-                    4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
-                    4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
-                    8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
-                    4px 20px #3050a0, 8px 20px #3050a0, 12px 20px #6080c0, 16px 20px #6080c0, 20px 20px #3050a0, 24px 20px #3050a0,
-                    4px 24px #3050a0, 8px 24px #6080c0, 12px 24px #6080c0, 16px 24px #6080c0, 20px 24px #6080c0, 24px 24px #3050a0,
+                    8px 0 #402818, 12px 0 #503020, 16px 0 #503020, 20px 0 #402818,
+                    4px 4px #503020, 8px 4px #604028, 12px 4px #705030, 16px 4px #705030, 20px 4px #604028, 24px 4px #503020,
+                    4px 8px #f8d8b0, 8px 8px #f8e0c0, 12px 8px #f8e0c0, 16px 8px #f8e0c0, 20px 8px #f8e0c0, 24px 8px #f8d8b0,
+                    4px 12px #f8d0a8, 8px 12px #382820, 12px 12px #f8e0c0, 16px 12px #f8e0c0, 20px 12px #382820, 24px 12px #f8d0a8,
+                    8px 16px #f8c8a0, 12px 16px #f8d0a8, 16px 16px #f8d0a8, 20px 16px #f8c8a0,
+                    4px 20px #2040a0, 8px 20px #3058c0, 12px 20px #4070e0, 16px 20px #4070e0, 20px 20px #3058c0, 24px 20px #2040a0,
+                    4px 24px #1838a0, 8px 24px #3058c0, 12px 24px #5080e8, 16px 24px #5080e8, 20px 24px #3058c0, 24px 24px #1838a0,
                     /* Right leg forward */
-                    8px 28px #306230, 12px 28px #0f380f, 16px 28px #0f380f, 20px 28px #306230;
+                    8px 28px #384050, 12px 28px #282838, 16px 28px #282838, 20px 28px #384050;
             }
         }
         
@@ -1918,32 +2095,34 @@
             animation: walk-legs 0.25s steps(2) infinite;
         }
 
-        /* Walking dust effect */
+        /* Walking dust effect - GBA style */
         #player.walking::after {
             content: '';
             position: absolute;
             bottom: -2px;
             left: 50%;
             transform: translateX(-50%);
-            width: 4px;
+            width: 6px;
             height: 4px;
-            background: rgba(200, 180, 140, 0.6);
+            background: rgba(220, 200, 160, 0.7);
+            border-radius: 50%;
             box-shadow: 
-                -4px 0 rgba(200, 180, 140, 0.4),
-                4px 0 rgba(200, 180, 140, 0.4);
+                -6px 0 rgba(200, 180, 140, 0.5),
+                6px 0 rgba(200, 180, 140, 0.5);
             animation: dust-puff 0.3s ease-out;
         }
 
         @keyframes dust-puff {
             0% { opacity: 1; transform: translateX(-50%) scale(1); }
-            100% { opacity: 0; transform: translateX(-50%) scale(2); }
+            100% { opacity: 0; transform: translateX(-50%) scale(2.5); }
         }
 
-        /* Visual sound effects - 8bit music notes */
+        /* Visual sound effects - colorful music notes */
         .sound-note {
             position: absolute;
             font-size: 12px;
-            color: var(--gb-dark);
+            color: var(--accent-yellow);
+            text-shadow: 1px 1px 0 var(--gb-dark);
             pointer-events: none;
             z-index: 100;
             opacity: 0;
@@ -2188,7 +2367,7 @@
             z-index: 50;
         }
 
-        /* Dialog Box - Premium AAA style */
+        /* Dialog Box - GBA Premium style */
         #dialog-box {
             position: absolute;
             bottom: 10px;
@@ -2196,52 +2375,50 @@
             right: 10px;
             width: calc(100% - 20px);
             height: 110px;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
-            border: 5px solid var(--gb-darkest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e8dcc8 100%);
+            border: 4px solid #504038;
+            border-radius: 6px;
             padding: 15px 20px;
             display: none;
             z-index: 200;
             box-shadow: 
-                inset 0 0 0 3px var(--gb-dark),
-                inset 0 0 0 6px var(--gb-light),
-                6px 6px 0 rgba(0,0,0,0.5),
-                0 0 20px rgba(0,0,0,0.3);
+                inset 0 2px 0 rgba(255,255,255,0.5),
+                inset 0 0 0 2px #c8b8a0,
+                5px 5px 0 rgba(0,0,0,0.4),
+                0 0 25px rgba(0,0,0,0.25);
             animation: dialog-appear 0.2s ease-out;
         }
 
         @keyframes dialog-appear {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { transform: translateY(20px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        /* Decorative corners - pixel art style */
+        /* Decorative corners - GBA pixel art style */
         #dialog-box::before {
             content: '';
             position: absolute;
-            top: -8px; left: -8px; right: -8px; bottom: -8px;
-            border: 3px solid var(--gb-dark);
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 2px solid rgba(80, 64, 48, 0.3);
+            border-radius: 3px;
             pointer-events: none;
-            background: transparent;
         }
 
-        /* Corner decorations */
+        /* Corner decorations - subtle */
         #dialog-box::after {
             content: '';
             position: absolute;
-            width: 8px; height: 8px;
-            top: -2px; left: -2px;
-            background: var(--gb-darkest);
-            box-shadow: 
-                calc(100% - 4px) 0 var(--gb-darkest),
-                0 calc(100% - 4px) var(--gb-darkest),
-                calc(100% - 4px) calc(100% - 4px) var(--gb-darkest);
+            width: 10px; height: 10px;
+            top: 2px; left: 2px;
+            background: linear-gradient(135deg, #d8c8b0 0%, transparent 50%);
+            border-radius: 2px;
         }
 
         #dialog-text {
-            color: var(--gb-darkest);
+            color: #383028;
             font-size: 0.55rem;
             line-height: 2.2;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
             max-height: 70px;
             overflow: hidden;
         }
@@ -2251,11 +2428,13 @@
             bottom: 10px;
             right: 14px;
             font-size: 0.55rem;
-            color: var(--gb-darkest);
+            color: #f8f8f8;
             animation: arrow-bounce 0.5s steps(2) infinite;
-            background: var(--gb-light);
-            padding: 3px 8px;
-            border: 2px solid var(--gb-darkest);
+            background: linear-gradient(180deg, #4080c8 0%, #3060a0 100%);
+            padding: 4px 10px;
+            border: 2px solid #204080;
+            border-radius: 3px;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
         }
 
         @keyframes arrow-bounce {
@@ -2263,12 +2442,12 @@
             50% { transform: translateY(3px); }
         }
 
-        /* Battle Screen - AAA with dramatic effects */
+        /* Battle Screen - GBA with dramatic effects */
         #battle-screen {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: var(--gb-lightest);
+            background: linear-gradient(180deg, #90d8f8 0%, #60b0e0 50%, #70c048 50%, #50a028 100%);
             display: none;
             flex-direction: column;
             z-index: 300;
