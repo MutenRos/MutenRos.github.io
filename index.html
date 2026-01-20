@@ -346,6 +346,25 @@
             mix-blend-mode: multiply;
         }
 
+        /* Interior warm lighting overlay */
+        #interior-light-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 85;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: radial-gradient(ellipse at 50% 30%, 
+                rgba(255, 240, 200, 0.15) 0%, 
+                rgba(255, 200, 150, 0.1) 40%,
+                rgba(200, 150, 100, 0.08) 70%,
+                transparent 100%);
+        }
+        #interior-light-overlay.active {
+            opacity: 1;
+        }
+
         #map {
             position: absolute;
             background-color: var(--gb-light);
@@ -912,6 +931,90 @@
             50% { box-shadow: 2px 2px 0 rgba(0,0,0,0.5), 0 0 15px rgba(192, 64, 64, 0.6); }
         }
 
+        /* Station clock tile */
+        .station-clock {
+            background: linear-gradient(180deg, #d8c8b0 0%, #c8b8a0 100%);
+            border: 2px solid #a89880;
+            border-bottom: 4px solid #887860;
+        }
+        .station-clock::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            left: 7px; top: 6px;
+            background: #f8f8f0;
+            border: 3px solid #404040;
+            border-radius: 50%;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+        }
+        .station-clock::after {
+            content: '';
+            position: absolute;
+            width: 2px; height: 6px;
+            left: 15px; top: 12px;
+            background: #202020;
+            transform-origin: center bottom;
+            box-shadow: 2px 2px 0 #202020;
+            animation: clock-hand 4s steps(12) infinite;
+        }
+        @keyframes clock-hand {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Vending machine tile */
+        .vending-machine {
+            background: var(--gb-light);
+        }
+        .vending-machine::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 26px;
+            left: 5px; top: 3px;
+            background: linear-gradient(180deg, #c03030 0%, #a02020 100%);
+            border: 2px solid #801010;
+            border-radius: 2px 2px 0 0;
+        }
+        .vending-machine::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 12px;
+            left: 8px; top: 8px;
+            background: linear-gradient(180deg, #303030 0%, #202020 100%);
+            box-shadow:
+                inset 0 0 0 2px #404040,
+                2px 14px #808080, 6px 14px #808080, 10px 14px #808080;
+        }
+
+        /* Lamp post tile */
+        .lamp-post {
+            background: var(--gb-light);
+        }
+        .lamp-post::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 20px;
+            left: 14px; top: 10px;
+            background: linear-gradient(180deg, #404040 0%, #606060 100%);
+            border-radius: 2px;
+        }
+        .lamp-post::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 8px;
+            left: 10px; top: 4px;
+            background: radial-gradient(ellipse at center, #ffffcc 0%, #ffdd66 50%, #cc9900 100%);
+            border: 2px solid #404040;
+            border-radius: 4px 4px 0 0;
+            box-shadow: 0 0 10px rgba(255, 220, 100, 0.6);
+            animation: lamp-flicker 3s ease-in-out infinite;
+        }
+        @keyframes lamp-flicker {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 220, 100, 0.6); }
+            50% { box-shadow: 0 0 15px rgba(255, 220, 100, 0.8); }
+            25%, 75% { box-shadow: 0 0 8px rgba(255, 220, 100, 0.5); }
+        }
+
         /* City label - Platform destination sign */
         .city-label {
             position: absolute;
@@ -1027,10 +1130,31 @@
             margin-top: 3px;
         }
 
-        /* Interior tiles - simplified */
+        /* Room label inside houses */
+        .room-label {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.45rem;
+            color: var(--gb-darkest);
+            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
+            padding: 6px 14px;
+            border: 3px solid var(--gb-darkest);
+            border-radius: 3px;
+            z-index: 100;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            white-space: nowrap;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Interior tiles - improved */
         .floor {
-            background: #d8c8a8;
-            border: 1px solid #c0b090;
+            background: linear-gradient(135deg, #ddd0b8 0%, #d0c0a0 50%, #c8b898 100%);
+            border: 1px solid #b8a888;
         }
         .floor::before {
             content: '';
@@ -1116,8 +1240,60 @@
             position: absolute;
             width: 24px; height: 8px;
             left: 4px; top: 20px;
-            background: #c04040;
+            background: linear-gradient(90deg, #c04040 0%, #a03030 50%, #c04040 100%);
             border: 2px solid #802020;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .exit-mat::after {
+            content: 'EXIT';
+            position: absolute;
+            font-size: 0.25rem;
+            left: 6px; top: 21px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #802020;
+        }
+
+        /* Poster on wall */
+        .poster {
+            background: #8a7050;
+            border-bottom: 4px solid #6a5030;
+        }
+        .poster::before {
+            content: '';
+            position: absolute;
+            width: 14px; height: 18px;
+            left: 9px; top: 4px;
+            background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
+            border: 2px solid #404040;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+        .poster::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 6px;
+            left: 11px; top: 8px;
+            background: linear-gradient(45deg, #4080c0 0%, #60a0e0 100%);
+            box-shadow: 0 4px 0 #303030;
+        }
+
+        /* Potted plant */
+        .plant {
+            background: #d8c8a8;
+            border: 1px solid #c0b090;
+        }
+        .plant::before {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: transparent;
+            box-shadow:
+                /* Pot */
+                10px 22px #a06030, 14px 22px #a06030, 18px 22px #a06030,
+                8px 26px #804020, 12px 26px #a06030, 16px 26px #a06030, 20px 26px #804020,
+                /* Leaves */
+                12px 10px #40a040, 16px 10px #40a040,
+                8px 14px #308030, 12px 14px #50c050, 16px 14px #50c050, 20px 14px #308030,
+                10px 18px #40a040, 14px 18px #40a040, 18px 18px #40a040;
         }
 
         /* NPC name label - 8bit blocky */
@@ -2158,6 +2334,7 @@
                         <div class="player-sprite"></div>
                     </div>
                     <div id="day-night-overlay"></div>
+                    <div id="interior-light-overlay"></div>
                 </div>
 
                 <!-- Dialog Box -->
@@ -2319,6 +2496,7 @@
         // 10=house-roof, 11=house-wall, 12=house-door
         // 13=train-track, 14=train-sign (destino), 15=train-return (volver)
         // 16=station-roof, 17=station-wall, 18=station-door, 19=platform, 30=bench
+        // 31=station-clock, 32=vending-machine, 33=lamp-post
         
         const TILE_TYPES = {
             0: 'grass', 1: 'path', 2: 'tree', 3: 'water', 4: 'tall-grass', 
@@ -2326,24 +2504,27 @@
             10: 'house-roof', 11: 'house-wall', 12: 'house-door',
             13: 'train-track', 14: 'train-sign', 15: 'train-return',
             16: 'station-roof', 17: 'station-wall', 18: 'station-door',
-            19: 'platform', 30: 'bench'
+            19: 'platform', 30: 'bench', 31: 'station-clock', 
+            32: 'vending-machine', 33: 'lamp-post'
         };
-        const SOLID_TILES = [2, 3, 6, 10, 11, 16, 17, 30];
+        const SOLID_TILES = [2, 3, 6, 10, 11, 16, 17, 30, 32, 33];
         
-        // Interior map template (7x7)
+        // Interior map template (9x8) - Más espacioso
         const INTERIOR_MAP = [
-            [20,20,20,20,20,20,20],
-            [20,22,21,21,21,23,20],
-            [20,21,21,21,21,21,20],
-            [20,21,21,24,21,21,20],
-            [20,21,21,24,21,21,20],
-            [20,21,21,25,21,21,20],
-            [20,20,20,20,20,20,20]
+            [20,20,20,20,20,20,20,20,20],
+            [20,22,21,26,21,26,21,23,20],
+            [20,21,21,21,21,21,21,21,20],
+            [20,27,21,21,21,21,21,21,20],
+            [20,21,21,24,24,24,21,21,20],
+            [20,21,21,24,24,24,21,27,20],
+            [20,21,21,21,25,21,21,21,20],
+            [20,20,20,20,20,20,20,20,20]
         ];
         const INTERIOR_TYPES = {
-            20: 'interior-wall', 21: 'floor', 22: 'bookshelf', 23: 'table', 24: 'carpet', 25: 'exit-mat'
+            20: 'interior-wall', 21: 'floor', 22: 'bookshelf', 23: 'table', 
+            24: 'carpet', 25: 'exit-mat', 26: 'poster', 27: 'plant'
         };
-        const INTERIOR_SOLID = [20, 22, 23];
+        const INTERIOR_SOLID = [20, 22, 23, 27];
         
         // Dynamic map data - will be generated based on repos
         let MAP_DATA = [];
@@ -2540,9 +2721,9 @@
                 }
             }
             
-            // Add NPC inside
+            // Add project NPC inside (centered in the room)
             const npcData = {
-                x: 3,
+                x: 4,
                 y: 2,
                 name: house.name,
                 description: house.description,
@@ -2553,6 +2734,12 @@
             };
             npcs = [npcData];
             renderNpc(npcData);
+            
+            // Add room label
+            const roomLabel = document.createElement('div');
+            roomLabel.className = 'room-label';
+            roomLabel.innerHTML = `📁 ${house.name}`;
+            map.appendChild(roomLabel);
         }
 
         // ============== LOAD REPOS AND GENERATE MAP ==============
@@ -2722,6 +2909,22 @@
             }
             
             // ===== DECORACIÓN =====
+            // Reloj de la estación (junto a la puerta)
+            MAP_DATA[3][stationStartX + 2] = 31; // station-clock
+            MAP_DATA[3][stationStartX + stationWidth - 3] = 31; // station-clock
+            
+            // Máquinas expendedoras en la zona de espera
+            MAP_DATA[13][5] = 32;  // vending-machine
+            MAP_DATA[13][MAP_COLS - 6] = 32;
+            
+            // Farolas en los andenes
+            MAP_DATA[5][6] = 33;   // lamp-post
+            MAP_DATA[5][14] = 33;
+            MAP_DATA[5][22] = 33;
+            MAP_DATA[12][6] = 33;
+            MAP_DATA[12][14] = 33;
+            MAP_DATA[12][22] = 33;
+            
             // Flores decorativas
             MAP_DATA[5][3] = 5;
             MAP_DATA[5][MAP_COLS - 4] = 5;
@@ -2874,6 +3077,14 @@
             // Banco
             if (MAP_DATA[stationY] && stationX + 5 < MAP_COLS) {
                 MAP_DATA[stationY][stationX + 5] = 30;
+            }
+            
+            // Farolas decorativas a los lados de la estación
+            if (MAP_DATA[stationY - 1] && stationX > 0) {
+                MAP_DATA[stationY - 1][stationX] = 33; // lamp-post izquierda
+            }
+            if (MAP_DATA[stationY - 1] && stationX + 6 < MAP_COLS) {
+                MAP_DATA[stationY - 1][stationX + 6] = 33; // lamp-post derecha
             }
         }
         
@@ -3098,12 +3309,15 @@
                 // Generate interior
                 generateInterior(house);
                 
+                // Activate interior lighting
+                document.getElementById('interior-light-overlay').classList.add('active');
+                
                 // Cargar colaboradores de este repo (con cache)
                 await loadHouseCollaborators(house);
                 
-                // Position player at entrance
-                playerX = 3;
-                playerY = 5;
+                // Position player at entrance (centered on exit mat)
+                playerX = 4;
+                playerY = 6;
                 
                 updateCamera();
                 updateNpcProximity();
@@ -3144,10 +3358,12 @@
         
         // Renderizar colaboradores dentro de la casa
         function renderCollaboratorsInHouse(collabs, sprites) {
+            // Posiciones distribuidas en el interior 9x8
             const positions = [
-                {x: 1, y: 2},
-                {x: 5, y: 2},
-                {x: 1, y: 4}
+                {x: 2, y: 2},   // Izquierda arriba
+                {x: 6, y: 2},   // Derecha arriba
+                {x: 2, y: 4},   // Izquierda abajo
+                {x: 6, y: 4}    // Derecha abajo
             ];
             
             collabs.forEach((collab, index) => {
@@ -3160,7 +3376,8 @@
                     name: collab.login,
                     url: collab.html_url,
                     spriteClass: sprites[index % sprites.length],
-                    isCollaborator: true
+                    isCollaborator: true,
+                    contributions: collab.contributions || 0
                 };
                 
                 npcs.push(npcData);
@@ -3172,6 +3389,9 @@
             screenTransition(() => {
                 currentLocation = 'outside';
                 npcs = [];
+                
+                // Deactivate interior lighting
+                document.getElementById('interior-light-overlay').classList.remove('active');
                 
                 // Restore outside map
                 generateMap();
