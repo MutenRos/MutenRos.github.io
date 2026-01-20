@@ -335,6 +335,78 @@
             }
         }
 
+        /* Weather effects - Rain */
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: linear-gradient(180deg, transparent 0%, rgba(150, 180, 255, 0.6) 50%, rgba(100, 150, 255, 0.8) 100%);
+            pointer-events: none;
+            animation: rain-fall 0.6s linear infinite;
+        }
+        @keyframes rain-fall {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(450px);
+                opacity: 0.3;
+            }
+        }
+        
+        /* Weather effects - Snow */
+        .snow-flake {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+            animation: snow-fall 4s linear infinite;
+        }
+        @keyframes snow-fall {
+            0% {
+                transform: translateY(-10px) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(450px) translateX(50px);
+                opacity: 0;
+            }
+        }
+        
+        /* Weather overlay for rain effect */
+        #weather-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 82;
+            overflow: hidden;
+        }
+        
+        /* Puddle effect (appears during rain) */
+        .puddle {
+            position: absolute;
+            width: 20px;
+            height: 8px;
+            background: radial-gradient(ellipse, rgba(100, 150, 200, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: puddle-ripple 2s ease-in-out infinite;
+        }
+        @keyframes puddle-ripple {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.1); opacity: 0.6; }
+        }
+
         /* Day/Night cycle overlay */
         #day-night-overlay {
             position: absolute;
@@ -386,6 +458,14 @@
             border: 2px solid var(--gb-dark);
             border-radius: 3px;
             box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+        .hud-weather {
+            font-size: 16px;
+            background: rgba(15, 56, 15, 0.7);
+            padding: 2px 8px;
+            border: 2px solid var(--gb-dark);
+            border-radius: 3px;
+            transition: all 0.3s ease;
         }
         .hud-controls {
             font-size: 0.3rem;
@@ -719,6 +799,20 @@
             0%, 100% { box-shadow: 0 0 4px rgba(255, 200, 100, 0.3); }
             50% { box-shadow: 0 0 10px rgba(255, 200, 100, 0.6); }
         }
+        
+        /* House color variants by language */
+        .house-roof.js-house { background: linear-gradient(180deg, #f0db4f 0%, #e0cb3f 30%, #d0bb2f 60%, #c0ab1f 100%); border-color: #a09000; }
+        .house-roof.py-house { background: linear-gradient(180deg, #3776ab 0%, #2766a0 30%, #175690 60%, #074680 100%); border-color: #053570; }
+        .house-roof.ts-house { background: linear-gradient(180deg, #3178c6 0%, #2168b6 30%, #1158a6 60%, #014896 100%); border-color: #003880; }
+        .house-roof.java-house { background: linear-gradient(180deg, #f89820 0%, #e88810 30%, #d87800 60%, #c86800 100%); border-color: #a85800; }
+        .house-roof.cpp-house { background: linear-gradient(180deg, #00599c 0%, #00498c 30%, #00397c 60%, #00296c 100%); border-color: #00195c; }
+        .house-roof.cs-house { background: linear-gradient(180deg, #9b4993 0%, #8b3983 30%, #7b2973 60%, #6b1963 100%); border-color: #5b0953; }
+        .house-roof.go-house { background: linear-gradient(180deg, #00add8 0%, #009dc8 30%, #008db8 60%, #007da8 100%); border-color: #006d98; }
+        .house-roof.rust-house { background: linear-gradient(180deg, #dea584 0%, #ce9574 30%, #be8564 60%, #ae7554 100%); border-color: #9e6544; }
+        .house-roof.ruby-house { background: linear-gradient(180deg, #cc342d 0%, #bc241d 30%, #ac140d 60%, #9c0400 100%); border-color: #8c0000; }
+        .house-roof.php-house { background: linear-gradient(180deg, #777bb4 0%, #676ba4 30%, #575b94 60%, #474b84 100%); border-color: #373b74; }
+        .house-roof.html-house { background: linear-gradient(180deg, #e34c26 0%, #d33c16 30%, #c32c06 60%, #b31c00 100%); border-color: #a30c00; }
+        .house-roof.css-house { background: linear-gradient(180deg, #264de4 0%, #163dd4 30%, #062dc4 60%, #001db4 100%); border-color: #000da4; }
 
         /* Train tiles - Premium station style */
         .train-track {
@@ -2611,6 +2705,7 @@
                 <!-- Game World -->
                 <div id="game-world">
                     <div id="ambient-particles"></div>
+                    <div id="weather-overlay"></div>
                     <div id="map"></div>
                     <div id="player">
                         <div class="player-sprite"></div>
@@ -2619,7 +2714,8 @@
                     <div id="interior-light-overlay"></div>
                     <div id="game-hud">
                         <div class="hud-location">📍 <span id="hud-location-text">ESTACIÓN</span></div>
-                        <div class="hud-controls">WASD: Mover | ESPACIO: Interactuar</div>
+                        <div class="hud-weather" id="hud-weather">☀️</div>
+                        <div class="hud-controls">WASD/Flechas: Mover | ESPACIO: Interactuar</div>
                     </div>
                 </div>
 
@@ -2797,6 +2893,98 @@
             map.appendChild(effect);
             setTimeout(() => effect.remove(), 500);
         }
+        
+        // ============== WEATHER SYSTEM ==============
+        const weatherOverlay = document.getElementById('weather-overlay');
+        let currentWeather = 'clear';
+        let weatherInterval = null;
+        
+        function setWeather(type) {
+            // Clear previous weather
+            weatherOverlay.innerHTML = '';
+            if (weatherInterval) {
+                clearInterval(weatherInterval);
+                weatherInterval = null;
+            }
+            currentWeather = type;
+            
+            // Update HUD weather icon
+            const hudWeather = document.getElementById('hud-weather');
+            if (hudWeather) {
+                if (type === 'rain') {
+                    hudWeather.textContent = '🌧️';
+                } else if (type === 'snow') {
+                    hudWeather.textContent = '❄️';
+                } else {
+                    hudWeather.textContent = '☀️';
+                }
+            }
+            
+            if (type === 'rain') {
+                createRain();
+            } else if (type === 'snow') {
+                createSnow();
+            }
+        }
+        
+        function createRain() {
+            // Initial rain drops
+            for (let i = 0; i < 50; i++) {
+                createRainDrop();
+            }
+            // Continuous rain
+            weatherInterval = setInterval(() => {
+                if (currentWeather === 'rain' && currentLocation === 'outside') {
+                    createRainDrop();
+                }
+            }, 50);
+        }
+        
+        function createRainDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDelay = -Math.random() * 0.6 + 's';
+            drop.style.animationDuration = (0.4 + Math.random() * 0.3) + 's';
+            weatherOverlay.appendChild(drop);
+            setTimeout(() => drop.remove(), 1000);
+        }
+        
+        function createSnow() {
+            // Initial snow flakes
+            for (let i = 0; i < 30; i++) {
+                createSnowFlake();
+            }
+            // Continuous snow
+            weatherInterval = setInterval(() => {
+                if (currentWeather === 'snow' && currentLocation === 'outside') {
+                    createSnowFlake();
+                }
+            }, 200);
+        }
+        
+        function createSnowFlake() {
+            const flake = document.createElement('div');
+            flake.className = 'snow-flake';
+            flake.style.left = Math.random() * 100 + '%';
+            flake.style.animationDelay = -Math.random() * 4 + 's';
+            flake.style.width = (2 + Math.random() * 4) + 'px';
+            flake.style.height = flake.style.width;
+            weatherOverlay.appendChild(flake);
+            setTimeout(() => flake.remove(), 5000);
+        }
+        
+        function randomizeWeather() {
+            // 70% clear, 20% rain, 10% snow
+            const rand = Math.random();
+            if (rand < 0.7) {
+                setWeather('clear');
+            } else if (rand < 0.9) {
+                setWeather('rain');
+            } else {
+                setWeather('snow');
+            }
+        }
 
         // ============== INIT ==============
         document.getElementById('start-btn').addEventListener('click', startGame);
@@ -2811,6 +2999,10 @@
             createParticles();
             updateDayNightCycle();
             setInterval(updateDayNightCycle, 60000); // Update every minute
+            
+            // Initialize weather (random)
+            randomizeWeather();
+            setInterval(randomizeWeather, 300000); // Change weather every 5 minutes
             
             await loadReposAndGenerateMap();
             updateCamera();
@@ -3010,12 +3202,22 @@
             map.innerHTML = '';
             map.style.width = MAP_COLS * TILE_SIZE + 'px';
             map.style.height = MAP_ROWS * TILE_SIZE + 'px';
+            
+            // Get language color class
+            const langClass = getLanguageClass(currentCity);
 
             for (let y = 0; y < MAP_ROWS; y++) {
                 for (let x = 0; x < MAP_COLS; x++) {
                     const tileType = MAP_DATA[y][x];
                     const tile = document.createElement('div');
-                    tile.className = 'tile ' + (TILE_TYPES[tileType] || 'grass');
+                    let tileClass = 'tile ' + (TILE_TYPES[tileType] || 'grass');
+                    
+                    // Add language color to house roofs
+                    if (tileType === 10 && langClass) {
+                        tileClass += ' ' + langClass;
+                    }
+                    
+                    tile.className = tileClass;
                     tile.style.left = x * TILE_SIZE + 'px';
                     tile.style.top = y * TILE_SIZE + 'px';
                     map.appendChild(tile);
@@ -3031,6 +3233,24 @@
                     }
                 }
             }
+        }
+        
+        function getLanguageClass(lang) {
+            const langMap = {
+                'JavaScript': 'js-house',
+                'Python': 'py-house',
+                'TypeScript': 'ts-house',
+                'Java': 'java-house',
+                'C++': 'cpp-house',
+                'C#': 'cs-house',
+                'Go': 'go-house',
+                'Rust': 'rust-house',
+                'Ruby': 'ruby-house',
+                'PHP': 'php-house',
+                'HTML': 'html-house',
+                'CSS': 'css-house'
+            };
+            return langMap[lang] || '';
         }
         
         function generateInterior(house) {
