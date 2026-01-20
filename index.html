@@ -365,6 +365,38 @@
             opacity: 1;
         }
 
+        /* Game HUD */
+        #game-hud {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 12px;
+            z-index: 95;
+            pointer-events: none;
+        }
+        .hud-location {
+            font-size: 0.35rem;
+            color: var(--gb-lightest);
+            background: rgba(15, 56, 15, 0.85);
+            padding: 4px 10px;
+            border: 2px solid var(--gb-dark);
+            border-radius: 3px;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+        .hud-controls {
+            font-size: 0.3rem;
+            color: var(--gb-light);
+            background: rgba(15, 56, 15, 0.7);
+            padding: 3px 8px;
+            border: 1px solid var(--gb-dark);
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
         #map {
             position: absolute;
             background-color: var(--gb-light);
@@ -2335,6 +2367,10 @@
                     </div>
                     <div id="day-night-overlay"></div>
                     <div id="interior-light-overlay"></div>
+                    <div id="game-hud">
+                        <div class="hud-location">📍 <span id="hud-location-text">ESTACIÓN</span></div>
+                        <div class="hud-controls">WASD: Mover | ESPACIO: Interactuar</div>
+                    </div>
                 </div>
 
                 <!-- Dialog Box -->
@@ -2471,6 +2507,13 @@
             }
             
             dayNightOverlay.style.background = overlay;
+        }
+        
+        function updateHUD(location) {
+            const hudText = document.getElementById('hud-location-text');
+            if (hudText) {
+                hudText.textContent = location;
+            }
         }
 
         // ============== INIT ==============
@@ -2968,6 +3011,9 @@
             stationTitle.innerHTML = '🚂 ESTACIÓN CENTRAL<small>Selecciona un destino</small>';
             map.appendChild(stationTitle);
             
+            // Actualizar HUD
+            updateHUD('ESTACIÓN CENTRAL');
+            
             console.log(`Train station loaded with ${maxCities} destinations`);
         }
         
@@ -3017,6 +3063,9 @@
                 cityTitle.className = 'city-title';
                 cityTitle.innerHTML = `🏙️ Ciudad ${language}<small>${repos.length} proyectos</small>`;
                 map.appendChild(cityTitle);
+                
+                // Actualizar HUD
+                updateHUD(`Ciudad ${language}`);
                 
                 // Posición inicial
                 playerX = Math.floor(MAP_COLS / 2);
@@ -3312,6 +3361,9 @@
                 // Activate interior lighting
                 document.getElementById('interior-light-overlay').classList.add('active');
                 
+                // Actualizar HUD
+                updateHUD(house.name);
+                
                 // Cargar colaboradores de este repo (con cache)
                 await loadHouseCollaborators(house);
                 
@@ -3403,6 +3455,9 @@
                 playerX = currentHouse.doorX;
                 playerY = currentHouse.doorY + 1;
                 currentHouse = null;
+                
+                // Actualizar HUD
+                updateHUD(currentCity === 'STATION' ? 'ESTACIÓN CENTRAL' : `Ciudad ${currentCity}`);
                 
                 updateCamera();
                 updateHouseLabels();
