@@ -701,148 +701,110 @@
 
         #map {
             position: absolute;
-            background: linear-gradient(135deg, #48a848 0%, #38a038 50%, #48a848 100%);
+            background: #48a848;
         }
 
-        /* ===== ZONAS CONTINUAS (sin grid) ===== */
+        /* ===== ZONAS FLUIDAS ===== */
         .zone {
             position: absolute;
-            border-radius: 4px;
         }
         
         .zone-path {
-            background: linear-gradient(180deg, #d8c8a0 0%, #c8b890 100%);
-            border: 2px solid #a08860;
+            background: #d0c090;
         }
         
         .zone-water {
-            background: linear-gradient(180deg, #4090d0 0%, #2868a0 100%);
-            border: 2px solid #185080;
-            animation: water-shimmer 3s ease-in-out infinite;
+            background: #3080c0;
         }
         
-        @keyframes water-shimmer {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 1; }
-        }
-        
-        .zone-train-track {
+        .zone-track {
             background: #606068;
-            border-radius: 0;
         }
-        .zone-train-track::before {
+        .zone-track::before {
             content: '';
             position: absolute;
             left: 0; right: 0;
-            top: 30%; height: 15%;
+            top: 25%; height: 20%;
             background: #404048;
-            box-shadow: 0 12px 0 #404048;
+            box-shadow: 0 10px 0 #404048;
         }
         
         .zone-platform {
-            background: linear-gradient(180deg, #a0a0a8 0%, #888890 100%);
-            border: 2px solid #606068;
+            background: #909098;
         }
         .zone-platform::after {
             content: '';
             position: absolute;
-            left: 0; right: 0; bottom: 4px;
+            left: 0; right: 0; bottom: 3px;
             height: 3px;
-            background: #f0d020;
+            background: #e0c020;
         }
 
-        /* ===== ELEMENTOS INDIVIDUALES ===== */
+        /* ===== ELEMENTOS ===== */
         .element {
             position: absolute;
-            width: var(--tile-size);
-            height: var(--tile-size);
-            image-rendering: pixelated;
+            width: 32px;
+            height: 32px;
         }
 
-        /* Árbol */
-        .tree {
-            background: transparent;
-        }
         .tree::before {
             content: '';
             position: absolute;
-            width: 24px; height: 20px;
-            left: 4px; top: 2px;
-            background: radial-gradient(ellipse at 50% 60%, #308030 0%, #206020 70%, #185018 100%);
-            border-radius: 50% 50% 40% 40%;
+            width: 22px; height: 18px;
+            left: 5px; top: 2px;
+            background: radial-gradient(ellipse at 50% 60%, #308030 0%, #206020 80%);
+            border-radius: 50%;
         }
         .tree::after {
             content: '';
             position: absolute;
-            width: 6px; height: 10px;
+            width: 5px; height: 10px;
             left: 13px; bottom: 2px;
-            background: linear-gradient(90deg, #604020 0%, #805030 50%, #604020 100%);
+            background: #704020;
         }
 
-        /* Hierba alta */
-        .tall-grass {
-            background: transparent;
-        }
         .tall-grass::before {
             content: '';
             position: absolute;
-            width: 28px; height: 24px;
-            left: 2px; top: 4px;
-            background: linear-gradient(180deg, #58b858 0%, #38a038 50%, #288828 100%);
+            width: 26px; height: 20px;
+            left: 3px; top: 6px;
+            background: linear-gradient(180deg, #50b050 0%, #309030 100%);
             border-radius: 40% 40% 0 0;
-            animation: grass-sway 2s ease-in-out infinite;
-        }
-        
-        @keyframes grass-sway {
-            0%, 100% { transform: skewX(0deg); }
-            50% { transform: skewX(3deg); }
         }
 
-        /* Flor */
-        .flower {
-            background: transparent;
-        }
         .flower::before {
             content: '';
             position: absolute;
-            width: 8px; height: 8px;
-            left: 12px; top: 10px;
-            background: #f05878;
+            width: 6px; height: 6px;
+            left: 13px; top: 12px;
+            background: #e05070;
             border-radius: 50%;
-            box-shadow: 8px 6px 0 #f8d848, -6px 8px 0 #78a8f0;
+            box-shadow: 7px 5px 0 #f0c040, -5px 7px 0 #6090e0;
         }
 
-        /* Valla */
-        .fence {
-            background: transparent;
-        }
         .fence::before {
             content: '';
             position: absolute;
-            width: 28px; height: 16px;
-            left: 2px; top: 10px;
-            background: linear-gradient(180deg, #c0a070 0%, #a08050 100%);
+            width: 28px; height: 14px;
+            left: 2px; top: 12px;
+            background: #b09060;
             border: 2px solid #705030;
         }
 
-        /* Cartel */
-        .sign {
-            background: transparent;
-        }
         .sign::before {
             content: '';
             position: absolute;
-            width: 20px; height: 14px;
-            left: 6px; top: 4px;
-            background: #f0e8d0;
-            border: 2px solid #806040;
+            width: 18px; height: 12px;
+            left: 7px; top: 5px;
+            background: #e8e0d0;
+            border: 2px solid #705030;
         }
         .sign::after {
             content: '';
             position: absolute;
             width: 4px; height: 12px;
             left: 14px; bottom: 2px;
-            background: #806040;
+            background: #705030;
         }
         }
 
@@ -3261,55 +3223,55 @@
             return housePositions;
         }
         
-        // Renderizar mapa sin tiles - elementos libres
+        // Renderizar mapa - zonas fluidas sin grid
         function generateMap() {
             map.innerHTML = '';
             const w = MAP_COLS * TILE_SIZE;
             const h = MAP_ROWS * TILE_SIZE;
             map.style.width = w + 'px';
             map.style.height = h + 'px';
-            
-            // Fondo continuo de césped
-            map.style.background = 'linear-gradient(135deg, #48a848 0%, #38a038 50%, #48a848 100%)';
+            map.style.background = '#48a848';
             
             const langClass = getLanguageClass(currentCity);
             
-            // Agrupar tiles por tipo para crear zonas continuas
-            const zones = {};
-            for (let y = 0; y < MAP_ROWS; y++) {
-                for (let x = 0; x < MAP_COLS; x++) {
-                    const t = MAP_DATA[y][x];
-                    if (t === 0) continue; // Skip grass (es el fondo)
-                    if (!zones[t]) zones[t] = [];
-                    zones[t].push({x, y});
+            // Crear filas horizontales continuas para cada tipo de zona
+            const renderZoneRows = (tileType, className) => {
+                let rows = [];
+                for (let y = 0; y < MAP_ROWS; y++) {
+                    let startX = null;
+                    for (let x = 0; x <= MAP_COLS; x++) {
+                        const isType = x < MAP_COLS && MAP_DATA[y][x] === tileType;
+                        if (isType && startX === null) {
+                            startX = x;
+                        } else if (!isType && startX !== null) {
+                            rows.push({ x: startX, y, w: x - startX });
+                            startX = null;
+                        }
+                    }
                 }
-            }
+                // Fusionar filas adyacentes verticalmente si tienen mismo x y w
+                rows.forEach(row => {
+                    const el = document.createElement('div');
+                    el.className = 'zone ' + className;
+                    el.style.left = row.x * TILE_SIZE + 'px';
+                    el.style.top = row.y * TILE_SIZE + 'px';
+                    el.style.width = row.w * TILE_SIZE + 'px';
+                    el.style.height = TILE_SIZE + 'px';
+                    map.appendChild(el);
+                });
+            };
             
-            // Renderizar zonas continuas para caminos, agua, plataformas
-            [1, 3, 13, 19].forEach(zoneType => {
-                if (!zones[zoneType]) return;
-                const zoneEl = document.createElement('div');
-                zoneEl.className = 'zone zone-' + (TILE_TYPES[zoneType] || 'path');
-                
-                // Calcular bounding box
-                const pts = zones[zoneType];
-                const minX = Math.min(...pts.map(p => p.x));
-                const maxX = Math.max(...pts.map(p => p.x));
-                const minY = Math.min(...pts.map(p => p.y));
-                const maxY = Math.max(...pts.map(p => p.y));
-                
-                zoneEl.style.left = minX * TILE_SIZE + 'px';
-                zoneEl.style.top = minY * TILE_SIZE + 'px';
-                zoneEl.style.width = (maxX - minX + 1) * TILE_SIZE + 'px';
-                zoneEl.style.height = (maxY - minY + 1) * TILE_SIZE + 'px';
-                map.appendChild(zoneEl);
-            });
+            // Renderizar zonas por filas (más natural)
+            renderZoneRows(1, 'zone-path');
+            renderZoneRows(3, 'zone-water');
+            renderZoneRows(13, 'zone-track');
+            renderZoneRows(19, 'zone-platform');
             
-            // Renderizar elementos individuales (edificios, objetos, decoración)
+            // Elementos individuales
             for (let y = 0; y < MAP_ROWS; y++) {
                 for (let x = 0; x < MAP_COLS; x++) {
                     const t = MAP_DATA[y][x];
-                    if ([0, 1, 3, 13, 19].includes(t)) continue; // Ya renderizados como zonas
+                    if ([0, 1, 3, 13, 19].includes(t)) continue;
                     
                     const el = document.createElement('div');
                     el.className = `element ${TILE_TYPES[t] || 'grass'}${t === 10 && langClass ? ' ' + langClass : ''}`;
@@ -3317,7 +3279,6 @@
                     el.style.top = y * TILE_SIZE + 'px';
                     map.appendChild(el);
                     
-                    // Etiqueta retorno
                     if (t === 15 && currentCity !== 'STATION') {
                         const label = document.createElement('div');
                         label.className = 'return-label';
@@ -3435,70 +3396,46 @@
             }
         }
         
-        // Estación de tren central - Diseño limpio estilo Pokemon GBA
+        // Estación de tren central - Diseño simple y claro
         function loadTrainStation(languages) {
             currentCity = 'STATION';
             currentLocation = 'outside';
             houses = [];
             wanderingNpcs = [];
             
-            MAP_COLS = 24;
-            MAP_ROWS = 18;
-            MAP_DATA = [];
+            MAP_COLS = 20;
+            MAP_ROWS = 14;
+            MAP_DATA = Array.from({length: MAP_ROWS}, () => Array(MAP_COLS).fill(0));
             
-            // Base de césped
-            for (let y = 0; y < MAP_ROWS; y++) {
-                MAP_DATA[y] = Array(MAP_COLS).fill(0);
-            }
-            
-            // Función helper para pintar rectángulos
-            const fillRect = (x1, y1, w, h, tile) => {
-                for (let y = y1; y < y1 + h && y < MAP_ROWS; y++) {
-                    for (let x = x1; x < x1 + w && x < MAP_COLS; x++) {
-                        if (x >= 0 && y >= 0) MAP_DATA[y][x] = tile;
-                    }
-                }
+            const fill = (x, y, w, h, t) => {
+                for (let dy = 0; dy < h; dy++)
+                    for (let dx = 0; dx < w; dx++)
+                        if (y+dy < MAP_ROWS && x+dx < MAP_COLS) MAP_DATA[y+dy][x+dx] = t;
             };
             
-            // Borde de árboles
-            fillRect(0, 0, MAP_COLS, 1, 2);
-            fillRect(0, MAP_ROWS - 1, MAP_COLS, 1, 2);
-            for (let y = 0; y < MAP_ROWS; y++) {
-                MAP_DATA[y][0] = 2;
-                MAP_DATA[y][MAP_COLS - 1] = 2;
-            }
+            // Borde árboles
+            fill(0, 0, MAP_COLS, 1, 2);
+            fill(0, MAP_ROWS-1, MAP_COLS, 1, 2);
+            for (let y = 0; y < MAP_ROWS; y++) { MAP_DATA[y][0] = 2; MAP_DATA[y][MAP_COLS-1] = 2; }
             
-            // EDIFICIO PRINCIPAL (centrado, arriba)
-            const bldgX = 6, bldgW = 12;
-            fillRect(bldgX, 2, bldgW, 1, 16);  // Techo
-            fillRect(bldgX, 3, bldgW, 1, 17);  // Pared
-            MAP_DATA[3][11] = 18;              // Puerta central
-            MAP_DATA[3][12] = 18;
-            MAP_DATA[2][11] = 31;              // Reloj
+            // Edificio estación (fila 2)
+            fill(5, 2, 10, 1, 16);  // Techo
+            fill(5, 3, 10, 1, 17);  // Pared
+            MAP_DATA[3][9] = 18; MAP_DATA[3][10] = 18;  // Puertas
             
-            // PLAZA (frente al edificio)
-            fillRect(4, 4, 16, 2, 1);
-            MAP_DATA[4][6] = 41;               // Fuente izq
-            MAP_DATA[4][17] = 41;              // Fuente der
+            // Plaza
+            fill(3, 4, 14, 2, 1);
             
-            // ANDENES Y VÍAS
-            fillRect(2, 6, 20, 1, 19);         // Andén superior
-            fillRect(2, 7, 20, 1, 13);         // Vía 1
-            fillRect(2, 8, 20, 2, 19);         // Andén central (doble)
-            fillRect(2, 10, 20, 1, 13);        // Vía 2
-            fillRect(2, 11, 20, 1, 19);        // Andén inferior
+            // Andén y vías
+            fill(2, 6, 16, 1, 19);  // Andén
+            fill(2, 7, 16, 1, 13);  // Vía
+            fill(2, 8, 16, 1, 19);  // Andén con destinos
             
-            // Tren decorativo en vía 2
-            MAP_DATA[10][15] = 34; MAP_DATA[10][16] = 35;
-            MAP_DATA[10][17] = 35; MAP_DATA[10][18] = 36;
-            
-            // CARTELES DE DESTINO (en andén central)
+            // Carteles destino
             window.availableCities = [];
-            const maxDest = Math.min(languages.length, 5);
-            const startX = Math.floor(12 - (maxDest * 2));
-            
+            const maxDest = Math.min(languages.length, 4);
             for (let i = 0; i < maxDest; i++) {
-                const x = startX + (i * 4);
+                const x = 5 + i * 3;
                 MAP_DATA[8][x] = 14;
                 window.availableCities.push({
                     x, y: 8,
@@ -3507,42 +3444,28 @@
                 });
             }
             
-            // Mobiliario
-            MAP_DATA[6][4] = 39;  MAP_DATA[6][19] = 39;  // Taquillas
-            MAP_DATA[9][5] = 30;  MAP_DATA[9][18] = 30;  // Bancos
-            MAP_DATA[11][8] = 30; MAP_DATA[11][15] = 30; // Bancos
+            // Zona sur
+            fill(6, 10, 8, 2, 1);
             
-            // JARDÍN SUR
-            fillRect(5, 13, 14, 2, 1);         // Camino
-            fillRect(10, 11, 4, 3, 1);         // Conexión
-            
-            // Decoración jardín
-            MAP_DATA[14][4] = 5; MAP_DATA[14][19] = 5;   // Flores
-            MAP_DATA[15][6] = 2; MAP_DATA[15][17] = 2;   // Árboles
-            MAP_DATA[16][9] = 4; MAP_DATA[16][14] = 4;   // Hierba alta
-            
-            // Jugador
-            playerX = 12;
-            playerY = 13;
+            playerX = 10;
+            playerY = 10;
             
             generateMap();
             
-            // Etiquetas de destinos
+            // Labels
             window.availableCities.forEach(city => {
                 const label = document.createElement('div');
                 label.className = 'city-label visible';
-                label.id = `city-${city.language}`;
-                label.innerHTML = `<strong>${city.language}</strong><small>${city.repoCount} repos</small>`;
-                label.style.left = (city.x * TILE_SIZE - 20) + 'px';
+                label.innerHTML = `<strong>${city.language}</strong><small>${city.repoCount}</small>`;
+                label.style.left = (city.x * TILE_SIZE - 16) + 'px';
                 label.style.top = ((city.y - 1) * TILE_SIZE) + 'px';
                 label.dataset.language = city.language;
                 map.appendChild(label);
             });
             
-            // Título
             const title = document.createElement('div');
             title.className = 'station-title';
-            title.innerHTML = '🚂 ESTACIÓN CENTRAL<small>Interactúa con los carteles para viajar</small>';
+            title.textContent = 'ESTACIÓN CENTRAL';
             map.appendChild(title);
             
             updateHUD('ESTACIÓN CENTRAL');
