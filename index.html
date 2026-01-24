@@ -149,35 +149,44 @@
         #game-container {
             width: 560px;
             height: 500px;
-            background: #6BB3E0;
+            background: linear-gradient(180deg, 
+                #6BB3E0 0%,      /* Sky */
+                #6BB3E0 25%,     /* Sky */
+                #7B8B9B 25%,     /* Mountain */
+                #6B7B8B 35%,     /* Mountain shadow */
+                #FFFFFF 35%,     /* Snow line */
+                #E8F4E8 40%,     /* Snow on ground */
+                #5AAF5A 40%,     /* Grass */
+                #4A9F4A 100%     /* Grass dark */
+            );
             position: relative;
             overflow: hidden;
-            border: none;
+            border: 4px solid #000000;
             border-radius: 0;
             box-shadow: none;
         }
 
-        /* Colorado Mountains in background */
+        /* Colorado Mountains in background - BIGGER */
         #game-container::before {
             content: '';
             position: absolute;
             width: 100%;
-            height: 120px;
-            bottom: 180px;
+            height: 150px;
+            top: 60px;
             left: 0;
             z-index: 1;
-            /* Multiple triangle mountains */
+            pointer-events: none;
+            /* Big triangle mountains like SP */
             background: 
-                /* Mountain 1 */
-                linear-gradient(135deg, transparent 40%, #6B7B8B 40%, #6B7B8B 50%, transparent 50%),
-                linear-gradient(225deg, transparent 40%, #5A6A7A 40%, #5A6A7A 50%, transparent 50%),
+                /* Mountain 1 - big */
+                linear-gradient(150deg, transparent 45%, #5A6A7A 45%) no-repeat 0 0 / 200px 150px,
+                linear-gradient(210deg, transparent 45%, #4A5A6A 45%) no-repeat 100px 0 / 200px 150px,
                 /* Mountain 2 */
-                linear-gradient(140deg, transparent 35%, #7B8B9B 35%, #7B8B9B 45%, transparent 45%),
-                linear-gradient(220deg, transparent 35%, #6A7A8A 35%, #6A7A8A 45%, transparent 45%),
+                linear-gradient(155deg, transparent 40%, #6B7B8B 40%) no-repeat 180px 20px / 180px 130px,
+                linear-gradient(205deg, transparent 40%, #5A6A7A 40%) no-repeat 270px 20px / 180px 130px,
                 /* Mountain 3 */
-                linear-gradient(130deg, transparent 42%, #8B9BAB 42%, #8B9BAB 52%, transparent 52%),
-                linear-gradient(230deg, transparent 42%, #7A8A9A 42%, #7A8A9A 52%, transparent 52%);
-            background-size: 200px 120px, 200px 120px, 180px 100px, 180px 100px, 160px 90px, 160px 90px;
+                linear-gradient(145deg, transparent 42%, #7B8B9B 42%) no-repeat 350px 30px / 160px 120px,
+                linear-gradient(215deg, transparent 42%, #6B7B8B 42%) no-repeat 430px 30px / 160px 120px;
             background-position: 0 0, 100px 0, 150px 20px, 250px 20px, 350px 30px, 450px 30px;
             background-repeat: repeat-x;
         }
@@ -705,28 +714,35 @@
         /* ===== ZONAS - South Park Flat Style ===== */
         .zone {
             position: absolute;
-            /* Paper cutout wobble */
-            animation: sp-wobble 0.5s ease-in-out infinite;
+            /* No wobble on ground zones */
         }
         
-        /* SP dirt path - simple brown */
+        /* SP STREET - Grey asphalt like the show */
         .zone-path {
-            background: #B08050;
-            border: 2px solid #806030;
+            background: #707070;
+            border: none;
             box-shadow: none;
         }
+        /* Yellow center line */
+        .zone-path::before {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            top: 45%; height: 3px;
+            background: #FFD700;
+        }
         
-        /* SP water - flat blue, no waves */
+        /* SP water - flat blue */
         .zone-water {
             background: #4080B0;
-            border: 2px solid #306090;
+            border: 3px solid #000;
             animation: none;
         }
         
-        /* SP grass zone */
+        /* SP grass zone - bright green */
         .zone-grass {
-            background: #4A9F4A;
-            border: 2px solid #3A8F3A;
+            background: #5AAF5A;
+            border: none;
         }
         
         .zone-track {
@@ -756,7 +772,7 @@
             background: #FFD700;
         }
 
-        /* ===== ELEMENTOS - ACNH Style ===== */
+        /* ===== ELEMENTOS - South Park Style ===== */
         .element {
             position: absolute;
             width: 32px;
@@ -852,72 +868,78 @@
             background: #806030;
         }
 
-        /* ===== CASAS SOUTH PARK - Simple Colorado houses ===== */
+        /* ===== CASAS SOUTH PARK - BIG Simple Colorado houses ===== */
         
-        /* Sin sombras complejas - estilo paper cutout */
+        /* BIGGER tiles for houses */
         .house-roof, .house-wall, .house-door {
-            /* SP flat - no drop shadows */
+            border: 3px solid #000000 !important;
+            box-shadow: none !important;
         }
         
-        /* SOUTH PARK House Roof - simple flat triangle/rectangle */
+        /* SOUTH PARK House Roof - colored flat */
         .house-roof {
-            background: #8B4513;
-            border: 2px solid #5A2D0A;
+            background: #C04040;
+            border: 3px solid #000000;
             border-radius: 0;
-            box-shadow: none;
             position: relative;
+            height: 32px;
         }
         .house-roof::before {
-            display: none;
+            /* Chimney */
+            content: '';
+            position: absolute;
+            width: 10px; height: 16px;
+            right: 4px; top: -12px;
+            background: #704030;
+            border: 2px solid #000;
         }
         .house-roof::after {
             display: none;
         }
 
-        /* SP Wall - flat color with simple window */
+        /* SP Wall - flat beige with BIG window */
         .house-wall {
             background: #E8D8C0;
-            border: 2px solid #806040;
-            box-shadow: none;
+            border: 3px solid #000000;
+            position: relative;
         }
         .house-wall::before {
-            /* Simple square window */
+            /* BIG square window */
             content: '';
             position: absolute;
-            width: 12px; height: 12px;
-            left: 10px; top: 8px;
-            background: #4080B0;
-            border: 2px solid #303030;
+            width: 18px; height: 16px;
+            left: 6px; top: 6px;
+            background: #80C0E0;
+            border: 3px solid #000;
         }
         .house-wall::after {
             /* Window cross */
             content: '';
             position: absolute;
-            width: 12px; height: 2px;
-            left: 10px; top: 13px;
-            background: #303030;
-            box-shadow: 5px -5px 0 0 #303030;
+            width: 18px; height: 3px;
+            left: 6px; top: 13px;
+            background: #000;
+            box-shadow: 8px -8px 0 0 #000;
         }
 
-        /* SP Door - flat */
+        /* SP Door - BIG brown door */
         .house-door {
             background: #E8D8C0;
-            border: 2px solid #806040;
+            border: 3px solid #000000;
             border-bottom: none;
             cursor: pointer;
-            transition: none;
         }
         .house-door:hover {
-            background: #F0E8D8;
+            filter: brightness(1.1);
         }
         .house-door::before {
-            /* Simple door */
+            /* BIG door */
             content: '';
             position: absolute;
-            width: 16px; height: 24px;
-            left: 8px; top: 4px;
+            width: 20px; height: 28px;
+            left: 6px; top: 2px;
             background: #6B4423;
-            border: 2px solid #3A2410;
+            border: 3px solid #000;
         }
         .house-door::after {
             /* Doorknob - simple circle */
@@ -1627,10 +1649,10 @@
         .sp-house-kenny .house-roof { background: #996633 !important; }
         .sp-house-butters .house-roof { background: #80C0E0 !important; }
         
-        /* South Park Street - simple grey */
+        /* South Park Street override */
         .zone-path {
-            background: #808080 !important;
-            border: 1px solid #606060;
+            background: #707070 !important;
+            border: none !important;
         }
 
         /* City title banner - when inside a language city */
@@ -1909,13 +1931,14 @@
 
         /* ========== SOUTH PARK AUTHENTIC CHARACTERS ========== */
         
-        /* Player = STAN MARSH */
+        /* Player = STAN MARSH - BIGGER */
         #player {
             position: absolute;
-            width: var(--tile-size);
-            height: var(--tile-size);
+            width: 48px;
+            height: 56px;
             z-index: 50;
             animation: sp-wobble 0.4s ease-in-out infinite;
+            transform: translateX(-8px) translateY(-24px);
         }
 
         .sprite {
@@ -1923,90 +1946,91 @@
             height: 100%;
         }
 
-        /* STAN - Blue pom-pom hat, brown jacket, blue jeans */
+        /* STAN - Blue pom-pom hat, brown jacket - BIG */
         .player-sprite {
-            width: 100%; height: 100%;
+            width: 48px; 
+            height: 56px;
             position: relative;
         }
         .player-sprite::before {
-            /* Stan's face */
+            /* Stan's face - BIG */
             content: '';
             position: absolute;
-            width: 24px; height: 18px;
-            left: 4px; top: 6px;
+            width: 36px; height: 28px;
+            left: 6px; top: 10px;
             background: #FFD9B3;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
         }
         .player-sprite::after {
-            /* Stan's brown jacket body */
+            /* Stan's brown jacket body - BIG */
             content: '';
             position: absolute;
-            width: 22px; height: 14px;
-            left: 5px; top: 22px;
+            width: 40px; height: 22px;
+            left: 4px; top: 36px;
             background: #8B4513;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
         
-        /* Stan's blue hat with red pom-pom */
+        /* Stan's blue hat with red pom-pom - BIG */
         #player .player-hair {
             position: absolute;
-            width: 26px; height: 12px;
-            left: 3px; top: 0px;
+            width: 40px; height: 16px;
+            left: 4px; top: 0px;
             background: #3366CC;
-            border: 2px solid #000;
-            border-radius: 8px 8px 0 0;
+            border: 3px solid #000;
+            border-radius: 12px 12px 0 0;
             z-index: 3;
         }
         #player .player-hair::before {
-            /* Red pom-pom */
+            /* Red pom-pom - BIG */
             content: '';
             position: absolute;
-            width: 8px; height: 8px;
-            left: 9px; top: -6px;
+            width: 14px; height: 14px;
+            left: 13px; top: -10px;
             background: #CC0000;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
         }
         #player .player-hair::after {
-            /* Hat rim */
+            /* Hat rim - BIG */
             content: '';
             position: absolute;
-            width: 28px; height: 4px;
-            left: -1px; bottom: -2px;
+            width: 44px; height: 6px;
+            left: -2px; bottom: -3px;
             background: #CC0000;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
         
         /* Stan's eyes - big white ovals */
         #player .player-eyes {
             position: absolute;
-            width: 7px; height: 9px;
+            width: 10px; height: 14px;
             background: #FFFFFF;
             border: 2px solid #000;
             border-radius: 50%;
-            left: 7px; top: 9px;
+            left: 10px; top: 14px;
             z-index: 4;
         }
         #player .player-eyes::before {
             /* Second eye */
             content: '';
             position: absolute;
-            width: 7px; height: 9px;
+            width: 10px; height: 14px;
             background: #FFFFFF;
             border: 2px solid #000;
             border-radius: 50%;
-            left: 10px; top: 0;
+            left: 16px; top: 0;
         }
         #player .player-eyes::after {
             /* Pupils */
             content: '';
             position: absolute;
-            width: 3px; height: 3px;
+            width: 4px; height: 4px;
             background: #000;
             border-radius: 50%;
-            left: 2px; top: 4px;
-            box-shadow: 12px 0 0 #000;
+            left: 3px; top: 6px;
+            box-shadow: 19px 0 0 #000;
         }
         
         /* SP walk animation */
@@ -2088,210 +2112,234 @@
         /* ========== SOUTH PARK NPCs - REAL CHARACTERS ========== */
         .npc {
             position: absolute;
-            width: var(--tile-size);
-            height: var(--tile-size);
+            width: 48px;
+            height: 56px;
             cursor: pointer;
             z-index: 40;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
+            transform: translateX(-8px) translateY(-24px);
         }
 
         .npc:hover {
-            transform: scale(1.08);
+            transform: translateX(-8px) translateY(-24px) scale(1.1);
             transition: transform 0.1s ease;
         }
 
-        /* All NPCs wobble */
-        .npc-sprite,
-        .npc-sprite-blue,
-        .npc-sprite-green,
-        .npc-sprite-purple,
-        .npc-sprite-red,
-        .npc-sprite-yellow,
-        .npc-sprite-cyan,
-        .npc-sprite-pink {
+        /* ========== SOUTH PARK AUTHENTIC BIG CHARACTERS ========== */
+        /* All SP characters share base wobble */
+        .sp-stan, .sp-kyle, .sp-cartman, .sp-kenny, 
+        .sp-butters, .sp-wendy, .sp-randy, .sp-garrison, .sp-chef,
+        .npc-sprite, .npc-sprite-blue, .npc-sprite-green, 
+        .npc-sprite-purple, .npc-sprite-red, .npc-sprite-yellow,
+        .npc-sprite-cyan, .npc-sprite-pink {
             animation: sp-wobble 0.5s ease-in-out infinite;
-            width: 100%; height: 100%;
+            width: 48px; 
+            height: 56px;
             position: relative;
         }
 
-        /* ===== KYLE BROFLOVSKI - Green ushanka hat, orange jacket ===== */
-        .npc-sprite {
-            /* Base container */
+        /* ===== STAN MARSH - Blue hat, red pom-pom, brown jacket ===== */
+        .sp-stan {
+            background: none;
         }
-        .npc-sprite::before {
-            /* Kyle's face */
+        .sp-stan::before {
             content: '';
             position: absolute;
-            width: 24px; height: 18px;
-            left: 4px; top: 6px;
+            width: 36px; height: 28px;
+            left: 6px; top: 8px;
             background: #FFD9B3;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
+            box-shadow: 
+                inset 8px 8px 0 0 #FFF,
+                inset -5px -5px 0 0 #E8C8A0;
         }
-        .npc-sprite::after {
-            /* Kyle's orange jacket */
+        .sp-stan::after {
             content: '';
             position: absolute;
-            width: 22px; height: 14px;
-            left: 5px; top: 22px;
-            background: #FF6600;
-            border: 2px solid #000;
+            width: 40px; height: 22px;
+            left: 4px; top: 34px;
+            background: #8B4513;
+            border: 3px solid #000;
         }
 
-        /* ===== CARTMAN - Cyan hat, red jacket, FAT ===== */
-        .npc-sprite-blue {
+        /* ===== KYLE BROFLOVSKI - Orange jacket, green ushanka ===== */
+        .sp-kyle, .npc-sprite {
+            background: none;
         }
-        .npc-sprite-blue::before {
-            /* Cartman's FAT face */
+        .sp-kyle::before, .npc-sprite::before {
             content: '';
             position: absolute;
-            width: 28px; height: 22px;
+            width: 36px; height: 28px;
+            left: 6px; top: 8px;
+            background: #FFD9B3;
+            border: 3px solid #000;
+            border-radius: 50%;
+        }
+        .sp-kyle::after, .npc-sprite::after {
+            content: '';
+            position: absolute;
+            width: 40px; height: 22px;
+            left: 4px; top: 34px;
+            background: #FF6600;
+            border: 3px solid #000;
+        }
+
+        /* ===== CARTMAN - FAT, cyan hat, red jacket ===== */
+        .sp-cartman, .npc-sprite-blue {
+            background: none;
+        }
+        .sp-cartman::before, .npc-sprite-blue::before {
+            content: '';
+            position: absolute;
+            width: 44px; height: 34px;
             left: 2px; top: 4px;
             background: #FFD9B3;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
         }
-        .npc-sprite-blue::after {
-            /* Cartman's red jacket - WIDE body */
+        .sp-cartman::after, .npc-sprite-blue::after {
             content: '';
             position: absolute;
-            width: 28px; height: 16px;
-            left: 2px; top: 22px;
+            width: 46px; height: 24px;
+            left: 1px; top: 32px;
             background: #CC0000;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
 
-        /* ===== KENNY McCORMICK - Orange parka hood ===== */
-        .npc-sprite-green {
+        /* ===== KENNY - Orange parka, hood covers face ===== */
+        .sp-kenny, .npc-sprite-green {
+            background: none;
         }
-        .npc-sprite-green::before {
-            /* Kenny's hood covers face - just small face hole */
+        .sp-kenny::before, .npc-sprite-green::before {
             content: '';
             position: absolute;
-            width: 24px; height: 20px;
-            left: 4px; top: 4px;
+            width: 38px; height: 30px;
+            left: 5px; top: 6px;
             background: #FF8800;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
-            /* Face hole in center */
-            box-shadow: inset 0 0 0 6px #FF8800, inset 0 0 0 8px #000;
+            box-shadow: inset 0 0 0 10px #FF8800, inset 0 0 0 13px #000;
         }
-        .npc-sprite-green::after {
-            /* Kenny's orange parka body */
+        .sp-kenny::after, .npc-sprite-green::after {
             content: '';
             position: absolute;
-            width: 22px; height: 14px;
-            left: 5px; top: 22px;
+            width: 40px; height: 22px;
+            left: 4px; top: 34px;
             background: #FF8800;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
 
-        /* ===== BUTTERS - Blonde hair, light blue shirt ===== */
-        .npc-sprite-purple {
+        /* ===== BUTTERS - Blonde, light blue shirt ===== */
+        .sp-butters, .npc-sprite-purple {
+            background: none;
         }
-        .npc-sprite-purple::before {
-            /* Butters' face */
-            /* Butters' light blue shirt */
+        .sp-butters::before, .npc-sprite-purple::before {
             content: '';
             position: absolute;
-            width: 20px; height: 14px;
-            left: 6px; top: 22px;
+            width: 34px; height: 26px;
+            left: 7px; top: 8px;
+            background: #FFD9B3;
+            border: 3px solid #000;
+            border-radius: 50%;
+        }
+        .sp-butters::after, .npc-sprite-purple::after {
+            content: '';
+            position: absolute;
+            width: 36px; height: 20px;
+            left: 6px; top: 34px;
             background: #80C0E0;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
 
-        /* ===== WENDY TESTABURGER - Black hair, pink beret ===== */
-        .npc-sprite-red {
+        /* ===== WENDY - Black hair, purple jacket ===== */
+        .sp-wendy, .npc-sprite-red {
+            background: none;
         }
-        .npc-sprite-red::before {
-            /* Wendy's face */
+        .sp-wendy::before, .npc-sprite-red::before {
             content: '';
             position: absolute;
-            width: 24px; height: 18px;
-            left: 4px; top: 6px;
+            width: 36px; height: 28px;
+            left: 6px; top: 6px;
             background: #FFD9B3;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
         }
-        .npc-sprite-red::after {
-            /* Wendy's purple jacket */
+        .sp-wendy::after, .npc-sprite-red::after {
             content: '';
             position: absolute;
-            width: 20px; height: 14px;
-            left: 6px; top: 22px;
+            width: 38px; height: 20px;
+            left: 5px; top: 34px;
             background: #9933CC;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
 
-        /* ===== RANDY MARSH - Black hair, mustache ===== */
-        .npc-sprite-yellow {
+        /* ===== RANDY MARSH - Black hair, blue shirt ===== */
+        .sp-randy, .npc-sprite-yellow {
+            background: none;
         }
-        .npc-sprite-yellow::before {
-            /* Randy's face */
+        .sp-randy::before, .npc-sprite-yellow::before {
             content: '';
             position: absolute;
-            width: 26px; height: 20px;
-            left: 3px; top: 4px;
+            width: 40px; height: 32px;
+            left: 4px; top: 4px;
             background: #FFD9B3;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
         }
-        .npc-sprite-yellow::after {
-            /* Randy's blue shirt */
+        .sp-randy::after, .npc-sprite-yellow::after {
             content: '';
             position: absolute;
-            width: 24px; height: 16px;
-            left: 4px; top: 22px;
+            width: 42px; height: 24px;
+            left: 3px; top: 32px;
             background: #3366CC;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
 
-        /* ===== MR. GARRISON - Glasses, green sweater ===== */
-        .npc-sprite-cyan {
+        /* ===== MR. GARRISON - Green sweater ===== */
+        .sp-garrison, .npc-sprite-cyan {
+            background: none;
         }
-        .npc-sprite-cyan::before {
-            /* Garrison's face */
+        .sp-garrison::before, .npc-sprite-cyan::before {
             content: '';
             position: absolute;
-            width: 24px; height: 18px;
-            left: 4px; top: 6px;
+            width: 36px; height: 28px;
+            left: 6px; top: 8px;
             background: #FFD9B3;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
         }
-        .npc-sprite-cyan::after {
-            /* Garrison's green sweater */
+        .sp-garrison::after, .npc-sprite-cyan::after {
             content: '';
             position: absolute;
-            width: 22px; height: 14px;
-            left: 5px; top: 22px;
+            width: 40px; height: 22px;
+            left: 4px; top: 34px;
             background: #339933;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
 
-        /* ===== CHEF - Black skin, white chef hat ===== */
-        .npc-sprite-pink {
+        /* ===== CHEF - Dark skin, white uniform ===== */
+        .sp-chef, .npc-sprite-pink {
+            background: none;
         }
-        .npc-sprite-pink::before {
-            /* Chef's face */
+        .sp-chef::before, .npc-sprite-pink::before {
             content: '';
             position: absolute;
-            width: 26px; height: 20px;
-            left: 3px; top: 6px;
+            width: 40px; height: 32px;
+            left: 4px; top: 4px;
             background: #8B4513;
-            border: 2px solid #000;
+            border: 3px solid #000;
             border-radius: 50%;
         }
-        .npc-sprite-pink::after {
-            /* Chef's white uniform */
+        .sp-chef::after, .npc-sprite-pink::after {
             content: '';
             position: absolute;
-            width: 24px; height: 14px;
-            left: 4px; top: 24px;
+            width: 42px; height: 24px;
+            left: 3px; top: 32px;
             background: #FFFFFF;
-            border: 2px solid #000;
+            border: 3px solid #000;
         }
 
         .wandering-npc {
@@ -3587,28 +3635,28 @@
         // ============== SOUTH PARK TOWN MAP ==============
         // Personajes de South Park y sus ubicaciones
         const SP_CHARACTERS = {
-            'stan': { name: 'Stan Marsh', sprite: 'npc-sprite', color: '#3366CC', desc: 'El protagonista. Vive aquí con su familia.' },
-            'kyle': { name: 'Kyle Broflovski', sprite: 'npc-sprite', color: '#FF6600', desc: 'El mejor amigo de Stan. Judío pelirrojo.' },
-            'cartman': { name: 'Eric Cartman', sprite: 'npc-sprite-blue', color: '#CC0000', desc: 'Gordo y malvado. Siempre tiene un plan.' },
-            'kenny': { name: 'Kenny McCormick', sprite: 'npc-sprite-green', color: '#FF8800', desc: 'Pobre pero valiente. Su capucha oculta su cara.' },
-            'butters': { name: 'Butters Stotch', sprite: 'npc-sprite-purple', color: '#80C0E0', desc: 'Inocente y amable. Siempre castigado.' },
-            'wendy': { name: 'Wendy Testaburger', sprite: 'npc-sprite-red', color: '#9933CC', desc: 'Novia de Stan. Inteligente y fuerte.' },
-            'randy': { name: 'Randy Marsh', sprite: 'npc-sprite-yellow', color: '#3366CC', desc: 'Padre de Stan. Geólogo loco.' },
-            'garrison': { name: 'Mr. Garrison', sprite: 'npc-sprite-cyan', color: '#339933', desc: 'Profesor de la escuela. Muy peculiar.' },
-            'chef': { name: 'Chef', sprite: 'npc-sprite-pink', color: '#FFFFFF', desc: 'Cocinero de la escuela. Sabio y musical.' }
+            'stan': { name: 'Stan Marsh', sprite: 'sp-stan', color: '#3366CC' },
+            'kyle': { name: 'Kyle Broflovski', sprite: 'sp-kyle', color: '#FF6600' },
+            'cartman': { name: 'Eric Cartman', sprite: 'sp-cartman', color: '#CC0000' },
+            'kenny': { name: 'Kenny McCormick', sprite: 'sp-kenny', color: '#FF8800' },
+            'butters': { name: 'Butters Stotch', sprite: 'sp-butters', color: '#80C0E0' },
+            'wendy': { name: 'Wendy Testaburger', sprite: 'sp-wendy', color: '#9933CC' },
+            'randy': { name: 'Randy Marsh', sprite: 'sp-randy', color: '#3366CC' },
+            'garrison': { name: 'Mr. Garrison', sprite: 'sp-garrison', color: '#339933' },
+            'chef': { name: 'Chef', sprite: 'sp-chef', color: '#8B4513' }
         };
         
-        // Edificios icónicos de South Park
+        // Edificios icónicos de South Park - Layout simple como el show
         const SP_BUILDINGS = [
-            { id: 'school', name: 'South Park Elementary', icon: '🏫', x: 8, y: 3, w: 5, h: 3, character: 'garrison' },
-            { id: 'stan_house', name: 'Casa de Stan', icon: '🏠', x: 2, y: 8, w: 3, h: 3, character: 'stan' },
-            { id: 'kyle_house', name: 'Casa de Kyle', icon: '🏠', x: 7, y: 8, w: 3, h: 3, character: 'kyle' },
-            { id: 'cartman_house', name: 'Casa de Cartman', icon: '🏠', x: 12, y: 8, w: 3, h: 3, character: 'cartman' },
-            { id: 'kenny_house', name: 'Casa de Kenny', icon: '🛖', x: 17, y: 8, w: 3, h: 3, character: 'kenny' },
-            { id: 'church', name: 'Iglesia', icon: '⛪', x: 2, y: 14, w: 3, h: 3, character: 'butters' },
-            { id: 'city_hall', name: 'City Hall', icon: '🏛️', x: 7, y: 14, w: 4, h: 3, character: 'randy' },
-            { id: 'cafe', name: 'Tweek Bros Coffee', icon: '☕', x: 13, y: 14, w: 3, h: 3, character: 'wendy' },
-            { id: 'hospital', name: 'Hells Pass Hospital', icon: '🏥', x: 17, y: 14, w: 3, h: 3, character: 'chef' }
+            { id: 'stan_house', name: 'Casa de Stan', color: '#8B4513', x: 2, y: 3, character: 'kyle' },
+            { id: 'kyle_house', name: 'Casa de Kyle', color: '#2E7D32', x: 6, y: 3, character: 'stan' },
+            { id: 'cartman_house', name: 'Casa de Cartman', color: '#C62828', x: 10, y: 3, character: 'cartman' },
+            { id: 'kenny_house', name: 'Casa de Kenny', color: '#795548', x: 14, y: 3, character: 'kenny' },
+            { id: 'school', name: 'SP Elementary', color: '#FF8F00', x: 2, y: 8, character: 'garrison' },
+            { id: 'church', name: 'Iglesia', color: '#FFFFFF', x: 7, y: 8, character: 'butters' },
+            { id: 'city_hall', name: 'City Hall', color: '#1565C0', x: 11, y: 8, character: 'randy' },
+            { id: 'cafe', name: 'Tweek Coffee', color: '#4E342E', x: 15, y: 8, character: 'wendy' },
+            { id: 'hospital', name: 'Hospital', color: '#D32F2F', x: 8, y: 13, character: 'chef' }
         ];
         
         // Cargar el mapa principal de South Park
@@ -3619,73 +3667,58 @@
             wanderingNpcs = [];
             npcs = [];
             
-            // Tamaño del mapa de South Park
-            MAP_COLS = 24;
-            MAP_ROWS = 22;
+            // Mapa más pequeño y compacto como South Park
+            MAP_COLS = 20;
+            MAP_ROWS = 18;
             MAP_DATA = Array.from({length: MAP_ROWS}, () => Array(MAP_COLS).fill(0));
             
             const fill = (x, y, w, h, t) => {
                 for (let dy = 0; dy < h; dy++)
                     for (let dx = 0; dx < w; dx++)
-                        if (y+dy < MAP_ROWS && x+dx < MAP_COLS) MAP_DATA[y+dy][x+dx] = t;
+                        if (y+dy < MAP_ROWS && x+dx < MAP_COLS && y+dy >= 0 && x+dx >= 0) 
+                            MAP_DATA[y+dy][x+dx] = t;
             };
             
             const set = (y, x, t) => {
                 if (y >= 0 && y < MAP_ROWS && x >= 0 && x < MAP_COLS) MAP_DATA[y][x] = t;
             };
             
-            // Borde de árboles (montañas de Colorado en el fondo)
-            fill(0, 0, MAP_COLS, 2, 2);
-            fill(0, MAP_ROWS-1, MAP_COLS, 1, 2);
-            for (let y = 0; y < MAP_ROWS; y++) { 
-                set(y, 0, 2); 
-                set(y, MAP_COLS-1, 2); 
-            }
+            // === FONDO: Todo nieve/hierba ===
+            // Nada de árboles en los bordes - solo cielo y montañas (CSS)
             
-            // === CALLES PRINCIPALES DE SOUTH PARK ===
-            // Calle principal horizontal (Main Street)
-            fill(1, 6, MAP_COLS-2, 2, 1);
-            fill(1, 12, MAP_COLS-2, 2, 1);
-            fill(1, 18, MAP_COLS-2, 2, 1);
+            // === UNA SOLA CALLE HORIZONTAL PRINCIPAL ===
+            fill(0, 6, MAP_COLS, 1, 1);  // Calle superior
+            fill(0, 11, MAP_COLS, 1, 1); // Calle inferior
             
-            // Calles verticales
-            fill(5, 2, 2, MAP_ROWS-3, 1);
-            fill(11, 2, 2, MAP_ROWS-3, 1);
-            fill(17, 2, 2, MAP_ROWS-3, 1);
-            
-            // === NIEVE EN ALGUNAS ÁREAS ===
-            // Parque Stark's Pond (agua)
-            fill(19, 19, 4, 2, 3);
+            // === ACERAS ===
+            fill(0, 5, MAP_COLS, 1, 1);
+            fill(0, 7, MAP_COLS, 1, 1);
+            fill(0, 10, MAP_COLS, 1, 1);
+            fill(0, 12, MAP_COLS, 1, 1);
             
             // === EDIFICIOS DE SOUTH PARK ===
-            const buildingPositions = [];
             const numRepos = repos.length;
             
             SP_BUILDINGS.forEach((building, idx) => {
-                // Crear edificio
                 const bx = building.x;
                 const by = building.y;
                 
-                // Techo
-                fill(bx, by, building.w, 1, 10);
-                // Paredes
-                fill(bx, by + 1, building.w, building.h - 2, 11);
-                // Puerta en el centro
-                const doorX = bx + Math.floor(building.w / 2);
-                const doorY = by + building.h - 1;
-                set(doorY, doorX, 12);
-                // Camino a la puerta
-                set(doorY + 1, doorX, 1);
+                // Casa simple: techo + pared + puerta
+                fill(bx, by, 3, 1, 10);      // Techo
+                fill(bx, by + 1, 3, 1, 11);  // Pared
+                set(by + 2, bx + 1, 12);     // Puerta
+                set(by + 2, bx, 11);         // Pared izq
+                set(by + 2, bx + 2, 11);     // Pared der
                 
-                // Asignar proyecto a este edificio si hay repos disponibles
+                // Asignar proyecto
                 if (idx < numRepos) {
                     const repo = repos[idx];
                     const house = {
-                        doorX: doorX,
-                        doorY: doorY,
+                        doorX: bx + 1,
+                        doorY: by + 2,
                         buildingId: building.id,
                         buildingName: building.name,
-                        buildingIcon: building.icon,
+                        buildingColor: building.color,
                         name: repo.name,
                         fullName: repo.full_name,
                         description: repo.description || building.name,
@@ -3697,34 +3730,31 @@
                         characterName: SP_CHARACTERS[building.character].name
                     };
                     houses.push(house);
-                    buildingPositions.push({ building, house, doorX, doorY });
                 }
             });
             
-            // Más repos? Añadir casas extra en la parte inferior
+            // Más repos? Añadir casas abajo
             if (numRepos > SP_BUILDINGS.length) {
                 const extraRepos = repos.slice(SP_BUILDINGS.length);
                 const characterKeys = Object.keys(SP_CHARACTERS);
                 
                 extraRepos.forEach((repo, idx) => {
-                    const row = Math.floor(idx / 4);
                     const col = idx % 4;
-                    const houseX = 3 + col * 5;
-                    const houseY = 19 + row * 4;
+                    const houseX = 2 + col * 4;
+                    const houseY = 14;
                     
-                    if (houseY + 3 < MAP_ROWS - 1) {
+                    if (houseX + 3 < MAP_COLS) {
                         fill(houseX, houseY, 3, 1, 10);
                         fill(houseX, houseY + 1, 3, 2, 11);
                         set(houseY + 2, houseX + 1, 12);
-                        set(houseY + 3, houseX + 1, 1);
                         
-                        const charKey = characterKeys[(idx + SP_BUILDINGS.length) % characterKeys.length];
+                        const charKey = characterKeys[idx % characterKeys.length];
                         const house = {
                             doorX: houseX + 1,
                             doorY: houseY + 2,
                             name: repo.name,
                             fullName: repo.full_name,
-                            description: repo.description || 'Proyecto de código',
+                            description: repo.description || 'Proyecto',
                             language: repo.language || 'Unknown',
                             stars: repo.stargazers_count,
                             url: repo.html_url,
@@ -3737,17 +3767,9 @@
                 });
             }
             
-            // Decoración: flores y hierba alta
-            for (let y = 2; y < MAP_ROWS - 1; y++) {
-                for (let x = 1; x < MAP_COLS - 1; x++) {
-                    if (MAP_DATA[y][x] === 0 && Math.random() < 0.08) {
-                        MAP_DATA[y][x] = Math.random() < 0.5 ? 5 : 4;
-                    }
-                }
-            }
-            
-            // Posición inicial del jugador (Stan) - en la calle principal
-            playerX = 11;
+            // Posición inicial del jugador - en la calle
+            playerX = 10;
+            playerY = 6;
             playerY = 7;
             
             // Renderizar mapa
