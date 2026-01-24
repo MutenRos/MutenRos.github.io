@@ -1330,71 +1330,69 @@
             pointer-events: none;
         }
         
-        /* Taxi - estilo 2DS/3DS con más detalle */
+        /* Taxi - estilo Animal Crossing */
         .taxi {
-            background: #b8b0a0;
+            background: linear-gradient(180deg, #a8d8a8 0%, #90c090 100%);
         }
         .taxi::before {
-            /* Carrocería del taxi */
+            /* Carrocería redondeada estilo AC */
             content: '';
             position: absolute;
-            width: 28px; height: 14px;
-            left: 2px; top: 10px;
-            background: linear-gradient(180deg, #ffd700 0%, #f0c000 50%, #d4a800 100%);
-            border: 2px solid #806000;
-            border-radius: 3px;
+            width: 26px; height: 16px;
+            left: 3px; top: 8px;
+            background: linear-gradient(180deg, 
+                #ffe566 0%, 
+                #ffd633 30%, 
+                #f0c000 70%, 
+                #e0b000 100%);
+            border: 2px solid #a08020;
+            border-radius: 8px 8px 4px 4px;
             box-shadow: 
-                inset 0 2px 0 rgba(255,255,255,0.4),
-                inset 0 -2px 0 rgba(0,0,0,0.2),
-                0 2px 2px rgba(0,0,0,0.3);
+                inset 0 4px 6px rgba(255,255,255,0.5),
+                inset 0 -3px 4px rgba(0,0,0,0.15),
+                0 3px 0 #908030,
+                /* Ruedas estilo AC - redondeadas y cute */
+                -1px 14px 0 3px #404040,
+                -1px 14px 0 5px #606060,
+                -1px 13px 0 1px #808080,
+                21px 14px 0 3px #404040,
+                21px 14px 0 5px #606060,
+                21px 13px 0 1px #808080;
         }
         .taxi::after {
-            /* Cabina/ventanas */
+            /* Ventanas grandes estilo AC */
             content: '';
             position: absolute;
-            width: 14px; height: 8px;
-            left: 9px; top: 6px;
-            background: linear-gradient(180deg, #88d0f8 0%, #60b8e8 100%);
-            border: 2px solid #806000;
-            border-radius: 2px 2px 0 0;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
-        }
-        /* Ruedas y detalles extra con box-shadow */
-        .taxi {
-            position: relative;
-        }
-        .taxi .taxi-wheels {
-            position: absolute;
-            width: 100%; height: 100%;
-        }
-        /* Usamos sombras múltiples para ruedas y cartel */
-        .taxi::before {
+            width: 18px; height: 10px;
+            left: 7px; top: 3px;
+            background: linear-gradient(180deg, 
+                #b8e8f8 0%, 
+                #90d8f0 40%, 
+                #70c8e8 100%);
+            border: 2px solid #a08020;
+            border-radius: 6px 6px 2px 2px;
             box-shadow: 
-                inset 0 2px 0 rgba(255,255,255,0.4),
-                inset 0 -2px 0 rgba(0,0,0,0.2),
-                0 2px 2px rgba(0,0,0,0.3),
-                /* Rueda trasera */
-                -2px 14px 0 0 #303030,
-                -1px 14px 0 2px #505050,
-                /* Rueda delantera */
-                22px 14px 0 0 #303030,
-                23px 14px 0 2px #505050,
+                inset 0 2px 4px rgba(255,255,255,0.7),
+                inset 2px 0 0 rgba(255,255,255,0.3),
                 /* Cartel TAXI en el techo */
-                6px -8px 0 0 #ff6060;
+                3px -6px 0 2px #ff8844,
+                3px -6px 0 4px #cc6622;
         }
         
-        /* Taxi label */
+        /* Taxi label - estilo AC */
         .taxi-label {
             position: absolute;
-            font-size: 0.35rem;
-            color: #000;
-            background: #f0d020;
-            padding: 3px 8px;
-            border: 2px solid #806000;
+            font-size: 0.4rem;
+            font-weight: bold;
+            color: #604020;
+            background: linear-gradient(180deg, #fff8e0 0%, #f0e0b0 100%);
+            padding: 4px 10px;
+            border: 2px solid #a08040;
+            border-radius: 8px;
             z-index: 61;
             pointer-events: none;
             white-space: nowrap;
-            cursor: pointer;
+            box-shadow: 0 2px 0 #806020;
         }
 
         /* Station clock tile - GBA style */
