@@ -3402,166 +3402,102 @@
             return { cols, rows, housesPerRow, blockWidth, blockHeight };
         }
         
-        // Generate procedural map based on number of repos
+        // Generador de mapa procedural limpio
         function generateProceduralMap(numHouses) {
             const { cols, rows, housesPerRow, blockWidth, blockHeight } = calculateMapSize(numHouses);
             
             MAP_COLS = cols;
             MAP_ROWS = rows;
-            MAP_DATA = [];
+            MAP_DATA = Array.from({ length: rows }, () => Array(cols).fill(0));
             
-            // Initialize with grass
-            for (let y = 0; y < rows; y++) {
-                MAP_DATA[y] = [];
-                for (let x = 0; x < cols; x++) {
-                    MAP_DATA[y][x] = 0; // grass
-                }
-            }
+            const fill = (x1, y1, w, h, t) => {
+                for (let y = y1; y < y1 + h && y < rows; y++)
+                    for (let x = x1; x < x1 + w && x < cols; x++)
+                        if (x >= 0 && y >= 0) MAP_DATA[y][x] = t;
+            };
             
-            // Add tree border
-            for (let x = 0; x < cols; x++) {
-                MAP_DATA[0][x] = 2;
-                MAP_DATA[rows - 1][x] = 2;
-            }
-            for (let y = 0; y < rows; y++) {
-                MAP_DATA[y][0] = 2;
-                MAP_DATA[y][cols - 1] = 2;
-            }
+            const set = (y, x, t) => {
+                if (y >= 0 && y < rows && x >= 0 && x < cols) MAP_DATA[y][x] = t;
+            };
             
-            // Add some random trees on edges
-            for (let y = 1; y < rows - 1; y++) {
-                if (Math.random() < 0.3) MAP_DATA[y][1] = 2;
-                if (Math.random() < 0.3) MAP_DATA[y][cols - 2] = 2;
-            }
+            // Bordes
+            fill(0, 0, cols, 1, 2);
+            fill(0, rows - 1, cols, 1, 2);
+            for (let y = 0; y < rows; y++) { set(y, 0, 2); set(y, cols - 1, 2); }
             
-            // Main vertical path in center
-            const mainPathX = Math.floor(cols / 2);
-            for (let y = 3; y < rows - 3; y++) {
-                MAP_DATA[y][mainPathX] = 1;
-                MAP_DATA[y][mainPathX - 1] = 1;
-            }
+            // Camino principal vertical
+            const mainX = Math.floor(cols / 2);
+            fill(mainX - 1, 3, 2, rows - 6, 1);
             
-            // Generate house positions and horizontal paths
+            // Casas en filas
             const housePositions = [];
             const rowsOfHouses = Math.ceil(numHouses / housesPerRow);
             
             for (let row = 0; row < rowsOfHouses; row++) {
                 const baseY = 4 + row * blockHeight;
+                fill(3, baseY + 2, cols - 6, 1, 1); // Camino horizontal
                 
-                // Horizontal path for this row
-                for (let x = 3; x < cols - 3; x++) {
-                    if (baseY + 2 < rows - 1) {
-                        MAP_DATA[baseY + 2][x] = 1;
-                    }
-                }
-                
-                // Houses in this row
                 for (let col = 0; col < housesPerRow; col++) {
-                    const houseIndex = row * housesPerRow + col;
-                    if (houseIndex >= numHouses) break;
+                    if (row * housesPerRow + col >= numHouses) break;
                     
-                    // Calculate house position
-                    let houseX;
-                    if (col === 0) {
-                        houseX = 4;
-                    } else if (col === 1) {
-                        houseX = mainPathX + 3;
-                    } else {
-                        houseX = cols - 8;
-                    }
-                    
+                    const houseX = col === 0 ? 4 : col === 1 ? mainX + 3 : cols - 8;
                     const houseY = baseY - 1;
                     
-                    // Place house (3x3: roof, walls, door)
-                    if (houseY > 0 && houseY + 2 < rows - 1 && houseX + 2 < cols - 1) {
-                        // Roof
-                        MAP_DATA[houseY][houseX] = 10;
-                        MAP_DATA[houseY][houseX + 1] = 10;
-                        MAP_DATA[houseY][houseX + 2] = 10;
-                        // Walls
-                        MAP_DATA[houseY + 1][houseX] = 11;
-                        MAP_DATA[houseY + 1][houseX + 1] = 11;
-                        MAP_DATA[houseY + 1][houseX + 2] = 11;
-                        // Door in center
-                        MAP_DATA[houseY + 2][houseX] = 11;
-                        MAP_DATA[houseY + 2][houseX + 1] = 12; // Door
-                        MAP_DATA[houseY + 2][houseX + 2] = 11;
+                    if (houseY > 0 && houseY + 3 < rows - 1 && houseX + 2 < cols - 1) {
+                        // Casa: techo, paredes, puerta
+                        fill(houseX, houseY, 3, 1, 10);
+                        fill(houseX, houseY + 1, 3, 2, 11);
+                        set(houseY + 2, houseX + 1, 12);
+                        set(houseY + 3, houseX + 1, 1);
                         
-                        // Path to door
-                        MAP_DATA[houseY + 3][houseX + 1] = 1;
-                        
-                        housePositions.push({
-                            doorX: houseX + 1,
-                            doorY: houseY + 2
-                        });
+                        housePositions.push({ doorX: houseX + 1, doorY: houseY + 2 });
                     }
                 }
             }
             
-            // Add decorations
+            // Decoración dispersa
             for (let y = 2; y < rows - 2; y++) {
                 for (let x = 2; x < cols - 2; x++) {
-                    if (MAP_DATA[y][x] === 0) {
-                        const rand = Math.random();
-                        if (rand < 0.03) MAP_DATA[y][x] = 5; // flower
-                        else if (rand < 0.05) MAP_DATA[y][x] = 4; // tall grass
+                    if (MAP_DATA[y][x] === 0 && Math.random() < 0.04) {
+                        MAP_DATA[y][x] = Math.random() < 0.6 ? 5 : 4;
                     }
                 }
             }
             
-            // Add water feature in corner if space
-            if (rows > 15 && cols > 20) {
-                const waterY = rows - 5;
-                const waterX = cols - 8;
-                for (let dy = 0; dy < 3; dy++) {
-                    for (let dx = 0; dx < 4; dx++) {
-                        if (MAP_DATA[waterY + dy] && MAP_DATA[waterY + dy][waterX + dx] === 0) {
-                            MAP_DATA[waterY + dy][waterX + dx] = 3;
-                        }
-                    }
-                }
-            }
+            // Lago pequeño
+            if (rows > 15 && cols > 20) fill(cols - 8, rows - 5, 4, 3, 3);
             
-            // Set player start position
-            playerX = mainPathX;
+            playerX = mainX;
             playerY = Math.min(rows - 4, 6);
             
             return housePositions;
         }
         
-        // Render the map
+        // Renderizar mapa
         function generateMap() {
             map.innerHTML = '';
             map.style.width = MAP_COLS * TILE_SIZE + 'px';
             map.style.height = MAP_ROWS * TILE_SIZE + 'px';
             
-            // Get language color class
             const langClass = getLanguageClass(currentCity);
 
             for (let y = 0; y < MAP_ROWS; y++) {
                 for (let x = 0; x < MAP_COLS; x++) {
-                    const tileType = MAP_DATA[y][x];
+                    const t = MAP_DATA[y][x];
                     const tile = document.createElement('div');
-                    let tileClass = 'tile ' + (TILE_TYPES[tileType] || 'grass');
-                    
-                    // Add language color to house roofs
-                    if (tileType === 10 && langClass) {
-                        tileClass += ' ' + langClass;
-                    }
-                    
-                    tile.className = tileClass;
+                    tile.className = `tile ${TILE_TYPES[t] || 'grass'}${t === 10 && langClass ? ' ' + langClass : ''}`;
                     tile.style.left = x * TILE_SIZE + 'px';
                     tile.style.top = y * TILE_SIZE + 'px';
                     map.appendChild(tile);
                     
-                    // Añadir etiqueta al tile de retorno a estación
-                    if (tileType === 15 && currentCity !== 'STATION') {
-                        const returnLabel = document.createElement('div');
-                        returnLabel.className = 'return-label';
-                        returnLabel.textContent = '← ESTACIÓN';
-                        returnLabel.style.left = (x * TILE_SIZE - 10) + 'px';
-                        returnLabel.style.top = ((y - 1) * TILE_SIZE) + 'px';
-                        map.appendChild(returnLabel);
+                    // Etiqueta retorno estación
+                    if (t === 15 && currentCity !== 'STATION') {
+                        const label = document.createElement('div');
+                        label.className = 'return-label';
+                        label.textContent = '← ESTACIÓN';
+                        label.style.left = (x * TILE_SIZE - 10) + 'px';
+                        label.style.top = ((y - 1) * TILE_SIZE) + 'px';
+                        map.appendChild(label);
                     }
                 }
             }
@@ -3672,175 +3608,99 @@
             }
         }
         
-        // Estación de tren central - Rediseño GBA estilo Pokemon Ruby/Sapphire
+        // Estación de tren central - Diseño limpio estilo Pokemon GBA
         function loadTrainStation(languages) {
             currentCity = 'STATION';
             currentLocation = 'outside';
             houses = [];
             wanderingNpcs = [];
             
-            // Mapa de estación
-            MAP_COLS = 28;
-            MAP_ROWS = 22;
+            MAP_COLS = 24;
+            MAP_ROWS = 18;
             MAP_DATA = [];
             
-            // Inicializar con césped
+            // Base de césped
             for (let y = 0; y < MAP_ROWS; y++) {
-                MAP_DATA[y] = [];
-                for (let x = 0; x < MAP_COLS; x++) {
-                    MAP_DATA[y][x] = 0; // grass
-                }
+                MAP_DATA[y] = Array(MAP_COLS).fill(0);
             }
             
+            // Función helper para pintar rectángulos
+            const fillRect = (x1, y1, w, h, tile) => {
+                for (let y = y1; y < y1 + h && y < MAP_ROWS; y++) {
+                    for (let x = x1; x < x1 + w && x < MAP_COLS; x++) {
+                        if (x >= 0 && y >= 0) MAP_DATA[y][x] = tile;
+                    }
+                }
+            };
+            
             // Borde de árboles
-            for (let x = 0; x < MAP_COLS; x++) {
-                MAP_DATA[0][x] = 2;
-                MAP_DATA[MAP_ROWS - 1][x] = 2;
-            }
+            fillRect(0, 0, MAP_COLS, 1, 2);
+            fillRect(0, MAP_ROWS - 1, MAP_COLS, 1, 2);
             for (let y = 0; y < MAP_ROWS; y++) {
                 MAP_DATA[y][0] = 2;
                 MAP_DATA[y][MAP_COLS - 1] = 2;
             }
             
-            const centerX = Math.floor(MAP_COLS / 2);
+            // EDIFICIO PRINCIPAL (centrado, arriba)
+            const bldgX = 6, bldgW = 12;
+            fillRect(bldgX, 2, bldgW, 1, 16);  // Techo
+            fillRect(bldgX, 3, bldgW, 1, 17);  // Pared
+            MAP_DATA[3][11] = 18;              // Puerta central
+            MAP_DATA[3][12] = 18;
+            MAP_DATA[2][11] = 31;              // Reloj
             
-            // ===== EDIFICIO ESTACIÓN (arriba, centrado) =====
-            // Techo grande (fila 2)
-            for (let x = 7; x <= 20; x++) {
-                MAP_DATA[2][x] = 16; // station-roof
-            }
+            // PLAZA (frente al edificio)
+            fillRect(4, 4, 16, 2, 1);
+            MAP_DATA[4][6] = 41;               // Fuente izq
+            MAP_DATA[4][17] = 41;              // Fuente der
             
-            // Pared con ventanas y puertas (fila 3)
-            for (let x = 7; x <= 20; x++) {
-                MAP_DATA[3][x] = 17; // station-wall
-            }
-            // Puertas centrales
-            MAP_DATA[3][12] = 18; // door
-            MAP_DATA[3][13] = 17; // wall
-            MAP_DATA[3][14] = 18; // door
-            MAP_DATA[3][15] = 17; // wall  
-            MAP_DATA[3][16] = 18; // door
+            // ANDENES Y VÍAS
+            fillRect(2, 6, 20, 1, 19);         // Andén superior
+            fillRect(2, 7, 20, 1, 13);         // Vía 1
+            fillRect(2, 8, 20, 2, 19);         // Andén central (doble)
+            fillRect(2, 10, 20, 1, 13);        // Vía 2
+            fillRect(2, 11, 20, 1, 19);        // Andén inferior
             
-            // Reloj grande centrado
-            MAP_DATA[2][14] = 31; // clock
+            // Tren decorativo en vía 2
+            MAP_DATA[10][15] = 34; MAP_DATA[10][16] = 35;
+            MAP_DATA[10][17] = 35; MAP_DATA[10][18] = 36;
             
-            // ===== PLAZA DE ENTRADA (frente al edificio) =====
-            for (let y = 4; y <= 5; y++) {
-                for (let x = 5; x <= 22; x++) {
-                    MAP_DATA[y][x] = 1; // path (plaza)
-                }
-            }
-            
-            // Decoraciones en plaza
-            MAP_DATA[4][7] = 41;  // fountain izq
-            MAP_DATA[4][20] = 41; // fountain der
-            MAP_DATA[5][5] = 33;  // lamp
-            MAP_DATA[5][22] = 33; // lamp
-            
-            // ===== ANDÉN SUPERIOR =====
-            for (let x = 3; x <= 24; x++) {
-                MAP_DATA[7][x] = 19; // platform
-            }
-            // Bancos y taquillas
-            MAP_DATA[7][5] = 39;  // ticket booth
-            MAP_DATA[7][9] = 30;  // bench
-            MAP_DATA[7][18] = 30; // bench
-            MAP_DATA[7][22] = 39; // ticket booth
-            
-            // ===== VÍA 1 =====
-            for (let x = 2; x <= 25; x++) {
-                MAP_DATA[8][x] = 13; // track
-            }
-            
-            // ===== ANDÉN CENTRAL CON DESTINOS =====
-            for (let x = 3; x <= 24; x++) {
-                MAP_DATA[9][x] = 19;  // platform arriba
-                MAP_DATA[10][x] = 19; // platform abajo
-            }
-            
-            // Carteles de destinos (ciudades)
+            // CARTELES DE DESTINO (en andén central)
             window.availableCities = [];
-            const maxCities = Math.min(languages.length, 6);
-            const spacing = Math.floor(18 / maxCities);
+            const maxDest = Math.min(languages.length, 5);
+            const startX = Math.floor(12 - (maxDest * 2));
             
-            for (let i = 0; i < maxCities; i++) {
-                const x = 5 + (i * spacing);
-                if (x < 23) {
-                    MAP_DATA[9][x] = 14; // train-sign
-                    window.availableCities.push({
-                        x: x,
-                        y: 9,
-                        language: languages[i],
-                        repoCount: citiesByLanguage[languages[i]].length
-                    });
-                }
+            for (let i = 0; i < maxDest; i++) {
+                const x = startX + (i * 4);
+                MAP_DATA[8][x] = 14;
+                window.availableCities.push({
+                    x, y: 8,
+                    language: languages[i],
+                    repoCount: citiesByLanguage[languages[i]].length
+                });
             }
             
-            // Paneles info y bancos en andén central
-            MAP_DATA[10][4] = 40;  // info
-            MAP_DATA[10][8] = 30;  // bench
-            MAP_DATA[10][14] = 33; // lamp
-            MAP_DATA[10][19] = 30; // bench
-            MAP_DATA[10][23] = 40; // info
+            // Mobiliario
+            MAP_DATA[6][4] = 39;  MAP_DATA[6][19] = 39;  // Taquillas
+            MAP_DATA[9][5] = 30;  MAP_DATA[9][18] = 30;  // Bancos
+            MAP_DATA[11][8] = 30; MAP_DATA[11][15] = 30; // Bancos
             
-            // ===== VÍA 2 =====
-            for (let x = 2; x <= 25; x++) {
-                MAP_DATA[11][x] = 13; // track
-            }
-            // Tren estacionado decorativo
-            MAP_DATA[11][6] = 34;  // front
-            MAP_DATA[11][7] = 35;  // wagon
-            MAP_DATA[11][8] = 35;  // wagon
-            MAP_DATA[11][9] = 36;  // back
+            // JARDÍN SUR
+            fillRect(5, 13, 14, 2, 1);         // Camino
+            fillRect(10, 11, 4, 3, 1);         // Conexión
             
-            // ===== ANDÉN INFERIOR =====
-            for (let x = 3; x <= 24; x++) {
-                MAP_DATA[12][x] = 19; // platform
-            }
-            MAP_DATA[12][6] = 30;  // bench
-            MAP_DATA[12][14] = 30; // bench
-            MAP_DATA[12][21] = 30; // bench
+            // Decoración jardín
+            MAP_DATA[14][4] = 5; MAP_DATA[14][19] = 5;   // Flores
+            MAP_DATA[15][6] = 2; MAP_DATA[15][17] = 2;   // Árboles
+            MAP_DATA[16][9] = 4; MAP_DATA[16][14] = 4;   // Hierba alta
             
-            // ===== ZONA DE JARDÍN / PARQUE =====
-            // Caminos
-            for (let x = 8; x <= 19; x++) {
-                MAP_DATA[14][x] = 1;
-                MAP_DATA[15][x] = 1;
-            }
-            // Conexión vertical
-            for (let y = 5; y <= 15; y++) {
-                MAP_DATA[y][13] = 1;
-                MAP_DATA[y][14] = 1;
-            }
+            // Jugador
+            playerX = 12;
+            playerY = 13;
             
-            // Flores y decoración
-            MAP_DATA[14][5] = 5;
-            MAP_DATA[14][6] = 5;
-            MAP_DATA[14][21] = 5;
-            MAP_DATA[14][22] = 5;
-            MAP_DATA[16][7] = 5;
-            MAP_DATA[16][20] = 5;
-            
-            // Árboles
-            MAP_DATA[17][4] = 2;
-            MAP_DATA[17][23] = 2;
-            MAP_DATA[18][6] = 2;
-            MAP_DATA[18][21] = 2;
-            MAP_DATA[19][10] = 2;
-            MAP_DATA[19][17] = 2;
-            
-            // Hierba alta
-            MAP_DATA[18][8] = 4;
-            MAP_DATA[18][19] = 4;
-            
-            // Posición inicial del jugador (en la plaza)
-            playerX = centerX;
-            playerY = 15;
-            
-            // Renderizar mapa
             generateMap();
             
-            // Crear etiquetas de ciudades
+            // Etiquetas de destinos
             window.availableCities.forEach(city => {
                 const label = document.createElement('div');
                 label.className = 'city-label visible';
@@ -3852,16 +3712,13 @@
                 map.appendChild(label);
             });
             
-            // Título de estación
-            const stationTitle = document.createElement('div');
-            stationTitle.className = 'station-title';
-            stationTitle.innerHTML = '🚂 ESTACIÓN CENTRAL<small>Interactúa con los carteles para viajar</small>';
-            map.appendChild(stationTitle);
+            // Título
+            const title = document.createElement('div');
+            title.className = 'station-title';
+            title.innerHTML = '🚂 ESTACIÓN CENTRAL<small>Interactúa con los carteles para viajar</small>';
+            map.appendChild(title);
             
-            // Actualizar HUD
             updateHUD('ESTACIÓN CENTRAL');
-            
-            console.log(`Train station loaded with ${maxCities} destinations`);
         }
         
         // Cargar una ciudad específica
@@ -3935,68 +3792,25 @@
             });
         }
         
-        // Añadir mini estación de tren al mapa de la ciudad (simplificada)
+        // Mini estación en ciudades (compacta)
         function addTrainStationToMap() {
-            const stationY = MAP_ROWS - 4;
-            const stationX = Math.floor(MAP_COLS / 2) - 3;
+            const sy = MAP_ROWS - 3;
+            const sx = Math.floor(MAP_COLS / 2) - 2;
+            if (sy < 2 || sx < 1) return;
             
-            // Asegurar que hay espacio
-            if (stationY < 3 || stationX < 2) return;
+            const set = (y, x, t) => {
+                if (y >= 0 && y < MAP_ROWS && x >= 0 && x < MAP_COLS) MAP_DATA[y][x] = t;
+            };
             
-            // Techo pequeño
-            for (let x = stationX; x < stationX + 6; x++) {
-                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY - 2]) {
-                    MAP_DATA[stationY - 2][x] = 16; // roof
-                }
+            // Estructura: techo, pared con puerta, andén, vía
+            for (let i = 0; i < 5; i++) {
+                set(sy - 1, sx + i, 16);  // Techo
+                set(sy, sx + i, 17);      // Pared
+                set(sy + 1, sx + i, 19);  // Andén
+                set(sy + 2, sx + i, 13);  // Vía
             }
-            
-            // Pared y puerta
-            if (MAP_DATA[stationY - 1]) {
-                for (let x = stationX; x < stationX + 6; x++) {
-                    if (x >= 0 && x < MAP_COLS) {
-                        MAP_DATA[stationY - 1][x] = 17; // wall
-                    }
-                }
-                // Puerta central
-                if (stationX + 2 >= 0 && stationX + 2 < MAP_COLS) {
-                    MAP_DATA[stationY - 1][stationX + 2] = 18; // door
-                }
-                if (stationX + 3 >= 0 && stationX + 3 < MAP_COLS) {
-                    MAP_DATA[stationY - 1][stationX + 3] = 18; // door
-                }
-            }
-            
-            // Andén/plataforma
-            for (let x = stationX - 1; x < stationX + 7; x++) {
-                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY]) {
-                    MAP_DATA[stationY][x] = 19; // platform
-                }
-            }
-            
-            // Señal para volver
-            if (MAP_DATA[stationY] && stationX >= 0 && stationX < MAP_COLS) {
-                MAP_DATA[stationY][stationX] = 15; // return sign
-            }
-            
-            // Vía de tren
-            for (let x = stationX - 2; x < stationX + 8; x++) {
-                if (x >= 0 && x < MAP_COLS && MAP_DATA[stationY + 1]) {
-                    MAP_DATA[stationY + 1][x] = 13; // track
-                }
-            }
-            
-            // Tren decorativo pequeño
-            if (MAP_DATA[stationY + 1]) {
-                const trainX = stationX + 4;
-                if (trainX < MAP_COLS) MAP_DATA[stationY + 1][trainX] = 34;     // front
-                if (trainX + 1 < MAP_COLS) MAP_DATA[stationY + 1][trainX + 1] = 35; // wagon
-                if (trainX + 2 < MAP_COLS) MAP_DATA[stationY + 1][trainX + 2] = 36; // back
-            }
-            
-            // Banco
-            if (MAP_DATA[stationY] && stationX + 5 < MAP_COLS) {
-                MAP_DATA[stationY][stationX + 5] = 30; // bench
-            }
+            set(sy, sx + 2, 18);          // Puerta
+            set(sy + 1, sx, 15);          // Cartel retorno
         }
         
         function renderHouseLabel(house) {
