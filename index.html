@@ -207,7 +207,7 @@
             75% { transform: translate(-0.5px, -0.5px); }
         }
 
-        /* Intro Screen - South Park Style */
+        /* Intro Screen - SOUTH PARK Style */
         #intro-screen {
             position: absolute;
             width: 100%;
@@ -215,9 +215,9 @@
             background: 
                 linear-gradient(180deg, 
                     #6BB3E0 0%, 
-                    #5090C0 30%, 
-                    #FFFFFF 60%, 
-                    #E8F0F8 100%);
+                    #5090C0 50%, 
+                    #4A9F4A 50%, 
+                    #3A8F3A 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -226,84 +226,84 @@
             text-align: center;
             overflow: hidden;
             border-radius: 0;
+            border: 4px solid #000000;
         }
         
-        /* Simple clouds - SP paper style */
+        /* Colorado Mountains - paper cutout */
         #intro-screen::before {
             content: '';
             position: absolute;
             width: 100%;
-            height: 60%;
-            top: 5%;
+            height: 80px;
+            top: 45%;
             left: 0;
+            transform: translateY(-50%);
             background: 
-                radial-gradient(ellipse at 15% 40%, rgba(255,255,255,0.95) 0%, transparent 20%),
-                radial-gradient(ellipse at 35% 30%, rgba(255,255,255,0.95) 0%, transparent 18%),
-                radial-gradient(ellipse at 55% 45%, rgba(255,255,255,0.95) 0%, transparent 22%),
-                radial-gradient(ellipse at 75% 35%, rgba(255,255,255,0.85) 0%, transparent 24%),
-                radial-gradient(ellipse at 90% 40%, rgba(255,255,255,0.9) 0%, transparent 20%);
-            animation: clouds-float-intro 25s ease-in-out infinite;
+                linear-gradient(135deg, transparent 40%, #6B7B8B 40%, #6B7B8B 50%, transparent 50%),
+                linear-gradient(225deg, transparent 40%, #5A6A7A 40%, #5A6A7A 50%, transparent 50%),
+                linear-gradient(140deg, transparent 35%, #7B8B9B 35%, #7B8B9B 45%, transparent 45%),
+                linear-gradient(220deg, transparent 35%, #6A7A8A 35%, #6A7A8A 45%, transparent 45%);
+            background-size: 150px 80px, 150px 80px, 120px 70px, 120px 70px;
+            background-position: 0 0, 75px 0, 200px 10px, 275px 10px;
+            background-repeat: repeat-x;
             pointer-events: none;
         }
         
-        @keyframes clouds-float-intro {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            50% { transform: translateX(30px) translateY(-10px); }
-        }
-
-        /* Decorative rounded frame - AC style */
+        /* Snow on mountains */
         #intro-screen::after {
             content: '';
             position: absolute;
-            top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border: 4px solid rgba(255,255,255,0.6);
-            border-radius: 16px;
-            box-shadow: 
-                inset 0 0 40px rgba(255, 255, 255, 0.3),
-                0 0 20px rgba(100, 180, 100, 0.3);
+            width: 100%;
+            height: 30px;
+            top: calc(45% - 40px);
+            left: 0;
+            background: 
+                linear-gradient(135deg, transparent 45%, #FFFFFF 45%, #FFFFFF 50%, transparent 50%),
+                linear-gradient(225deg, transparent 45%, #F0F0F0 45%, #F0F0F0 50%, transparent 50%);
+            background-size: 150px 30px;
+            background-position: 0 0, 75px 0;
+            background-repeat: repeat-x;
             pointer-events: none;
         }
 
-        /* Title - AC friendly bubble */
+        /* Title - SOUTH PARK style sign */
         #intro-screen h1 {
-            color: #486048;
-            font-size: 1.3rem;
+            color: #FFFFFF;
+            font-size: 1.1rem;
             margin-bottom: 20px;
-            line-height: 1.6;
+            line-height: 1.4;
             text-shadow: 
-                2px 2px 0 rgba(255,255,255,0.8),
-                4px 4px 8px rgba(80, 120, 80, 0.3);
-            animation: logo-float 3s ease-in-out infinite;
+                3px 3px 0 #000000,
+                -1px -1px 0 #000000,
+                1px -1px 0 #000000,
+                -1px 1px 0 #000000;
+            animation: sp-wobble 0.6s ease-in-out infinite;
             position: relative;
-            z-index: 1;
-            background: linear-gradient(180deg, rgba(255,255,248,0.95) 0%, rgba(248,248,240,0.9) 100%);
-            padding: 15px 30px;
-            border-radius: 20px;
-            border: 4px solid #90c8a0;
-            box-shadow: 
-                0 6px 0 #70a880,
-                0 8px 20px rgba(80,120,80,0.3);
+            z-index: 10;
+            background: #4CAF50;
+            padding: 20px 40px;
+            border-radius: 0;
+            border: 6px solid #000000;
+            box-shadow: 6px 6px 0 #000000;
         }
 
         @keyframes logo-float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-5px); }
         }
 
-        /* Version badge - AC bubble style */
+        /* Version badge - SP flat style */
         #intro-screen p {
-            color: #486048;
+            color: #000000;
             font-size: 0.5rem;
             margin-bottom: 12px;
             padding: 8px 18px;
-            background: linear-gradient(180deg, #fffff8 0%, #f8f8f0 100%);
-            border: 3px solid #a8d8b8;
-            border-radius: 15px;
-            box-shadow: 
-                0 3px 0 #88b898,
-                0 4px 10px rgba(80, 120, 80, 0.2);
+            background: #FFEB3B;
+            border: 3px solid #000000;
+            border-radius: 0;
+            box-shadow: 3px 3px 0 #000000;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
         
         #intro-screen p:first-of-type {
@@ -311,43 +311,36 @@
         }
 
         .press-start {
-            color: #f8f8f8;
+            color: #FFFFFF;
             font-size: 0.7rem;
-            animation: press-float 2s ease-in-out infinite;
+            animation: press-blink 1s step-start infinite;
             margin-top: 35px;
             cursor: pointer;
             padding: 16px 32px;
-            border: 4px solid #5890b8;
-            border-radius: 25px;
-            background: linear-gradient(180deg, #88c8f8 0%, #68a8d8 50%, #4888b8 100%);
-            box-shadow: 
-                inset 0 4px 8px rgba(255,255,255,0.5),
-                0 6px 0 #3868a0,
-                0 8px 20px rgba(60, 100, 160, 0.4);
+            border: 4px solid #000000;
+            border-radius: 0;
+            background: #CC0000;
+            box-shadow: 4px 4px 0 #000000;
             position: relative;
-            z-index: 1;
-            transition: all 0.2s ease;
+            z-index: 10;
+            transition: all 0.15s ease;
+            text-shadow: 2px 2px 0 #000000;
         }
 
-        @keyframes press-float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-5px) scale(1.02); }
+        @keyframes press-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .press-start:hover {
-            background: linear-gradient(180deg, #a8e0ff 0%, #88c8f8 100%);
-            transform: scale(1.1) translateY(-3px);
-            box-shadow: 
-                inset 0 4px 8px rgba(255,255,255,0.6),
-                0 8px 0 #3868a0,
-                0 12px 30px rgba(60, 100, 160, 0.5);
+            background: #FF0000;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000000;
         }
 
         .press-start:active {
-            transform: scale(1.05) translateY(2px);
-            box-shadow: 
-                inset 0 4px 8px rgba(255,255,255,0.5),
-                0 3px 0 #3868a0;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #000000;
         }
 
         @keyframes blink {
@@ -361,10 +354,10 @@
             width: 100%;
             height: 100%;
             display: none;
-            border-radius: 16px;
+            border-radius: 0;
         }
 
-        /* Ambient particles - AC butterflies/leaves */
+        /* Ambient particles - SP snow/leaves */
         #ambient-particles {
             position: absolute;
             width: 100%;
@@ -1581,31 +1574,63 @@
             transform: translateX(-50%);
             text-align: center;
             font-size: 0.55rem;
-            color: var(--gb-lightest);
+            color: #FFFFFF;
             z-index: 100;
-            background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
+            background: #CC0000;
             padding: 10px 20px;
-            border: 4px solid var(--gb-light);
-            border-radius: 4px;
-            box-shadow: 
-                0 4px 10px rgba(0,0,0,0.5),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            border: 4px solid #000000;
+            border-radius: 0;
+            box-shadow: 4px 4px 0 #000000;
+            text-shadow: 2px 2px 0 #000000;
             white-space: nowrap;
         }
+        
+        /* South Park Title Special */
+        .sp-title {
+            background: linear-gradient(180deg, #2196F3 0%, #1976D2 100%);
+            font-size: 0.6rem;
+            animation: sp-wobble 1s ease-in-out infinite;
+        }
+        
         .station-title::before {
             content: '';
             position: absolute;
             top: -8px; left: -8px; right: -8px; bottom: -8px;
-            border: 2px solid var(--gb-darkest);
-            border-radius: 6px;
+            border: 2px solid #000000;
+            border-radius: 0;
             pointer-events: none;
         }
         .station-title small {
             font-size: 0.4rem;
-            color: var(--gb-light);
+            color: #FFFF00;
             display: block;
             margin-top: 4px;
+        }
+        
+        /* South Park Building Labels */
+        .sp-building-label {
+            background: #FFEB3B;
+            color: #000000 !important;
+            border: 3px solid #000000 !important;
+            border-radius: 0 !important;
+            box-shadow: 3px 3px 0 #000000;
+            font-size: 0.4rem !important;
+            padding: 4px 8px;
+            white-space: nowrap;
+            animation: sp-wobble 0.8s ease-in-out infinite;
+        }
+        
+        /* South Park House Colors by Character */
+        .sp-house-stan .house-roof { background: #3366CC !important; }
+        .sp-house-kyle .house-roof { background: #FF6600 !important; }
+        .sp-house-cartman .house-roof { background: #CC0000 !important; }
+        .sp-house-kenny .house-roof { background: #996633 !important; }
+        .sp-house-butters .house-roof { background: #80C0E0 !important; }
+        
+        /* South Park Street - simple grey */
+        .zone-path {
+            background: #808080 !important;
+            border: 1px solid #606060;
         }
 
         /* City title banner - when inside a language city */
@@ -1616,21 +1641,19 @@
             transform: translateX(-50%);
             text-align: center;
             font-size: 0.5rem;
-            color: var(--gb-lightest);
+            color: #FFFFFF;
             z-index: 100;
-            background: linear-gradient(180deg, #4060a0 0%, #304080 100%);
+            background: #4CAF50;
             padding: 8px 16px;
-            border: 3px solid #a0c0f0;
-            border-radius: 4px;
-            box-shadow: 
-                0 3px 8px rgba(0,0,0,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            border: 3px solid #000000;
+            border-radius: 0;
+            box-shadow: 3px 3px 0 #000000;
+            text-shadow: 1px 1px 0 #000000;
             white-space: nowrap;
         }
         .city-title small {
             font-size: 0.38rem;
-            color: #c0d0f0;
+            color: #FFFF00;
             display: block;
             margin-top: 3px;
         }
@@ -2349,26 +2372,26 @@
             50% { transform: translateY(4px); }
         }
 
-        /* Battle Screen - AC friendly style */
+        /* Battle Screen - SOUTH PARK style */
         #battle-screen {
             position: absolute;
             width: 100%;
             height: 100%;
             background: linear-gradient(180deg, 
-                #a8dff8 0%, 
-                #88c8e8 40%, 
-                #98e888 40%, 
-                #78d068 100%);
+                #6BB3E0 0%, 
+                #5090C0 40%, 
+                #4A9F4A 40%, 
+                #3A8F3A 100%);
             display: none;
             flex-direction: column;
             z-index: 300;
-            border-radius: 16px;
-            animation: battle-appear 0.4s ease-out;
+            border-radius: 0;
+            border: 4px solid #000000;
+            animation: battle-appear 0.3s ease-out;
         }
 
         @keyframes battle-appear {
             0% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.05); }
             100% { transform: scale(1); opacity: 1; }
         }
 
@@ -2376,8 +2399,8 @@
             height: 50%;
             background: 
                 linear-gradient(180deg, 
-                    #a8dff8 0%, 
-                    #88c8e8 60%,
+                    #6BB3E0 0%, 
+                    #5090C0 60%,
                     transparent 60%);
             position: relative;
             display: flex;
@@ -2386,18 +2409,19 @@
             padding: 20px;
         }
 
-        /* Soft fluffy clouds */
+        /* Colorado Mountains in battle */
         .battle-top::before {
             content: '';
             position: absolute;
-            width: 60px; height: 24px;
-            top: 25px; left: 40px;
-            background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.9) 0%, transparent 70%);
-            box-shadow: 
-                80px 15px 0 10px rgba(255,255,255,0.7),
-                150px -5px 0 15px rgba(255,255,255,0.8),
-                -30px 20px 0 8px rgba(255,255,255,0.6);
-            animation: clouds-float 15s ease-in-out infinite;
+            width: 100%;
+            height: 60px;
+            bottom: 0;
+            left: 0;
+            background: 
+                linear-gradient(135deg, transparent 40%, #6B7B8B 40%, #6B7B8B 50%, transparent 50%),
+                linear-gradient(225deg, transparent 40%, #5A6A7A 40%, #5A6A7A 50%, transparent 50%);
+            background-size: 100px 60px;
+            background-repeat: repeat-x;
         }
 
         @keyframes clouds-float {
@@ -2415,75 +2439,56 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: enemy-bounce 2s ease-in-out infinite;
-            filter: drop-shadow(4px 6px 6px rgba(0,0,0,0.2));
+            animation: sp-wobble 0.5s ease-in-out infinite;
+            filter: none;
         }
         
-        @keyframes enemy-bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* AC-style creature sprite - round and cute */
+        /* South Park character in battle - simple paper cutout */
         .monster-sprite {
-            width: 48px; height: 48px;
-            background: radial-gradient(ellipse at 40% 40%, 
-                #a8e8a0 0%, 
-                #78d068 50%, 
-                #58b048 100%);
+            width: 48px; height: 56px;
+            background: #FFD9B3;
+            border: 3px solid #000000;
             border-radius: 50%;
             position: relative;
-            box-shadow: 
-                inset 4px 4px 8px rgba(255,255,255,0.5),
-                inset -4px -4px 8px rgba(0,60,0,0.2);
         }
         .monster-sprite::before {
-            /* Eyes */
+            /* SP Eyes - big white ovals */
             content: '';
             position: absolute;
-            width: 8px; height: 8px;
-            background: #303030;
+            width: 12px; height: 10px;
+            background: #FFFFFF;
+            border: 2px solid #000;
             border-radius: 50%;
-            left: 12px; top: 16px;
-            box-shadow: 
-                18px 0 0 #303030,
-                2px -2px 0 3px rgba(255,255,255,0.8),
-                20px -2px 0 3px rgba(255,255,255,0.8);
+            left: 8px; top: 14px;
+            box-shadow: 18px 0 0 0 #FFFFFF, 18px 0 0 2px #000;
         }
         .monster-sprite::after {
-            /* Smile */
+            /* Body - colored jacket */
             content: '';
             position: absolute;
-            width: 16px; height: 8px;
-            background: transparent;
-            border-bottom: 3px solid #303030;
-            border-radius: 0 0 50% 50%;
-            left: 16px; top: 28px;
-        }
-                8px 36px #306230, 12px 36px #306230, 32px 36px #306230, 36px 36px #306230;
-            width: 4px;
-            height: 4px;
-            transform: scale(2);
+            width: 44px; height: 24px;
+            background: #FF6600;
+            border: 3px solid #000;
+            left: 2px; top: 48px;
+            border-radius: 0;
         }
 
         @keyframes enemy-appear {
-            0% { transform: translateX(100px) scale(0.5); opacity: 0; }
-            50% { transform: translateX(-10px) scale(1.1); opacity: 1; }
-            100% { transform: translateX(0) scale(1); opacity: 1; }
+            0% { transform: translateX(100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
         }
 
         .enemy-info {
             position: absolute;
             top: 15px;
             left: 15px;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e0d8c8 100%);
-            border: 4px solid var(--gb-darkest);
+            background: #FFEB3B;
+            border: 4px solid #000000;
+            border-radius: 0;
             padding: 10px 15px;
-            min-width: 180px;
-            box-shadow: 
-                inset 0 0 0 2px var(--gb-dark),
-                4px 4px 0 rgba(0,0,0,0.4);
-            animation: info-appear 0.4s ease-out;
+            min-width: 200px;
+            box-shadow: 4px 4px 0 #000000;
+            animation: info-appear 0.3s ease-out;
         }
 
         @keyframes info-appear {
@@ -2492,30 +2497,30 @@
         }
 
         .enemy-name {
-            font-size: 0.6rem;
-            color: var(--gb-darkest);
+            font-size: 0.55rem;
+            color: #000000;
             margin-bottom: 5px;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            text-shadow: none;
             letter-spacing: 0.5px;
         }
 
         .enemy-level {
-            font-size: 0.42rem;
-            color: var(--gb-dark);
-            background: var(--gb-light);
-            padding: 2px 6px;
+            font-size: 0.4rem;
+            color: #000000;
+            background: #FFFFFF;
+            padding: 4px 8px;
             display: inline-block;
-            border: 1px solid var(--gb-dark);
+            border: 2px solid #000000;
         }
 
         .hp-bar {
             margin-top: 10px;
             height: 12px;
-            background: var(--gb-darkest);
-            border: 2px solid var(--gb-darkest);
+            background: #FFFFFF;
+            border: 3px solid #000000;
             position: relative;
             overflow: hidden;
-            border-radius: 2px;
+            border-radius: 0;
         }
 
         .hp-bar::before {
@@ -2947,9 +2952,9 @@
             <div id="game-container">
                 <!-- Intro Screen -->
                 <div id="intro-screen">
-                    <h1>PORTFOLIO<br>QUEST</h1>
+                    <h1>🏔️ SOUTH PARK<br>PORTFOLIO 🏔️</h1>
                     <p>Por Dario Lacal Civera</p>
-                    <p>Versión 2.0 AAA</p>
+                    <p>Colorado, USA Edition</p>
                     <div class="press-start" id="start-btn">▶ PRESS START</div>
                 </div>
 
@@ -3579,18 +3584,44 @@
             }
         }
         
-        // Estación central - Una vía por idioma + Zona de taxis
-        function loadTrainStation(languages) {
-            currentCity = 'STATION';
+        // ============== SOUTH PARK TOWN MAP ==============
+        // Personajes de South Park y sus ubicaciones
+        const SP_CHARACTERS = {
+            'stan': { name: 'Stan Marsh', sprite: 'npc-sprite', color: '#3366CC', desc: 'El protagonista. Vive aquí con su familia.' },
+            'kyle': { name: 'Kyle Broflovski', sprite: 'npc-sprite', color: '#FF6600', desc: 'El mejor amigo de Stan. Judío pelirrojo.' },
+            'cartman': { name: 'Eric Cartman', sprite: 'npc-sprite-blue', color: '#CC0000', desc: 'Gordo y malvado. Siempre tiene un plan.' },
+            'kenny': { name: 'Kenny McCormick', sprite: 'npc-sprite-green', color: '#FF8800', desc: 'Pobre pero valiente. Su capucha oculta su cara.' },
+            'butters': { name: 'Butters Stotch', sprite: 'npc-sprite-purple', color: '#80C0E0', desc: 'Inocente y amable. Siempre castigado.' },
+            'wendy': { name: 'Wendy Testaburger', sprite: 'npc-sprite-red', color: '#9933CC', desc: 'Novia de Stan. Inteligente y fuerte.' },
+            'randy': { name: 'Randy Marsh', sprite: 'npc-sprite-yellow', color: '#3366CC', desc: 'Padre de Stan. Geólogo loco.' },
+            'garrison': { name: 'Mr. Garrison', sprite: 'npc-sprite-cyan', color: '#339933', desc: 'Profesor de la escuela. Muy peculiar.' },
+            'chef': { name: 'Chef', sprite: 'npc-sprite-pink', color: '#FFFFFF', desc: 'Cocinero de la escuela. Sabio y musical.' }
+        };
+        
+        // Edificios icónicos de South Park
+        const SP_BUILDINGS = [
+            { id: 'school', name: 'South Park Elementary', icon: '🏫', x: 8, y: 3, w: 5, h: 3, character: 'garrison' },
+            { id: 'stan_house', name: 'Casa de Stan', icon: '🏠', x: 2, y: 8, w: 3, h: 3, character: 'stan' },
+            { id: 'kyle_house', name: 'Casa de Kyle', icon: '🏠', x: 7, y: 8, w: 3, h: 3, character: 'kyle' },
+            { id: 'cartman_house', name: 'Casa de Cartman', icon: '🏠', x: 12, y: 8, w: 3, h: 3, character: 'cartman' },
+            { id: 'kenny_house', name: 'Casa de Kenny', icon: '🛖', x: 17, y: 8, w: 3, h: 3, character: 'kenny' },
+            { id: 'church', name: 'Iglesia', icon: '⛪', x: 2, y: 14, w: 3, h: 3, character: 'butters' },
+            { id: 'city_hall', name: 'City Hall', icon: '🏛️', x: 7, y: 14, w: 4, h: 3, character: 'randy' },
+            { id: 'cafe', name: 'Tweek Bros Coffee', icon: '☕', x: 13, y: 14, w: 3, h: 3, character: 'wendy' },
+            { id: 'hospital', name: 'Hells Pass Hospital', icon: '🏥', x: 17, y: 14, w: 3, h: 3, character: 'chef' }
+        ];
+        
+        // Cargar el mapa principal de South Park
+        function loadSouthParkTown(repos) {
+            currentCity = 'SOUTH_PARK';
             currentLocation = 'outside';
             houses = [];
             wanderingNpcs = [];
+            npcs = [];
             
-            const numLangs = Math.min(languages.length, 6);
-            const numTaxis = Math.min(reposWithPages.length, 4);
-            
-            MAP_COLS = 22;
-            MAP_ROWS = 6 + numLangs * 2 + (numTaxis > 0 ? 4 : 0);
+            // Tamaño del mapa de South Park
+            MAP_COLS = 24;
+            MAP_ROWS = 22;
             MAP_DATA = Array.from({length: MAP_ROWS}, () => Array(MAP_COLS).fill(0));
             
             const fill = (x, y, w, h, t) => {
@@ -3599,84 +3630,187 @@
                         if (y+dy < MAP_ROWS && x+dx < MAP_COLS) MAP_DATA[y+dy][x+dx] = t;
             };
             
-            // Borde árboles
-            fill(0, 0, MAP_COLS, 1, 2);
+            const set = (y, x, t) => {
+                if (y >= 0 && y < MAP_ROWS && x >= 0 && x < MAP_COLS) MAP_DATA[y][x] = t;
+            };
+            
+            // Borde de árboles (montañas de Colorado en el fondo)
+            fill(0, 0, MAP_COLS, 2, 2);
             fill(0, MAP_ROWS-1, MAP_COLS, 1, 2);
-            for (let y = 0; y < MAP_ROWS; y++) { MAP_DATA[y][0] = 2; MAP_DATA[y][MAP_COLS-1] = 2; }
+            for (let y = 0; y < MAP_ROWS; y++) { 
+                set(y, 0, 2); 
+                set(y, MAP_COLS-1, 2); 
+            }
             
-            // Edificio estación
-            fill(6, 2, 10, 1, 16);
-            fill(6, 3, 10, 1, 17);
-            MAP_DATA[3][10] = 18; MAP_DATA[3][11] = 18;
+            // === CALLES PRINCIPALES DE SOUTH PARK ===
+            // Calle principal horizontal (Main Street)
+            fill(1, 6, MAP_COLS-2, 2, 1);
+            fill(1, 12, MAP_COLS-2, 2, 1);
+            fill(1, 18, MAP_COLS-2, 2, 1);
             
-            // Plaza
-            fill(4, 4, 14, 1, 1);
+            // Calles verticales
+            fill(5, 2, 2, MAP_ROWS-3, 1);
+            fill(11, 2, 2, MAP_ROWS-3, 1);
+            fill(17, 2, 2, MAP_ROWS-3, 1);
             
-            // Vías - una por idioma
-            window.availableCities = [];
-            for (let i = 0; i < numLangs; i++) {
-                const y = 5 + i * 2;
-                fill(2, y, 18, 1, 19);      // Andén
-                fill(2, y + 1, 18, 1, 13);  // Vía
-                MAP_DATA[y][4] = 14;        // Cartel
+            // === NIEVE EN ALGUNAS ÁREAS ===
+            // Parque Stark's Pond (agua)
+            fill(19, 19, 4, 2, 3);
+            
+            // === EDIFICIOS DE SOUTH PARK ===
+            const buildingPositions = [];
+            const numRepos = repos.length;
+            
+            SP_BUILDINGS.forEach((building, idx) => {
+                // Crear edificio
+                const bx = building.x;
+                const by = building.y;
                 
-                window.availableCities.push({
-                    x: 4, y: y,
-                    language: languages[i],
-                    repoCount: citiesByLanguage[languages[i]].length
+                // Techo
+                fill(bx, by, building.w, 1, 10);
+                // Paredes
+                fill(bx, by + 1, building.w, building.h - 2, 11);
+                // Puerta en el centro
+                const doorX = bx + Math.floor(building.w / 2);
+                const doorY = by + building.h - 1;
+                set(doorY, doorX, 12);
+                // Camino a la puerta
+                set(doorY + 1, doorX, 1);
+                
+                // Asignar proyecto a este edificio si hay repos disponibles
+                if (idx < numRepos) {
+                    const repo = repos[idx];
+                    const house = {
+                        doorX: doorX,
+                        doorY: doorY,
+                        buildingId: building.id,
+                        buildingName: building.name,
+                        buildingIcon: building.icon,
+                        name: repo.name,
+                        fullName: repo.full_name,
+                        description: repo.description || building.name,
+                        language: repo.language || 'Unknown',
+                        stars: repo.stargazers_count,
+                        url: repo.html_url,
+                        spriteClass: SP_CHARACTERS[building.character].sprite,
+                        character: building.character,
+                        characterName: SP_CHARACTERS[building.character].name
+                    };
+                    houses.push(house);
+                    buildingPositions.push({ building, house, doorX, doorY });
+                }
+            });
+            
+            // Más repos? Añadir casas extra en la parte inferior
+            if (numRepos > SP_BUILDINGS.length) {
+                const extraRepos = repos.slice(SP_BUILDINGS.length);
+                const characterKeys = Object.keys(SP_CHARACTERS);
+                
+                extraRepos.forEach((repo, idx) => {
+                    const row = Math.floor(idx / 4);
+                    const col = idx % 4;
+                    const houseX = 3 + col * 5;
+                    const houseY = 19 + row * 4;
+                    
+                    if (houseY + 3 < MAP_ROWS - 1) {
+                        fill(houseX, houseY, 3, 1, 10);
+                        fill(houseX, houseY + 1, 3, 2, 11);
+                        set(houseY + 2, houseX + 1, 12);
+                        set(houseY + 3, houseX + 1, 1);
+                        
+                        const charKey = characterKeys[(idx + SP_BUILDINGS.length) % characterKeys.length];
+                        const house = {
+                            doorX: houseX + 1,
+                            doorY: houseY + 2,
+                            name: repo.name,
+                            fullName: repo.full_name,
+                            description: repo.description || 'Proyecto de código',
+                            language: repo.language || 'Unknown',
+                            stars: repo.stargazers_count,
+                            url: repo.html_url,
+                            spriteClass: SP_CHARACTERS[charKey].sprite,
+                            character: charKey,
+                            characterName: SP_CHARACTERS[charKey].name
+                        };
+                        houses.push(house);
+                    }
                 });
             }
             
-            // Zona de taxis (si hay repos con Pages)
-            window.taxiStops = [];
-            if (numTaxis > 0) {
-                const taxiY = 5 + numLangs * 2 + 1;
-                fill(4, taxiY, 14, 1, 1);  // Camino
-                
-                for (let i = 0; i < numTaxis; i++) {
-                    const x = 5 + i * 3;
-                    MAP_DATA[taxiY][x] = 42;  // Taxi tile
-                    window.taxiStops.push({
-                        x, y: taxiY,
-                        ...reposWithPages[i]
-                    });
+            // Decoración: flores y hierba alta
+            for (let y = 2; y < MAP_ROWS - 1; y++) {
+                for (let x = 1; x < MAP_COLS - 1; x++) {
+                    if (MAP_DATA[y][x] === 0 && Math.random() < 0.08) {
+                        MAP_DATA[y][x] = Math.random() < 0.5 ? 5 : 4;
+                    }
                 }
             }
             
-            // Jugador
+            // Posición inicial del jugador (Stan) - en la calle principal
             playerX = 11;
-            playerY = 4;
+            playerY = 7;
             
+            // Renderizar mapa
             generateMap();
             
-            // Labels de vías
-            window.availableCities.forEach((city, i) => {
-                const label = document.createElement('div');
-                label.className = 'city-label visible';
-                label.innerHTML = `<strong>VÍA ${i+1}</strong> → ${city.language} <small>(${city.repoCount})</small>`;
-                label.style.left = (city.x * TILE_SIZE + 40) + 'px';
-                label.style.top = (city.y * TILE_SIZE + 4) + 'px';
-                label.dataset.language = city.language;
-                map.appendChild(label);
+            // Añadir labels de edificios
+            houses.forEach(house => {
+                renderSPBuildingLabel(house);
             });
             
-            // Labels de taxis
-            window.taxiStops.forEach(taxi => {
-                const label = document.createElement('div');
-                label.className = 'taxi-label visible';
-                label.innerHTML = `🚕 ${taxi.name}`;
-                label.style.left = (taxi.x * TILE_SIZE - 10) + 'px';
-                label.style.top = ((taxi.y - 1) * TILE_SIZE) + 'px';
-                label.dataset.url = taxi.url;
-                map.appendChild(label);
-            });
+            // Añadir NPCs de personajes fuera de sus casas
+            renderSPCharacters(houses);
             
+            // Título del pueblo
             const title = document.createElement('div');
-            title.className = 'station-title';
-            title.textContent = 'ESTACIÓN CENTRAL';
+            title.className = 'station-title sp-title';
+            title.innerHTML = '🏔️ SOUTH PARK, COLORADO 🏔️';
             map.appendChild(title);
             
-            updateHUD('ESTACIÓN CENTRAL');
+            updateHUD('SOUTH PARK');
+        }
+        
+        // Renderizar etiqueta de edificio SP
+        function renderSPBuildingLabel(house) {
+            const label = document.createElement('div');
+            label.className = 'house-label sp-building-label';
+            label.id = `label-${house.doorX}-${house.doorY}`;
+            label.innerHTML = `${house.buildingIcon || '🏠'} ${house.name}`;
+            label.style.left = (house.doorX * TILE_SIZE - 20) + 'px';
+            label.style.top = ((house.doorY - 2) * TILE_SIZE) + 'px';
+            map.appendChild(label);
+        }
+        
+        // Renderizar personajes de South Park cerca de sus casas
+        function renderSPCharacters(houses) {
+            houses.forEach((house, idx) => {
+                // Posicionar NPC cerca de la puerta
+                const npcX = house.doorX + (idx % 2 === 0 ? 1 : -1);
+                const npcY = house.doorY + 1;
+                
+                const npcData = {
+                    x: npcX,
+                    y: npcY,
+                    name: house.characterName,
+                    projectName: house.name,
+                    description: house.description,
+                    language: house.language,
+                    stars: house.stars,
+                    url: house.url,
+                    spriteClass: house.spriteClass,
+                    character: house.character,
+                    isProjectNpc: true
+                };
+                
+                npcs.push(npcData);
+                renderNpc(npcData);
+            });
+        }
+        
+        // LEGACY: Mantener compatibilidad con estación
+        function loadTrainStation(languages) {
+            // Ahora carga South Park Town con todos los repos
+            loadSouthParkTown(allRepos);
         }
         
         // Cargar una ciudad específica
@@ -4373,11 +4507,73 @@
             dialogText.innerHTML = `Hola! Soy <strong>${collab.name}</strong>, colaborador en este proyecto.<br>Presiona ENTER para ver mi GitHub o ESC para cerrar.`;
         }
 
+        // Frases únicas de cada personaje de South Park
+        const SP_DIALOGUES = {
+            'stan': [
+                "Dude, mira este proyecto: <strong>{project}</strong>!",
+                "Oh my God, esto es genial! <strong>{project}</strong> es lo mejor.",
+                "Wendy me ayudó con <strong>{project}</strong>, es súper útil."
+            ],
+            'kyle': [
+                "He analizado <strong>{project}</strong> y los datos son prometedores.",
+                "Cartman es un idiota, pero <strong>{project}</strong> es legítimo!",
+                "Mi mamá dice que <strong>{project}</strong> es muy educativo."
+            ],
+            'cartman': [
+                "Respeta mi autoridad! <strong>{project}</strong> es MÍO!",
+                "Screw you guys, <strong>{project}</strong> es el mejor proyecto ever!",
+                "Behold! <strong>{project}</strong>! Bow down to its awesomeness!"
+            ],
+            'kenny': [
+                "(Mmph mmph mmph <strong>{project}</strong> mmph!)",
+                "(Mmmmph! <strong>{project}</strong> mmph mmph!)",
+                "(Mmph mmph mmmmph <strong>{project}</strong>!)"
+            ],
+            'butters': [
+                "Oh hamburgers! <strong>{project}</strong> es súper genial!",
+                "Mis papás no saben que hice <strong>{project}</strong>, no les digas!",
+                "Gee whiz! <strong>{project}</strong> me hace muy feliz!"
+            ],
+            'wendy': [
+                "Como presidenta de la clase, presento <strong>{project}</strong>.",
+                "<strong>{project}</strong> representa la igualdad y el progreso!",
+                "Stan es tan sweet por ayudarme con <strong>{project}</strong>!"
+            ],
+            'randy': [
+                "Escucha, como geólogo experto, <strong>{project}</strong> es CIENCIA!",
+                "Ohhh I'm sorry, I thought this was AMERICA! <strong>{project}</strong>!",
+                "Sharon! Mira <strong>{project}</strong>! Es importante!"
+            ],
+            'garrison': [
+                "Okay children, hoy aprenderemos sobre <strong>{project}</strong>.",
+                "Sit down and shut up! <strong>{project}</strong> es la lección!",
+                "Mr. Hat dice que <strong>{project}</strong> es muy educativo."
+            ],
+            'chef': [
+                "Hello there, children! Let me tell you about <strong>{project}</strong>!",
+                "<strong>{project}</strong> es como hacer amor... con código!",
+                "♪ Ohhh <strong>{project}</strong>, I want to love you! ♪"
+            ]
+        };
+        
+        function getSPDialogue(character, projectName) {
+            const dialogues = SP_DIALOGUES[character] || SP_DIALOGUES['stan'];
+            const randomDialogue = dialogues[Math.floor(Math.random() * dialogues.length)];
+            return randomDialogue.replace('{project}', projectName);
+        }
+
         function showDialog(npc) {
             currentNpc = npc;
             gameState = 'dialog';
             dialogBox.style.display = 'block';
-            dialogText.innerHTML = `Hola! Soy el encargado de <strong>${npc.name}</strong>.<br>Quieres que te cuente sobre este proyecto?`;
+            
+            // Si es un NPC de proyecto de South Park
+            if (npc.isProjectNpc && npc.character) {
+                const dialogue = getSPDialogue(npc.character, npc.projectName);
+                dialogText.innerHTML = `<strong>${npc.name}:</strong> ${dialogue}<br><small>⭐ ${npc.stars || 0} | 💻 ${npc.language || 'Unknown'}</small><br>Presiona ENTER para ver más!`;
+            } else {
+                dialogText.innerHTML = `Hola! Soy el encargado de <strong>${npc.name}</strong>.<br>Quieres que te cuente sobre este proyecto?`;
+            }
         }
 
         // ============== BATTLE ==============
@@ -4391,8 +4587,11 @@
             battleMenuIndex = 0;
             updateBattleMenuSelection();
             
-            document.getElementById('battle-enemy-name').textContent = npc.name.toUpperCase();
-            document.getElementById('battle-enemy-level').textContent = `Lang: ${npc.language}`;
+            // Mostrar nombre del personaje SP y proyecto
+            const characterName = npc.characterName || 'Personaje';
+            const projectName = npc.projectName || npc.name;
+            document.getElementById('battle-enemy-name').textContent = `${characterName} presenta:`;
+            document.getElementById('battle-enemy-level').innerHTML = `📁 <strong>${projectName}</strong><br>💻 ${npc.language || 'Unknown'} | ⭐ ${npc.stars || 0}`;
         }
 
         function updateBattleMenuSelection() {
