@@ -145,11 +145,11 @@
                 inset 3px 3px 6px rgba(0,0,0,0.9);
         }
 
-        /* Main Game Screen - South Park Flat Style */
+        /* Main Game Screen - SOUTH PARK Colorado */
         #game-container {
             width: 560px;
             height: 500px;
-            background: linear-gradient(180deg, #6BB3E0 0%, #6BB3E0 40%, transparent 40%);
+            background: #6BB3E0;
             position: relative;
             overflow: hidden;
             border: none;
@@ -157,21 +157,54 @@
             box-shadow: none;
         }
 
-        /* South Park wobbly animation for all elements */
+        /* Colorado Mountains in background */
+        #game-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 120px;
+            bottom: 180px;
+            left: 0;
+            z-index: 1;
+            /* Multiple triangle mountains */
+            background: 
+                /* Mountain 1 */
+                linear-gradient(135deg, transparent 40%, #6B7B8B 40%, #6B7B8B 50%, transparent 50%),
+                linear-gradient(225deg, transparent 40%, #5A6A7A 40%, #5A6A7A 50%, transparent 50%),
+                /* Mountain 2 */
+                linear-gradient(140deg, transparent 35%, #7B8B9B 35%, #7B8B9B 45%, transparent 45%),
+                linear-gradient(220deg, transparent 35%, #6A7A8A 35%, #6A7A8A 45%, transparent 45%),
+                /* Mountain 3 */
+                linear-gradient(130deg, transparent 42%, #8B9BAB 42%, #8B9BAB 52%, transparent 52%),
+                linear-gradient(230deg, transparent 42%, #7A8A9A 42%, #7A8A9A 52%, transparent 52%);
+            background-size: 200px 120px, 200px 120px, 180px 100px, 180px 100px, 160px 90px, 160px 90px;
+            background-position: 0 0, 100px 0, 150px 20px, 250px 20px, 350px 30px, 450px 30px;
+            background-repeat: repeat-x;
+        }
+
+        /* Snow caps on mountains */
+        #game-container::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            bottom: 260px;
+            left: 0;
+            z-index: 2;
+            background: 
+                linear-gradient(135deg, transparent 45%, #FFFFFF 45%, #FFFFFF 50%, transparent 50%),
+                linear-gradient(225deg, transparent 45%, #F0F0F0 45%, #F0F0F0 50%, transparent 50%);
+            background-size: 200px 40px;
+            background-position: 0 0, 100px 0;
+            background-repeat: repeat-x;
+        }
+
+        /* South Park wobbly animation */
         @keyframes sp-wobble {
             0%, 100% { transform: translate(0, 0); }
             25% { transform: translate(-0.5px, 0.5px); }
             50% { transform: translate(0.5px, -0.5px); }
             75% { transform: translate(-0.5px, -0.5px); }
-        }
-
-        /* Isometric world wrapper */
-        #game-container::after {
-            display: none;
-        }
-
-        #game-container::before {
-            display: none;
         }
 
         /* Intro Screen - South Park Style */
@@ -1851,13 +1884,14 @@
             font-size: 0.5rem;
         }
 
-        /* Player Sprite - SOUTH PARK Paper Cutout Style */
+        /* ========== SOUTH PARK AUTHENTIC CHARACTERS ========== */
+        
+        /* Player = STAN MARSH */
         #player {
             position: absolute;
             width: var(--tile-size);
             height: var(--tile-size);
             z-index: 50;
-            /* No drop shadow - paper cutout look */
             animation: sp-wobble 0.4s ease-in-out infinite;
         }
 
@@ -1866,87 +1900,119 @@
             height: 100%;
         }
 
-        /* SOUTH PARK Player - oval head, simple shapes */
+        /* STAN - Blue pom-pom hat, brown jacket, blue jeans */
         .player-sprite {
             width: 100%; height: 100%;
             position: relative;
         }
         .player-sprite::before {
-            /* SP Head - oval/circle, flat color */
+            /* Stan's face */
             content: '';
             position: absolute;
-            width: 22px; height: 20px;
-            left: 5px; top: 0;
-            background: #FFDAB9;
-            border: 2px solid #000000;
+            width: 24px; height: 18px;
+            left: 4px; top: 6px;
+            background: #FFD9B3;
+            border: 2px solid #000;
             border-radius: 50%;
-            /* Eyes - simple white ovals with black dots */
         }
         .player-sprite::after {
-            /* SP Body - simple rectangle */
+            /* Stan's brown jacket body */
             content: '';
             position: absolute;
-            width: 20px; height: 16px;
-            left: 6px; top: 18px;
-            background: #E04040;
-            border: 2px solid #000000;
+            width: 22px; height: 14px;
+            left: 5px; top: 22px;
+            background: #8B4513;
+            border: 2px solid #000;
         }
         
-        /* SP Eyes overlay - white ovals */
+        /* Stan's blue hat with red pom-pom */
+        #player .player-hair {
+            position: absolute;
+            width: 26px; height: 12px;
+            left: 3px; top: 0px;
+            background: #3366CC;
+            border: 2px solid #000;
+            border-radius: 8px 8px 0 0;
+            z-index: 3;
+        }
+        #player .player-hair::before {
+            /* Red pom-pom */
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            left: 9px; top: -6px;
+            background: #CC0000;
+            border: 2px solid #000;
+            border-radius: 50%;
+        }
+        #player .player-hair::after {
+            /* Hat rim */
+            content: '';
+            position: absolute;
+            width: 28px; height: 4px;
+            left: -1px; bottom: -2px;
+            background: #CC0000;
+            border: 2px solid #000;
+        }
+        
+        /* Stan's eyes - big white ovals */
         #player .player-eyes {
             position: absolute;
-            width: 8px; height: 10px;
+            width: 7px; height: 9px;
             background: #FFFFFF;
-            border: 1px solid #000000;
+            border: 2px solid #000;
             border-radius: 50%;
-            left: 8px; top: 5px;
-            z-index: 2;
-            box-shadow: 10px 0 0 0 #FFFFFF;
+            left: 7px; top: 9px;
+            z-index: 4;
         }
         #player .player-eyes::before {
+            /* Second eye */
+            content: '';
+            position: absolute;
+            width: 7px; height: 9px;
+            background: #FFFFFF;
+            border: 2px solid #000;
+            border-radius: 50%;
+            left: 10px; top: 0;
+        }
+        #player .player-eyes::after {
             /* Pupils */
             content: '';
             position: absolute;
             width: 3px; height: 3px;
-            background: #000000;
+            background: #000;
             border-radius: 50%;
-            left: 3px; top: 4px;
-            box-shadow: 10px 0 0 0 #000000;
+            left: 2px; top: 4px;
+            box-shadow: 12px 0 0 #000;
         }
         
-        /* SP Hair - simple shape on top */
-        #player .player-hair {
-            position: absolute;
-            width: 20px; height: 8px;
-            left: 6px; top: -2px;
-            background: #4A3020;
-            border: 2px solid #000000;
-            border-radius: 4px 4px 0 0;
-            z-index: 1;
-        }
-        
-        /* SP walk animation - paper cutout shuffle */
+        /* SP walk animation */
         @keyframes sp-walk {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-2px); }
         }
         
         #player.walking {
-            animation: sp-walk 0.25s linear infinite, sp-wobble 0.4s ease-in-out infinite;
+            animation: sp-walk 0.2s linear infinite, sp-wobble 0.4s ease-in-out infinite;
         }
 
-        /* No dust effect in SP style */
         #player.walking::after {
-            display: none;
+            /* Keep body visible while walking */
+            content: '';
+            position: absolute;
+            width: 22px; height: 14px;
+            left: 5px; top: 22px;
+            background: #8B4513;
+            border: 2px solid #000;
         }
 
-        /* SP footsteps - simple dots */
+        /* SP footsteps */
         @keyframes sp-footstep {
             0% { opacity: 0.8; }
             100% { opacity: 0; }
         }
 
-        /* Visual sound effects - colorful music notes */
+        /* Visual sound effects */
         .sound-note {
             position: absolute;
             font-size: 12px;
@@ -1996,7 +2062,7 @@
             }
         }
 
-        /* NPC Sprites - Animal Crossing chibi style */
+        /* ========== SOUTH PARK NPCs - REAL CHARACTERS ========== */
         .npc {
             position: absolute;
             width: var(--tile-size);
@@ -2006,16 +2072,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            filter: drop-shadow(3px 5px 4px rgba(0,0,0,0.2));
         }
 
         .npc:hover {
-            transform: scale(1.05);
-            transition: transform 0.15s ease;
+            transform: scale(1.08);
+            transition: transform 0.1s ease;
         }
 
-        /* NPC idle animation - SP paper wobble */
-        /* SOUTH PARK NPC Base Styles */
+        /* All NPCs wobble */
         .npc-sprite,
         .npc-sprite-blue,
         .npc-sprite-green,
@@ -2025,198 +2089,186 @@
         .npc-sprite-cyan,
         .npc-sprite-pink {
             animation: sp-wobble 0.5s ease-in-out infinite;
-        }
-
-        /* ===== SOUTH PARK NPCs - Paper cutout style ===== */
-        
-        /* NPC Base - Stan style (blue hat) */
-        .npc-sprite {
             width: 100%; height: 100%;
             position: relative;
         }
+
+        /* ===== KYLE BROFLOVSKI - Green ushanka hat, orange jacket ===== */
+        .npc-sprite {
+            /* Base container */
+        }
         .npc-sprite::before {
-            /* SP Head */
+            /* Kyle's face */
             content: '';
             position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: #FFDAB9;
-            border: 2px solid #000000;
+            width: 24px; height: 18px;
+            left: 4px; top: 6px;
+            background: #FFD9B3;
+            border: 2px solid #000;
             border-radius: 50%;
         }
         .npc-sprite::after {
-            /* SP Body */
+            /* Kyle's orange jacket */
             content: '';
             position: absolute;
-            width: 18px; height: 14px;
-            left: 7px; top: 18px;
-            background: #C04040;
-            border: 2px solid #000000;
+            width: 22px; height: 14px;
+            left: 5px; top: 22px;
+            background: #FF6600;
+            border: 2px solid #000;
         }
 
-        /* Blue NPC - Kyle style (green hat) */
+        /* ===== CARTMAN - Cyan hat, red jacket, FAT ===== */
         .npc-sprite-blue {
-            width: 100%; height: 100%;
-            position: relative;
         }
         .npc-sprite-blue::before {
+            /* Cartman's FAT face */
             content: '';
             position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: #FFDAB9;
-            border: 2px solid #000000;
+            width: 28px; height: 22px;
+            left: 2px; top: 4px;
+            background: #FFD9B3;
+            border: 2px solid #000;
             border-radius: 50%;
         }
         .npc-sprite-blue::after {
+            /* Cartman's red jacket - WIDE body */
             content: '';
             position: absolute;
-            width: 18px; height: 14px;
-            left: 7px; top: 18px;
-            background: #E08030;
-            border: 2px solid #000000;
+            width: 28px; height: 16px;
+            left: 2px; top: 22px;
+            background: #CC0000;
+            border: 2px solid #000;
         }
 
-        /* Green NPC - Kyle variant */
+        /* ===== KENNY McCORMICK - Orange parka hood ===== */
         .npc-sprite-green {
-            width: 100%; height: 100%;
-            position: relative;
         }
         .npc-sprite-green::before {
-            content: '';
-            position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: #FFDAB9;
-            border: 2px solid #000000;
-            border-radius: 50%;
-        }
-        .npc-sprite-green::after {
-            content: '';
-            position: absolute;
-            width: 18px; height: 14px;
-            left: 7px; top: 18px;
-            background: #40A040;
-            border: 2px solid #000000;
-        }
-
-        /* Purple NPC - Wendy style */
-        .npc-sprite-purple {
-            width: 100%; height: 100%;
-            position: relative;
-        }
-        .npc-sprite-purple::before {
-            content: '';
-            position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: #FFDAB9;
-            border: 2px solid #000000;
-            border-radius: 50%;
-        }
-        .npc-sprite-purple::after {
-            content: '';
-            position: absolute;
-            width: 18px; height: 14px;
-            left: 7px; top: 18px;
-            background: #8060A0;
-            border: 2px solid #000000;
-        }
-
-        /* Red villager - Bear style */
-        .npc-sprite-red { 
-            width: 100%; height: 100%; 
-            position: relative;
-        /* Red NPC - Cartman style */
-        .npc-sprite-red { 
-            width: 100%; height: 100%; 
-            position: relative;
-        }
-        .npc-sprite-red::before {
+            /* Kenny's hood covers face - just small face hole */
             content: '';
             position: absolute;
             width: 24px; height: 20px;
-            left: 4px; top: 0px;
-            background: #FFDAB9;
-            border: 2px solid #000000;
+            left: 4px; top: 4px;
+            background: #FF8800;
+            border: 2px solid #000;
+            border-radius: 50%;
+            /* Face hole in center */
+            box-shadow: inset 0 0 0 6px #FF8800, inset 0 0 0 8px #000;
+        }
+        .npc-sprite-green::after {
+            /* Kenny's orange parka body */
+            content: '';
+            position: absolute;
+            width: 22px; height: 14px;
+            left: 5px; top: 22px;
+            background: #FF8800;
+            border: 2px solid #000;
+        }
+
+        /* ===== BUTTERS - Blonde hair, light blue shirt ===== */
+        .npc-sprite-purple {
+        }
+        .npc-sprite-purple::before {
+            /* Butters' face */
+            /* Butters' light blue shirt */
+            content: '';
+            position: absolute;
+            width: 20px; height: 14px;
+            left: 6px; top: 22px;
+            background: #80C0E0;
+            border: 2px solid #000;
+        }
+
+        /* ===== WENDY TESTABURGER - Black hair, pink beret ===== */
+        .npc-sprite-red {
+        }
+        .npc-sprite-red::before {
+            /* Wendy's face */
+            content: '';
+            position: absolute;
+            width: 24px; height: 18px;
+            left: 4px; top: 6px;
+            background: #FFD9B3;
+            border: 2px solid #000;
             border-radius: 50%;
         }
         .npc-sprite-red::after {
+            /* Wendy's purple jacket */
             content: '';
             position: absolute;
-            width: 20px; height: 16px;
-            left: 6px; top: 18px;
-            background: #C04040;
-            border: 2px solid #000000;
+            width: 20px; height: 14px;
+            left: 6px; top: 22px;
+            background: #9933CC;
+            border: 2px solid #000;
         }
 
-        /* Yellow NPC - Kenny style */
-        .npc-sprite-yellow { 
-            width: 100%; height: 100%; 
-            position: relative;
+        /* ===== RANDY MARSH - Black hair, mustache ===== */
+        .npc-sprite-yellow {
         }
         .npc-sprite-yellow::before {
+            /* Randy's face */
             content: '';
             position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: #E0A030;
-            border: 2px solid #000000;
+            width: 26px; height: 20px;
+            left: 3px; top: 4px;
+            background: #FFD9B3;
+            border: 2px solid #000;
             border-radius: 50%;
         }
         .npc-sprite-yellow::after {
+            /* Randy's blue shirt */
             content: '';
             position: absolute;
-            width: 18px; height: 14px;
-            left: 7px; top: 18px;
-            background: #E0A030;
-            border: 2px solid #000000;
+            width: 24px; height: 16px;
+            left: 4px; top: 22px;
+            background: #3366CC;
+            border: 2px solid #000;
         }
 
-        /* Cyan NPC - Butters style */
-        .npc-sprite-cyan { 
-            width: 100%; height: 100%; 
-            position: relative;
+        /* ===== MR. GARRISON - Glasses, green sweater ===== */
+        .npc-sprite-cyan {
         }
         .npc-sprite-cyan::before {
+            /* Garrison's face */
             content: '';
             position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: #FFDAB9;
-            border: 2px solid #000000;
+            width: 24px; height: 18px;
+            left: 4px; top: 6px;
+            background: #FFD9B3;
+            border: 2px solid #000;
             border-radius: 50%;
         }
         .npc-sprite-cyan::after {
+            /* Garrison's green sweater */
             content: '';
             position: absolute;
-            width: 18px; height: 14px;
-            left: 7px; top: 18px;
-            background: #40A0C0;
-            border: 2px solid #000000;
+            width: 22px; height: 14px;
+            left: 5px; top: 22px;
+            background: #339933;
+            border: 2px solid #000;
         }
 
-        /* Pink NPC - Girl variant */
-        .npc-sprite-pink { 
-            width: 100%; height: 100%; 
-            position: relative;
+        /* ===== CHEF - Black skin, white chef hat ===== */
+        .npc-sprite-pink {
         }
         .npc-sprite-pink::before {
+            /* Chef's face */
             content: '';
             position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: #FFDAB9;
-            border: 2px solid #000000;
+            width: 26px; height: 20px;
+            left: 3px; top: 6px;
+            background: #8B4513;
+            border: 2px solid #000;
             border-radius: 50%;
         }
         .npc-sprite-pink::after {
+            /* Chef's white uniform */
             content: '';
             position: absolute;
-            width: 18px; height: 14px;
-            left: 7px; top: 18px;
-            background: #E080A0;
-            border: 2px solid #000000;
+            width: 24px; height: 14px;
+            left: 4px; top: 24px;
+            background: #FFFFFF;
+            border: 2px solid #000;
         }
 
         .wandering-npc {
