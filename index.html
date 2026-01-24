@@ -1329,6 +1329,43 @@
             z-index: 61;
             pointer-events: none;
         }
+        
+        /* Taxi */
+        .taxi {
+            background: #d0c090;
+        }
+        .taxi::before {
+            content: '';
+            position: absolute;
+            width: 26px; height: 16px;
+            left: 3px; top: 8px;
+            background: linear-gradient(180deg, #f0d020 0%, #d0b010 100%);
+            border: 2px solid #907800;
+            border-radius: 4px 4px 2px 2px;
+        }
+        .taxi::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 8px;
+            left: 8px; top: 4px;
+            background: #f8e848;
+            border: 2px solid #a08800;
+            border-radius: 2px 2px 0 0;
+        }
+        
+        /* Taxi label */
+        .taxi-label {
+            position: absolute;
+            font-size: 0.35rem;
+            color: #000;
+            background: #f0d020;
+            padding: 3px 8px;
+            border: 2px solid #806000;
+            z-index: 61;
+            pointer-events: none;
+            white-space: nowrap;
+            cursor: pointer;
+        }
 
         /* Station clock tile - GBA style */
         .station-clock {
@@ -3097,7 +3134,7 @@
         // 16=station-roof, 17=station-wall, 18=station-door, 19=platform, 30=bench
         // 31=station-clock, 32=vending-machine, 33=lamp-post
         // 34=train-front, 35=train-wagon, 36=train-back, 37=canopy, 38=column
-        // 39=ticket-booth, 40=info-board, 41=fountain
+        // 39=ticket-booth, 40=info-board, 41=fountain, 42=taxi
         
         const TILE_TYPES = {
             0: 'grass', 1: 'path', 2: 'tree', 3: 'water', 4: 'tall-grass', 
@@ -3109,7 +3146,7 @@
             32: 'vending-machine', 33: 'lamp-post',
             34: 'train-front', 35: 'train-wagon', 36: 'train-back',
             37: 'canopy', 38: 'column', 39: 'ticket-booth', 
-            40: 'info-board', 41: 'fountain'
+            40: 'info-board', 41: 'fountain', 42: 'taxi'
         };
         const SOLID_TILES = [2, 3, 6, 10, 11, 16, 17, 30, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41];
         
@@ -3351,42 +3388,50 @@
         // ============== LOAD REPOS AND GENERATE MAP ==============
         let allRepos = [];
         let citiesByLanguage = {};
+        let reposWithPages = []; // Repos con GitHub Pages
         let currentCity = null;
-        let collaboratorsCache = {}; // Cache para no repetir peticiones API
-        let visitedProjects = new Set(); // Track visited projects
-        let totalProjects = 0; // Total number of projects
+        let collaboratorsCache = {};
+        let visitedProjects = new Set();
+        let totalProjects = 0;
         const USERNAME = 'MutenRos';
         
         async function loadReposAndGenerateMap() {
             try {
-                // Fetch all repos (up to 100)
                 const response = await fetch(`https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=100`);
                 if (!response.ok) throw new Error('API Error');
                 
                 allRepos = await response.json();
-                totalProjects = allRepos.length; // Contar total de proyectos
+                totalProjects = allRepos.length;
                 
-                // Agrupar repos por lenguaje
+                // Agrupar por lenguaje y detectar repos con GitHub Pages
                 citiesByLanguage = {};
+                reposWithPages = [];
+                
                 allRepos.forEach(repo => {
                     const lang = repo.language || 'Other';
-                    if (!citiesByLanguage[lang]) {
-                        citiesByLanguage[lang] = [];
-                    }
+                    if (!citiesByLanguage[lang]) citiesByLanguage[lang] = [];
                     citiesByLanguage[lang].push(repo);
+                    
+                    // Detectar si tiene GitHub Pages
+                    if (repo.has_pages || repo.homepage) {
+                        const pagesUrl = repo.homepage || `https://${USERNAME.toLowerCase()}.github.io/${repo.name}`;
+                        reposWithPages.push({
+                            name: repo.name,
+                            url: pagesUrl,
+                            language: lang,
+                            description: repo.description
+                        });
+                    }
                 });
                 
-                // Ordenar ciudades por cantidad de repos
                 const sortedLanguages = Object.keys(citiesByLanguage).sort(
                     (a, b) => citiesByLanguage[b].length - citiesByLanguage[a].length
                 );
                 
-                console.log('Cities by language:', sortedLanguages.map(l => `${l}: ${citiesByLanguage[l].length} repos`));
+                console.log('Languages:', sortedLanguages);
+                console.log('Repos with Pages:', reposWithPages.map(r => r.name));
                 
-                // Cargar progreso guardado
                 loadVisitedProjects();
-                
-                // Cargar la estación de tren central
                 loadTrainStation(sortedLanguages);
                 
             } catch (error) {
@@ -3396,15 +3441,18 @@
             }
         }
         
-        // Estación de tren central - Diseño simple y claro
+        // Estación central - Una vía por idioma + Zona de taxis
         function loadTrainStation(languages) {
             currentCity = 'STATION';
             currentLocation = 'outside';
             houses = [];
             wanderingNpcs = [];
             
-            MAP_COLS = 20;
-            MAP_ROWS = 14;
+            const numLangs = Math.min(languages.length, 6);
+            const numTaxis = Math.min(reposWithPages.length, 4);
+            
+            MAP_COLS = 22;
+            MAP_ROWS = 6 + numLangs * 2 + (numTaxis > 0 ? 4 : 0);
             MAP_DATA = Array.from({length: MAP_ROWS}, () => Array(MAP_COLS).fill(0));
             
             const fill = (x, y, w, h, t) => {
@@ -3418,48 +3466,70 @@
             fill(0, MAP_ROWS-1, MAP_COLS, 1, 2);
             for (let y = 0; y < MAP_ROWS; y++) { MAP_DATA[y][0] = 2; MAP_DATA[y][MAP_COLS-1] = 2; }
             
-            // Edificio estación (fila 2)
-            fill(5, 2, 10, 1, 16);  // Techo
-            fill(5, 3, 10, 1, 17);  // Pared
-            MAP_DATA[3][9] = 18; MAP_DATA[3][10] = 18;  // Puertas
+            // Edificio estación
+            fill(6, 2, 10, 1, 16);
+            fill(6, 3, 10, 1, 17);
+            MAP_DATA[3][10] = 18; MAP_DATA[3][11] = 18;
             
             // Plaza
-            fill(3, 4, 14, 2, 1);
+            fill(4, 4, 14, 1, 1);
             
-            // Andén y vías
-            fill(2, 6, 16, 1, 19);  // Andén
-            fill(2, 7, 16, 1, 13);  // Vía
-            fill(2, 8, 16, 1, 19);  // Andén con destinos
-            
-            // Carteles destino
+            // Vías - una por idioma
             window.availableCities = [];
-            const maxDest = Math.min(languages.length, 4);
-            for (let i = 0; i < maxDest; i++) {
-                const x = 5 + i * 3;
-                MAP_DATA[8][x] = 14;
+            for (let i = 0; i < numLangs; i++) {
+                const y = 5 + i * 2;
+                fill(2, y, 18, 1, 19);      // Andén
+                fill(2, y + 1, 18, 1, 13);  // Vía
+                MAP_DATA[y][4] = 14;        // Cartel
+                
                 window.availableCities.push({
-                    x, y: 8,
+                    x: 4, y: y,
                     language: languages[i],
                     repoCount: citiesByLanguage[languages[i]].length
                 });
             }
             
-            // Zona sur
-            fill(6, 10, 8, 2, 1);
+            // Zona de taxis (si hay repos con Pages)
+            window.taxiStops = [];
+            if (numTaxis > 0) {
+                const taxiY = 5 + numLangs * 2 + 1;
+                fill(4, taxiY, 14, 1, 1);  // Camino
+                
+                for (let i = 0; i < numTaxis; i++) {
+                    const x = 5 + i * 3;
+                    MAP_DATA[taxiY][x] = 42;  // Taxi tile
+                    window.taxiStops.push({
+                        x, y: taxiY,
+                        ...reposWithPages[i]
+                    });
+                }
+            }
             
-            playerX = 10;
-            playerY = 10;
+            // Jugador
+            playerX = 11;
+            playerY = 4;
             
             generateMap();
             
-            // Labels
-            window.availableCities.forEach(city => {
+            // Labels de vías
+            window.availableCities.forEach((city, i) => {
                 const label = document.createElement('div');
                 label.className = 'city-label visible';
-                label.innerHTML = `<strong>${city.language}</strong><small>${city.repoCount}</small>`;
-                label.style.left = (city.x * TILE_SIZE - 16) + 'px';
-                label.style.top = ((city.y - 1) * TILE_SIZE) + 'px';
+                label.innerHTML = `<strong>VÍA ${i+1}</strong> → ${city.language} <small>(${city.repoCount})</small>`;
+                label.style.left = (city.x * TILE_SIZE + 40) + 'px';
+                label.style.top = (city.y * TILE_SIZE + 4) + 'px';
                 label.dataset.language = city.language;
+                map.appendChild(label);
+            });
+            
+            // Labels de taxis
+            window.taxiStops.forEach(taxi => {
+                const label = document.createElement('div');
+                label.className = 'taxi-label visible';
+                label.innerHTML = `🚕 ${taxi.name}`;
+                label.style.left = (taxi.x * TILE_SIZE - 10) + 'px';
+                label.style.top = ((taxi.y - 1) * TILE_SIZE) + 'px';
+                label.dataset.url = taxi.url;
                 map.appendChild(label);
             });
             
@@ -4099,7 +4169,7 @@
                 {x: playerX + 1, y: playerY}
             ];
             
-            // Verificar señales de tren
+            // Verificar señales de tren y taxis
             if (currentLocation === 'outside') {
                 for (const pos of adjacentPositions) {
                     if (pos.y >= 0 && pos.y < MAP_ROWS && pos.x >= 0 && pos.x < MAP_COLS) {
@@ -4120,6 +4190,16 @@
                             createInteractEffect(pos.x, pos.y, '🔙');
                             returnToStation();
                             return;
+                        }
+                        
+                        // Taxi (ir a página de GitHub Pages)
+                        if (tileType === 42 && window.taxiStops) {
+                            const taxi = window.taxiStops.find(t => t.x === pos.x && t.y === pos.y);
+                            if (taxi) {
+                                createInteractEffect(pos.x, pos.y, '🚕');
+                                window.open(taxi.url, '_blank');
+                                return;
+                            }
                         }
                     }
                 }
