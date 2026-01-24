@@ -7,92 +7,90 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* GBA 16-bit Full Color Palette */
-            --gb-lightest: #88d850;
-            --gb-light: #60b830;
-            --gb-dark: #308020;
-            --gb-darkest: #185010;
+            /* Animal Crossing Pastel Palette */
+            --gb-lightest: #a8e8a0;
+            --gb-light: #88d080;
+            --gb-dark: #60a858;
+            --gb-darkest: #408040;
             --tile-size: 32px;
             
-            /* Sky & Environment */
-            --sky-day: #78c8f0;
-            --sky-sunset: #f89858;
-            --sky-night: #283048;
+            /* Sky & Environment - AC soft blue */
+            --sky-day: #a8dff8;
+            --sky-sunset: #ffb898;
+            --sky-night: #384868;
             
-            /* Nature colors - GBA style */
-            --grass-light: #70d048;
-            --grass-mid: #50b030;
-            --grass-dark: #308818;
-            --grass-shadow: #206010;
+            /* Nature colors - AC soft pastels */
+            --grass-light: #98e888;
+            --grass-mid: #78d068;
+            --grass-dark: #58b048;
+            --grass-shadow: #409838;
             
-            /* Water - vibrant GBA blue */
-            --water-light: #58c8f8;
-            --water-mid: #3898d8;
-            --water-dark: #2068a8;
-            --water-deep: #184878;
+            /* Water - AC turquoise soft */
+            --water-light: #88e8e8;
+            --water-mid: #60d0d8;
+            --water-dark: #48b8c0;
+            --water-deep: #38a0a8;
             
-            /* Wood & Earth */
-            --wood-light: #d8a870;
-            --wood-mid: #a87840;
-            --wood-dark: #785020;
-            --earth-light: #c89860;
-            --earth-mid: #987040;
-            --earth-dark: #604020;
+            /* Wood & Earth - warm AC tones */
+            --wood-light: #e8c8a0;
+            --wood-mid: #d0a878;
+            --wood-dark: #a88050;
+            --earth-light: #e0c090;
+            --earth-mid: #c8a070;
+            --earth-dark: #a08050;
             
-            /* Building materials */
-            --roof-red: #e85848;
-            --roof-red-light: #f87868;
-            --roof-red-dark: #b83020;
-            --roof-blue: #4878c8;
-            --roof-blue-light: #6898e8;
-            --roof-blue-dark: #2850a0;
-            --wall-light: #f8f0e0;
-            --wall-mid: #e8d8c0;
-            --wall-dark: #c8b898;
-            --brick-light: #d88858;
-            --brick-mid: #b86838;
-            --brick-dark: #884818;
+            /* Building materials - AC soft */
+            --roof-red: #f8a898;
+            --roof-red-light: #ffc8b8;
+            --roof-red-dark: #e88878;
+            --roof-blue: #88b8e8;
+            --roof-blue-light: #a8d0f8;
+            --roof-blue-dark: #6898c8;
+            --wall-light: #fff8f0;
+            --wall-mid: #f8f0e8;
+            --wall-dark: #e8e0d8;
+            --brick-light: #f0b090;
+            --brick-mid: #e09070;
+            --brick-dark: #c87050;
             
-            /* Stone & Metal */
-            --stone-light: #b8b8c0;
-            --stone-mid: #909098;
-            --stone-dark: #606068;
-            --metal-light: #d0d8e0;
-            --metal-mid: #a0a8b0;
-            --metal-dark: #707880;
+            /* Stone & Metal - soft AC */
+            --stone-light: #d8d8e0;
+            --stone-mid: #b8b8c8;
+            --stone-dark: #9898a8;
+            --metal-light: #e8e8f0;
+            --metal-mid: #c8c8d8;
+            --metal-dark: #a8a8b8;
             
-            /* UI Colors - Pokemon style */
-            --ui-bg: #f8f0d8;
-            --ui-border: #584038;
-            --ui-shadow: rgba(40, 32, 24, 0.5);
-            --ui-highlight: #fff8e8;
-            --ui-text: #383030;
+            /* UI Colors - AC bubble style */
+            --ui-bg: #fffff8;
+            --ui-border: #90c8a0;
+            --ui-shadow: rgba(80, 120, 80, 0.3);
+            --ui-highlight: #fffff0;
+            --ui-text: #486048;
             
-            /* Accent colors */
-            --accent-yellow: #f8d830;
-            --accent-orange: #f89030;
-            --accent-pink: #f87898;
-            --accent-purple: #9868c8;
-            --accent-cyan: #48d8e8;
+            /* Accent colors - AC bright */
+            --accent-yellow: #f8e878;
+            --accent-orange: #f8b858;
+            --accent-pink: #f8a8c8;
+            --accent-purple: #c8a8e8;
+            --accent-cyan: #88e8e8;
             
             /* Animation speeds */
-            --anim-fast: 0.15s;
-            --anim-normal: 0.3s;
-            --anim-slow: 0.6s;
+            --anim-fast: 0.2s;
+            --anim-normal: 0.4s;
+            --anim-slow: 0.8s;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            -ms-interpolation-mode: nearest-neighbor;
+            /* Remove pixelated for smooth AC look */
         }
 
         body {
             font-family: 'Press Start 2P', cursive;
-            background: radial-gradient(ellipse at center, #282840 0%, #101018 100%);
+            background: linear-gradient(180deg, #88c8a0 0%, #60a078 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -144,22 +142,24 @@
                 inset -2px -2px 4px rgba(255,255,255,0.03);
         }
 
-        /* Main Game Screen - GBA widescreen feel */
+        /* Main Game Screen - Animal Crossing 3D isometric style */
         #game-container {
-            width: 480px;
-            height: 432px;
-            background: linear-gradient(180deg, var(--sky-day) 0%, var(--grass-light) 100%);
+            width: 520px;
+            height: 480px;
+            background: linear-gradient(180deg, var(--sky-day) 0%, #d0f0d0 100%);
             position: relative;
             overflow: hidden;
-            image-rendering: pixelated;
-            border: 3px solid #282830;
-            border-radius: 2px;
+            border: 4px solid #f8f8f0;
+            border-radius: 20px;
             box-shadow: 
-                inset 0 0 60px rgba(15, 56, 15, 0.3),
-                0 0 20px rgba(155, 188, 15, 0.2);
+                0 8px 32px rgba(60, 100, 80, 0.4),
+                0 2px 8px rgba(0,0,0,0.2),
+                inset 0 0 60px rgba(255, 255, 255, 0.3);
+            transform: perspective(1000px) rotateX(8deg);
+            transform-style: preserve-3d;
         }
 
-        /* CRT Scanlines + Vignette */
+        /* Remove CRT effects - AC is clean */
         #game-container::after {
             content: '';
             position: absolute;
@@ -168,24 +168,17 @@
             width: 100%;
             height: 100%;
             background: 
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0.06),
-                    rgba(0, 0, 0, 0.06) 1px,
-                    transparent 1px,
-                    transparent 2px
-                ),
                 radial-gradient(
-                    ellipse at center,
-                    transparent 0%,
-                    transparent 60%,
-                    rgba(0, 0, 0, 0.15) 100%
+                    ellipse at 30% 20%,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    transparent 50%
                 );
             pointer-events: none;
             z-index: 1000;
+            border-radius: 16px;
         }
 
-        /* Screen flicker effect */
+        /* Soft glow effect */
         #game-container::before {
             content: '';
             position: absolute;
@@ -193,24 +186,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(155, 188, 15, 0.03);
-            animation: screen-flicker 0.1s infinite;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 30%);
             pointer-events: none;
             z-index: 999;
-        }
-
-        @keyframes screen-flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.98; }
+            border-radius: 16px;
         }
 
         /* Intro Screen - GBA Premium Style */
+        /* Intro Screen - Animal Crossing soft pastel style */
         #intro-screen {
             position: absolute;
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(ellipse at 50% 30%, #a8e0f8 0%, #78c0e8 30%, #4898d0 60%, #3070a0 100%);
+                linear-gradient(180deg, 
+                    #a8dff8 0%, 
+                    #88c8e8 30%, 
+                    #98e888 60%, 
+                    #78d068 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -218,139 +211,134 @@
             z-index: 100;
             text-align: center;
             overflow: hidden;
+            border-radius: 16px;
         }
         
-        /* Decorative clouds in intro */
+        /* Fluffy clouds - AC style */
         #intro-screen::before {
             content: '';
             position: absolute;
-            width: 200%;
-            height: 40%;
-            top: 10%;
-            left: -50%;
+            width: 100%;
+            height: 60%;
+            top: 5%;
+            left: 0;
             background: 
-                radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.8) 0%, transparent 30%),
-                radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.6) 0%, transparent 25%),
-                radial-gradient(ellipse at 80% 50%, rgba(255,255,255,0.7) 0%, transparent 28%);
-            animation: clouds-drift 20s linear infinite;
+                radial-gradient(ellipse at 15% 40%, rgba(255,255,255,0.9) 0%, transparent 25%),
+                radial-gradient(ellipse at 35% 30%, rgba(255,255,255,0.85) 0%, transparent 22%),
+                radial-gradient(ellipse at 55% 45%, rgba(255,255,255,0.8) 0%, transparent 28%),
+                radial-gradient(ellipse at 75% 35%, rgba(255,255,255,0.85) 0%, transparent 24%),
+                radial-gradient(ellipse at 90% 40%, rgba(255,255,255,0.9) 0%, transparent 20%);
+            animation: clouds-float-intro 25s ease-in-out infinite;
             pointer-events: none;
         }
         
-        @keyframes clouds-drift {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(25%); }
+        @keyframes clouds-float-intro {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(30px) translateY(-10px); }
         }
 
-        /* Decorative frame border - GBA style */
+        /* Decorative rounded frame - AC style */
         #intro-screen::after {
             content: '';
             position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            border: 3px solid #204080;
-            border-radius: 4px;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 4px solid rgba(255,255,255,0.6);
+            border-radius: 16px;
             box-shadow: 
-                inset 0 0 0 3px #3068b0,
-                inset 0 0 0 6px rgba(255,255,255,0.2),
-                0 0 30px rgba(64, 128, 200, 0.3);
+                inset 0 0 40px rgba(255, 255, 255, 0.3),
+                0 0 20px rgba(100, 180, 100, 0.3);
             pointer-events: none;
         }
 
-        /* Animated logo - GBA vibrant */
+        /* Title - AC friendly bubble */
         #intro-screen h1 {
-            color: #f8f8f8;
-            font-size: 1.4rem;
-            margin-bottom: 15px;
+            color: #486048;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
             line-height: 1.6;
             text-shadow: 
-                3px 3px 0 #204080,
-                5px 5px 0 rgba(32, 64, 128, 0.5),
-                0 0 30px rgba(88, 200, 248, 0.6);
-            animation: logo-bounce 2s ease-in-out infinite, title-shimmer 3s linear infinite;
+                2px 2px 0 rgba(255,255,255,0.8),
+                4px 4px 8px rgba(80, 120, 80, 0.3);
+            animation: logo-float 3s ease-in-out infinite;
             position: relative;
             z-index: 1;
+            background: linear-gradient(180deg, rgba(255,255,248,0.95) 0%, rgba(248,248,240,0.9) 100%);
+            padding: 15px 30px;
+            border-radius: 20px;
+            border: 4px solid #90c8a0;
+            box-shadow: 
+                0 6px 0 #70a880,
+                0 8px 20px rgba(80,120,80,0.3);
         }
 
-        @keyframes logo-bounce {
+        @keyframes logo-float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-10px); }
         }
 
-        @keyframes title-shimmer {
-            0%, 100% { filter: brightness(1) drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
-            50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,255,255,0.5)); }
-        }
-
-        /* Version badge - GBA style */
+        /* Version badge - AC bubble style */
         #intro-screen p {
-            color: #303040;
-            font-size: 0.55rem;
+            color: #486048;
+            font-size: 0.5rem;
             margin-bottom: 12px;
-            padding: 5px 14px;
-            background: linear-gradient(180deg, #f8f0d8 0%, #e8d8b8 100%);
-            border: 2px solid #a08860;
-            border-radius: 3px;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+            padding: 8px 18px;
+            background: linear-gradient(180deg, #fffff8 0%, #f8f8f0 100%);
+            border: 3px solid #a8d8b8;
+            border-radius: 15px;
+            box-shadow: 
+                0 3px 0 #88b898,
+                0 4px 10px rgba(80, 120, 80, 0.2);
             position: relative;
             z-index: 1;
         }
         
         #intro-screen p:first-of-type {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .press-start {
-            color: #282830;
-            font-size: 0.75rem;
-            animation: blink 1s steps(2) infinite, press-glow 2s ease-in-out infinite;
-            margin-top: 40px;
+            color: #f8f8f8;
+            font-size: 0.7rem;
+            animation: press-float 2s ease-in-out infinite;
+            margin-top: 35px;
             cursor: pointer;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
-            padding: 14px 28px;
-            border: 3px solid #785830;
-            border-radius: 4px;
-            background: linear-gradient(180deg, #f8e880 0%, #e8c840 50%, #d8b020 100%);
+            padding: 16px 32px;
+            border: 4px solid #5890b8;
+            border-radius: 25px;
+            background: linear-gradient(180deg, #88c8f8 0%, #68a8d8 50%, #4888b8 100%);
             box-shadow: 
-                inset 0 2px 0 rgba(255,255,255,0.4),
-                3px 3px 0 rgba(0,0,0,0.3),
-                0 0 20px rgba(248, 200, 64, 0.4);
+                inset 0 4px 8px rgba(255,255,255,0.5),
+                0 6px 0 #3868a0,
+                0 8px 20px rgba(60, 100, 160, 0.4);
             position: relative;
             z-index: 1;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
         }
 
-        .press-start::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: var(--gb-dark);
-            z-index: -1;
-            animation: button-border-glow 2s ease-in-out infinite;
-        }
-
-        @keyframes button-border-glow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-
-        @keyframes press-glow {
-            0%, 100% { box-shadow: 0 4px 0 var(--gb-darkest), 0 0 5px var(--gb-dark); }
-            50% { box-shadow: 0 4px 0 var(--gb-darkest), 0 0 20px var(--gb-dark), 0 0 30px var(--gb-dark); }
+        @keyframes press-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.02); }
         }
 
         .press-start:hover {
-            background: linear-gradient(180deg, #ffffff 0%, var(--gb-lightest) 100%);
-            transform: scale(1.08) translateY(-2px);
-            box-shadow: 0 6px 0 var(--gb-darkest), 0 0 25px var(--gb-dark);
+            background: linear-gradient(180deg, #a8e0ff 0%, #88c8f8 100%);
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 
+                inset 0 4px 8px rgba(255,255,255,0.6),
+                0 8px 0 #3868a0,
+                0 12px 30px rgba(60, 100, 160, 0.5);
         }
 
         .press-start:active {
-            transform: scale(1.02) translateY(2px);
-            box-shadow: 0 2px 0 var(--gb-darkest);
+            transform: scale(1.05) translateY(2px);
+            box-shadow: 
+                inset 0 4px 8px rgba(255,255,255,0.5),
+                0 3px 0 #3868a0;
         }
 
         @keyframes blink {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            50% { opacity: 0.7; }
         }
 
         /* Game World */
@@ -359,9 +347,10 @@
             width: 100%;
             height: 100%;
             display: none;
+            border-radius: 16px;
         }
 
-        /* Ambient particles (floating leaves/dust) */
+        /* Ambient particles - AC butterflies/leaves */
         #ambient-particles {
             position: absolute;
             width: 100%;
@@ -701,117 +690,190 @@
 
         #map {
             position: absolute;
-            background: #48a848;
+            background: linear-gradient(180deg, #98e888 0%, #78d068 100%);
+            border-radius: 8px;
         }
 
-        /* ===== ZONAS FLUIDAS ===== */
+        /* ===== ZONAS FLUIDAS - AC Style ===== */
         .zone {
             position: absolute;
+            border-radius: 12px;
         }
         
         .zone-path {
-            background: #d0c090;
+            background: linear-gradient(180deg, #f0e8d0 0%, #e0d8c0 100%);
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.5),
+                inset 0 -2px 4px rgba(0,0,0,0.1),
+                0 3px 6px rgba(100,80,60,0.2);
+            border-radius: 20px;
         }
         
         .zone-water {
-            background: #3080c0;
+            background: linear-gradient(180deg, #88e8e8 0%, #60d0d8 50%, #48b8c0 100%);
+            box-shadow: 
+                inset 0 4px 8px rgba(255,255,255,0.4),
+                inset 0 -4px 8px rgba(0,80,100,0.2),
+                0 4px 8px rgba(0,100,120,0.3);
+            border-radius: 24px;
+            animation: water-shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes water-shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1); }
         }
         
         .zone-track {
-            background: #606068;
+            background: linear-gradient(180deg, #a0a0a8 0%, #888890 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            border-radius: 4px;
         }
         .zone-track::before {
             content: '';
             position: absolute;
             left: 0; right: 0;
-            top: 25%; height: 20%;
-            background: #404048;
-            box-shadow: 0 10px 0 #404048;
+            top: 30%; height: 15%;
+            background: #606068;
+            box-shadow: 0 8px 0 #606068;
+            border-radius: 2px;
         }
         
         .zone-platform {
-            background: #909098;
+            background: linear-gradient(180deg, #d8d8e0 0%, #c0c0c8 100%);
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.6),
+                0 4px 8px rgba(0,0,0,0.15);
+            border-radius: 8px;
         }
         .zone-platform::after {
             content: '';
             position: absolute;
-            left: 0; right: 0; bottom: 3px;
-            height: 3px;
-            background: #e0c020;
+            left: 4px; right: 4px; bottom: 4px;
+            height: 4px;
+            background: #f8e060;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(248,224,96,0.5);
         }
 
-        /* ===== ELEMENTOS ===== */
+        /* ===== ELEMENTOS - AC Style ===== */
         .element {
             position: absolute;
             width: 32px;
             height: 32px;
+            filter: drop-shadow(2px 4px 3px rgba(0,0,0,0.2));
         }
 
+        /* AC style round fluffy tree */
         .tree::before {
             content: '';
             position: absolute;
-            width: 22px; height: 18px;
-            left: 5px; top: 2px;
-            background: radial-gradient(ellipse at 50% 60%, #308030 0%, #206020 80%);
+            width: 28px; height: 26px;
+            left: 2px; top: 0;
+            background: radial-gradient(ellipse at 40% 40%, 
+                #a8e8a0 0%, 
+                #78d068 40%, 
+                #58b048 70%,
+                #408838 100%);
             border-radius: 50%;
+            box-shadow: 
+                inset 4px 4px 8px rgba(255,255,255,0.4),
+                inset -4px -4px 8px rgba(0,80,0,0.2);
         }
         .tree::after {
             content: '';
             position: absolute;
-            width: 5px; height: 10px;
-            left: 13px; bottom: 2px;
-            background: #704020;
+            width: 8px; height: 10px;
+            left: 12px; bottom: 0;
+            background: linear-gradient(180deg, #d0a878 0%, #a88050 100%);
+            border-radius: 2px 2px 4px 4px;
+            box-shadow: inset 2px 0 0 rgba(255,255,255,0.3);
         }
 
+        /* AC fluffy tall grass */
         .tall-grass::before {
             content: '';
             position: absolute;
-            width: 26px; height: 20px;
-            left: 3px; top: 6px;
-            background: linear-gradient(180deg, #50b050 0%, #309030 100%);
-            border-radius: 40% 40% 0 0;
+            width: 28px; height: 22px;
+            left: 2px; top: 5px;
+            background: radial-gradient(ellipse at 50% 80%, 
+                #98e888 0%, 
+                #78d068 50%, 
+                #58b048 100%);
+            border-radius: 50% 50% 30% 30%;
+            box-shadow: inset 0 4px 6px rgba(255,255,255,0.4);
         }
 
+        /* AC cute flowers */
         .flower::before {
             content: '';
             position: absolute;
-            width: 6px; height: 6px;
-            left: 13px; top: 12px;
-            background: #e05070;
+            width: 10px; height: 10px;
+            left: 11px; top: 10px;
+            background: radial-gradient(circle at 40% 40%, #ffc8d8 0%, #f8a8c8 50%, #e888a8 100%);
             border-radius: 50%;
-            box-shadow: 7px 5px 0 #f0c040, -5px 7px 0 #6090e0;
+            box-shadow: 
+                8px 4px 0 #f8e878,
+                -6px 6px 0 #88c8f8,
+                inset 2px 2px 2px rgba(255,255,255,0.6);
+        }
+        .flower::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 10px;
+            left: 14px; bottom: 2px;
+            background: linear-gradient(180deg, #78d068 0%, #58b048 100%);
+            border-radius: 2px;
         }
 
+        /* AC rounded fence */
         .fence::before {
             content: '';
             position: absolute;
-            width: 28px; height: 14px;
-            left: 2px; top: 12px;
-            background: #b09060;
-            border: 2px solid #705030;
+            width: 28px; height: 18px;
+            left: 2px; top: 10px;
+            background: linear-gradient(180deg, #e8c8a0 0%, #d0a878 100%);
+            border: 3px solid #a88050;
+            border-radius: 6px;
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.5),
+                0 3px 0 #907040;
         }
 
+        /* AC cute sign */
         .sign::before {
             content: '';
             position: absolute;
-            width: 18px; height: 12px;
-            left: 7px; top: 5px;
-            background: #e8e0d0;
-            border: 2px solid #705030;
+            width: 20px; height: 14px;
+            left: 6px; top: 4px;
+            background: linear-gradient(180deg, #fff8f0 0%, #f0e8d8 100%);
+            border: 3px solid #a88050;
+            border-radius: 6px;
+            box-shadow: 
+                inset 0 2px 2px rgba(255,255,255,0.8),
+                0 2px 0 #806030;
         }
         .sign::after {
             content: '';
             position: absolute;
-            width: 4px; height: 12px;
-            left: 14px; bottom: 2px;
-            background: #705030;
-        }
+            width: 6px; height: 12px;
+            left: 13px; bottom: 0;
+            background: linear-gradient(180deg, #d0a878 0%, #a88050 100%);
+            border-radius: 2px;
         }
 
-        /* Casas */
+        /* Casas - AC rounded cottage style */
         .house-roof {
-            background: linear-gradient(180deg, #d04848 0%, #b03030 100%);
-            border: 2px solid #802020;
+            background: linear-gradient(180deg, 
+                #f8b8a8 0%, 
+                #e89888 50%, 
+                #d87868 100%);
+            border: 3px solid #c86858;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 
+                inset 0 4px 8px rgba(255,255,255,0.4),
+                inset 0 -4px 8px rgba(0,0,0,0.1),
+                0 4px 0 #b85848;
         }
         .house-roof::before {
             content: '';
@@ -819,85 +881,116 @@
             width: 100%; height: 100%;
             background: repeating-linear-gradient(
                 180deg,
-                transparent 0px, transparent 5px,
-                rgba(0,0,0,0.15) 5px, rgba(0,0,0,0.15) 6px
+                transparent 0px, transparent 6px,
+                rgba(255,255,255,0.15) 6px, rgba(255,255,255,0.15) 8px
             );
+            border-radius: 8px 8px 0 0;
         }
         .house-roof::after {
             content: '';
             position: absolute;
-            bottom: -3px; left: 2px; right: 2px;
-            height: 3px;
-            background: linear-gradient(90deg, #681010 0%, #901818 50%, #681010 100%);
+            bottom: -4px; left: 4px; right: 4px;
+            height: 4px;
+            background: linear-gradient(90deg, #a84838 0%, #c85848 50%, #a84838 100%);
+            border-radius: 2px;
         }
 
-        /* House wall - GBA style with depth and texture */
+        /* House wall - AC soft cottage style */
         .house-wall {
-            background: linear-gradient(135deg, var(--wall-light) 0%, var(--wall-mid) 50%, var(--wall-dark) 100%);
-            border: 2px solid #b09870;
-            border-bottom: 4px solid #907850;
-            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.1);
+            background: linear-gradient(180deg, 
+                var(--wall-light) 0%, 
+                var(--wall-mid) 50%, 
+                var(--wall-dark) 100%);
+            border: 3px solid #d8c8b8;
+            border-radius: 4px;
+            box-shadow: 
+                inset 0 4px 8px rgba(255,255,255,0.5),
+                inset 0 -4px 8px rgba(0,0,0,0.08),
+                0 4px 0 #c8b8a8;
         }
         .house-wall::before {
+            /* Window - AC round style */
             content: '';
             position: absolute;
-            width: 14px; height: 14px;
-            left: 9px; top: 6px;
-            background: linear-gradient(135deg, #c0e8ff 0%, #90c8f0 40%, #60a0d8 100%);
-            border: 3px solid #484850;
+            width: 16px; height: 16px;
+            left: 8px; top: 5px;
+            background: radial-gradient(ellipse at 30% 30%, 
+                #d8f8ff 0%, 
+                #a8e0f8 40%, 
+                #78c8e8 100%);
+            border: 3px solid #88a8b8;
+            border-radius: 50%;
             box-shadow: 
-                inset 2px 2px 0 rgba(255,255,255,0.6),
-                inset -1px -1px 0 rgba(0,0,0,0.2),
-                2px 2px 0 rgba(0,0,0,0.25);
+                inset 2px 2px 4px rgba(255,255,255,0.8),
+                0 2px 0 #6888a0;
         }
         .house-wall::after {
             content: '';
             position: absolute;
-            width: 2px; height: 14px;
-            left: 15px; top: 6px;
-            background: linear-gradient(180deg, #404048 0%, #303038 100%);
+            width: 2px; height: 12px;
+            left: 15px; top: 7px;
+            background: #6888a0;
+            border-radius: 1px;
         }
 
-        /* House door - GBA Pokemon style entrance */
+        /* House door - AC cute entrance */
         .house-door {
-            background: linear-gradient(135deg, var(--wall-light) 0%, var(--wall-mid) 100%);
-            border: 2px solid #b09870;
+            background: linear-gradient(180deg, 
+                var(--wall-light) 0%, 
+                var(--wall-mid) 100%);
+            border: 3px solid #d8c8b8;
             border-bottom: none;
+            border-radius: 4px 4px 0 0;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.2s ease;
+            box-shadow: 
+                inset 0 4px 8px rgba(255,255,255,0.5),
+                0 4px 0 #c8b8a8;
         }
         .house-door:hover {
-            background: linear-gradient(135deg, #fffff0 0%, var(--wall-light) 100%);
-            transform: scale(1.02);
+            background: linear-gradient(180deg, #fffff8 0%, var(--wall-light) 100%);
+            transform: scale(1.03);
+            box-shadow: 
+                inset 0 4px 8px rgba(255,255,255,0.6),
+                0 6px 0 #c8b8a8,
+                0 0 20px rgba(255,200,100,0.3);
         }
         .house-door::before {
+            /* Door - AC rounded arch */
             content: '';
             position: absolute;
-            width: 18px; height: 26px;
-            left: 7px; top: 2px;
-            background: linear-gradient(135deg, #a87048 0%, #785028 50%, #583818 100%);
-            border: 3px solid #402810;
-            border-radius: 2px 2px 0 0;
+            width: 18px; height: 24px;
+            left: 7px; top: 4px;
+            background: linear-gradient(180deg, 
+                #d0a080 0%, 
+                #b08060 50%, 
+                #906040 100%);
+            border: 3px solid #705030;
+            border-radius: 10px 10px 0 0;
             box-shadow: 
-                inset 2px 2px 0 rgba(255,255,255,0.25),
-                inset -1px -1px 0 rgba(0,0,0,0.3);
+                inset 3px 3px 4px rgba(255,255,255,0.3),
+                inset -2px -2px 4px rgba(0,0,0,0.2);
         }
         .house-door::after {
+            /* Doorknob - AC shiny */
             content: '';
             position: absolute;
-            width: 5px; height: 5px;
-            left: 20px; top: 14px;
-            background: radial-gradient(circle at 30% 30%, #fff8a0 0%, #f8d830 40%, #c89800 100%);
+            width: 6px; height: 6px;
+            left: 19px; top: 16px;
+            background: radial-gradient(circle at 30% 30%, 
+                #fff8d0 0%, 
+                #f8e878 40%, 
+                #d8b830 100%);
             border-radius: 50%;
             box-shadow: 
-                0 0 6px rgba(255, 220, 100, 0.6),
-                1px 1px 0 rgba(0,0,0,0.3);
-            animation: door-glow 2s ease-in-out infinite;
+                0 0 8px rgba(255, 220, 100, 0.6),
+                1px 1px 2px rgba(0,0,0,0.3);
+            animation: doorknob-glow 2.5s ease-in-out infinite;
         }
 
-        @keyframes door-glow {
-            0%, 100% { box-shadow: 0 0 4px rgba(255, 200, 100, 0.4), 1px 1px 0 rgba(0,0,0,0.3); }
-            50% { box-shadow: 0 0 12px rgba(255, 200, 100, 0.8), 1px 1px 0 rgba(0,0,0,0.3); }
+        @keyframes doorknob-glow {
+            0%, 100% { box-shadow: 0 0 6px rgba(255, 220, 100, 0.4), 1px 1px 2px rgba(0,0,0,0.3); }
+            50% { box-shadow: 0 0 16px rgba(255, 220, 100, 0.8), 1px 1px 2px rgba(0,0,0,0.3); }
         }
         
         /* House color variants by language - GBA vibrant */
@@ -1845,100 +1938,106 @@
             font-size: 0.5rem;
         }
 
-        /* Player Sprite - Pixel Art */
+        /* Player Sprite - Animal Crossing Chibi Style */
         #player {
             position: absolute;
             width: var(--tile-size);
             height: var(--tile-size);
             z-index: 50;
-            image-rendering: pixelated;
-            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+            filter: drop-shadow(3px 5px 4px rgba(0,0,0,0.25));
         }
 
         .sprite {
             width: 100%;
             height: 100%;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
         }
 
-        /* Player sprite using CSS pixel art - GBA style with more colors */
+        /* Player sprite - AC chibi round style */
         .player-sprite {
             width: 100%; height: 100%;
             position: relative;
         }
         .player-sprite::before {
+            /* Head - big round AC style */
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Hair - richer brown tones */
-                8px 0 #402818, 12px 0 #503020, 16px 0 #503020, 20px 0 #402818,
-                4px 4px #503020, 8px 4px #604028, 12px 4px #705030, 16px 4px #705030, 20px 4px #604028, 24px 4px #503020,
-                /* Face - smooth skin tones */
-                4px 8px #f8d8b0, 8px 8px #f8e0c0, 12px 8px #f8e0c0, 16px 8px #f8e0c0, 20px 8px #f8e0c0, 24px 8px #f8d8b0,
-                4px 12px #f8d0a8, 8px 12px #382820, 12px 12px #f8e0c0, 16px 12px #f8e0c0, 20px 12px #382820, 24px 12px #f8d0a8,
-                8px 16px #f8c8a0, 12px 16px #f8d0a8, 16px 16px #f8d0a8, 20px 16px #f8c8a0,
-                /* Body - vibrant blue jacket */
-                4px 20px #2040a0, 8px 20px #3058c0, 12px 20px #4070e0, 16px 20px #4070e0, 20px 20px #3058c0, 24px 20px #2040a0,
-                4px 24px #1838a0, 8px 24px #3058c0, 12px 24px #5080e8, 16px 24px #5080e8, 20px 24px #3058c0, 24px 24px #1838a0,
-                /* Legs - dark jeans */
-                8px 28px #303848, 12px 28px #404858, 16px 28px #404858, 20px 28px #303848;
+            width: 24px; height: 22px;
+            left: 4px; top: 0;
+            background: radial-gradient(ellipse at 40% 35%, 
+                #ffe8d8 0%, 
+                #f8d8c0 50%, 
+                #e8c8b0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 3px 3px 4px rgba(255,255,255,0.6),
+                inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .player-sprite::after {
+            /* Body - cute round shape */
+            content: '';
+            position: absolute;
+            width: 20px; height: 14px;
+            left: 6px; top: 18px;
+            background: linear-gradient(180deg, 
+                #88c8f8 0%, 
+                #68a8e8 50%, 
+                #4888d0 100%);
+            border-radius: 10px 10px 8px 8px;
+            box-shadow: 
+                inset 2px 2px 3px rgba(255,255,255,0.4),
+                inset -2px -2px 3px rgba(0,0,0,0.1);
         }
         
-        /* Walk animation - alternating leg positions */
-        @keyframes walk-legs {
-            0%, 100% { 
-                box-shadow:
-                    8px 0 #402818, 12px 0 #503020, 16px 0 #503020, 20px 0 #402818,
-                    4px 4px #503020, 8px 4px #604028, 12px 4px #705030, 16px 4px #705030, 20px 4px #604028, 24px 4px #503020,
-                    4px 8px #f8d8b0, 8px 8px #f8e0c0, 12px 8px #f8e0c0, 16px 8px #f8e0c0, 20px 8px #f8e0c0, 24px 8px #f8d8b0,
-                    4px 12px #f8d0a8, 8px 12px #382820, 12px 12px #f8e0c0, 16px 12px #f8e0c0, 20px 12px #382820, 24px 12px #f8d0a8,
-                    8px 16px #f8c8a0, 12px 16px #f8d0a8, 16px 16px #f8d0a8, 20px 16px #f8c8a0,
-                    4px 20px #2040a0, 8px 20px #3058c0, 12px 20px #4070e0, 16px 20px #4070e0, 20px 20px #3058c0, 24px 20px #2040a0,
-                    4px 24px #1838a0, 8px 24px #3058c0, 12px 24px #5080e8, 16px 24px #5080e8, 20px 24px #3058c0, 24px 24px #1838a0,
-                    /* Left leg forward */
-                    4px 28px #282838, 8px 28px #384050, 20px 28px #384050, 24px 28px #282838;
-            }
-            50% { 
-                box-shadow:
-                    8px 0 #402818, 12px 0 #503020, 16px 0 #503020, 20px 0 #402818,
-                    4px 4px #503020, 8px 4px #604028, 12px 4px #705030, 16px 4px #705030, 20px 4px #604028, 24px 4px #503020,
-                    4px 8px #f8d8b0, 8px 8px #f8e0c0, 12px 8px #f8e0c0, 16px 8px #f8e0c0, 20px 8px #f8e0c0, 24px 8px #f8d8b0,
-                    4px 12px #f8d0a8, 8px 12px #382820, 12px 12px #f8e0c0, 16px 12px #f8e0c0, 20px 12px #382820, 24px 12px #f8d0a8,
-                    8px 16px #f8c8a0, 12px 16px #f8d0a8, 16px 16px #f8d0a8, 20px 16px #f8c8a0,
-                    4px 20px #2040a0, 8px 20px #3058c0, 12px 20px #4070e0, 16px 20px #4070e0, 20px 20px #3058c0, 24px 20px #2040a0,
-                    4px 24px #1838a0, 8px 24px #3058c0, 12px 24px #5080e8, 16px 24px #5080e8, 20px 24px #3058c0, 24px 24px #1838a0,
-                    /* Right leg forward */
-                    8px 28px #384050, 12px 28px #282838, 16px 28px #282838, 20px 28px #384050;
-            }
+        /* Eyes and hair with extra pseudo element wrapper */
+        #player .player-eyes {
+            position: absolute;
+            width: 6px; height: 6px;
+            background: #303030;
+            border-radius: 50%;
+            left: 9px; top: 9px;
+            box-shadow: 
+                10px 0 0 #303030,
+                1px -1px 0 2px rgba(255,255,255,0.8),
+                11px -1px 0 2px rgba(255,255,255,0.8);
         }
         
-        #player.walking .player-sprite::before {
-            animation: walk-legs 0.25s steps(2) infinite;
+        #player .player-hair {
+            position: absolute;
+            width: 22px; height: 10px;
+            left: 5px; top: -2px;
+            background: radial-gradient(ellipse at 50% 100%, 
+                #a87850 0%, 
+                #785030 80%);
+            border-radius: 50% 50% 30% 30%;
+        }
+        
+        /* Walk animation - bouncy AC style */
+        @keyframes walk-bounce {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-3px) scaleY(0.95); }
+        }
+        
+        #player.walking {
+            animation: walk-bounce 0.3s ease-in-out infinite;
         }
 
-        /* Walking dust effect - GBA style */
+        /* Walking dust effect - soft AC style */
         #player.walking::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -4px;
             left: 50%;
             transform: translateX(-50%);
-            width: 6px;
-            height: 4px;
-            background: rgba(220, 200, 160, 0.7);
+            width: 12px;
+            height: 6px;
+            background: radial-gradient(ellipse, rgba(180, 160, 140, 0.5) 0%, transparent 70%);
             border-radius: 50%;
-            box-shadow: 
-                -6px 0 rgba(200, 180, 140, 0.5),
-                6px 0 rgba(200, 180, 140, 0.5);
-            animation: dust-puff 0.3s ease-out;
+            animation: dust-puff-ac 0.4s ease-out;
         }
 
-        @keyframes dust-puff {
-            0% { opacity: 1; transform: translateX(-50%) scale(1); }
-            100% { opacity: 0; transform: translateX(-50%) scale(2.5); }
+        @keyframes dust-puff-ac {
+            0% { opacity: 0.8; transform: translateX(-50%) scale(0.5); }
+            100% { opacity: 0; transform: translateX(-50%) scale(2); }
         }
 
         /* Visual sound effects - colorful music notes */
@@ -1991,7 +2090,7 @@
             }
         }
 
-        /* NPC Sprites (Projects) - Pixel Art with idle animation */
+        /* NPC Sprites - Animal Crossing chibi style */
         .npc {
             position: absolute;
             width: var(--tile-size);
@@ -2001,49 +2100,65 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+            filter: drop-shadow(3px 5px 4px rgba(0,0,0,0.2));
         }
 
         .npc:hover {
-            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3)) brightness(1.1);
+            filter: drop-shadow(3px 5px 4px rgba(0,0,0,0.2)) brightness(1.1);
+            transform: scale(1.05);
+            transition: transform 0.2s ease;
         }
 
-        /* NPC idle animation */
+        /* NPC idle animation - AC bouncy */
         .npc-sprite,
         .npc-sprite-blue,
         .npc-sprite-green,
         .npc-sprite-purple {
-            animation: npc-idle 2s ease-in-out infinite;
+            animation: npc-bounce 2.5s ease-in-out infinite;
         }
 
-        @keyframes npc-idle {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
+        @keyframes npc-bounce {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-4px) scaleY(0.98); }
         }
 
-        /* NPC Person sprites - different colors */
+        /* AC-style chibi NPCs - round and cute */
         .npc-sprite {
             width: 100%; height: 100%;
             position: relative;
         }
         .npc-sprite::before {
+            /* Head - big round AC style */
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Hair - Red */
-                8px 0 #a02020, 12px 0 #a02020, 16px 0 #a02020, 20px 0 #a02020,
-                4px 4px #c04040, 8px 4px #c04040, 12px 4px #c04040, 16px 4px #c04040, 20px 4px #c04040, 24px 4px #a02020,
-                /* Face */
-                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
-                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
-                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
-                /* Body - Red shirt */
-                4px 20px #c04040, 8px 20px #c04040, 12px 20px #e06060, 16px 20px #e06060, 20px 20px #c04040, 24px 20px #c04040,
-                4px 24px #c04040, 8px 24px #e06060, 12px 24px #e06060, 16px 24px #e06060, 20px 24px #e06060, 24px 24px #c04040,
-                /* Legs */
-                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
+            width: 22px; height: 20px;
+            left: 5px; top: 0;
+            background: radial-gradient(ellipse at 40% 35%, 
+                #ffe8d8 0%, 
+                #f8d8c0 50%, 
+                #e8c8b0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 3px 3px 4px rgba(255,255,255,0.6),
+                inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .npc-sprite::after {
+            /* Body - red outfit */
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            left: 7px; top: 17px;
+            background: linear-gradient(180deg, 
+                #f8a898 0%, 
+                #e88878 50%, 
+                #d87868 100%);
+            border-radius: 10px 10px 8px 8px;
+            box-shadow: 
+                inset 2px 2px 3px rgba(255,255,255,0.4),
+                inset -2px -2px 3px rgba(0,0,0,0.1),
+                /* Eyes */
+                -4px -12px 0 2px #303030,
+                6px -12px 0 2px #303030;
         }
 
         .npc-sprite-blue {
@@ -2053,21 +2168,32 @@
         .npc-sprite-blue::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Hair - Brown */
-                8px 0 #604020, 12px 0 #604020, 16px 0 #604020, 20px 0 #604020,
-                4px 4px #805030, 8px 4px #805030, 12px 4px #805030, 16px 4px #805030, 20px 4px #805030, 24px 4px #604020,
-                /* Face */
-                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
-                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
-                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
-                /* Body - Blue shirt */
-                4px 20px #2050a0, 8px 20px #2050a0, 12px 20px #4080d0, 16px 20px #4080d0, 20px 20px #2050a0, 24px 20px #2050a0,
-                4px 24px #2050a0, 8px 24px #4080d0, 12px 24px #4080d0, 16px 24px #4080d0, 20px 24px #4080d0, 24px 24px #2050a0,
-                /* Legs */
-                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
+            width: 22px; height: 20px;
+            left: 5px; top: 0;
+            background: radial-gradient(ellipse at 40% 35%, 
+                #ffe8d8 0%, 
+                #f8d8c0 50%, 
+                #e8c8b0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 3px 3px 4px rgba(255,255,255,0.6),
+                inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .npc-sprite-blue::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            left: 7px; top: 17px;
+            background: linear-gradient(180deg, 
+                #88c8f8 0%, 
+                #68a8e8 50%, 
+                #4888d0 100%);
+            border-radius: 10px 10px 8px 8px;
+            box-shadow: 
+                inset 2px 2px 3px rgba(255,255,255,0.4),
+                inset -2px -2px 3px rgba(0,0,0,0.1),
+                -4px -12px 0 2px #303030,
+                6px -12px 0 2px #303030;
         }
 
         .npc-sprite-green {
@@ -2077,21 +2203,32 @@
         .npc-sprite-green::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Hair - Blonde */
-                8px 0 #c0a020, 12px 0 #c0a020, 16px 0 #c0a020, 20px 0 #c0a020,
-                4px 4px #e0c040, 8px 4px #e0c040, 12px 4px #e0c040, 16px 4px #e0c040, 20px 4px #e0c040, 24px 4px #c0a020,
-                /* Face */
-                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
-                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
-                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
-                /* Body - Green shirt */
-                4px 20px #208040, 8px 20px #208040, 12px 20px #40a060, 16px 20px #40a060, 20px 20px #208040, 24px 20px #208040,
-                4px 24px #208040, 8px 24px #40a060, 12px 24px #40a060, 16px 24px #40a060, 20px 24px #40a060, 24px 24px #208040,
-                /* Legs */
-                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
+            width: 22px; height: 20px;
+            left: 5px; top: 0;
+            background: radial-gradient(ellipse at 40% 35%, 
+                #ffe8d8 0%, 
+                #f8d8c0 50%, 
+                #e8c8b0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 3px 3px 4px rgba(255,255,255,0.6),
+                inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .npc-sprite-green::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            left: 7px; top: 17px;
+            background: linear-gradient(180deg, 
+                #98e888 0%, 
+                #78d068 50%, 
+                #58b048 100%);
+            border-radius: 10px 10px 8px 8px;
+            box-shadow: 
+                inset 2px 2px 3px rgba(255,255,255,0.4),
+                inset -2px -2px 3px rgba(0,0,0,0.1),
+                -4px -12px 0 2px #303030,
+                6px -12px 0 2px #303030;
         }
 
         .npc-sprite-purple {
@@ -2101,34 +2238,65 @@
         .npc-sprite-purple::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Hair - Black */
-                8px 0 #202020, 12px 0 #202020, 16px 0 #202020, 20px 0 #202020,
-                4px 4px #303030, 8px 4px #303030, 12px 4px #303030, 16px 4px #303030, 20px 4px #303030, 24px 4px #202020,
-                /* Face */
-                4px 8px #e8c090, 8px 8px #e8c090, 12px 8px #e8c090, 16px 8px #e8c090, 20px 8px #e8c090, 24px 8px #e8c090,
-                4px 12px #e8c090, 8px 12px #0f380f, 12px 12px #e8c090, 16px 12px #e8c090, 20px 12px #0f380f, 24px 12px #e8c090,
-                8px 16px #e8c090, 12px 16px #e8c090, 16px 16px #e8c090, 20px 16px #e8c090,
-                /* Body - Purple shirt */
-                4px 20px #602080, 8px 20px #602080, 12px 20px #8040a0, 16px 20px #8040a0, 20px 20px #602080, 24px 20px #602080,
-                4px 24px #602080, 8px 24px #8040a0, 12px 24px #8040a0, 16px 24px #8040a0, 20px 24px #8040a0, 24px 24px #602080,
-                /* Legs */
-                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f;
+            width: 22px; height: 20px;
+            left: 5px; top: 0;
+            background: radial-gradient(ellipse at 40% 35%, 
+                #ffe8d8 0%, 
+                #f8d8c0 50%, 
+                #e8c8b0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 3px 3px 4px rgba(255,255,255,0.6),
+                inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .npc-sprite-purple::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            left: 7px; top: 17px;
+            background: linear-gradient(180deg, 
+                #c8a8e8 0%, 
+                #a888d0 50%, 
+                #8868b0 100%);
+            border-radius: 10px 10px 8px 8px;
+            box-shadow: 
+                inset 2px 2px 3px rgba(255,255,255,0.4),
+                inset -2px -2px 3px rgba(0,0,0,0.1),
+                -4px -12px 0 2px #303030,
+                6px -12px 0 2px #303030;
         }
 
-        /* Collaborator NPC sprites - additional colors */
+        /* Collaborator NPC - AC style */
         .npc-sprite-red { width: 100%; height: 100%; position: relative; }
         .npc-sprite-red::before {
             content: '';
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                8px 0 #804020, 12px 0 #804020, 16px 0 #804020, 20px 0 #804020,
-                4px 4px #a06040, 8px 4px #a06040, 12px 4px #a06040, 16px 4px #a06040, 20px 4px #a06040, 24px 4px #804020,
-                4px 8px #f0c0a0, 8px 8px #f0c0a0, 12px 8px #f0c0a0, 16px 8px #f0c0a0, 20px 8px #f0c0a0, 24px 8px #f0c0a0,
+            width: 22px; height: 20px;
+            left: 5px; top: 0;
+            background: radial-gradient(ellipse at 40% 35%, 
+                #ffe8d8 0%, 
+                #f8d8c0 50%, 
+                #e8c8b0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 3px 3px 4px rgba(255,255,255,0.6),
+                inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .npc-sprite-red::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            left: 7px; top: 17px;
+            background: linear-gradient(180deg, 
+                #f88878 0%, 
+                #e86858 50%, 
+                #d84848 100%);
+            border-radius: 10px 10px 8px 8px;
+            box-shadow: 
+                inset 2px 2px 3px rgba(255,255,255,0.4),
+                inset -2px -2px 3px rgba(0,0,0,0.1),
+                -4px -12px 0 2px #303030,
+                6px -12px 0 2px #303030;
                 4px 12px #f0c0a0, 8px 12px #0f380f, 12px 12px #f0c0a0, 16px 12px #f0c0a0, 20px 12px #0f380f, 24px 12px #f0c0a0,
                 8px 16px #f0c0a0, 12px 16px #f0c0a0, 16px 16px #f0c0a0, 20px 16px #f0c0a0,
                 4px 20px #c02020, 8px 20px #c02020, 12px 20px #e04040, 16px 20px #e04040, 20px 20px #c02020, 24px 20px #c02020,
@@ -2191,133 +2359,138 @@
             z-index: 50;
         }
 
-        /* Dialog Box - GBA Premium style */
+        /* Dialog Box - Animal Crossing bubble style */
         #dialog-box {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            right: 10px;
-            width: calc(100% - 20px);
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            width: calc(100% - 30px);
             height: 110px;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8dcc8 100%);
-            border: 4px solid #504038;
-            border-radius: 6px;
-            padding: 15px 20px;
+            background: linear-gradient(180deg, #fffff8 0%, #f8f8f0 100%);
+            border: 4px solid #90c8a0;
+            border-radius: 20px;
+            padding: 18px 24px;
             display: none;
             z-index: 200;
             box-shadow: 
-                inset 0 2px 0 rgba(255,255,255,0.5),
-                inset 0 0 0 2px #c8b8a0,
-                5px 5px 0 rgba(0,0,0,0.4),
-                0 0 25px rgba(0,0,0,0.25);
-            animation: dialog-appear 0.2s ease-out;
+                inset 0 4px 8px rgba(255,255,255,0.8),
+                0 6px 0 #70a880,
+                0 8px 20px rgba(80, 120, 80, 0.3);
+            animation: dialog-appear-ac 0.3s ease-out;
         }
 
-        @keyframes dialog-appear {
-            from { transform: translateY(20px) scale(0.95); opacity: 0; }
+        @keyframes dialog-appear-ac {
+            from { transform: translateY(30px) scale(0.9); opacity: 0; }
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        /* Decorative corners - GBA pixel art style */
+        /* Decorative speech bubble tail */
         #dialog-box::before {
             content: '';
             position: absolute;
-            top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 2px solid rgba(80, 64, 48, 0.3);
-            border-radius: 3px;
-            pointer-events: none;
+            bottom: -16px; left: 40px;
+            width: 0; height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 16px solid #90c8a0;
+            filter: drop-shadow(0 4px 0 #70a880);
         }
 
-        /* Corner decorations - subtle */
+        /* Inner tail */
         #dialog-box::after {
             content: '';
             position: absolute;
-            width: 10px; height: 10px;
-            top: 2px; left: 2px;
-            background: linear-gradient(135deg, #d8c8b0 0%, transparent 50%);
-            border-radius: 2px;
+            bottom: -10px; left: 44px;
+            width: 0; height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #f8f8f0;
         }
 
         #dialog-text {
-            color: #383028;
+            color: #486048;
             font-size: 0.55rem;
-            line-height: 2.2;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+            line-height: 2.4;
             max-height: 70px;
             overflow: hidden;
         }
 
         #dialog-continue {
             position: absolute;
-            bottom: 10px;
-            right: 14px;
+            bottom: 12px;
+            right: 18px;
             font-size: 0.55rem;
             color: #f8f8f8;
-            animation: arrow-bounce 0.5s steps(2) infinite;
-            background: linear-gradient(180deg, #4080c8 0%, #3060a0 100%);
-            padding: 4px 10px;
-            border: 2px solid #204080;
-            border-radius: 3px;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            animation: arrow-bounce-ac 0.6s ease-in-out infinite;
+            background: linear-gradient(180deg, #88c8f8 0%, #68a8d8 100%);
+            padding: 6px 14px;
+            border: 3px solid #5890b8;
+            border-radius: 12px;
+            box-shadow: 
+                inset 0 2px 4px rgba(255,255,255,0.5),
+                0 3px 0 #4878a0;
         }
 
-        @keyframes arrow-bounce {
+        @keyframes arrow-bounce-ac {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(3px); }
+            50% { transform: translateY(4px); }
         }
 
-        /* Battle Screen - GBA with dramatic effects */
+        /* Battle Screen - AC friendly style */
         #battle-screen {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, #90d8f8 0%, #60b0e0 50%, #70c048 50%, #50a028 100%);
+            background: linear-gradient(180deg, 
+                #a8dff8 0%, 
+                #88c8e8 40%, 
+                #98e888 40%, 
+                #78d068 100%);
             display: none;
             flex-direction: column;
             z-index: 300;
-            animation: battle-flash 0.3s steps(3);
+            border-radius: 16px;
+            animation: battle-appear 0.4s ease-out;
         }
 
-        @keyframes battle-flash {
-            0% { filter: brightness(3) invert(1); }
-            33% { filter: brightness(1) invert(0); }
-            66% { filter: brightness(2) invert(1); }
-            100% { filter: brightness(1) invert(0); }
+        @keyframes battle-appear {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .battle-top {
             height: 50%;
             background: 
                 linear-gradient(180deg, 
-                    #88ccff 0%, 
-                    #88ccff 40%, 
-                    var(--gb-light) 40%, 
-                    var(--gb-dark) 100%);
+                    #a8dff8 0%, 
+                    #88c8e8 60%,
+                    transparent 60%);
             position: relative;
             display: flex;
             justify-content: flex-end;
             align-items: flex-start;
             padding: 20px;
-            border-bottom: 4px solid var(--gb-darkest);
         }
 
-        /* Animated clouds in battle background */
+        /* Soft fluffy clouds */
         .battle-top::before {
             content: '';
             position: absolute;
-            width: 40px; height: 16px;
-            top: 20px; left: 30px;
-            background: rgba(255,255,255,0.8);
+            width: 60px; height: 24px;
+            top: 25px; left: 40px;
+            background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.9) 0%, transparent 70%);
             box-shadow: 
-                60px 10px 0 rgba(255,255,255,0.6),
-                120px -5px 0 rgba(255,255,255,0.7),
-                -20px 15px 0 rgba(255,255,255,0.5);
-            animation: clouds-move 10s linear infinite;
+                80px 15px 0 10px rgba(255,255,255,0.7),
+                150px -5px 0 15px rgba(255,255,255,0.8),
+                -30px 20px 0 8px rgba(255,255,255,0.6);
+            animation: clouds-float 15s ease-in-out infinite;
         }
 
-        @keyframes clouds-move {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(50px); }
+        @keyframes clouds-float {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(20px) translateY(-5px); }
         }
 
         .enemy-pokemon {
@@ -2330,26 +2503,51 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: enemy-appear 0.5s ease-out;
-            filter: drop-shadow(4px 4px 0 rgba(0,0,0,0.3));
+            animation: enemy-bounce 2s ease-in-out infinite;
+            filter: drop-shadow(4px 6px 6px rgba(0,0,0,0.2));
+        }
+        
+        @keyframes enemy-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
-        /* Pokemon-style monster sprite */
+        /* AC-style creature sprite - round and cute */
         .monster-sprite {
+            width: 48px; height: 48px;
+            background: radial-gradient(ellipse at 40% 40%, 
+                #a8e8a0 0%, 
+                #78d068 50%, 
+                #58b048 100%);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 
+                inset 4px 4px 8px rgba(255,255,255,0.5),
+                inset -4px -4px 8px rgba(0,60,0,0.2);
+        }
+        .monster-sprite::before {
+            /* Eyes */
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: #303030;
+            border-radius: 50%;
+            left: 12px; top: 16px;
+            box-shadow: 
+                18px 0 0 #303030,
+                2px -2px 0 3px rgba(255,255,255,0.8),
+                20px -2px 0 3px rgba(255,255,255,0.8);
+        }
+        .monster-sprite::after {
+            /* Smile */
+            content: '';
+            position: absolute;
+            width: 16px; height: 8px;
             background: transparent;
-            box-shadow:
-                /* Head */
-                16px 0 #306230, 20px 0 #306230, 24px 0 #306230, 28px 0 #306230,
-                12px 4px #306230, 16px 4px #9bbc0f, 20px 4px #9bbc0f, 24px 4px #9bbc0f, 28px 4px #9bbc0f, 32px 4px #306230,
-                8px 8px #306230, 12px 8px #9bbc0f, 16px 8px #9bbc0f, 20px 8px #0f380f, 24px 8px #9bbc0f, 28px 8px #0f380f, 32px 8px #9bbc0f, 36px 8px #306230,
-                8px 12px #306230, 12px 12px #9bbc0f, 16px 12px #9bbc0f, 20px 12px #9bbc0f, 24px 12px #9bbc0f, 28px 12px #9bbc0f, 32px 12px #9bbc0f, 36px 12px #306230,
-                8px 16px #306230, 12px 16px #9bbc0f, 16px 16px #9bbc0f, 20px 16px #8bac0f, 24px 16px #8bac0f, 28px 16px #9bbc0f, 32px 16px #9bbc0f, 36px 16px #306230,
-                /* Body */
-                4px 20px #306230, 8px 20px #9bbc0f, 12px 20px #9bbc0f, 16px 20px #9bbc0f, 20px 20px #9bbc0f, 24px 20px #9bbc0f, 28px 20px #9bbc0f, 32px 20px #9bbc0f, 36px 20px #9bbc0f, 40px 20px #306230,
-                4px 24px #306230, 8px 24px #8bac0f, 12px 24px #9bbc0f, 16px 24px #9bbc0f, 20px 24px #9bbc0f, 24px 24px #9bbc0f, 28px 24px #9bbc0f, 32px 24px #9bbc0f, 36px 24px #8bac0f, 40px 24px #306230,
-                8px 28px #306230, 12px 28px #8bac0f, 16px 28px #9bbc0f, 20px 28px #9bbc0f, 24px 28px #9bbc0f, 28px 28px #9bbc0f, 32px 28px #8bac0f, 36px 28px #306230,
-                /* Feet */
-                8px 32px #306230, 12px 32px #306230, 16px 32px #306230, 28px 32px #306230, 32px 32px #306230, 36px 32px #306230,
+            border-bottom: 3px solid #303030;
+            border-radius: 0 0 50% 50%;
+            left: 16px; top: 28px;
+        }
                 8px 36px #306230, 12px 36px #306230, 32px 36px #306230, 36px 36px #306230;
             width: 4px;
             height: 4px;
