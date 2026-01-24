@@ -1129,95 +1129,74 @@
             border-top-color: #6090f8;
         }
 
-        /* Train tiles - GBA Premium station style */
+        /* Vías de tren - diseño limpio */
         .train-track {
-            background: linear-gradient(180deg, #686878 0%, #585868 50%, #484858 100%);
+            background: #707078;
             border: none;
-            position: relative;
         }
         .train-track::before {
             content: '';
             position: absolute;
-            width: 100%; height: 6px;
-            top: 6px; left: 0;
-            background: linear-gradient(180deg, #404048 0%, #606068 100%);
-            box-shadow: 0 14px 0 0 #404048, 0 15px 0 0 #606068;
-            border-radius: 2px;
+            left: 0; right: 0;
+            top: 8px; height: 4px;
+            background: #404048;
+            box-shadow: 0 12px 0 #404048;
         }
         .train-track::after {
             content: '';
             position: absolute;
-            width: 6px; height: 22px;
-            top: 4px; left: 3px;
-            background: linear-gradient(90deg, #604020 0%, #906040 50%, #604020 100%);
-            box-shadow: 
-                8px 0 0 #604020, 8px 0 0 #906040,
-                16px 0 0 #604020, 16px 0 0 #906040,
-                24px 0 0 #604020;
-            border-radius: 1px;
+            top: 5px; left: 4px;
+            width: 4px; height: 18px;
+            background: #8B5A2B;
+            box-shadow: 8px 0 #8B5A2B, 16px 0 #8B5A2B, 24px 0 #8B5A2B;
         }
 
+        /* Cartel de destino */
         .train-sign {
-            background: var(--gb-light);
+            background: linear-gradient(180deg, #a0a0a8 0%, #888890 100%);
+            border: 2px solid #606068;
             cursor: pointer;
-            transition: transform 0.2s, filter 0.2s;
         }
-        .train-sign:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
+        .train-sign:hover { filter: brightness(1.15); }
         .train-sign::before {
             content: '';
             position: absolute;
-            width: 6px; height: 20px;
-            left: 13px; bottom: 0;
-            background: linear-gradient(90deg, #503010 0%, #705030 50%, #503010 100%);
-            border-radius: 1px;
+            width: 20px; height: 14px;
+            left: 6px; top: 4px;
+            background: linear-gradient(180deg, #2040a0 0%, #103080 100%);
+            border: 2px solid #081848;
+            border-radius: 2px;
         }
         .train-sign::after {
-            content: '🚂';
+            content: '';
             position: absolute;
-            font-size: 18px;
-            top: 0px; left: 5px;
-            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.3));
-            animation: train-wiggle 2s ease-in-out infinite;
+            width: 4px; height: 10px;
+            left: 14px; bottom: 2px;
+            background: #505058;
         }
 
-        @keyframes train-wiggle {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-1px); }
-            75% { transform: translateX(1px); }
-        }
-
+        /* Cartel retorno */
         .train-return {
-            background: var(--gb-light);
+            background: linear-gradient(180deg, #a0a0a8 0%, #888890 100%);
+            border: 2px solid #606068;
             cursor: pointer;
-            transition: transform 0.2s, filter 0.2s;
         }
-        .train-return:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
+        .train-return:hover { filter: brightness(1.15); }
         .train-return::before {
             content: '';
             position: absolute;
-            width: 6px; height: 20px;
-            left: 13px; bottom: 0;
-            background: linear-gradient(90deg, #503010 0%, #705030 50%, #503010 100%);
-            border-radius: 1px;
+            width: 20px; height: 14px;
+            left: 6px; top: 4px;
+            background: linear-gradient(180deg, #c04040 0%, #a02020 100%);
+            border: 2px solid #601010;
+            border-radius: 2px;
         }
         .train-return::after {
-            content: '🏠';
+            content: '';
             position: absolute;
-            font-size: 18px;
-            top: 0px; left: 5px;
-            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.3));
-            animation: home-pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes home-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            width: 4px; height: 10px;
+            left: 14px; bottom: 2px;
+            background: #505058;
         }
 
         /* ===== STATION BUILDING TILES - GBA Style ===== */
@@ -1343,241 +1322,179 @@
             box-shadow: 18px 0 #604020;
         }
 
-        /* ===== TRAIN TILES - GBA Style ===== */
+        /* ===== TRENES DECORATIVOS ===== */
         
-        /* Train car (decorative) - Front locomotive */
+        /* Locomotora */
         .train-front {
-            background: #484848;
+            background: #707078;
         }
         .train-front::before {
             content: '';
             position: absolute;
-            width: 28px; height: 22px;
-            left: 2px; top: 5px;
-            background: linear-gradient(180deg, #e84848 0%, #d02828 50%, #b01818 100%);
-            border: 3px solid #800808;
-            border-radius: 8px 14px 3px 3px;
-            box-shadow: 
-                inset 3px 3px 0 rgba(255,255,255,0.25),
-                inset -2px -2px 0 rgba(0,0,0,0.2);
+            width: 26px; height: 18px;
+            left: 3px; top: 6px;
+            background: linear-gradient(180deg, #e04040 0%, #c02020 100%);
+            border: 2px solid #801010;
+            border-radius: 6px 10px 2px 2px;
         }
         .train-front::after {
             content: '';
             position: absolute;
-            width: 10px; height: 7px;
-            left: 11px; top: 9px;
-            background: linear-gradient(180deg, #c0e8ff 0%, #70b0e0 100%);
-            border: 2px solid #304050;
-            border-radius: 2px;
+            width: 8px; height: 5px;
+            left: 12px; top: 10px;
+            background: #a0d0ff;
+            border: 1px solid #406080;
         }
         
-        /* Train car - Passenger wagon */
+        /* Vagón pasajeros */
         .train-wagon {
-            background: #484848;
+            background: #707078;
         }
         .train-wagon::before {
             content: '';
             position: absolute;
-            width: 30px; height: 20px;
-            left: 1px; top: 6px;
-            background: linear-gradient(180deg, #4898e0 0%, #2870b8 50%, #185898 100%);
-            border: 2px solid #083060;
-            border-radius: 3px;
-            box-shadow: 
-                inset 2px 2px 0 rgba(255,255,255,0.2),
-                inset -1px -1px 0 rgba(0,0,0,0.2);
+            width: 28px; height: 16px;
+            left: 2px; top: 8px;
+            background: linear-gradient(180deg, #4080d0 0%, #2060a0 100%);
+            border: 2px solid #103060;
+            border-radius: 2px;
         }
         .train-wagon::after {
             content: '';
             position: absolute;
-            width: 6px; height: 8px;
-            left: 5px; top: 9px;
-            background: linear-gradient(180deg, #c0e8ff 0%, #80b8e0 100%);
-            border: 2px solid #284858;
-            box-shadow: 10px 0 0 0 #c0e8ff, 10px 0 0 2px #284858;
+            width: 5px; height: 6px;
+            left: 6px; top: 11px;
+            background: #a0d0ff;
+            border: 1px solid #284858;
+            box-shadow: 10px 0 #a0d0ff;
         }
         
-        /* Train car - Back */
+        /* Furgón cola */
         .train-back {
-            background: #484848;
+            background: #707078;
         }
         .train-back::before {
             content: '';
             position: absolute;
-            width: 28px; height: 22px;
-            left: 2px; top: 5px;
-            background: linear-gradient(180deg, #e84848 0%, #d02828 50%, #b01818 100%);
-            border: 3px solid #800808;
-            border-radius: 3px;
-            box-shadow: 
-                inset 3px 3px 0 rgba(255,255,255,0.25),
-                inset -2px -2px 0 rgba(0,0,0,0.2);
+            width: 26px; height: 18px;
+            left: 3px; top: 6px;
+            background: linear-gradient(180deg, #e04040 0%, #c02020 100%);
+            border: 2px solid #801010;
+            border-radius: 2px 2px 2px 2px;
         }
         .train-back::after {
             content: '';
             position: absolute;
-            width: 8px; height: 8px;
-            right: 5px; top: 18px;
-            background: radial-gradient(circle at 30% 30%, #ff6060 0%, #e02020 100%);
-            border: 2px solid #800000;
+            width: 6px; height: 6px;
+            right: 5px; top: 16px;
+            background: #ff4040;
             border-radius: 50%;
-            box-shadow: 0 0 8px #ff3030;
-            animation: tail-light 1s ease-in-out infinite;
+            animation: tail-light 1.5s infinite;
         }
         @keyframes tail-light {
-            0%, 100% { opacity: 1; box-shadow: 0 0 8px #ff3030; }
-            50% { opacity: 0.6; box-shadow: 0 0 4px #ff3030; }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         
-        /* Platform canopy/roof */
+        /* Marquesina */
         .canopy {
-            background: linear-gradient(180deg, #585860 0%, #404048 100%);
-            border: 2px solid #282830;
-        }
-        .canopy::before {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            background: repeating-linear-gradient(
-                90deg,
-                transparent 0px, transparent 7px,
-                rgba(255,255,255,0.08) 7px, rgba(255,255,255,0.08) 8px
-            );
+            background: #585860;
+            border: 2px solid #383840;
         }
         .canopy::after {
             content: '';
             position: absolute;
-            width: 5px; height: 14px;
-            left: 13px; bottom: -12px;
-            background: linear-gradient(90deg, #707078 0%, #505058 100%);
-            border: 1px solid #303038;
+            width: 4px; height: 12px;
+            left: 14px; bottom: -10px;
+            background: #606068;
         }
         
-        /* Column/pillar for station */
+        /* Columna */
         .column {
-            background: linear-gradient(180deg, #e8e0d0 0%, #d8d0c0 100%);
+            background: linear-gradient(180deg, #d0d0d8 0%, #b8b8c0 100%);
         }
         .column::before {
             content: '';
             position: absolute;
-            width: 12px; height: 28px;
-            left: 10px; top: 2px;
-            background: linear-gradient(90deg, #a0a0a8 0%, #d0d0d8 40%, #b8b8c0 60%, #888890 100%);
-            border: 2px solid #606068;
-            border-radius: 3px 3px 0 0;
-        }
-        .column::after {
-            content: '';
-            position: absolute;
-            width: 18px; height: 5px;
-            left: 7px; top: 0;
-            background: linear-gradient(180deg, #c0c0c8 0%, #909098 100%);
-            border: 2px solid #606068;
+            width: 10px; height: 26px;
+            left: 11px; top: 3px;
+            background: linear-gradient(90deg, #909098 0%, #c0c0c8 50%, #909098 100%);
+            border: 1px solid #606068;
         }
         
-        /* Ticket booth - GBA style */
+        /* Taquilla */
         .ticket-booth {
-            background: linear-gradient(180deg, #e8e0d0 0%, #d8d0c0 100%);
+            background: linear-gradient(180deg, #d8d0c0 0%, #c8c0b0 100%);
         }
         .ticket-booth::before {
             content: '';
             position: absolute;
-            width: 26px; height: 24px;
-            left: 3px; top: 4px;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e0d8c0 100%);
-            border: 3px solid #a08868;
-            border-radius: 3px;
-            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.3);
+            width: 24px; height: 22px;
+            left: 4px; top: 5px;
+            background: #f0e8d8;
+            border: 2px solid #a08868;
         }
         .ticket-booth::after {
             content: '';
             position: absolute;
-            width: 16px; height: 10px;
-            left: 8px; top: 10px;
-            background: linear-gradient(180deg, #38a838 0%, #288028 100%);
-            border: 2px solid #186018;
-            border-radius: 2px;
+            width: 14px; height: 8px;
+            left: 9px; top: 11px;
+            background: #30a030;
+            border: 1px solid #186018;
         }
         
-        /* Information board - digital display */
+        /* Panel informativo */
         .info-board {
-            background: linear-gradient(180deg, #e8e0d0 0%, #d8d0c0 100%);
+            background: linear-gradient(180deg, #d8d0c0 0%, #c8c0b0 100%);
         }
         .info-board::before {
             content: '';
             position: absolute;
-            width: 5px; height: 16px;
-            left: 13px; bottom: 2px;
-            background: linear-gradient(90deg, #707078 0%, #505058 100%);
-            border: 1px solid #404048;
+            width: 4px; height: 14px;
+            left: 14px; bottom: 3px;
+            background: #606068;
         }
         .info-board::after {
             content: '';
             position: absolute;
-            width: 26px; height: 16px;
-            left: 3px; top: 4px;
-            background: linear-gradient(180deg, #101828 0%, #182038 100%);
-            border: 3px solid #303840;
-            box-shadow: 
-                inset 0 0 10px rgba(80, 180, 255, 0.25),
-                0 0 3px rgba(80, 180, 255, 0.3);
-            animation: board-glow 2s ease-in-out infinite;
-        }
-        @keyframes board-glow {
-            0%, 100% { box-shadow: inset 0 0 10px rgba(80, 180, 255, 0.25), 0 0 3px rgba(80, 180, 255, 0.3); }
-            50% { box-shadow: inset 0 0 15px rgba(80, 180, 255, 0.4), 0 0 6px rgba(80, 180, 255, 0.5); }
+            width: 24px; height: 14px;
+            left: 4px; top: 5px;
+            background: #102030;
+            border: 2px solid #304050;
         }
         
-        /* Decorative fountain - GBA style */
+        /* Fuente decorativa */
         .fountain {
             background: linear-gradient(180deg, #78c878 0%, #58a858 100%);
         }
         .fountain::before {
             content: '';
             position: absolute;
-            width: 26px; height: 14px;
-            left: 3px; bottom: 4px;
-            background: linear-gradient(180deg, #909098 0%, #707078 100%);
-            border: 3px solid #505058;
+            width: 24px; height: 12px;
+            left: 4px; bottom: 5px;
+            background: #808088;
+            border: 2px solid #505058;
             border-radius: 50%;
-            box-shadow: inset 0 -4px 8px rgba(100,180,255,0.3);
         }
         .fountain::after {
             content: '';
             position: absolute;
-            width: 4px; height: 10px;
-            left: 14px; top: 6px;
-            background: linear-gradient(180deg, #a0d8ff 0%, #60a8e0 100%);
-            border-radius: 3px 3px 0 0;
-            animation: water-spray 0.6s ease-in-out infinite alternate;
-        }
-        @keyframes water-spray {
-            0% { height: 8px; opacity: 0.7; }
-            100% { height: 14px; opacity: 1; }
+            width: 3px; height: 10px;
+            left: 14px; top: 8px;
+            background: #80c0f0;
+            border-radius: 2px 2px 0 0;
         }
 
-        /* Return to station label */
+        /* Etiqueta retorno */
         .return-label {
             position: absolute;
             font-size: 0.4rem;
-            color: #ffffff;
-            background: linear-gradient(180deg, #d84040 0%, #b82020 100%);
-            padding: 5px 12px;
-            border: 3px solid #f8f8f8;
-            border-radius: 4px;
+            color: #fff;
+            background: #c03030;
+            padding: 4px 10px;
+            border: 2px solid #fff;
             z-index: 61;
             pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 
-                3px 3px 0 rgba(0,0,0,0.4),
-                inset 1px 1px 0 rgba(255,255,255,0.3);
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-            animation: return-pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes return-pulse {
-            0%, 100% { box-shadow: 3px 3px 0 rgba(0,0,0,0.4), inset 1px 1px 0 rgba(255,255,255,0.3), 0 0 8px rgba(216, 64, 64, 0.4); }
-            50% { box-shadow: 3px 3px 0 rgba(0,0,0,0.4), inset 1px 1px 0 rgba(255,255,255,0.3), 0 0 18px rgba(216, 64, 64, 0.7); }
         }
 
         /* Station clock tile - GBA style */
