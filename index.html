@@ -3,4732 +3,893 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MutenRos | Portfolio</title>
+    <title>Dario Lacal Civera | GBC Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        /* ===== GBC COLOR PALETTE ===== */
         :root {
-            /* SOUTH PARK Palette - Construction Paper Style */
-            --gb-lightest: #4a9f4a;
-            --gb-light: #3d8b3d;
-            --gb-dark: #2d6b2d;
-            --gb-darkest: #1d4b1d;
-            --tile-size: 32px;
+            --gbc-black: #0f380f;
+            --gbc-dark: #306230;
+            --gbc-light: #8bac0f;
+            --gbc-white: #9bbc0f;
             
-            /* Sky - South Park Colorado blue */
-            --sky-day: #6BB3E0;
-            --sky-sunset: #E8A060;
-            --sky-night: #1a2a3a;
-            
-            /* Grass - Flat paper green */
-            --grass-light: #5AAF5A;
-            --grass-mid: #4A9F4A;
-            --grass-dark: #3A8F3A;
-            --grass-shadow: #2A7F2A;
-            --grass-pattern: #4A9F4A;
-            
-            /* Snow - Colorado winter */
-            --snow-white: #FFFFFF;
-            --snow-shadow: #D0E8F8;
-            --snow-deep: #B0D0E8;
-            
-            /* Water - Simple blue */
-            --water-light: #5090C0;
-            --water-mid: #4080B0;
-            --water-dark: #3070A0;
-            --water-deep: #206090;
-            
-            /* Wood & Earth - Paper brown */
-            --wood-light: #C8A070;
-            --wood-mid: #A08050;
-            --wood-dark: #806030;
-            --earth-light: #B09060;
-            --earth-mid: #907040;
-            --earth-dark: #705020;
-            
-            /* Building materials - Flat SP style */
-            --roof-red: #C04040;
-            --roof-red-light: #D06060;
-            --roof-red-dark: #A03030;
-            --roof-blue: #4060A0;
-            --roof-blue-light: #5080C0;
-            --roof-blue-dark: #304080;
-            --wall-light: #E8D8C0;
-            --wall-mid: #D8C8B0;
-            --wall-dark: #C8B8A0;
-            --brick-light: #C07050;
-            --brick-mid: #A05030;
-            --brick-dark: #803020;
-            
-            /* Stone & Metal - Paper grey */
-            --stone-light: #B0B0B0;
-            --stone-mid: #909090;
-            --stone-dark: #707070;
-            --metal-light: #C0C0C0;
-            --metal-mid: #A0A0A0;
-            --metal-dark: #808080;
-            
-            /* UI Colors - South Park simple */
-            --ui-bg: #F0E8D8;
-            --ui-border: #404040;
-            --ui-shadow: rgba(0, 0, 0, 0.4);
-            --ui-highlight: #FFFFF0;
-            --ui-text: #202020;
-            
-            /* Accent colors - SP bright paper */
-            --accent-yellow: #F0D040;
-            --accent-orange: #E08030;
-            --accent-pink: #E080A0;
-            --accent-purple: #8060A0;
-            --accent-cyan: #40A0C0;
-            
-            /* Animation speeds */
-            --anim-fast: 0.15s;
-            --anim-normal: 0.3s;
-            --anim-slow: 0.6s;
+            /* Extended GBC palette */
+            --sky: #88c0e8;
+            --sky-dark: #5090b8;
+            --grass: #58a840;
+            --grass-dark: #306820;
+            --road: #505050;
+            --road-line: #f8e838;
+            --ui-bg: #181818;
+            --ui-border: #e8e8e8;
+            --accent: #f8d830;
+            --red: #e04040;
+            --blue: #4080c0;
+            --orange: #e08040;
+            --green: #40a040;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            /* NO anti-aliasing for paper cutout look */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
         }
 
+        /* ===== FULL GBC STYLE ===== */
         body {
             font-family: 'Press Start 2P', cursive;
-            background: linear-gradient(180deg, #6BB3E0 0%, #5090C0 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: var(--gbc-black);
             min-height: 100vh;
-            overflow: hidden;
-        }
-
-        /* South Park TV Frame */
-        .gameboy-frame {
-            background: #202020;
-            padding: 12px;
-            border: 4px solid #101010;
-            border-radius: 4px;
-            box-shadow: 
-                inset 2px 2px 0 #404040,
-                inset -2px -2px 0 #101010,
-                8px 8px 0 rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        /* Power LED - simple red */
-        .gameboy-frame::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 16px;
-            width: 8px;
-            height: 8px;
-            background: #FF3030;
-            border-radius: 50%;
-            box-shadow: 0 0 6px #FF3030;
-            animation: led-pulse-sp 1.5s ease-in-out infinite;
-        }
-
-        @keyframes led-pulse-sp {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        .screen-bezel {
-            background: #101010;
-            padding: 8px;
-            border: 2px solid #000000;
-            border-radius: 2px;
-            box-shadow: 
-                inset 3px 3px 6px rgba(0,0,0,0.9);
-        }
-
-        /* Main Game Screen - SOUTH PARK Colorado */
-        #game-container {
-            width: 560px;
-            height: 500px;
-            background: linear-gradient(180deg, 
-                #6BB3E0 0%,      /* Sky */
-                #6BB3E0 25%,     /* Sky */
-                #7B8B9B 25%,     /* Mountain */
-                #6B7B8B 35%,     /* Mountain shadow */
-                #FFFFFF 35%,     /* Snow line */
-                #E8F4E8 40%,     /* Snow on ground */
-                #5AAF5A 40%,     /* Grass */
-                #4A9F4A 100%     /* Grass dark */
-            );
-            position: relative;
-            overflow: hidden;
-            border: 4px solid #000000;
-            border-radius: 0;
-            box-shadow: none;
-        }
-
-        /* Colorado Mountains in background - BIGGER */
-        #game-container::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 150px;
-            top: 60px;
-            left: 0;
-            z-index: 1;
-            pointer-events: none;
-            /* Big triangle mountains like SP */
-            background: 
-                /* Mountain 1 - big */
-                linear-gradient(150deg, transparent 45%, #5A6A7A 45%) no-repeat 0 0 / 200px 150px,
-                linear-gradient(210deg, transparent 45%, #4A5A6A 45%) no-repeat 100px 0 / 200px 150px,
-                /* Mountain 2 */
-                linear-gradient(155deg, transparent 40%, #6B7B8B 40%) no-repeat 180px 20px / 180px 130px,
-                linear-gradient(205deg, transparent 40%, #5A6A7A 40%) no-repeat 270px 20px / 180px 130px,
-                /* Mountain 3 */
-                linear-gradient(145deg, transparent 42%, #7B8B9B 42%) no-repeat 350px 30px / 160px 120px,
-                linear-gradient(215deg, transparent 42%, #6B7B8B 42%) no-repeat 430px 30px / 160px 120px;
-            background-position: 0 0, 100px 0, 150px 20px, 250px 20px, 350px 30px, 450px 30px;
-            background-repeat: repeat-x;
-        }
-
-        /* Snow caps on mountains */
-        #game-container::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 40px;
-            bottom: 260px;
-            left: 0;
-            z-index: 2;
-            background: 
-                linear-gradient(135deg, transparent 45%, #FFFFFF 45%, #FFFFFF 50%, transparent 50%),
-                linear-gradient(225deg, transparent 45%, #F0F0F0 45%, #F0F0F0 50%, transparent 50%);
-            background-size: 200px 40px;
-            background-position: 0 0, 100px 0;
-            background-repeat: repeat-x;
-        }
-
-        /* South Park wobbly animation */
-        @keyframes sp-wobble {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-0.5px, 0.5px); }
-            50% { transform: translate(0.5px, -0.5px); }
-            75% { transform: translate(-0.5px, -0.5px); }
-        }
-
-        /* Intro Screen - SOUTH PARK Style */
-        #intro-screen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(180deg, 
-                    #6BB3E0 0%, 
-                    #5090C0 50%, 
-                    #4A9F4A 50%, 
-                    #3A8F3A 100%);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 100;
-            text-align: center;
-            overflow: hidden;
-            border-radius: 0;
-            border: 4px solid #000000;
+            image-rendering: pixelated;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
-        /* Colorado Mountains - paper cutout */
-        #intro-screen::before {
+
+        /* Scanline overlay effect */
+        body::after {
             content: '';
-            position: absolute;
-            width: 100%;
-            height: 80px;
-            top: 45%;
-            left: 0;
-            transform: translateY(-50%);
-            background: 
-                linear-gradient(135deg, transparent 40%, #6B7B8B 40%, #6B7B8B 50%, transparent 50%),
-                linear-gradient(225deg, transparent 40%, #5A6A7A 40%, #5A6A7A 50%, transparent 50%),
-                linear-gradient(140deg, transparent 35%, #7B8B9B 35%, #7B8B9B 45%, transparent 45%),
-                linear-gradient(220deg, transparent 35%, #6A7A8A 35%, #6A7A8A 45%, transparent 45%);
-            background-size: 150px 80px, 150px 80px, 120px 70px, 120px 70px;
-            background-position: 0 0, 75px 0, 200px 10px, 275px 10px;
-            background-repeat: repeat-x;
-            pointer-events: none;
-        }
-        
-        /* Snow on mountains */
-        #intro-screen::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 30px;
-            top: calc(45% - 40px);
-            left: 0;
-            background: 
-                linear-gradient(135deg, transparent 45%, #FFFFFF 45%, #FFFFFF 50%, transparent 50%),
-                linear-gradient(225deg, transparent 45%, #F0F0F0 45%, #F0F0F0 50%, transparent 50%);
-            background-size: 150px 30px;
-            background-position: 0 0, 75px 0;
-            background-repeat: repeat-x;
-            pointer-events: none;
-        }
-
-        /* Title - SOUTH PARK style sign */
-        #intro-screen h1 {
-            color: #FFFFFF;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            line-height: 1.4;
-            text-shadow: 
-                3px 3px 0 #000000,
-                -1px -1px 0 #000000,
-                1px -1px 0 #000000,
-                -1px 1px 0 #000000;
-            animation: sp-wobble 0.6s ease-in-out infinite;
-            position: relative;
-            z-index: 10;
-            background: #4CAF50;
-            padding: 20px 40px;
-            border-radius: 0;
-            border: 6px solid #000000;
-            box-shadow: 6px 6px 0 #000000;
-        }
-
-        @keyframes logo-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* Version badge - SP flat style */
-        #intro-screen p {
-            color: #000000;
-            font-size: 0.5rem;
-            margin-bottom: 12px;
-            padding: 8px 18px;
-            background: #FFEB3B;
-            border: 3px solid #000000;
-            border-radius: 0;
-            box-shadow: 3px 3px 0 #000000;
-            position: relative;
-            z-index: 10;
-        }
-        
-        #intro-screen p:first-of-type {
-            margin-bottom: 10px;
-        }
-
-        .press-start {
-            color: #FFFFFF;
-            font-size: 0.7rem;
-            animation: press-blink 1s step-start infinite;
-            margin-top: 35px;
-            cursor: pointer;
-            padding: 16px 32px;
-            border: 4px solid #000000;
-            border-radius: 0;
-            background: #CC0000;
-            box-shadow: 4px 4px 0 #000000;
-            position: relative;
-            z-index: 10;
-            transition: all 0.15s ease;
-            text-shadow: 2px 2px 0 #000000;
-        }
-
-        @keyframes press-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        .press-start:hover {
-            background: #FF0000;
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 #000000;
-        }
-
-        .press-start:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 #000000;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Game World */
-        #game-world {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: none;
-            border-radius: 0;
-        }
-
-        /* Ambient particles - SP snow/leaves */
-        #ambient-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 80;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--gb-dark);
-            opacity: 0.6;
-            animation: particle-float 8s linear infinite;
-        }
-
-        .particle:nth-child(2n) {
-            width: 3px;
-            height: 3px;
-            background: var(--gb-darkest);
-            animation-duration: 10s;
-            animation-delay: -2s;
-        }
-
-        .particle:nth-child(3n) {
-            width: 2px;
-            height: 2px;
-            background: #a0a060;
-            animation-duration: 12s;
-            animation-delay: -4s;
-        }
-
-        @keyframes particle-float {
-            0% {
-                transform: translateY(-10px) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(450px) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* Weather effects - Rain */
-        .rain-drop {
-            position: absolute;
-            width: 2px;
-            height: 10px;
-            background: linear-gradient(180deg, transparent 0%, rgba(150, 180, 255, 0.6) 50%, rgba(100, 150, 255, 0.8) 100%);
-            pointer-events: none;
-            animation: rain-fall 0.6s linear infinite;
-        }
-        @keyframes rain-fall {
-            0% {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(450px);
-                opacity: 0.3;
-            }
-        }
-        
-        /* Weather effects - Snow */
-        .snow-flake {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ffffff;
-            border-radius: 50%;
-            pointer-events: none;
-            box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
-            animation: snow-fall 4s linear infinite;
-        }
-        @keyframes snow-fall {
-            0% {
-                transform: translateY(-10px) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.9;
-            }
-            100% {
-                transform: translateY(450px) translateX(50px);
-                opacity: 0;
-            }
-        }
-        
-        /* Weather overlay for rain effect */
-        #weather-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 82;
-            overflow: hidden;
-        }
-        
-        /* Puddle effect (appears during rain) */
-        .puddle {
-            position: absolute;
-            width: 20px;
-            height: 8px;
-            background: radial-gradient(ellipse, rgba(100, 150, 200, 0.4) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: puddle-ripple 2s ease-in-out infinite;
-        }
-        @keyframes puddle-ripple {
-            0%, 100% { transform: scale(1); opacity: 0.4; }
-            50% { transform: scale(1.1); opacity: 0.6; }
-        }
-
-        /* Day/Night cycle overlay */
-        #day-night-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 90;
-            background: transparent;
-            mix-blend-mode: multiply;
-        }
-
-        /* Interior warm lighting overlay */
-        #interior-light-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 85;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            background: radial-gradient(ellipse at 50% 30%, 
-                rgba(255, 240, 200, 0.15) 0%, 
-                rgba(255, 200, 150, 0.1) 40%,
-                rgba(200, 150, 100, 0.08) 70%,
-                transparent 100%);
-        }
-        #interior-light-overlay.active {
-            opacity: 1;
-        }
-
-        /* Game HUD - GBA Style */
-        #game-hud {
-            position: absolute;
-            bottom: 8px;
+            position: fixed;
+            top: 0;
             left: 0;
             right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ===== GBC SCREEN FRAME ===== */
+        #gbc-frame {
+            background: #606060;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px;
+            box-shadow: 
+                inset 4px 4px 0 #808080,
+                inset -4px -4px 0 #404040,
+                0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        #screen-bezel {
+            background: #303030;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 
+                inset 4px 4px 8px rgba(0,0,0,0.5),
+                inset -2px -2px 4px rgba(255,255,255,0.1);
+        }
+
+        /* ===== HEADER BAR ===== */
+        #header-bar {
+            background: var(--gbc-dark);
+            border: 4px solid var(--gbc-black);
+            padding: 8px 16px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 12px;
-            z-index: 95;
-            pointer-events: none;
         }
-        .hud-location {
-            font-size: 0.35rem;
-            color: #f8f8f8;
-            background: linear-gradient(180deg, rgba(48, 80, 128, 0.9) 0%, rgba(32, 56, 96, 0.9) 100%);
-            padding: 5px 12px;
-            border: 2px solid #4070b0;
-            border-radius: 4px;
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.2),
-                2px 2px 0 rgba(0,0,0,0.3);
+
+        #header-bar h1 {
+            font-size: 8px;
+            color: var(--gbc-white);
+            text-shadow: 2px 2px 0 var(--gbc-black);
         }
-        .hud-weather {
-            font-size: 16px;
-            background: linear-gradient(180deg, rgba(48, 80, 128, 0.85) 0%, rgba(32, 56, 96, 0.85) 100%);
-            padding: 3px 10px;
-            border: 2px solid #4070b0;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+
+        #header-bar .stats {
+            font-size: 6px;
+            color: var(--gbc-light);
         }
-        .hud-stats {
-            font-size: 0.32rem;
-            color: #f8f8f8;
-            background: linear-gradient(180deg, rgba(48, 80, 128, 0.9) 0%, rgba(32, 56, 96, 0.9) 100%);
-            padding: 4px 10px;
-            border: 2px solid #4070b0;
-            border-radius: 4px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-        }
-        .hud-controls {
-            font-size: 0.3rem;
-            color: #d0d8e0;
-            background: linear-gradient(180deg, rgba(40, 64, 96, 0.8) 0%, rgba(24, 40, 64, 0.8) 100%);
-            padding: 3px 10px;
-            border: 1px solid #3060a0;
-            border-radius: 3px;
-            opacity: 0.9;
-        }
-        
-        /* Achievement popup - GBA golden style */
-        .achievement-popup {
-            position: fixed;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: linear-gradient(180deg, #f8e060 0%, #e8c030 50%, #d8a010 100%);
-            color: #503000;
-            font-size: 0.4rem;
-            padding: 14px 24px;
-            border: 3px solid #906010;
-            border-radius: 6px;
-            z-index: 1000;
-            box-shadow: 
-                inset 0 2px 0 rgba(255,255,255,0.4),
-                4px 4px 0 rgba(0,0,0,0.35),
-                0 0 30px rgba(248, 200, 64, 0.5);
-            text-align: center;
-            opacity: 0;
-            animation: achievement-slide 3s ease-out forwards;
-        }
-        .achievement-popup::before {
-            content: '🏆';
-            font-size: 26px;
-            display: block;
-            margin-bottom: 6px;
-            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
-        }
-        @keyframes achievement-slide {
-            0% { transform: translateX(-50%) translateY(-100px) scale(0.8); opacity: 0; }
-            15% { transform: translateX(-50%) translateY(0) scale(1.05); opacity: 1; }
-            25% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
-            85% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateX(-50%) translateY(-100px) scale(0.8); opacity: 0; }
-        }
-        
-        /* Mini-mapa - GBA style */
-        #minimap {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 100px;
-            height: 100px;
-            background: rgba(15, 56, 15, 0.9);
-            border: 3px solid var(--gb-dark);
-            border-radius: 4px;
-            z-index: 100;
+
+        /* ===== GAME SCREEN ===== */
+        #game-container {
+            width: 480px;
+            height: 320px;
+            background: var(--grass);
+            position: relative;
             overflow: hidden;
             image-rendering: pixelated;
-        }
-        #minimap-canvas {
-            width: 100%;
-            height: 100%;
-        }
-        #minimap-player {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #ff4444;
-            border: 1px solid #fff;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            box-shadow: 0 0 4px #ff4444;
-            animation: minimap-blink 1s infinite;
-        }
-        @keyframes minimap-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        #minimap-label {
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 6px;
-            color: var(--gb-lightest);
-            text-shadow: 1px 1px 0 var(--gb-dark);
-            white-space: nowrap;
-        }
-        
-        /* Sparkle effect para casas visitadas */
-        .house-visited::after {
-            content: '✓';
-            position: absolute;
-            top: -8px;
-            right: -4px;
-            font-size: 10px;
-            color: #00ff00;
-            text-shadow: 0 0 4px #00ff00;
-            z-index: 10;
-        }
-        
-        /* Footstep dust effect */
-        .footstep-dust {
-            position: absolute;
-            pointer-events: none;
-            z-index: 50;
-        }
-        .footstep-dust::before,
-        .footstep-dust::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(139, 119, 101, 0.6);
-            border-radius: 50%;
-            animation: dust-fade 0.4s ease-out forwards;
-        }
-        .footstep-dust::before {
-            left: 4px;
-            bottom: 2px;
-        }
-        .footstep-dust::after {
-            right: 4px;
-            bottom: 4px;
-            animation-delay: 0.05s;
-        }
-        @keyframes dust-fade {
-            0% { transform: translateY(0) scale(1); opacity: 0.7; }
-            100% { transform: translateY(-8px) scale(0.3); opacity: 0; }
-        }
-        
-        /* Grass rustle effect */
-        .grass-rustle {
-            animation: rustle 0.3s ease-out;
-        }
-        @keyframes rustle {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
+            cursor: crosshair;
+            border: 4px solid var(--gbc-black);
         }
 
-        #map {
-            position: absolute;
-            /* SOUTH PARK - Flat paper snow/grass */
-            background: #FFFFFF;
-            /* No patterns, just flat color like construction paper */
-        }
-
-        /* ===== ZONAS - South Park Flat Style ===== */
-        .zone {
-            position: absolute;
-            /* No wobble on ground zones */
-        }
-        
-        /* SP STREET - Grey asphalt like the show */
-        .zone-path {
-            background: #707070;
-            border: none;
-            box-shadow: none;
-        }
-        /* Yellow center line */
-        .zone-path::before {
-            content: '';
-            position: absolute;
-            left: 0; right: 0;
-            top: 45%; height: 3px;
-            background: #FFD700;
-        }
-        
-        /* SP water - flat blue */
-        .zone-water {
-            background: #4080B0;
-            border: 3px solid #000;
-            animation: none;
-        }
-        
-        /* SP grass zone - bright green */
-        .zone-grass {
-            background: #5AAF5A;
-            border: none;
-        }
-        
-        .zone-track {
-            background: #606060;
-            border: 2px solid #404040;
-            box-shadow: none;
-        }
-        .zone-track::before {
-            content: '';
-            position: absolute;
-            left: 0; right: 0;
-            top: 30%; height: 12%;
-            background: #303030;
-            box-shadow: 0 10px 0 #303030;
-        }
-        
-        .zone-platform {
-            background: #909090;
-            border: 2px solid #707070;
-            box-shadow: none;
-        }
-        .zone-platform::after {
-            content: '';
-            position: absolute;
-            left: 4px; right: 4px; bottom: 4px;
-            height: 4px;
-            background: #FFD700;
-        }
-
-        /* ===== ELEMENTOS - South Park Style ===== */
-        .element {
+        /* ===== GROUND TILES ===== */
+        .tile {
             position: absolute;
             width: 32px;
             height: 32px;
+            image-rendering: pixelated;
         }
 
-        /* SOUTH PARK pine tree - simple triangle */
-        .tree {
-            animation: sp-wobble 0.6s ease-in-out infinite;
-        }
-        .tree::before {
-            /* Triangle pine tree */
+        .tile-grass { background: var(--grass); }
+        .tile-grass-dark { background: var(--grass-dark); }
+        .tile-road { background: var(--road); }
+
+        .tile-road::after {
             content: '';
             position: absolute;
-            width: 0; height: 0;
-            left: 4px; top: -12px;
-            border-left: 14px solid transparent;
-            border-right: 14px solid transparent;
-            border-bottom: 32px solid #2D5A2D;
-            /* No gradients, flat color */
-        }
-        .tree::after {
-            /* Simple brown trunk */
-            content: '';
-            position: absolute;
-            width: 8px; height: 12px;
-            left: 12px; bottom: -2px;
-            background: #6B4423;
-            /* Flat, no gradient */
+            left: 50%;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: repeating-linear-gradient(
+                180deg,
+                var(--road-line) 0px,
+                var(--road-line) 8px,
+                transparent 8px,
+                transparent 16px
+            );
+            transform: translateX(-50%);
         }
 
-        /* SP simple grass tufts */
-        .tall-grass::before {
-            content: '';
-            position: absolute;
-            width: 16px; height: 20px;
-            left: 8px; top: 6px;
-            background: #4A9F4A;
-            clip-path: polygon(50% 0%, 80% 30%, 100% 100%, 0% 100%, 20% 30%);
-        }
-
-        /* SP simple flowers - just circles */
-        .flower {
-            animation: sp-wobble 0.7s ease-in-out infinite;
-        }
-        .flower::before {
-            content: '';
-            position: absolute;
-            width: 12px; height: 12px;
-            left: 10px; top: 8px;
-            background: #E04080;
-            border-radius: 50%;
-            border: 2px solid #A03060;
-        }
-        .flower::after {
-            content: '';
-            position: absolute;
-            width: 3px; height: 10px;
-            left: 15px; bottom: 0;
-            background: #3A8F3A;
-        }
-
-        /* SP simple fence */
-        .fence {
-            /* No shadow */
-        }
-        .fence::before {
-            content: '';
-            position: absolute;
-            width: 32px; height: 18px;
-            left: 0; top: 8px;
-            background: #A08050;
-            border: 2px solid #604020;
-        }
-
-        /* SP simple signpost */
-        .sign {
-            animation: sp-wobble 0.8s ease-in-out infinite;
-        }
-        .sign::before {
-            content: '';
-            position: absolute;
-            width: 24px; height: 14px;
-            left: 4px; top: 2px;
-            background: #C8A070;
-            border: 2px solid #604020;
-        }
-        .sign::after {
-            content: '';
-            position: absolute;
-            width: 6px; height: 12px;
-            left: 13px; bottom: 0;
-            background: #806030;
-        }
-
-        /* ===== CASAS SOUTH PARK - BIG Simple Colorado houses ===== */
-        
-        /* BIGGER tiles for houses */
-        .house-roof, .house-wall, .house-door {
-            border: 3px solid #000000 !important;
-            box-shadow: none !important;
-        }
-        
-        /* SOUTH PARK House Roof - colored flat */
-        .house-roof {
-            background: #C04040;
-            border: 3px solid #000000;
-            border-radius: 0;
-            position: relative;
-            height: 32px;
-        }
-        .house-roof::before {
-            /* Chimney */
-            content: '';
-            position: absolute;
-            width: 10px; height: 16px;
-            right: 4px; top: -12px;
-            background: #704030;
-            border: 2px solid #000;
-        }
-        .house-roof::after {
-            display: none;
-        }
-
-        /* SP Wall - flat beige with BIG window */
-        .house-wall {
-            background: #E8D8C0;
-            border: 3px solid #000000;
-            position: relative;
-        }
-        .house-wall::before {
-            /* BIG square window */
-            content: '';
-            position: absolute;
-            width: 18px; height: 16px;
-            left: 6px; top: 6px;
-            background: #80C0E0;
-            border: 3px solid #000;
-        }
-        .house-wall::after {
-            /* Window cross */
-            content: '';
-            position: absolute;
-            width: 18px; height: 3px;
-            left: 6px; top: 13px;
-            background: #000;
-            box-shadow: 8px -8px 0 0 #000;
-        }
-
-        /* SP Door - BIG brown door */
-        .house-door {
-            background: #E8D8C0;
-            border: 3px solid #000000;
-            border-bottom: none;
-            cursor: pointer;
-        }
-        .house-door:hover {
-            filter: brightness(1.1);
-        }
-        .house-door::before {
-            /* BIG door */
-            content: '';
-            position: absolute;
-            width: 20px; height: 28px;
-            left: 6px; top: 2px;
-            background: #6B4423;
-            border: 3px solid #000;
-        }
-        .house-door::after {
-            /* Doorknob - simple circle */
-            content: '';
-            position: absolute;
-            width: 4px; height: 4px;
-            left: 20px; top: 16px;
-            background: #C0A000;
-            border-radius: 50%;
-            border: 1px solid #806000;
-        }
-
-        @keyframes doorknob-glow {
-            /* No glow in SP style */
-        }
-        
-        /* House color variants - SP flat colors */
-        .house-roof.js-house { 
-            background: #E0C020;
-            border-color: #A08010;
-        }
-        .house-roof.py-house { 
-            background: #4080B0;
-            border-color: #205080;
-        }
-        .house-roof.ts-house { 
-            background: linear-gradient(180deg, #4088d8 0%, #3078c8 25%, #2068b8 50%, #1050a0 100%); 
-            border-color: #083890; 
-            border-top-color: #60a8f8;
-        }
-        .house-roof.java-house { 
-            background: linear-gradient(180deg, #f8a040 0%, #f09030 25%, #e88020 50%, #d06810 100%); 
-            border-color: #a85000; 
-            border-top-color: #ffc070;
-        }
-        .house-roof.cpp-house { 
-            background: linear-gradient(180deg, #1878c0 0%, #0868b0 25%, #0058a0 50%, #004080 100%); 
-            border-color: #003070; 
-            border-top-color: #4098e0;
-        }
-        .house-roof.cs-house { 
-            background: linear-gradient(180deg, #a860a8 0%, #985098 25%, #884088 50%, #682868 100%); 
-            border-color: #501850; 
-            border-top-color: #c888c8;
-        }
-        .house-roof.go-house { 
-            background: linear-gradient(180deg, #20c8e8 0%, #10b8d8 25%, #00a8c8 50%, #0088a8 100%); 
-            border-color: #006888; 
-            border-top-color: #50e8f8;
-        }
-        .house-roof.rust-house { 
-            background: linear-gradient(180deg, #e8b898 0%, #d8a888 25%, #c89878 50%, #a87858 100%); 
-            border-color: #885838; 
-            border-top-color: #f8d8c0;
-        }
-        .house-roof.ruby-house { 
-            background: linear-gradient(180deg, #e04840 0%, #d03830 25%, #c02820 50%, #a01008 100%); 
-            border-color: #800000; 
-            border-top-color: #f87870;
-        }
-        .house-roof.php-house { 
-            background: linear-gradient(180deg, #8888c8 0%, #7878b8 25%, #6868a8 50%, #484888 100%); 
-            border-color: #383868; 
-            border-top-color: #a8a8e8;
-        }
-        .house-roof.html-house { 
-            background: linear-gradient(180deg, #f06040 0%, #e05030 25%, #d04020 50%, #b02000 100%); 
-            border-color: #901000; 
-            border-top-color: #f89070;
-        }
-        .house-roof.css-house { 
-            background: linear-gradient(180deg, #4068f0 0%, #3058e0 25%, #2048d0 50%, #1030b0 100%); 
-            border-color: #002090; 
-            border-top-color: #6090f8;
-        }
-
-        /* Vías de tren - diseño limpio */
-        .train-track {
-            background: #707078;
-            border: none;
-        }
-        .train-track::before {
-            content: '';
-            position: absolute;
-            left: 0; right: 0;
-            top: 8px; height: 4px;
-            background: #404048;
-            box-shadow: 0 12px 0 #404048;
-        }
-        .train-track::after {
-            content: '';
-            position: absolute;
-            top: 5px; left: 4px;
-            width: 4px; height: 18px;
-            background: #8B5A2B;
-            box-shadow: 8px 0 #8B5A2B, 16px 0 #8B5A2B, 24px 0 #8B5A2B;
-        }
-
-        /* Cartel de destino */
-        .train-sign {
-            background: linear-gradient(180deg, #a0a0a8 0%, #888890 100%);
-            border: 2px solid #606068;
-            cursor: pointer;
-        }
-        .train-sign:hover { filter: brightness(1.15); }
-        .train-sign::before {
-            content: '';
-            position: absolute;
-            width: 20px; height: 14px;
-            left: 6px; top: 4px;
-            background: linear-gradient(180deg, #2040a0 0%, #103080 100%);
-            border: 2px solid #081848;
-            border-radius: 2px;
-        }
-        .train-sign::after {
-            content: '';
-            position: absolute;
-            width: 4px; height: 10px;
-            left: 14px; bottom: 2px;
-            background: #505058;
-        }
-
-        /* Cartel retorno */
-        .train-return {
-            background: linear-gradient(180deg, #a0a0a8 0%, #888890 100%);
-            border: 2px solid #606068;
-            cursor: pointer;
-        }
-        .train-return:hover { filter: brightness(1.15); }
-        .train-return::before {
-            content: '';
-            position: absolute;
-            width: 20px; height: 14px;
-            left: 6px; top: 4px;
-            background: linear-gradient(180deg, #c04040 0%, #a02020 100%);
-            border: 2px solid #601010;
-            border-radius: 2px;
-        }
-        .train-return::after {
-            content: '';
-            position: absolute;
-            width: 4px; height: 10px;
-            left: 14px; bottom: 2px;
-            background: #505058;
-        }
-
-        /* ===== STATION BUILDING TILES - GBA Style ===== */
-        
-        /* Station roof - terracotta/brick style */
-        .station-roof {
-            background: linear-gradient(180deg, 
-                #d06848 0%, 
-                #c05838 40%,
-                #b04828 70%,
-                #903818 100%);
-            border: 2px solid #702808;
-            border-top: 3px solid #e08868;
-            box-shadow: inset 0 3px 0 rgba(255,255,255,0.15);
-        }
-        .station-roof::before {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
+        .tile-road-h::after {
+            width: 100%;
+            height: 4px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
             background: repeating-linear-gradient(
                 90deg,
-                transparent 0px, transparent 7px,
-                rgba(0,0,0,0.1) 7px, rgba(0,0,0,0.1) 8px
+                var(--road-line) 0px,
+                var(--road-line) 8px,
+                transparent 8px,
+                transparent 16px
             );
         }
-        .station-roof::after {
-            content: '';
+
+        /* ===== BUILDINGS - GBC STYLE ===== */
+        .building {
             position: absolute;
-            bottom: -2px; left: 0; right: 0;
-            height: 2px;
-            background: #581808;
+            image-rendering: pixelated;
         }
 
-        /* Station wall - clean cream/brick style */
-        .station-wall {
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8d8c0 100%);
-            border: 2px solid #c8a880;
-            border-bottom: 3px solid #a88860;
-        }
-        .station-wall::before {
-            content: '';
-            position: absolute;
-            width: 10px; height: 12px;
-            left: 11px; top: 8px;
-            background: linear-gradient(135deg, #90d0f8 0%, #5098c8 100%);
-            border: 2px solid #384048;
-            box-shadow: inset 1px 1px 0 rgba(255,255,255,0.5);
-        }
-        .station-wall::after {
-            content: '';
-            position: absolute;
-            width: 1px; height: 10px;
-            left: 16px; top: 9px;
-            background: #283038;
+        .house {
+            width: 48px;
+            height: 48px;
         }
 
-        /* Station door - grand wooden entrance */
-        .station-door {
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8d8c0 100%);
-            border: 2px solid #c8a880;
-            border-bottom: none;
-            cursor: pointer;
-        }
-        .station-door::before {
-            content: '';
+        .house-body {
             position: absolute;
-            width: 18px; height: 26px;
-            left: 7px; top: 2px;
-            background: linear-gradient(135deg, #987050 0%, #684028 50%, #503018 100%);
-            border: 3px solid #382010;
-            border-radius: 4px 4px 0 0;
-            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.2);
-        }
-        .station-door::after {
-            content: '';
-            position: absolute;
-            width: 4px; height: 4px;
-            left: 20px; top: 14px;
-            background: radial-gradient(circle at 30% 30%, #f8d870 0%, #c89818 100%);
-            border-radius: 50%;
+            bottom: 0;
+            width: 100%;
+            height: 32px;
+            border: 2px solid var(--gbc-black);
         }
 
-        /* Platform - concrete with yellow line */
-        .platform {
-            background: linear-gradient(180deg, #b8b8c0 0%, #a0a0a8 50%, #888890 100%);
-            border: 2px solid #686870;
-        }
-        .platform::before {
-            content: '';
+        .house-roof {
             position: absolute;
-            width: 100%; height: 3px;
-            bottom: 3px; left: 0;
-            background: #f8d818;
-            box-shadow: 0 -1px 0 #c0a010;
-        }
-        .platform::after {
-            content: '';
-            position: absolute;
-            width: 100%; height: 2px;
-            top: 0; left: 0;
-            background: rgba(255,255,255,0.3);
+            top: 0;
+            left: -4px;
+            width: 56px;
+            height: 18px;
+            background: #604030;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
 
-        /* Bench - for waiting */
-        .bench {
-            background: var(--gb-light);
-        }
-        .bench::before {
-            content: '';
+        .house-door {
             position: absolute;
-            width: 24px; height: 8px;
-            left: 4px; top: 10px;
-            background: linear-gradient(180deg, #906030 0%, #704020 100%);
-            border: 2px solid #503010;
-            border-radius: 2px;
-        }
-        .bench::after {
-            content: '';
-            position: absolute;
-            width: 4px; height: 10px;
-            left: 6px; bottom: 4px;
-            background: #604020;
-            box-shadow: 18px 0 #604020;
-        }
-
-        /* ===== TRENES DECORATIVOS ===== */
-        
-        /* Locomotora */
-        .train-front {
-            background: #707078;
-        }
-        .train-front::before {
-            content: '';
-            position: absolute;
-            width: 26px; height: 18px;
-            left: 3px; top: 6px;
-            background: linear-gradient(180deg, #e04040 0%, #c02020 100%);
-            border: 2px solid #801010;
-            border-radius: 6px 10px 2px 2px;
-        }
-        .train-front::after {
-            content: '';
-            position: absolute;
-            width: 8px; height: 5px;
-            left: 12px; top: 10px;
-            background: #a0d0ff;
-            border: 1px solid #406080;
-        }
-        
-        /* Vagón pasajeros */
-        .train-wagon {
-            background: #707078;
-        }
-        .train-wagon::before {
-            content: '';
-            position: absolute;
-            width: 28px; height: 16px;
-            left: 2px; top: 8px;
-            background: linear-gradient(180deg, #4080d0 0%, #2060a0 100%);
-            border: 2px solid #103060;
-            border-radius: 2px;
-        }
-        .train-wagon::after {
-            content: '';
-            position: absolute;
-            width: 5px; height: 6px;
-            left: 6px; top: 11px;
-            background: #a0d0ff;
-            border: 1px solid #284858;
-            box-shadow: 10px 0 #a0d0ff;
-        }
-        
-        /* Furgón cola */
-        .train-back {
-            background: #707078;
-        }
-        .train-back::before {
-            content: '';
-            position: absolute;
-            width: 26px; height: 18px;
-            left: 3px; top: 6px;
-            background: linear-gradient(180deg, #e04040 0%, #c02020 100%);
-            border: 2px solid #801010;
-            border-radius: 2px 2px 2px 2px;
-        }
-        .train-back::after {
-            content: '';
-            position: absolute;
-            width: 6px; height: 6px;
-            right: 5px; top: 16px;
-            background: #ff4040;
-            border-radius: 50%;
-            animation: tail-light 1.5s infinite;
-        }
-        @keyframes tail-light {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        
-        /* Marquesina */
-        .canopy {
-            background: #585860;
-            border: 2px solid #383840;
-        }
-        .canopy::after {
-            content: '';
-            position: absolute;
-            width: 4px; height: 12px;
-            left: 14px; bottom: -10px;
-            background: #606068;
-        }
-        
-        /* Columna */
-        .column {
-            background: linear-gradient(180deg, #d0d0d8 0%, #b8b8c0 100%);
-        }
-        .column::before {
-            content: '';
-            position: absolute;
-            width: 10px; height: 26px;
-            left: 11px; top: 3px;
-            background: linear-gradient(90deg, #909098 0%, #c0c0c8 50%, #909098 100%);
-            border: 1px solid #606068;
-        }
-        
-        /* Taquilla */
-        .ticket-booth {
-            background: linear-gradient(180deg, #d8d0c0 0%, #c8c0b0 100%);
-        }
-        .ticket-booth::before {
-            content: '';
-            position: absolute;
-            width: 24px; height: 22px;
-            left: 4px; top: 5px;
-            background: #f0e8d8;
-            border: 2px solid #a08868;
-        }
-        .ticket-booth::after {
-            content: '';
-            position: absolute;
-            width: 14px; height: 8px;
-            left: 9px; top: 11px;
-            background: #30a030;
-            border: 1px solid #186018;
-        }
-        
-        /* Panel informativo */
-        .info-board {
-            background: linear-gradient(180deg, #d8d0c0 0%, #c8c0b0 100%);
-        }
-        .info-board::before {
-            content: '';
-            position: absolute;
-            width: 4px; height: 14px;
-            left: 14px; bottom: 3px;
-            background: #606068;
-        }
-        .info-board::after {
-            content: '';
-            position: absolute;
-            width: 24px; height: 14px;
-            left: 4px; top: 5px;
-            background: #102030;
-            border: 2px solid #304050;
-        }
-        
-        /* Fuente decorativa */
-        .fountain {
-            background: linear-gradient(180deg, #78c878 0%, #58a858 100%);
-        }
-        .fountain::before {
-            content: '';
-            position: absolute;
-            width: 24px; height: 12px;
-            left: 4px; bottom: 5px;
-            background: #808088;
-            border: 2px solid #505058;
-            border-radius: 50%;
-        }
-        .fountain::after {
-            content: '';
-            position: absolute;
-            width: 3px; height: 10px;
-            left: 14px; top: 8px;
-            background: #80c0f0;
-            border-radius: 2px 2px 0 0;
-        }
-
-        /* Etiqueta retorno */
-        .return-label {
-            position: absolute;
-            font-size: 0.4rem;
-            color: #fff;
-            background: #c03030;
-            padding: 4px 10px;
-            border: 2px solid #fff;
-            z-index: 61;
-            pointer-events: none;
-        }
-        
-        /* Taxi - estilo Animal Crossing */
-        .taxi {
-            background: linear-gradient(180deg, #a8d8a8 0%, #90c090 100%);
-        }
-        .taxi::before {
-            /* Carrocería redondeada estilo AC */
-            content: '';
-            position: absolute;
-            width: 26px; height: 16px;
-            left: 3px; top: 8px;
-            background: linear-gradient(180deg, 
-                #ffe566 0%, 
-                #ffd633 30%, 
-                #f0c000 70%, 
-                #e0b000 100%);
-            border: 2px solid #a08020;
-            border-radius: 8px 8px 4px 4px;
-            box-shadow: 
-                inset 0 4px 6px rgba(255,255,255,0.5),
-                inset 0 -3px 4px rgba(0,0,0,0.15),
-                0 3px 0 #908030,
-                /* Ruedas estilo AC - redondeadas y cute */
-                -1px 14px 0 3px #404040,
-                -1px 14px 0 5px #606060,
-                -1px 13px 0 1px #808080,
-                21px 14px 0 3px #404040,
-                21px 14px 0 5px #606060,
-                21px 13px 0 1px #808080;
-        }
-        .taxi::after {
-            /* Ventanas grandes estilo AC */
-            content: '';
-            position: absolute;
-            width: 18px; height: 10px;
-            left: 7px; top: 3px;
-            background: linear-gradient(180deg, 
-                #b8e8f8 0%, 
-                #90d8f0 40%, 
-                #70c8e8 100%);
-            border: 2px solid #a08020;
-            border-radius: 6px 6px 2px 2px;
-            box-shadow: 
-                inset 0 2px 4px rgba(255,255,255,0.7),
-                inset 2px 0 0 rgba(255,255,255,0.3),
-                /* Cartel TAXI en el techo */
-                3px -6px 0 2px #ff8844,
-                3px -6px 0 4px #cc6622;
-        }
-        
-        /* Taxi label - estilo AC */
-        .taxi-label {
-            position: absolute;
-            font-size: 0.4rem;
-            font-weight: bold;
-            color: #604020;
-            background: linear-gradient(180deg, #fff8e0 0%, #f0e0b0 100%);
-            padding: 4px 10px;
-            border: 2px solid #a08040;
-            border-radius: 8px;
-            z-index: 61;
-            pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 0 2px 0 #806020;
-        }
-
-        /* Station clock tile - GBA style */
-        .station-clock {
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8d8c0 100%);
-            border: 2px solid #c8a880;
-            border-bottom: 3px solid #a88860;
-        }
-        .station-clock::before {
-            content: '';
-            position: absolute;
-            width: 20px; height: 20px;
-            left: 6px; top: 5px;
-            background: radial-gradient(circle at 40% 40%, #fffff8 0%, #f0f0e8 70%, #d8d8d0 100%);
-            border: 3px solid #383840;
-            border-radius: 50%;
-            box-shadow: 
-                inset 0 1px 2px rgba(255,255,255,0.5),
-                0 2px 3px rgba(0,0,0,0.2);
-        }
-        .station-clock::after {
-            content: '';
-            position: absolute;
-            width: 2px; height: 7px;
-            left: 15px; top: 12px;
-            background: #181820;
-            transform-origin: center bottom;
-            box-shadow: 3px 1px 0 #181820;
-            animation: clock-hand 6s linear infinite;
-        }
-        @keyframes clock-hand {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Vending machine tile */
-        .vending-machine {
-            background: var(--gb-light);
-        }
-        .vending-machine::before {
-            content: '';
-            position: absolute;
-            width: 22px; height: 26px;
-            left: 5px; top: 3px;
-            background: linear-gradient(180deg, #c03030 0%, #a02020 100%);
-            border: 2px solid #801010;
-            border-radius: 2px 2px 0 0;
-        }
-        .vending-machine::after {
-            content: '';
-            position: absolute;
-            width: 16px; height: 12px;
-            left: 8px; top: 8px;
-            background: linear-gradient(180deg, #303030 0%, #202020 100%);
-            box-shadow:
-                inset 0 0 0 2px #404040,
-                2px 14px #808080, 6px 14px #808080, 10px 14px #808080;
-        }
-
-        /* Lamp post tile */
-        .lamp-post {
-            background: var(--gb-light);
-        }
-        .lamp-post::before {
-            content: '';
-            position: absolute;
-            width: 4px; height: 20px;
-            left: 14px; top: 10px;
-            background: linear-gradient(180deg, #404040 0%, #606060 100%);
-            border-radius: 2px;
-        }
-        .lamp-post::after {
-            content: '';
-            position: absolute;
-            width: 12px; height: 8px;
-            left: 10px; top: 4px;
-            background: radial-gradient(ellipse at center, #ffffcc 0%, #ffdd66 50%, #cc9900 100%);
-            border: 2px solid #404040;
-            border-radius: 4px 4px 0 0;
-            box-shadow: 0 0 10px rgba(255, 220, 100, 0.6);
-            animation: lamp-flicker 3s ease-in-out infinite;
-        }
-        @keyframes lamp-flicker {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 220, 100, 0.6); }
-            50% { box-shadow: 0 0 15px rgba(255, 220, 100, 0.8); }
-            25%, 75% { box-shadow: 0 0 8px rgba(255, 220, 100, 0.5); }
-        }
-
-        /* City label - Platform destination sign */
-        .city-label {
-            position: absolute;
-            font-size: 0.42rem;
-            color: #ffffff;
-            background: linear-gradient(180deg, #2a4a6a 0%, #1a3a5a 50%, #0a2a4a 100%);
-            padding: 8px 14px;
-            border: 3px solid #6a9aca;
-            text-align: center;
-            z-index: 60;
-            pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 
-                0 6px 12px rgba(0,0,0,0.5),
-                inset 0 2px 0 rgba(255,255,255,0.15),
-                inset 0 -2px 0 rgba(0,0,0,0.2);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-            border-radius: 4px;
-            animation: sign-glow 3s ease-in-out infinite;
-        }
-        
-        @keyframes sign-glow {
-            0%, 100% { box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.15), 0 0 5px rgba(100, 150, 200, 0.2); }
-            50% { box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.15), 0 0 15px rgba(100, 150, 200, 0.5); }
-        }
-        
-        .city-label::before {
-            content: '🚆';
-            display: block;
-            font-size: 0.7rem;
-            margin-bottom: 4px;
-            animation: train-arrive 4s ease-in-out infinite;
-        }
-        
-        @keyframes train-arrive {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-        }
-        
-        .city-label small {
-            font-size: 0.35rem;
-            opacity: 0.85;
-            display: block;
-            margin-top: 3px;
-            color: #a0c0e0;
-            letter-spacing: 0.5px;
-        }
-        
-        .city-label strong {
-            letter-spacing: 1px;
-        }
-
-        /* Station title banner */
-        .station-title {
-            position: absolute;
-            top: 10px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            text-align: center;
-            font-size: 0.55rem;
-            color: #FFFFFF;
-            z-index: 100;
-            background: #CC0000;
-            padding: 10px 20px;
-            border: 4px solid #000000;
-            border-radius: 0;
-            box-shadow: 4px 4px 0 #000000;
-            text-shadow: 2px 2px 0 #000000;
-            white-space: nowrap;
-        }
-        
-        /* South Park Title Special */
-        .sp-title {
-            background: linear-gradient(180deg, #2196F3 0%, #1976D2 100%);
-            font-size: 0.6rem;
-            animation: sp-wobble 1s ease-in-out infinite;
-        }
-        
-        .station-title::before {
-            content: '';
-            position: absolute;
-            top: -8px; left: -8px; right: -8px; bottom: -8px;
-            border: 2px solid #000000;
-            border-radius: 0;
-            pointer-events: none;
-        }
-        .station-title small {
-            font-size: 0.4rem;
-            color: #FFFF00;
-            display: block;
-            margin-top: 4px;
-        }
-        
-        /* South Park Building Labels */
-        .sp-building-label {
-            background: #FFEB3B;
-            color: #000000 !important;
-            border: 3px solid #000000 !important;
-            border-radius: 0 !important;
-            box-shadow: 3px 3px 0 #000000;
-            font-size: 0.4rem !important;
-            padding: 4px 8px;
-            white-space: nowrap;
-            animation: sp-wobble 0.8s ease-in-out infinite;
-        }
-        
-        /* South Park House Colors by Character */
-        .sp-house-stan .house-roof { background: #3366CC !important; }
-        .sp-house-kyle .house-roof { background: #FF6600 !important; }
-        .sp-house-cartman .house-roof { background: #CC0000 !important; }
-        .sp-house-kenny .house-roof { background: #996633 !important; }
-        .sp-house-butters .house-roof { background: #80C0E0 !important; }
-        
-        /* South Park Street override */
-        .zone-path {
-            background: #707070 !important;
-            border: none !important;
+            width: 10px;
+            height: 16px;
+            background: #503020;
+            border: 2px solid var(--gbc-black);
         }
 
-        /* City title banner - when inside a language city */
-        .city-title {
+        .house-window {
             position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            font-size: 0.5rem;
-            color: #FFFFFF;
-            z-index: 100;
-            background: #4CAF50;
-            padding: 8px 16px;
-            border: 3px solid #000000;
-            border-radius: 0;
-            box-shadow: 3px 3px 0 #000000;
-            text-shadow: 1px 1px 0 #000000;
-            white-space: nowrap;
-        }
-        .city-title small {
-            font-size: 0.38rem;
-            color: #FFFF00;
-            display: block;
-            margin-top: 3px;
-        }
-
-        /* Room label inside houses */
-        .room-label {
-            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--sky);
+            border: 2px solid var(--gbc-black);
             top: 8px;
+        }
+
+        .house-window.left { left: 6px; }
+        .house-window.right { right: 6px; }
+
+        .house.stan .house-body { background: var(--blue); }
+        .house.kyle .house-body { background: var(--green); }
+        .house.cartman .house-body { background: var(--orange); }
+        .house.kenny .house-body { background: #c06030; }
+
+        /* School - GBC */
+        .school {
+            width: 96px;
+            height: 64px;
+            background: var(--red);
+            border: 4px solid var(--gbc-black);
+        }
+
+        .school::before {
+            content: 'SCHOOL';
+            position: absolute;
+            top: 6px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.45rem;
-            color: var(--gb-darkest);
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
-            padding: 6px 14px;
-            border: 3px solid var(--gb-darkest);
-            border-radius: 3px;
-            z-index: 100;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
-            white-space: nowrap;
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 6px;
+            color: white;
         }
 
-        /* Interior tiles - improved */
-        .floor {
-            background: linear-gradient(135deg, #ddd0b8 0%, #d0c0a0 50%, #c8b898 100%);
-            border: 1px solid #b8a888;
-        }
-        .floor::before {
-            content: '';
+        .school-door {
             position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                8px 8px #c8b898,
-                24px 8px #c8b898,
-                16px 16px #c8b898,
-                8px 24px #c8b898,
-                24px 24px #c8b898;
-        }
-
-        .interior-wall {
-            background: #8a7050;
-            border-bottom: 4px solid #6a5030;
-        }
-        .interior-wall::before {
-            content: '';
-            position: absolute;
-            width: 12px; height: 10px;
-            left: 10px; top: 8px;
-            background: #90c090;
-            border: 3px solid #604020;
-        }
-
-        .carpet {
-            background: #c04040;
-            border: 2px solid #a02020;
-        }
-        .carpet::before {
-            content: '';
-            position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                8px 8px #f0d040,
-                16px 8px #f0d040,
-                24px 8px #f0d040,
-                8px 16px #f0d040,
-                16px 16px #f0e060,
-                24px 16px #f0d040,
-                8px 24px #f0d040,
-                16px 24px #f0d040,
-                24px 24px #f0d040;
-        }
-        .table {
-            background: #d0c0a0;
-        }
-        .table::before {
-            content: '';
-            position: absolute;
-            width: 24px; height: 20px;
-            left: 4px; top: 6px;
-            background: #805030;
-            border: 2px solid #603010;
-            box-shadow: inset 0 -4px 0 #603010;
-        }
-        .bookshelf {
-            background: #604020;
-            border: 2px solid #402010;
-        }
-        .bookshelf::before {
-            content: '';
-            position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Books */
-                4px 4px #d04040, 8px 4px #d04040,
-                12px 4px #40a040, 16px 4px #40a040,
-                20px 4px #4040d0, 24px 4px #4040d0,
-                4px 16px #d0d040, 8px 16px #d0d040,
-                12px 16px #40d0d0, 16px 16px #40d0d0,
-                20px 16px #a040a0, 24px 16px #a040a0;
-        }
-        .exit-mat {
-            background: #d0c0a0;
-        }
-        .exit-mat::before {
-            content: '';
-            position: absolute;
-            width: 24px; height: 8px;
-            left: 4px; top: 20px;
-            background: linear-gradient(90deg, #c04040 0%, #a03030 50%, #c04040 100%);
-            border: 2px solid #802020;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-        }
-        .exit-mat::after {
-            content: 'EXIT';
-            position: absolute;
-            font-size: 0.25rem;
-            left: 6px; top: 21px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #802020;
-        }
-
-        /* Poster on wall */
-        .poster {
-            background: #8a7050;
-            border-bottom: 4px solid #6a5030;
-        }
-        .poster::before {
-            content: '';
-            position: absolute;
-            width: 14px; height: 18px;
-            left: 9px; top: 4px;
-            background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
-            border: 2px solid #404040;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-        }
-        .poster::after {
-            content: '';
-            position: absolute;
-            width: 10px; height: 6px;
-            left: 11px; top: 8px;
-            background: linear-gradient(45deg, #4080c0 0%, #60a0e0 100%);
-            box-shadow: 0 4px 0 #303030;
-        }
-
-        /* Potted plant */
-        .plant {
-            background: #d8c8a8;
-            border: 1px solid #c0b090;
-        }
-        .plant::before {
-            content: '';
-            position: absolute;
-            width: 4px; height: 4px;
-            background: transparent;
-            box-shadow:
-                /* Pot */
-                10px 22px #a06030, 14px 22px #a06030, 18px 22px #a06030,
-                8px 26px #804020, 12px 26px #a06030, 16px 26px #a06030, 20px 26px #804020,
-                /* Leaves */
-                12px 10px #40a040, 16px 10px #40a040,
-                8px 14px #308030, 12px 14px #50c050, 16px 14px #50c050, 20px 14px #308030,
-                10px 18px #40a040, 14px 18px #40a040, 18px 18px #40a040;
-        }
-
-        /* NPC name label - 8bit blocky */
-        .npc-label {
-            position: absolute;
-            bottom: 100%;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
-            color: var(--gb-lightest);
-            padding: 4px 10px;
-            font-size: 0.35rem;
-            white-space: nowrap;
-            border: 2px solid var(--gb-light);
-            border-radius: 2px;
-            opacity: 0;
-            pointer-events: none;
-            box-shadow: 
-                2px 2px 0 rgba(0,0,0,0.5),
-                0 0 8px rgba(155, 188, 15, 0.3);
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-        }
-        .npc.nearby .npc-label {
-            opacity: 1;
-            animation: label-pop 0.2s ease-out;
+            width: 20px;
+            height: 28px;
+            background: #503020;
+            border: 2px solid var(--gbc-black);
         }
 
-        @keyframes label-pop {
-            0% { transform: translateX(-50%) scale(0.5); opacity: 0; }
-            50% { transform: translateX(-50%) scale(1.1); }
-            100% { transform: translateX(-50%) scale(1); opacity: 1; }
-        }
-
-        /* House label - Premium AAA style */
-        .house-label {
+        /* ===== SPRITES ===== */
+        .character {
             position: absolute;
-            top: -28px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, rgba(15, 56, 15, 0.97) 0%, rgba(10, 40, 10, 0.99) 100%);
-            color: var(--gb-lightest);
-            padding: 6px 14px;
-            font-size: 0.38rem;
-            white-space: nowrap;
-            border: 3px solid var(--gb-light);
-            border-radius: 3px;
-            z-index: 60;
-            opacity: 0;
-            box-shadow: 
-                0 0 15px rgba(155, 188, 15, 0.4),
-                3px 3px 0 rgba(0,0,0,0.6),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.7);
-        }
-        .house-label.visible {
-            opacity: 1;
-            animation: house-label-appear 0.25s ease-out;
+            width: 16px;
+            height: 22px;
+            background-image: url('sprites/Kyle,%20Stan,%20Cartman%20&%20Kenny.png');
+            background-repeat: no-repeat;
+            image-rendering: pixelated;
+            transform: scale(2.5);
+            transform-origin: top left;
+            z-index: 10;
         }
 
-        @keyframes house-label-appear {
-            0% { transform: translateX(-50%) translateY(10px) scale(0.8); opacity: 0; }
-            60% { transform: translateX(-50%) translateY(-2px) scale(1.05); }
-            100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
-        }
+        /* Row 1: Stan (blue hat) - frames at y=0 */
+        .char-stan { background-position: 0 0; }
+        .char-stan.walk1 { background-position: -17px 0; }
+        .char-stan.walk2 { background-position: -34px 0; }
 
-        /* Interaction indicator - pulsing arrow */
-        .house-label::after {
-            content: '▼';
-            display: block;
-            text-align: center;
-            font-size: 0.45rem;
-            margin-top: 3px;
-            animation: arrow-bounce 0.5s steps(2) infinite;
-            color: var(--gb-light);
-        }
+        /* Row 4: Kyle (green hat) - approx y=66 */
+        .char-kyle { background-position: 0 -66px; }
+        .char-kyle.walk1 { background-position: -17px -66px; }
+        .char-kyle.walk2 { background-position: -34px -66px; }
 
-        .house-label::before {
-            content: '🏠';
-            position: absolute;
-            left: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.5rem;
-        }
+        /* Row 7: Cartman (fat, light blue hat) - approx y=132 */
+        .char-cartman { background-position: 0 -132px; }
+        .char-cartman.walk1 { background-position: -17px -132px; }
+        .char-cartman.walk2 { background-position: -34px -132px; }
 
-        /* ========== SOUTH PARK AUTHENTIC CHARACTERS ========== */
-        
-        /* Player = STAN MARSH - BIGGER */
+        /* Row 10: Kenny (orange hood) - approx y=198 */
+        .char-kenny { background-position: 0 -198px; }
+        .char-kenny.walk1 { background-position: -17px -198px; }
+        .char-kenny.walk2 { background-position: -34px -198px; }
+
         #player {
-            position: absolute;
-            width: 48px;
-            height: 56px;
-            z-index: 50;
-            animation: sp-wobble 0.4s ease-in-out infinite;
-            transform: translateX(-8px) translateY(-24px);
-        }
-
-        .sprite {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* STAN - Blue pom-pom hat, brown jacket - BIG */
-        .player-sprite {
-            width: 48px; 
-            height: 56px;
-            position: relative;
-        }
-        .player-sprite::before {
-            /* Stan's face - BIG */
-            content: '';
-            position: absolute;
-            width: 36px; height: 28px;
-            left: 6px; top: 10px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .player-sprite::after {
-            /* Stan's brown jacket body - BIG */
-            content: '';
-            position: absolute;
-            width: 40px; height: 22px;
-            left: 4px; top: 36px;
-            background: #8B4513;
-            border: 3px solid #000;
-        }
-        
-        /* Stan's blue hat with red pom-pom - BIG */
-        #player .player-hair {
-            position: absolute;
-            width: 40px; height: 16px;
-            left: 4px; top: 0px;
-            background: #3366CC;
-            border: 3px solid #000;
-            border-radius: 12px 12px 0 0;
-            z-index: 3;
-        }
-        #player .player-hair::before {
-            /* Red pom-pom - BIG */
-            content: '';
-            position: absolute;
-            width: 14px; height: 14px;
-            left: 13px; top: -10px;
-            background: #CC0000;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        #player .player-hair::after {
-            /* Hat rim - BIG */
-            content: '';
-            position: absolute;
-            width: 44px; height: 6px;
-            left: -2px; bottom: -3px;
-            background: #CC0000;
-            border: 3px solid #000;
-        }
-        
-        /* Stan's eyes - big white ovals */
-        #player .player-eyes {
-            position: absolute;
-            width: 10px; height: 14px;
-            background: #FFFFFF;
-            border: 2px solid #000;
-            border-radius: 50%;
-            left: 10px; top: 14px;
-            z-index: 4;
-        }
-        #player .player-eyes::before {
-            /* Second eye */
-            content: '';
-            position: absolute;
-            width: 10px; height: 14px;
-            background: #FFFFFF;
-            border: 2px solid #000;
-            border-radius: 50%;
-            left: 16px; top: 0;
-        }
-        #player .player-eyes::after {
-            /* Pupils */
-            content: '';
-            position: absolute;
-            width: 4px; height: 4px;
-            background: #000;
-            border-radius: 50%;
-            left: 3px; top: 6px;
-            box-shadow: 19px 0 0 #000;
-        }
-        
-        /* SP walk animation */
-        @keyframes sp-walk {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
-        }
-        
-        #player.walking {
-            animation: sp-walk 0.2s linear infinite, sp-wobble 0.4s ease-in-out infinite;
-        }
-
-        #player.walking::after {
-            /* Keep body visible while walking */
-            content: '';
-            position: absolute;
-            width: 22px; height: 14px;
-            left: 5px; top: 22px;
-            background: #8B4513;
-            border: 2px solid #000;
-        }
-
-        /* SP footsteps */
-        @keyframes sp-footstep {
-            0% { opacity: 0.8; }
-            100% { opacity: 0; }
-        }
-
-        /* Visual sound effects */
-        .sound-note {
-            position: absolute;
-            font-size: 12px;
-            color: var(--accent-yellow);
-            text-shadow: 1px 1px 0 var(--gb-dark);
-            pointer-events: none;
             z-index: 100;
-            opacity: 0;
-            animation: note-float 1s ease-out forwards;
-        }
-        @keyframes note-float {
-            0% { 
-                opacity: 0.8; 
-                transform: translateY(0) scale(0.5); 
-            }
-            50% { 
-                opacity: 1;
-                transform: translateY(-20px) scale(1);
-            }
-            100% { 
-                opacity: 0; 
-                transform: translateY(-35px) scale(0.8); 
-            }
+            filter: drop-shadow(1px 1px 0 var(--gbc-black));
         }
 
-        /* Interaction effect */
-        .interact-effect {
+        /* ===== MOUNTAINS BG ===== */
+        #mountains {
             position: absolute;
-            font-size: 14px;
-            color: var(--gb-lightest);
-            pointer-events: none;
-            z-index: 100;
-            text-shadow: 2px 2px 0 var(--gb-darkest);
-            animation: interact-pop 0.5s ease-out forwards;
-        }
-        @keyframes interact-pop {
-            0% { 
-                opacity: 1; 
-                transform: scale(0.5); 
-            }
-            30% { 
-                transform: scale(1.3); 
-            }
-            100% { 
-                opacity: 0; 
-                transform: scale(1) translateY(-20px); 
-            }
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: var(--sky);
+            z-index: 1;
         }
 
-        /* ========== SOUTH PARK NPCs - REAL CHARACTERS ========== */
-        .npc {
-            position: absolute;
-            width: 48px;
-            height: 56px;
-            cursor: pointer;
-            z-index: 40;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            transform: translateX(-8px) translateY(-24px);
-        }
-
-        .npc:hover {
-            transform: translateX(-8px) translateY(-24px) scale(1.1);
-            transition: transform 0.1s ease;
-        }
-
-        /* ========== SOUTH PARK AUTHENTIC BIG CHARACTERS ========== */
-        /* All SP characters share base wobble */
-        .sp-stan, .sp-kyle, .sp-cartman, .sp-kenny, 
-        .sp-butters, .sp-wendy, .sp-randy, .sp-garrison, .sp-chef,
-        .npc-sprite, .npc-sprite-blue, .npc-sprite-green, 
-        .npc-sprite-purple, .npc-sprite-red, .npc-sprite-yellow,
-        .npc-sprite-cyan, .npc-sprite-pink {
-            animation: sp-wobble 0.5s ease-in-out infinite;
-            width: 48px; 
-            height: 56px;
-            position: relative;
-        }
-
-        /* ===== STAN MARSH - Blue hat, red pom-pom, brown jacket ===== */
-        .sp-stan {
-            background: none;
-        }
-        .sp-stan::before {
+        #mountains::before {
             content: '';
             position: absolute;
-            width: 36px; height: 28px;
-            left: 6px; top: 8px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-            box-shadow: 
-                inset 8px 8px 0 0 #FFF,
-                inset -5px -5px 0 0 #E8C8A0;
-        }
-        .sp-stan::after {
-            content: '';
-            position: absolute;
-            width: 40px; height: 22px;
-            left: 4px; top: 34px;
-            background: #8B4513;
-            border: 3px solid #000;
-        }
-
-        /* ===== KYLE BROFLOVSKI - Orange jacket, green ushanka ===== */
-        .sp-kyle, .npc-sprite {
-            background: none;
-        }
-        .sp-kyle::before, .npc-sprite::before {
-            content: '';
-            position: absolute;
-            width: 36px; height: 28px;
-            left: 6px; top: 8px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .sp-kyle::after, .npc-sprite::after {
-            content: '';
-            position: absolute;
-            width: 40px; height: 22px;
-            left: 4px; top: 34px;
-            background: #FF6600;
-            border: 3px solid #000;
-        }
-
-        /* ===== CARTMAN - FAT, cyan hat, red jacket ===== */
-        .sp-cartman, .npc-sprite-blue {
-            background: none;
-        }
-        .sp-cartman::before, .npc-sprite-blue::before {
-            content: '';
-            position: absolute;
-            width: 44px; height: 34px;
-            left: 2px; top: 4px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .sp-cartman::after, .npc-sprite-blue::after {
-            content: '';
-            position: absolute;
-            width: 46px; height: 24px;
-            left: 1px; top: 32px;
-            background: #CC0000;
-            border: 3px solid #000;
-        }
-
-        /* ===== KENNY - Orange parka, hood covers face ===== */
-        .sp-kenny, .npc-sprite-green {
-            background: none;
-        }
-        .sp-kenny::before, .npc-sprite-green::before {
-            content: '';
-            position: absolute;
-            width: 38px; height: 30px;
-            left: 5px; top: 6px;
-            background: #FF8800;
-            border: 3px solid #000;
-            border-radius: 50%;
-            box-shadow: inset 0 0 0 10px #FF8800, inset 0 0 0 13px #000;
-        }
-        .sp-kenny::after, .npc-sprite-green::after {
-            content: '';
-            position: absolute;
-            width: 40px; height: 22px;
-            left: 4px; top: 34px;
-            background: #FF8800;
-            border: 3px solid #000;
-        }
-
-        /* ===== BUTTERS - Blonde, light blue shirt ===== */
-        .sp-butters, .npc-sprite-purple {
-            background: none;
-        }
-        .sp-butters::before, .npc-sprite-purple::before {
-            content: '';
-            position: absolute;
-            width: 34px; height: 26px;
-            left: 7px; top: 8px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .sp-butters::after, .npc-sprite-purple::after {
-            content: '';
-            position: absolute;
-            width: 36px; height: 20px;
-            left: 6px; top: 34px;
-            background: #80C0E0;
-            border: 3px solid #000;
-        }
-
-        /* ===== WENDY - Black hair, purple jacket ===== */
-        .sp-wendy, .npc-sprite-red {
-            background: none;
-        }
-        .sp-wendy::before, .npc-sprite-red::before {
-            content: '';
-            position: absolute;
-            width: 36px; height: 28px;
-            left: 6px; top: 6px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .sp-wendy::after, .npc-sprite-red::after {
-            content: '';
-            position: absolute;
-            width: 38px; height: 20px;
-            left: 5px; top: 34px;
-            background: #9933CC;
-            border: 3px solid #000;
-        }
-
-        /* ===== RANDY MARSH - Black hair, blue shirt ===== */
-        .sp-randy, .npc-sprite-yellow {
-            background: none;
-        }
-        .sp-randy::before, .npc-sprite-yellow::before {
-            content: '';
-            position: absolute;
-            width: 40px; height: 32px;
-            left: 4px; top: 4px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .sp-randy::after, .npc-sprite-yellow::after {
-            content: '';
-            position: absolute;
-            width: 42px; height: 24px;
-            left: 3px; top: 32px;
-            background: #3366CC;
-            border: 3px solid #000;
-        }
-
-        /* ===== MR. GARRISON - Green sweater ===== */
-        .sp-garrison, .npc-sprite-cyan {
-            background: none;
-        }
-        .sp-garrison::before, .npc-sprite-cyan::before {
-            content: '';
-            position: absolute;
-            width: 36px; height: 28px;
-            left: 6px; top: 8px;
-            background: #FFD9B3;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .sp-garrison::after, .npc-sprite-cyan::after {
-            content: '';
-            position: absolute;
-            width: 40px; height: 22px;
-            left: 4px; top: 34px;
-            background: #339933;
-            border: 3px solid #000;
-        }
-
-        /* ===== CHEF - Dark skin, white uniform ===== */
-        .sp-chef, .npc-sprite-pink {
-            background: none;
-        }
-        .sp-chef::before, .npc-sprite-pink::before {
-            content: '';
-            position: absolute;
-            width: 40px; height: 32px;
-            left: 4px; top: 4px;
-            background: #8B4513;
-            border: 3px solid #000;
-            border-radius: 50%;
-        }
-        .sp-chef::after, .npc-sprite-pink::after {
-            content: '';
-            position: absolute;
-            width: 42px; height: 24px;
-            left: 3px; top: 32px;
-            background: #FFFFFF;
-            border: 3px solid #000;
-        }
-
-        .wandering-npc {
-            z-index: 50;
-        }
-
-        /* Dialog Box - South Park simple style */
-        #dialog-box {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
-            width: calc(100% - 30px);
-            height: 110px;
-            background: #F0E8D8;
-            border: 3px solid #000000;
-            border-radius: 0;
-            padding: 16px 20px;
-            display: none;
-            z-index: 200;
-            box-shadow: 4px 4px 0 #000000;
-            animation: dialog-appear-sp 0.2s ease-out;
-        }
-
-        @keyframes dialog-appear-sp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Simple speech tail */
-        #dialog-box::before {
-            content: '';
-            position: absolute;
-            bottom: -14px; left: 40px;
-            width: 0; height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 14px solid #000000;
-        }
-
-        /* Inner tail */
-        #dialog-box::after {
-            content: '';
-            position: absolute;
-            bottom: -10px; left: 43px;
-            width: 0; height: 0;
-            border-left: 7px solid transparent;
-            border-right: 7px solid transparent;
-            border-top: 10px solid #F0E8D8;
-        }
-
-        #dialog-text {
-            color: #202020;
-            font-size: 0.55rem;
-            line-height: 2.4;
-            max-height: 70px;
-            overflow: hidden;
-        }
-
-        #dialog-continue {
-            position: absolute;
-            bottom: 12px;
-            right: 18px;
-            font-size: 0.55rem;
-            color: #f8f8f8;
-            animation: arrow-bounce-ac 0.6s ease-in-out infinite;
-            background: linear-gradient(180deg, #88c8f8 0%, #68a8d8 100%);
-            padding: 6px 14px;
-            border: 3px solid #5890b8;
-            border-radius: 12px;
-            box-shadow: 
-                inset 0 2px 4px rgba(255,255,255,0.5),
-                0 3px 0 #4878a0;
-        }
-
-        @keyframes arrow-bounce-ac {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(4px); }
-        }
-
-        /* Battle Screen - SOUTH PARK style */
-        #battle-screen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, 
-                #6BB3E0 0%, 
-                #5090C0 40%, 
-                #4A9F4A 40%, 
-                #3A8F3A 100%);
-            display: none;
-            flex-direction: column;
-            z-index: 300;
-            border-radius: 0;
-            border: 4px solid #000000;
-            animation: battle-appear 0.3s ease-out;
-        }
-
-        @keyframes battle-appear {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .battle-top {
-            height: 50%;
-            background: 
-                linear-gradient(180deg, 
-                    #6BB3E0 0%, 
-                    #5090C0 60%,
-                    transparent 60%);
-            position: relative;
-            display: flex;
-            justify-content: flex-end;
-            align-items: flex-start;
-            padding: 20px;
-        }
-
-        /* Colorado Mountains in battle */
-        .battle-top::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 60px;
             bottom: 0;
             left: 0;
+            right: 0;
+            height: 40px;
             background: 
-                linear-gradient(135deg, transparent 40%, #6B7B8B 40%, #6B7B8B 50%, transparent 50%),
-                linear-gradient(225deg, transparent 40%, #5A6A7A 40%, #5A6A7A 50%, transparent 50%);
-            background-size: 100px 60px;
-            background-repeat: repeat-x;
+                linear-gradient(135deg, #607080 25%, transparent 25%) -16px 0,
+                linear-gradient(225deg, #607080 25%, transparent 25%) -16px 0,
+                linear-gradient(315deg, #708090 25%, transparent 25%),
+                linear-gradient(45deg, #708090 25%, transparent 25%);
+            background-size: 64px 40px;
         }
 
-        @keyframes clouds-float {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            50% { transform: translateX(20px) translateY(-5px); }
-        }
-
-        .enemy-pokemon {
-            text-align: center;
-        }
-
-        .enemy-sprite {
-            width: 96px;
-            height: 96px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: sp-wobble 0.5s ease-in-out infinite;
-            filter: none;
-        }
-        
-        /* South Park character in battle - simple paper cutout */
-        .monster-sprite {
-            width: 48px; height: 56px;
-            background: #FFD9B3;
-            border: 3px solid #000000;
-            border-radius: 50%;
-            position: relative;
-        }
-        .monster-sprite::before {
-            /* SP Eyes - big white ovals */
+        #mountains::after {
             content: '';
             position: absolute;
-            width: 12px; height: 10px;
-            background: #FFFFFF;
-            border: 2px solid #000;
-            border-radius: 50%;
-            left: 8px; top: 14px;
-            box-shadow: 18px 0 0 0 #FFFFFF, 18px 0 0 2px #000;
-        }
-        .monster-sprite::after {
-            /* Body - colored jacket */
-            content: '';
-            position: absolute;
-            width: 44px; height: 24px;
-            background: #FF6600;
-            border: 3px solid #000;
-            left: 2px; top: 48px;
-            border-radius: 0;
-        }
-
-        @keyframes enemy-appear {
-            0% { transform: translateX(100px); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        .enemy-info {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: #FFEB3B;
-            border: 4px solid #000000;
-            border-radius: 0;
-            padding: 10px 15px;
-            min-width: 200px;
-            box-shadow: 4px 4px 0 #000000;
-            animation: info-appear 0.3s ease-out;
-        }
-
-        @keyframes info-appear {
-            from { transform: translateX(-50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .enemy-name {
-            font-size: 0.55rem;
-            color: #000000;
-            margin-bottom: 5px;
-            text-shadow: none;
-            letter-spacing: 0.5px;
-        }
-
-        .enemy-level {
-            font-size: 0.4rem;
-            color: #000000;
-            background: #FFFFFF;
-            padding: 4px 8px;
-            display: inline-block;
-            border: 2px solid #000000;
-        }
-
-        .hp-bar {
-            margin-top: 10px;
-            height: 12px;
-            background: #FFFFFF;
-            border: 3px solid #000000;
-            position: relative;
-            overflow: hidden;
-            border-radius: 0;
-        }
-
-        .hp-bar::before {
-            content: 'HP';
-            position: absolute;
-            left: -26px;
-            top: -1px;
-            font-size: 0.4rem;
-            color: var(--gb-darkest);
-            font-weight: bold;
-        }
-
-        .hp-fill {
-            height: 100%;
-            background: linear-gradient(180deg, #80f080 0%, #40c040 50%, #30a030 100%);
-            width: 100%;
-            transition: width 0.3s ease-out;
-            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.3);
-            animation: hp-pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes hp-pulse {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.1); }
-        }
-
-        .battle-bottom {
-            height: 50%;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .player-pokemon-area {
-            height: 60%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-
-        .player-battle-sprite {
-            width: 64px;
-            height: 64px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Trainer back sprite */
-        .trainer-sprite {
-            background: transparent;
-            box-shadow:
-                /* Hair */
-                8px 0 #0f380f, 12px 0 #0f380f, 16px 0 #0f380f, 20px 0 #0f380f,
-                4px 4px #0f380f, 8px 4px #0f380f, 12px 4px #0f380f, 16px 4px #0f380f, 20px 4px #0f380f, 24px 4px #0f380f,
-                4px 8px #0f380f, 8px 8px #0f380f, 12px 8px #0f380f, 16px 8px #0f380f, 20px 8px #0f380f, 24px 8px #0f380f,
-                /* Back/Jacket */
-                4px 12px #3050a0, 8px 12px #4070c0, 12px 12px #4070c0, 16px 12px #4070c0, 20px 12px #4070c0, 24px 12px #3050a0,
-                0 16px #3050a0, 4px 16px #3050a0, 8px 16px #4070c0, 12px 16px #4070c0, 16px 16px #4070c0, 20px 16px #4070c0, 24px 16px #3050a0, 28px 16px #3050a0,
-                0 20px #3050a0, 4px 20px #4070c0, 8px 20px #4070c0, 12px 20px #4070c0, 16px 20px #4070c0, 20px 20px #4070c0, 24px 20px #4070c0, 28px 20px #3050a0,
-                4px 24px #3050a0, 8px 24px #4070c0, 12px 24px #4070c0, 16px 24px #4070c0, 20px 24px #4070c0, 24px 24px #3050a0,
-                /* Pants */
-                8px 28px #0f380f, 12px 28px #306230, 16px 28px #306230, 20px 28px #0f380f,
-                8px 32px #0f380f, 12px 32px #0f380f, 16px 32px #0f380f, 20px 32px #0f380f;
-            width: 4px;
-            height: 4px;
-            transform: scale(1.8);
-        }
-
-        .player-info {
-            background: linear-gradient(180deg, #f8f0e0 0%, #e0d8c8 100%);
-            border: 4px solid var(--gb-darkest);
-            padding: 10px 15px;
-            min-width: 180px;
-            text-align: right;
-            box-shadow: 
-                inset 0 0 0 2px var(--gb-dark),
-                4px 4px 0 rgba(0,0,0,0.4);
-            animation: player-info-slide 0.3s ease-out;
-        }
-
-        @keyframes player-info-slide {
-            from { transform: translateX(50px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .battle-menu {
-            height: 45%;
-            border-top: 5px solid var(--gb-darkest);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            padding: 12px 18px;
-            gap: 10px;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
-            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .battle-option {
-            background: linear-gradient(180deg, #f8f0e0 0%, #e0d8c8 100%);
-            border: 4px solid var(--gb-darkest);
-            font-family: inherit;
-            font-size: 0.55rem;
-            color: var(--gb-darkest);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 6px;
-            text-align: center;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
-            box-shadow: 
-                2px 2px 0 rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(255,255,255,0.5);
-            transition: all 0.15s ease;
-            position: relative;
-        }
-
-        .battle-option::before {
-            content: '▶';
-            position: absolute;
-            left: 6px;
-            opacity: 0;
-            transition: opacity 0.15s;
-            font-size: 0.4rem;
-        }
-
-        .battle-option:hover, .battle-option.selected {
-            background: linear-gradient(180deg, var(--gb-light) 0%, var(--gb-dark) 100%);
-            color: var(--gb-lightest);
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-            box-shadow: 
-                inset 0 0 0 2px var(--gb-dark),
-                0 0 15px rgba(155, 188, 15, 0.6),
-                3px 3px 0 rgba(0,0,0,0.4);
-            transform: translateY(-2px);
-        }
-
-        .battle-option:hover::before, .battle-option.selected::before {
-            opacity: 1;
-            animation: arrow-blink 0.5s steps(2) infinite;
-        }
-
-        @keyframes arrow-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .battle-option:active {
-            transform: translateY(1px);
-            box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
-        }
-
-        /* Info Panel (README display) - AAA style */
-        #info-panel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #f8f0e0 0%, #e8e0d0 100%);
-            display: none;
-            flex-direction: column;
-            z-index: 350;
-            overflow-y: auto;
-            animation: panel-slide-in 0.35s ease-out;
-        }
-
-        @keyframes panel-slide-in {
-            from { transform: translateY(100%); opacity: 0.5; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .info-header {
-            background: linear-gradient(180deg, var(--gb-dark) 0%, var(--gb-darkest) 100%);
-            color: var(--gb-lightest);
-            padding: 16px 22px;
-            font-size: 0.6rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 5px solid var(--gb-darkest);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .info-header::before {
-            content: '📖';
-            margin-right: 10px;
-            font-size: 0.7rem;
-        }
-
-        .info-content {
-            padding: 22px;
-            font-size: 0.45rem;
-            line-height: 2.4;
-            color: var(--gb-darkest);
-            flex: 1;
-            overflow-y: auto;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            height: 16px;
             background: 
-                linear-gradient(180deg, #f8f0e0 0%, #f0e8d8 50%, #e8e0d0 100%);
+                linear-gradient(135deg, white 10%, transparent 10%) -8px 0,
+                linear-gradient(225deg, white 10%, transparent 10%) -8px 0;
+            background-size: 64px 40px;
         }
 
-        .info-content a {
-            color: #3060a0;
-            text-decoration: underline;
-            padding: 1px 4px;
-            background: rgba(48, 96, 160, 0.1);
-            border-radius: 2px;
-        }
-
-        .info-content a:hover {
-            color: #4080c0;
-            background: rgba(48, 96, 160, 0.2);
-        }
-
-        .back-btn {
-            background: linear-gradient(180deg, var(--gb-light) 0%, var(--gb-dark) 100%);
-            border: 3px solid var(--gb-darkest);
-            padding: 10px 24px;
-            font-family: inherit;
-            font-size: 0.45rem;
-            cursor: pointer;
-            color: var(--gb-lightest);
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
-            transition: all 0.15s ease;
-        }
-
-        .back-btn:hover {
-            background: linear-gradient(180deg, var(--gb-lightest) 0%, var(--gb-light) 100%);
-            color: var(--gb-darkest);
-            text-shadow: none;
-            transform: translateY(-2px);
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
-        }
-
-        .back-btn:active {
-            transform: translateY(1px);
-            box-shadow: 1px 1px 0 rgba(0,0,0,0.4);
-        }
-
-        /* Controls hint */
-        .controls-hint {
-            text-align: center;
-            margin-top: 15px;
-            color: #666;
-            font-size: 0.5rem;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
-        }
-
-        /* Mobile Controls */
-        .mobile-controls {
+        /* ===== DIALOGUE BOX - GBC STYLE ===== */
+        #dialogue-box {
             display: none;
-            margin-top: 15px;
-            justify-content: center;
-            gap: 5px;
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+            background: var(--gbc-white);
+            border: 4px solid var(--gbc-black);
+            padding: 12px;
+            z-index: 200;
         }
 
-        .dpad {
-            display: grid;
-            grid-template-columns: repeat(3, 40px);
-            grid-template-rows: repeat(3, 40px);
-            gap: 2px;
+        #dialogue-box.active { display: block; }
+
+        #dialogue-name {
+            font-size: 8px;
+            color: var(--gbc-black);
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
 
-        .dpad-btn {
-            background: #333;
-            border: 2px solid #555;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
+        #dialogue-text {
+            font-size: 7px;
+            color: var(--gbc-dark);
+            line-height: 1.8;
         }
 
-        .dpad-btn:active {
-            background: #555;
-            border-color: #777;
+        #dialogue-box::after {
+            content: '▼';
+            position: absolute;
+            bottom: 4px;
+            right: 8px;
+            font-size: 8px;
+            color: var(--gbc-black);
+            animation: blink 0.5s infinite;
         }
 
-        .dpad-center {
-            background: #222;
-            border: 2px solid #444;
-        }
-
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-left: 30px;
-        }
-
-        .action-btn {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #a01010;
-            font-family: inherit;
-            font-size: 0.5rem;
-            cursor: pointer;
-        }
-
-        .btn-a {
-            background: #dc2626;
-            color: white;
-        }
-
-        .btn-b {
-            background: #dc2626;
-            color: white;
-        }
-
-        /* 8-bit blink animation */
         @keyframes blink {
-            0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
 
-        /* 8-bit screen flash */
-        @keyframes screen-flash {
-            0% { background: var(--gb-lightest); }
-            25% { background: var(--gb-darkest); }
-            50% { background: var(--gb-lightest); }
-            75% { background: var(--gb-darkest); }
-            100% { background: var(--gb-lightest); }
+        /* ===== CONTROLS INFO - GBC ===== */
+        #controls-bar {
+            background: var(--gbc-dark);
+            border: 4px solid var(--gbc-black);
+            padding: 8px 16px;
+            margin-top: 8px;
+            font-size: 6px;
+            color: var(--gbc-white);
+            text-align: center;
+            line-height: 2;
         }
 
-        /* Screen wipe transitions */
-        @keyframes screen-wipe {
-            0% { clip-path: inset(0 100% 0 0); }
-            100% { clip-path: inset(0 0 0 0); }
+        #controls-bar span {
+            color: var(--accent);
         }
 
-        @keyframes screen-wipe-out {
-            0% { clip-path: inset(0 0 0 0); }
-            100% { clip-path: inset(0 0 0 100%); }
+        /* ===== PROJECTS SECTION - GBC STYLE ===== */
+        #projects-section {
+            width: 100%;
+            max-width: 512px;
+            margin-top: 16px;
         }
 
-        /* Premium screen transition */
-        .screen-transition {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--gb-darkest);
-            z-index: 500;
-            animation: transition-in 0.35s steps(6) forwards;
-        }
-        
-        .screen-transition .transition-flash {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: var(--gb-lightest);
-            animation: flash-pulse 0.15s ease-out;
-            opacity: 0;
-        }
-        
-        .screen-transition.fade-out {
-            animation: transition-out 0.4s steps(6) forwards;
-        }
-        
-        @keyframes transition-in {
-            0% { 
-                clip-path: circle(0% at 50% 50%); 
-                opacity: 0;
-            }
-            20% {
-                opacity: 1;
-            }
-            100% { 
-                clip-path: circle(100% at 50% 50%);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes transition-out {
-            0% { 
-                clip-path: circle(100% at 50% 50%);
-                opacity: 1;
-            }
-            80% {
-                opacity: 1;
-            }
-            100% { 
-                clip-path: circle(0% at 50% 50%);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes flash-pulse {
-            0% { opacity: 1; }
-            100% { opacity: 0; }
+        .section-title {
+            background: var(--gbc-dark);
+            border: 4px solid var(--gbc-black);
+            padding: 8px 16px;
+            font-size: 8px;
+            color: var(--gbc-white);
+            text-align: center;
+            margin-bottom: 8px;
         }
 
-        /* Loading dots animation */
-        @keyframes loading-dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60% { content: '...'; }
-            80%, 100% { content: '....'; }
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        @media (max-width: 600px) {
-            .gameboy-frame {
-                padding: 10px;
-            }
+        .project-item {
+            background: var(--gbc-light);
+            border: 4px solid var(--gbc-black);
+            padding: 12px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
 
-            #game-container {
-                width: 320px;
-                height: 288px;
-            }
+        .project-item:hover {
+            background: var(--gbc-white);
+        }
 
-            :root {
-                --tile-size: 24px;
-            }
+        .project-item:active {
+            background: var(--gbc-dark);
+        }
 
-            .mobile-controls {
-                display: flex;
-            }
+        .project-item:active .project-name,
+        .project-item:active .project-desc,
+        .project-item:active .project-lang {
+            color: var(--gbc-white);
+        }
 
-            .enemy-sprite {
-                font-size: 50px;
-            }
+        .project-name {
+            font-size: 8px;
+            color: var(--gbc-black);
+            margin-bottom: 4px;
+        }
 
-            .player-sprite {
-                font-size: 40px;
-            }
+        .project-desc {
+            font-size: 6px;
+            color: var(--gbc-dark);
+            margin-bottom: 8px;
+            line-height: 1.6;
+            max-height: 24px;
+            overflow: hidden;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-lang {
+            font-size: 6px;
+            color: var(--gbc-black);
+            background: var(--gbc-white);
+            padding: 2px 6px;
+            border: 2px solid var(--gbc-black);
+        }
+
+        .project-stats {
+            font-size: 6px;
+            color: var(--gbc-dark);
+        }
+
+        /* ===== FOOTER - GBC ===== */
+        #footer {
+            background: var(--gbc-dark);
+            border: 4px solid var(--gbc-black);
+            padding: 8px 16px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            font-size: 6px;
+            color: var(--gbc-light);
+            text-align: center;
+        }
+
+        #footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ===== LOADING ===== */
+        .loading {
+            background: var(--gbc-light);
+            border: 4px solid var(--gbc-black);
+            padding: 16px;
+            text-align: center;
+            font-size: 8px;
+            color: var(--gbc-black);
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1s infinite;
+        }
+
+        @keyframes dots {
+            0% { content: '.'; }
+            33% { content: '..'; }
+            66% { content: '...'; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 560px) {
+            #gbc-frame { padding: 12px; margin: 10px; }
+            #screen-bezel { padding: 8px; }
+            #game-container { width: 320px; height: 240px; }
+            .character { transform: scale(1.5); }
+            .house { width: 36px; height: 36px; }
+            .school { width: 72px; height: 48px; }
         }
     </style>
 </head>
 <body>
-    <div class="gameboy-frame">
-        <div class="screen-bezel">
+    <!-- GBC Frame -->
+    <div id="gbc-frame">
+        <div id="screen-bezel">
+            <!-- Header Bar -->
+            <div id="header-bar">
+                <h1>DARIO DEV - PORTFOLIO</h1>
+                <div class="stats">REPOS: <span id="repo-count">--</span></div>
+            </div>
+
+            <!-- Game Screen -->
             <div id="game-container">
-                <!-- Intro Screen -->
-                <div id="intro-screen">
-                    <h1>🏔️ SOUTH PARK<br>PORTFOLIO 🏔️</h1>
-                    <p>Por Dario Lacal Civera</p>
-                    <p>Colorado, USA Edition</p>
-                    <div class="press-start" id="start-btn">▶ PRESS START</div>
-                </div>
-
-                <!-- Game World -->
-                <div id="game-world">
-                    <div id="ambient-particles"></div>
-                    <div id="weather-overlay"></div>
-                    <div id="map"></div>
-                    <div id="player">
-                        <div class="player-sprite"></div>
-                    </div>
-                    <div id="day-night-overlay"></div>
-                    <div id="interior-light-overlay"></div>
-                    <div id="game-hud">
-                        <div class="hud-location">📍 <span id="hud-location-text">ESTACIÓN</span></div>
-                        <div class="hud-stats">🏠 <span id="hud-visited">0</span>/<span id="hud-total">0</span> proyectos</div>
-                        <div class="hud-weather" id="hud-weather">☀️</div>
-                        <div class="hud-controls">WASD/Flechas: Mover | M: Mapa</div>
-                    </div>
-                    <div id="minimap">
-                        <canvas id="minimap-canvas"></canvas>
-                        <div id="minimap-player"></div>
-                        <div id="minimap-label">MAPA</div>
-                    </div>
-                </div>
-
-                <!-- Dialog Box -->
-                <div id="dialog-box">
-                    <div id="dialog-text"></div>
-                    <div id="dialog-continue">▼ CONTINUAR</div>
-                </div>
-
-                <!-- Battle Screen -->
-                <div id="battle-screen">
-                    <div class="battle-top">
-                        <div class="enemy-info">
-                            <div class="enemy-name" id="battle-enemy-name">PROYECTO</div>
-                            <div class="enemy-level" id="battle-enemy-level">Lv.99</div>
-                            <div class="hp-bar"><div class="hp-fill"></div></div>
-                        </div>
-                        <div class="enemy-pokemon">
-                        <div class="enemy-sprite" id="battle-enemy-sprite">
-                            <div class="monster-sprite"></div>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="battle-bottom">
-                        <div class="player-pokemon-area">
-                            <div class="player-battle-sprite">
-                                <div class="trainer-sprite"></div>
-                            </div>
-                            <div class="player-info">
-                                <div class="enemy-name">MUTENROS</div>
-                                <div class="enemy-level">Lv.∞</div>
-                                <div class="hp-bar"><div class="hp-fill"></div></div>
-                            </div>
-                        </div>
-                        <div class="battle-menu">
-                            <button class="battle-option selected" id="btn-info">VER</button>
-                            <button class="battle-option" id="btn-github">REPO</button>
-                            <button class="battle-option" id="btn-stats">INFO</button>
-                            <button class="battle-option" id="btn-run">SALIR</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Info Panel -->
-                <div id="info-panel">
-                    <div class="info-header">
-                        <span id="info-title">README.md</span>
-                        <button class="back-btn" id="info-back">[X] CERRAR</button>
-                    </div>
-                    <div class="info-content" id="info-content">
-                        Cargando...
-                    </div>
+                <div id="mountains"></div>
+                <div id="ground"></div>
+                <div id="buildings"></div>
+                <div id="characters"></div>
+                <div class="character" id="player"></div>
+                <div id="dialogue-box">
+                    <div id="dialogue-name">???</div>
+                    <div id="dialogue-text">...</div>
                 </div>
             </div>
-        </div>
-        <div class="controls-hint">
-            ← ↑ ↓ → para moverse | ENTER para interactuar | ESC para volver
-        </div>
-        <div class="mobile-controls" style="display:none;">
-            <div class="dpad">
-                <div></div>
-                <button class="dpad-btn" id="btn-up">▲</button>
-                <div></div>
-                <button class="dpad-btn" id="btn-left">◄</button>
-                <div class="dpad-center"></div>
-                <button class="dpad-btn" id="btn-right">►</button>
-                <div></div>
-                <button class="dpad-btn" id="btn-down">▼</button>
-                <div></div>
-            </div>
-            <div class="action-buttons">
-                <button class="action-btn btn-a" id="btn-action">A</button>
-                <button class="action-btn btn-b" id="btn-cancel">B</button>
+
+            <!-- Controls Bar -->
+            <div id="controls-bar">
+                <span>WASD/ARROWS</span> MOVE &nbsp;|&nbsp; 
+                <span>SPACE</span> TALK &nbsp;|&nbsp;
+                <span>CLICK</span> GO TO
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Projects Section -->
+    <section id="projects-section">
+        <div class="section-title">★ MY PROJECTS ★</div>
+        <div class="projects-list" id="projects-list">
+            <div class="loading">LOADING</div>
+        </div>
+        <div id="footer">
+            MADE BY <a href="https://github.com/MutenRos" target="_blank">DARIO LACAL CIVERA</a> - 2026
+        </div>
+    </section>
+
     <script>
-        // ============== GAME STATE ==============
-        const TILE_SIZE = 32;
-        
-        let playerX = 15;
-        let playerY = 15;
-        let cameraX = 0;
-        let cameraY = 0;
-        let npcs = [];
-        let houses = [];
-        let wanderingNpcs = []; // Colaboradores que vagan por el mapa
-        let currentNpc = null;
-        let currentHouse = null;
-        let gameState = 'intro'; // intro, walking, dialog, battle, info
-        let currentLocation = 'outside'; // outside, inside
-        let isMoving = false;
-        
-        // DOM Elements
-        const introScreen = document.getElementById('intro-screen');
-        const gameWorld = document.getElementById('game-world');
-        const map = document.getElementById('map');
-        const player = document.getElementById('player');
-        const dialogBox = document.getElementById('dialog-box');
-        const dialogText = document.getElementById('dialog-text');
-        const battleScreen = document.getElementById('battle-screen');
-        const infoPanel = document.getElementById('info-panel');
-        const ambientParticles = document.getElementById('ambient-particles');
-        const dayNightOverlay = document.getElementById('day-night-overlay');
-
-        // ============== AMBIENT EFFECTS ==============
-        function createParticles() {
-            for (let i = 0; i < 15; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = -Math.random() * 10 + 's';
-                ambientParticles.appendChild(particle);
-            }
-        }
-
-        function updateDayNightCycle() {
-            const hour = new Date().getHours();
-            let overlay = 'transparent';
-            
-            if (hour >= 6 && hour < 8) {
-                // Dawn - warm orange
-                overlay = 'rgba(255, 180, 100, 0.15)';
-            } else if (hour >= 8 && hour < 17) {
-                // Day - clear
-                overlay = 'transparent';
-            } else if (hour >= 17 && hour < 20) {
-                // Dusk - warm orange/red
-                overlay = 'rgba(255, 120, 80, 0.2)';
-            } else {
-                // Night - blue tint
-                overlay = 'rgba(50, 80, 150, 0.25)';
-            }
-            
-            dayNightOverlay.style.background = overlay;
-        }
-        
-        function updateHUD(location) {
-            const hudText = document.getElementById('hud-location-text');
-            if (hudText) {
-                hudText.textContent = location;
-            }
-        }
-        
-        // Visual sound effect - floating music notes
-        let lastNoteTime = 0;
-        const musicNotes = ['♪', '♫', '♬', '♩'];
-        function createVisualNote() {
-            const now = Date.now();
-            if (now - lastNoteTime < 400) return; // Throttle
-            if (Math.random() > 0.25) return; // 25% chance
-            
-            lastNoteTime = now;
-            const note = document.createElement('div');
-            note.className = 'sound-note';
-            note.textContent = musicNotes[Math.floor(Math.random() * musicNotes.length)];
-            
-            // Position near player
-            note.style.left = (playerX * TILE_SIZE + 10 + Math.random() * 12) + 'px';
-            note.style.top = (playerY * TILE_SIZE - 5) + 'px';
-            
-            map.appendChild(note);
-            setTimeout(() => note.remove(), 1000);
-        }
-        
-        // Visual interaction effect (exclamation, speech bubble, etc)
-        function createInteractEffect(x, y, symbol = '❗') {
-            const effect = document.createElement('div');
-            effect.className = 'interact-effect';
-            effect.textContent = symbol;
-            effect.style.left = (x * TILE_SIZE + 8) + 'px';
-            effect.style.top = (y * TILE_SIZE - 10) + 'px';
-            map.appendChild(effect);
-            setTimeout(() => effect.remove(), 500);
-        }
-        
-        // ============== WEATHER SYSTEM ==============
-        const weatherOverlay = document.getElementById('weather-overlay');
-        let currentWeather = 'clear';
-        let weatherInterval = null;
-        
-        function setWeather(type) {
-            // Clear previous weather
-            weatherOverlay.innerHTML = '';
-            if (weatherInterval) {
-                clearInterval(weatherInterval);
-                weatherInterval = null;
-            }
-            currentWeather = type;
-            
-            // Update HUD weather icon
-            const hudWeather = document.getElementById('hud-weather');
-            if (hudWeather) {
-                if (type === 'rain') {
-                    hudWeather.textContent = '🌧️';
-                } else if (type === 'snow') {
-                    hudWeather.textContent = '❄️';
-                } else {
-                    hudWeather.textContent = '☀️';
-                }
-            }
-            
-            if (type === 'rain') {
-                createRain();
-            } else if (type === 'snow') {
-                createSnow();
-            }
-        }
-        
-        function createRain() {
-            // Initial rain drops
-            for (let i = 0; i < 50; i++) {
-                createRainDrop();
-            }
-            // Continuous rain
-            weatherInterval = setInterval(() => {
-                if (currentWeather === 'rain' && currentLocation === 'outside') {
-                    createRainDrop();
-                }
-            }, 50);
-        }
-        
-        function createRainDrop() {
-            const drop = document.createElement('div');
-            drop.className = 'rain-drop';
-            drop.style.left = Math.random() * 100 + '%';
-            drop.style.animationDelay = -Math.random() * 0.6 + 's';
-            drop.style.animationDuration = (0.4 + Math.random() * 0.3) + 's';
-            weatherOverlay.appendChild(drop);
-            setTimeout(() => drop.remove(), 1000);
-        }
-        
-        function createSnow() {
-            // Initial snow flakes
-            for (let i = 0; i < 30; i++) {
-                createSnowFlake();
-            }
-            // Continuous snow
-            weatherInterval = setInterval(() => {
-                if (currentWeather === 'snow' && currentLocation === 'outside') {
-                    createSnowFlake();
-                }
-            }, 200);
-        }
-        
-        function createSnowFlake() {
-            const flake = document.createElement('div');
-            flake.className = 'snow-flake';
-            flake.style.left = Math.random() * 100 + '%';
-            flake.style.animationDelay = -Math.random() * 4 + 's';
-            flake.style.width = (2 + Math.random() * 4) + 'px';
-            flake.style.height = flake.style.width;
-            weatherOverlay.appendChild(flake);
-            setTimeout(() => flake.remove(), 5000);
-        }
-        
-        function randomizeWeather() {
-            // 70% clear, 20% rain, 10% snow
-            const rand = Math.random();
-            if (rand < 0.7) {
-                setWeather('clear');
-            } else if (rand < 0.9) {
-                setWeather('rain');
-            } else {
-                setWeather('snow');
-            }
-        }
-
-        // ============== INIT ==============
-        document.getElementById('start-btn').addEventListener('click', startGame);
-        document.addEventListener('keydown', handleKeyDown);
-
-        async function startGame() {
-            introScreen.style.display = 'none';
-            gameWorld.style.display = 'block';
-            gameState = 'walking';
-            
-            // Initialize ambient effects
-            createParticles();
-            updateDayNightCycle();
-            setInterval(updateDayNightCycle, 60000); // Update every minute
-            
-            // Initialize weather (random)
-            randomizeWeather();
-            setInterval(randomizeWeather, 300000); // Change weather every 5 minutes
-            
-            await loadReposAndGenerateMap();
-            updateCamera();
-        }
-
-        // ============== PROCEDURAL MAP GENERATION ==============
-        // Tile types: 0=grass, 1=path, 2=tree, 3=water, 4=tall-grass, 5=flower, 6=fence, 7=sign
-        // 10=house-roof, 11=house-wall, 12=house-door
-        // 13=train-track, 14=train-sign (destino), 15=train-return (volver)
-        // 16=station-roof, 17=station-wall, 18=station-door, 19=platform, 30=bench
-        // 31=station-clock, 32=vending-machine, 33=lamp-post
-        // 34=train-front, 35=train-wagon, 36=train-back, 37=canopy, 38=column
-        // 39=ticket-booth, 40=info-board, 41=fountain, 42=taxi
-        
-        const TILE_TYPES = {
-            0: 'grass', 1: 'path', 2: 'tree', 3: 'water', 4: 'tall-grass', 
-            5: 'flower', 6: 'fence', 7: 'sign',
-            10: 'house-roof', 11: 'house-wall', 12: 'house-door',
-            13: 'train-track', 14: 'train-sign', 15: 'train-return',
-            16: 'station-roof', 17: 'station-wall', 18: 'station-door',
-            19: 'platform', 30: 'bench', 31: 'station-clock', 
-            32: 'vending-machine', 33: 'lamp-post',
-            34: 'train-front', 35: 'train-wagon', 36: 'train-back',
-            37: 'canopy', 38: 'column', 39: 'ticket-booth', 
-            40: 'info-board', 41: 'fountain', 42: 'taxi'
+        // ===== CONFIG =====
+        const CONFIG = {
+            TILE_SIZE: 32,
+            MAP_WIDTH: 15,
+            MAP_HEIGHT: 10,
+            PLAYER_SPEED: 2.5,
+            NPC_SPEED: 0.8,
+            SPRITE_W: 16,
+            SPRITE_H: 24
         };
-        const SOLID_TILES = [2, 3, 6, 10, 11, 16, 17, 30, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41];
-        
-        // Interior map template (9x8) - Más espacioso
-        const INTERIOR_MAP = [
-            [20,20,20,20,20,20,20,20,20],
-            [20,22,21,26,21,26,21,23,20],
-            [20,21,21,21,21,21,21,21,20],
-            [20,27,21,21,21,21,21,21,20],
-            [20,21,21,24,24,24,21,21,20],
-            [20,21,21,24,24,24,21,27,20],
-            [20,21,21,21,25,21,21,21,20],
-            [20,20,20,20,20,20,20,20,20]
-        ];
-        const INTERIOR_TYPES = {
-            20: 'interior-wall', 21: 'floor', 22: 'bookshelf', 23: 'table', 
-            24: 'carpet', 25: 'exit-mat', 26: 'poster', 27: 'plant'
-        };
-        const INTERIOR_SOLID = [20, 22, 23, 27];
-        
-        // Dynamic map data - will be generated based on repos
-        let MAP_DATA = [];
-        let MAP_ROWS = 0;
-        let MAP_COLS = 0;
-        
-        // Calculate map size based on number of houses
-        function calculateMapSize(numHouses) {
-            // Houses per row (3 houses per row with spacing)
-            const housesPerRow = 3;
-            const rowsNeeded = Math.ceil(numHouses / housesPerRow);
-            
-            // Each house block needs ~10 tiles width, 8 tiles height
-            const blockWidth = 10;
-            const blockHeight = 8;
-            
-            // Map dimensions with borders and paths
-            const cols = Math.max(30, housesPerRow * blockWidth + 6);
-            const rows = Math.max(20, rowsNeeded * blockHeight + 10);
-            
-            return { cols, rows, housesPerRow, blockWidth, blockHeight };
-        }
-        
-        // Generador de mapa procedural limpio
-        function generateProceduralMap(numHouses) {
-            const { cols, rows, housesPerRow, blockWidth, blockHeight } = calculateMapSize(numHouses);
-            
-            MAP_COLS = cols;
-            MAP_ROWS = rows;
-            MAP_DATA = Array.from({ length: rows }, () => Array(cols).fill(0));
-            
-            const fill = (x1, y1, w, h, t) => {
-                for (let y = y1; y < y1 + h && y < rows; y++)
-                    for (let x = x1; x < x1 + w && x < cols; x++)
-                        if (x >= 0 && y >= 0) MAP_DATA[y][x] = t;
-            };
-            
-            const set = (y, x, t) => {
-                if (y >= 0 && y < rows && x >= 0 && x < cols) MAP_DATA[y][x] = t;
-            };
-            
-            // Bordes
-            fill(0, 0, cols, 1, 2);
-            fill(0, rows - 1, cols, 1, 2);
-            for (let y = 0; y < rows; y++) { set(y, 0, 2); set(y, cols - 1, 2); }
-            
-            // Camino principal vertical
-            const mainX = Math.floor(cols / 2);
-            fill(mainX - 1, 3, 2, rows - 6, 1);
-            
-            // Casas en filas
-            const housePositions = [];
-            const rowsOfHouses = Math.ceil(numHouses / housesPerRow);
-            
-            for (let row = 0; row < rowsOfHouses; row++) {
-                const baseY = 4 + row * blockHeight;
-                fill(3, baseY + 2, cols - 6, 1, 1); // Camino horizontal
-                
-                for (let col = 0; col < housesPerRow; col++) {
-                    if (row * housesPerRow + col >= numHouses) break;
-                    
-                    const houseX = col === 0 ? 4 : col === 1 ? mainX + 3 : cols - 8;
-                    const houseY = baseY - 1;
-                    
-                    if (houseY > 0 && houseY + 3 < rows - 1 && houseX + 2 < cols - 1) {
-                        // Casa: techo, paredes, puerta
-                        fill(houseX, houseY, 3, 1, 10);
-                        fill(houseX, houseY + 1, 3, 2, 11);
-                        set(houseY + 2, houseX + 1, 12);
-                        set(houseY + 3, houseX + 1, 1);
-                        
-                        housePositions.push({ doorX: houseX + 1, doorY: houseY + 2 });
-                    }
-                }
-            }
-            
-            // Decoración dispersa
-            for (let y = 2; y < rows - 2; y++) {
-                for (let x = 2; x < cols - 2; x++) {
-                    if (MAP_DATA[y][x] === 0 && Math.random() < 0.04) {
-                        MAP_DATA[y][x] = Math.random() < 0.6 ? 5 : 4;
-                    }
-                }
-            }
-            
-            // Lago pequeño
-            if (rows > 15 && cols > 20) fill(cols - 8, rows - 5, 4, 3, 3);
-            
-            playerX = mainX;
-            playerY = Math.min(rows - 4, 6);
-            
-            return housePositions;
-        }
-        
-        // Renderizar mapa - zonas fluidas sin grid
-        function generateMap() {
-            map.innerHTML = '';
-            const w = MAP_COLS * TILE_SIZE;
-            const h = MAP_ROWS * TILE_SIZE;
-            map.style.width = w + 'px';
-            map.style.height = h + 'px';
-            map.style.background = '#48a848';
-            
-            const langClass = getLanguageClass(currentCity);
-            
-            // Crear filas horizontales continuas para cada tipo de zona
-            const renderZoneRows = (tileType, className) => {
-                let rows = [];
-                for (let y = 0; y < MAP_ROWS; y++) {
-                    let startX = null;
-                    for (let x = 0; x <= MAP_COLS; x++) {
-                        const isType = x < MAP_COLS && MAP_DATA[y][x] === tileType;
-                        if (isType && startX === null) {
-                            startX = x;
-                        } else if (!isType && startX !== null) {
-                            rows.push({ x: startX, y, w: x - startX });
-                            startX = null;
-                        }
-                    }
-                }
-                // Fusionar filas adyacentes verticalmente si tienen mismo x y w
-                rows.forEach(row => {
-                    const el = document.createElement('div');
-                    el.className = 'zone ' + className;
-                    el.style.left = row.x * TILE_SIZE + 'px';
-                    el.style.top = row.y * TILE_SIZE + 'px';
-                    el.style.width = row.w * TILE_SIZE + 'px';
-                    el.style.height = TILE_SIZE + 'px';
-                    map.appendChild(el);
-                });
-            };
-            
-            // Renderizar zonas por filas (más natural)
-            renderZoneRows(1, 'zone-path');
-            renderZoneRows(3, 'zone-water');
-            renderZoneRows(13, 'zone-track');
-            renderZoneRows(19, 'zone-platform');
-            
-            // Elementos individuales
-            for (let y = 0; y < MAP_ROWS; y++) {
-                for (let x = 0; x < MAP_COLS; x++) {
-                    const t = MAP_DATA[y][x];
-                    if ([0, 1, 3, 13, 19].includes(t)) continue;
-                    
-                    const el = document.createElement('div');
-                    el.className = `element ${TILE_TYPES[t] || 'grass'}${t === 10 && langClass ? ' ' + langClass : ''}`;
-                    el.style.left = x * TILE_SIZE + 'px';
-                    el.style.top = y * TILE_SIZE + 'px';
-                    map.appendChild(el);
-                    
-                    if (t === 15 && currentCity !== 'STATION') {
-                        const label = document.createElement('div');
-                        label.className = 'return-label';
-                        label.textContent = '← ESTACIÓN';
-                        label.style.left = (x * TILE_SIZE - 10) + 'px';
-                        label.style.top = ((y - 1) * TILE_SIZE) + 'px';
-                        map.appendChild(label);
-                    }
-                }
-            }
-        }
-        
-        function getLanguageClass(lang) {
-            const langMap = {
-                'JavaScript': 'js-house',
-                'Python': 'py-house',
-                'TypeScript': 'ts-house',
-                'Java': 'java-house',
-                'C++': 'cpp-house',
-                'C#': 'cs-house',
-                'Go': 'go-house',
-                'Rust': 'rust-house',
-                'Ruby': 'ruby-house',
-                'PHP': 'php-house',
-                'HTML': 'html-house',
-                'CSS': 'css-house'
-            };
-            return langMap[lang] || '';
-        }
-        
-        function generateInterior(house) {
-            map.innerHTML = '';
-            const rows = INTERIOR_MAP.length;
-            const cols = INTERIOR_MAP[0].length;
-            map.style.width = cols * TILE_SIZE + 'px';
-            map.style.height = rows * TILE_SIZE + 'px';
 
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < cols; x++) {
-                    const tileType = INTERIOR_MAP[y][x];
+        // ===== CHARACTERS =====
+        const CHARACTERS = {
+            stan: {
+                name: 'STAN',
+                class: 'char-stan',
+                dialogues: [
+                    "Dude, check out these projects!",
+                    "This portfolio is pretty cool.",
+                    "Oh my God, they killed Kenny!"
+                ]
+            },
+            kyle: {
+                name: 'KYLE',
+                class: 'char-kyle',
+                dialogues: [
+                    "You know, I learned something today...",
+                    "These repos are well documented!",
+                    "Shut up, Cartman!"
+                ]
+            },
+            cartman: {
+                name: 'CARTMAN',
+                class: 'char-cartman',
+                dialogues: [
+                    "Respect my authoritah!",
+                    "Screw you guys, I'm going home!",
+                    "Whatever! I do what I want!"
+                ]
+            },
+            kenny: {
+                name: 'KENNY',
+                class: 'char-kenny',
+                dialogues: [
+                    "(Mmph mmph mmph!)",
+                    "(Mmph mmph mmph mmph!)",
+                    "(Mmph!)"
+                ]
+            }
+        };
+
+        // ===== GAME STATE =====
+        const state = {
+            player: { x: 220, y: 160, frame: 0 },
+            npcs: [],
+            keys: {},
+            dialogue: false,
+            target: null
+        };
+
+        // ===== INIT =====
+        function init() {
+            createGround();
+            createBuildings();
+            createNPCs();
+            setupPlayer();
+            setupControls();
+            loadProjects();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // ===== GROUND =====
+        function createGround() {
+            const ground = document.getElementById('ground');
+            
+            for (let y = 1; y < CONFIG.MAP_HEIGHT; y++) {
+                for (let x = 0; x < CONFIG.MAP_WIDTH; x++) {
                     const tile = document.createElement('div');
-                    tile.className = 'tile ' + (INTERIOR_TYPES[tileType] || 'floor');
-                    tile.style.left = x * TILE_SIZE + 'px';
-                    tile.style.top = y * TILE_SIZE + 'px';
-                    map.appendChild(tile);
+                    tile.className = 'tile ' + ((x + y) % 2 ? 'tile-grass' : 'tile-grass-dark');
+                    tile.style.left = x * CONFIG.TILE_SIZE + 'px';
+                    tile.style.top = (y + 0.5) * CONFIG.TILE_SIZE + 'px';
+                    ground.appendChild(tile);
                 }
             }
-            
-            // Add project NPC inside (centered in the room)
-            const npcData = {
-                x: 4,
-                y: 2,
-                name: house.name,
-                description: house.description,
-                language: house.language,
-                stars: house.stars,
-                url: house.url,
-                spriteClass: house.spriteClass
-            };
-            npcs = [npcData];
-            renderNpc(npcData);
-            
-            // Add room label
-            const roomLabel = document.createElement('div');
-            roomLabel.className = 'room-label';
-            roomLabel.innerHTML = `📁 ${house.name}`;
-            map.appendChild(roomLabel);
+
+            // Horizontal road
+            for (let x = 0; x < CONFIG.MAP_WIDTH; x++) {
+                const road = document.createElement('div');
+                road.className = 'tile tile-road tile-road-h';
+                road.style.left = x * CONFIG.TILE_SIZE + 'px';
+                road.style.top = 5 * CONFIG.TILE_SIZE + 'px';
+                ground.appendChild(road);
+            }
         }
 
-        // ============== LOAD REPOS AND GENERATE MAP ==============
-        let allRepos = [];
-        let citiesByLanguage = {};
-        let reposWithPages = []; // Repos con GitHub Pages
-        let currentCity = null;
-        let collaboratorsCache = {};
-        let visitedProjects = new Set();
-        let totalProjects = 0;
-        const USERNAME = 'MutenRos';
-        
-        async function loadReposAndGenerateMap() {
-            try {
-                const response = await fetch(`https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=100`);
-                if (!response.ok) throw new Error('API Error');
-                
-                allRepos = await response.json();
-                totalProjects = allRepos.length;
-                
-                // Agrupar por lenguaje y detectar repos con GitHub Pages
-                citiesByLanguage = {};
-                reposWithPages = [];
-                
-                allRepos.forEach(repo => {
-                    const lang = repo.language || 'Other';
-                    if (!citiesByLanguage[lang]) citiesByLanguage[lang] = [];
-                    citiesByLanguage[lang].push(repo);
-                    
-                    // Detectar si tiene GitHub Pages
-                    if (repo.has_pages || repo.homepage) {
-                        const pagesUrl = repo.homepage || `https://${USERNAME.toLowerCase()}.github.io/${repo.name}`;
-                        reposWithPages.push({
-                            name: repo.name,
-                            url: pagesUrl,
-                            language: lang,
-                            description: repo.description
-                        });
-                    }
-                });
-                
-                const sortedLanguages = Object.keys(citiesByLanguage).sort(
-                    (a, b) => citiesByLanguage[b].length - citiesByLanguage[a].length
-                );
-                
-                console.log('Languages:', sortedLanguages);
-                console.log('Repos with Pages:', reposWithPages.map(r => r.name));
-                
-                loadVisitedProjects();
-                loadTrainStation(sortedLanguages);
-                
-            } catch (error) {
-                console.error('Error loading repos:', error);
-                generateProceduralMap(1);
-                generateMap();
-            }
-        }
-        
-        // ============== SOUTH PARK TOWN MAP ==============
-        // Personajes de South Park y sus ubicaciones
-        const SP_CHARACTERS = {
-            'stan': { name: 'Stan Marsh', sprite: 'sp-stan', color: '#3366CC' },
-            'kyle': { name: 'Kyle Broflovski', sprite: 'sp-kyle', color: '#FF6600' },
-            'cartman': { name: 'Eric Cartman', sprite: 'sp-cartman', color: '#CC0000' },
-            'kenny': { name: 'Kenny McCormick', sprite: 'sp-kenny', color: '#FF8800' },
-            'butters': { name: 'Butters Stotch', sprite: 'sp-butters', color: '#80C0E0' },
-            'wendy': { name: 'Wendy Testaburger', sprite: 'sp-wendy', color: '#9933CC' },
-            'randy': { name: 'Randy Marsh', sprite: 'sp-randy', color: '#3366CC' },
-            'garrison': { name: 'Mr. Garrison', sprite: 'sp-garrison', color: '#339933' },
-            'chef': { name: 'Chef', sprite: 'sp-chef', color: '#8B4513' }
-        };
-        
-        // Edificios icónicos de South Park - Layout simple como el show
-        const SP_BUILDINGS = [
-            { id: 'stan_house', name: 'Casa de Stan', color: '#8B4513', x: 2, y: 3, character: 'kyle' },
-            { id: 'kyle_house', name: 'Casa de Kyle', color: '#2E7D32', x: 6, y: 3, character: 'stan' },
-            { id: 'cartman_house', name: 'Casa de Cartman', color: '#C62828', x: 10, y: 3, character: 'cartman' },
-            { id: 'kenny_house', name: 'Casa de Kenny', color: '#795548', x: 14, y: 3, character: 'kenny' },
-            { id: 'school', name: 'SP Elementary', color: '#FF8F00', x: 2, y: 8, character: 'garrison' },
-            { id: 'church', name: 'Iglesia', color: '#FFFFFF', x: 7, y: 8, character: 'butters' },
-            { id: 'city_hall', name: 'City Hall', color: '#1565C0', x: 11, y: 8, character: 'randy' },
-            { id: 'cafe', name: 'Tweek Coffee', color: '#4E342E', x: 15, y: 8, character: 'wendy' },
-            { id: 'hospital', name: 'Hospital', color: '#D32F2F', x: 8, y: 13, character: 'chef' }
-        ];
-        
-        // Cargar el mapa principal de South Park
-        function loadSouthParkTown(repos) {
-            currentCity = 'SOUTH_PARK';
-            currentLocation = 'outside';
-            houses = [];
-            wanderingNpcs = [];
-            npcs = [];
+        // ===== BUILDINGS =====
+        function createBuildings() {
+            const buildings = document.getElementById('buildings');
             
-            // Mapa más pequeño y compacto como South Park
-            MAP_COLS = 20;
-            MAP_ROWS = 18;
-            MAP_DATA = Array.from({length: MAP_ROWS}, () => Array(MAP_COLS).fill(0));
-            
-            const fill = (x, y, w, h, t) => {
-                for (let dy = 0; dy < h; dy++)
-                    for (let dx = 0; dx < w; dx++)
-                        if (y+dy < MAP_ROWS && x+dx < MAP_COLS && y+dy >= 0 && x+dx >= 0) 
-                            MAP_DATA[y+dy][x+dx] = t;
-            };
-            
-            const set = (y, x, t) => {
-                if (y >= 0 && y < MAP_ROWS && x >= 0 && x < MAP_COLS) MAP_DATA[y][x] = t;
-            };
-            
-            // === FONDO: Todo nieve/hierba ===
-            // Nada de árboles en los bordes - solo cielo y montañas (CSS)
-            
-            // === UNA SOLA CALLE HORIZONTAL PRINCIPAL ===
-            fill(0, 6, MAP_COLS, 1, 1);  // Calle superior
-            fill(0, 11, MAP_COLS, 1, 1); // Calle inferior
-            
-            // === ACERAS ===
-            fill(0, 5, MAP_COLS, 1, 1);
-            fill(0, 7, MAP_COLS, 1, 1);
-            fill(0, 10, MAP_COLS, 1, 1);
-            fill(0, 12, MAP_COLS, 1, 1);
-            
-            // === EDIFICIOS DE SOUTH PARK ===
-            const numRepos = repos.length;
-            
-            SP_BUILDINGS.forEach((building, idx) => {
-                const bx = building.x;
-                const by = building.y;
-                
-                // Casa simple: techo + pared + puerta
-                fill(bx, by, 3, 1, 10);      // Techo
-                fill(bx, by + 1, 3, 1, 11);  // Pared
-                set(by + 2, bx + 1, 12);     // Puerta
-                set(by + 2, bx, 11);         // Pared izq
-                set(by + 2, bx + 2, 11);     // Pared der
-                
-                // Asignar proyecto
-                if (idx < numRepos) {
-                    const repo = repos[idx];
-                    const house = {
-                        doorX: bx + 1,
-                        doorY: by + 2,
-                        buildingId: building.id,
-                        buildingName: building.name,
-                        buildingColor: building.color,
-                        name: repo.name,
-                        fullName: repo.full_name,
-                        description: repo.description || building.name,
-                        language: repo.language || 'Unknown',
-                        stars: repo.stargazers_count,
-                        url: repo.html_url,
-                        spriteClass: SP_CHARACTERS[building.character].sprite,
-                        character: building.character,
-                        characterName: SP_CHARACTERS[building.character].name
-                    };
-                    houses.push(house);
-                }
-            });
-            
-            // Más repos? Añadir casas abajo
-            if (numRepos > SP_BUILDINGS.length) {
-                const extraRepos = repos.slice(SP_BUILDINGS.length);
-                const characterKeys = Object.keys(SP_CHARACTERS);
-                
-                extraRepos.forEach((repo, idx) => {
-                    const col = idx % 4;
-                    const houseX = 2 + col * 4;
-                    const houseY = 14;
-                    
-                    if (houseX + 3 < MAP_COLS) {
-                        fill(houseX, houseY, 3, 1, 10);
-                        fill(houseX, houseY + 1, 3, 2, 11);
-                        set(houseY + 2, houseX + 1, 12);
-                        
-                        const charKey = characterKeys[idx % characterKeys.length];
-                        const house = {
-                            doorX: houseX + 1,
-                            doorY: houseY + 2,
-                            name: repo.name,
-                            fullName: repo.full_name,
-                            description: repo.description || 'Proyecto',
-                            language: repo.language || 'Unknown',
-                            stars: repo.stargazers_count,
-                            url: repo.html_url,
-                            spriteClass: SP_CHARACTERS[charKey].sprite,
-                            character: charKey,
-                            characterName: SP_CHARACTERS[charKey].name
-                        };
-                        houses.push(house);
-                    }
-                });
-            }
-            
-            // Posición inicial del jugador - en la calle
-            playerX = 10;
-            playerY = 6;
-            playerY = 7;
-            
-            // Renderizar mapa
-            generateMap();
-            
-            // Añadir labels de edificios
-            houses.forEach(house => {
-                renderSPBuildingLabel(house);
-            });
-            
-            // Añadir NPCs de personajes fuera de sus casas
-            renderSPCharacters(houses);
-            
-            // Título del pueblo
-            const title = document.createElement('div');
-            title.className = 'station-title sp-title';
-            title.innerHTML = '🏔️ SOUTH PARK, COLORADO 🏔️';
-            map.appendChild(title);
-            
-            updateHUD('SOUTH PARK');
-        }
-        
-        // Renderizar etiqueta de edificio SP
-        function renderSPBuildingLabel(house) {
-            const label = document.createElement('div');
-            label.className = 'house-label sp-building-label';
-            label.id = `label-${house.doorX}-${house.doorY}`;
-            label.innerHTML = `${house.buildingIcon || '🏠'} ${house.name}`;
-            label.style.left = (house.doorX * TILE_SIZE - 20) + 'px';
-            label.style.top = ((house.doorY - 2) * TILE_SIZE) + 'px';
-            map.appendChild(label);
-        }
-        
-        // Renderizar personajes de South Park cerca de sus casas
-        function renderSPCharacters(houses) {
-            houses.forEach((house, idx) => {
-                // Posicionar NPC cerca de la puerta
-                const npcX = house.doorX + (idx % 2 === 0 ? 1 : -1);
-                const npcY = house.doorY + 1;
-                
-                const npcData = {
-                    x: npcX,
-                    y: npcY,
-                    name: house.characterName,
-                    projectName: house.name,
-                    description: house.description,
-                    language: house.language,
-                    stars: house.stars,
-                    url: house.url,
-                    spriteClass: house.spriteClass,
-                    character: house.character,
-                    isProjectNpc: true
-                };
-                
-                npcs.push(npcData);
-                renderNpc(npcData);
-            });
-        }
-        
-        // LEGACY: Mantener compatibilidad con estación
-        function loadTrainStation(languages) {
-            // Ahora carga South Park Town con todos los repos
-            loadSouthParkTown(allRepos);
-        }
-        
-        // Cargar una ciudad específica
-        function loadCity(language) {
-            screenTransition(() => {
-                currentCity = language;
-                currentLocation = 'outside';
-                houses = [];
-                wanderingNpcs = [];
-                
-                const repos = citiesByLanguage[language] || [];
-                const spriteClasses = ['npc-sprite', 'npc-sprite-blue', 'npc-sprite-green', 'npc-sprite-purple'];
-                
-                // Generar mapa para esta ciudad
-                const housePositions = generateProceduralMap(repos.length);
-                
-                // Añadir estación de tren en el mapa
-                addTrainStationToMap();
-                
-                // Renderizar mapa
-                generateMap();
-                
-                // Crear casas
-                repos.forEach((repo, index) => {
-                    if (index >= housePositions.length) return;
-                    
-                    const pos = housePositions[index];
-                    const house = {
-                        doorX: pos.doorX,
-                        doorY: pos.doorY,
-                        name: repo.name,
-                        fullName: repo.full_name,
-                        description: repo.description || 'Sin descripcion',
-                        language: repo.language || 'Unknown',
-                        stars: repo.stargazers_count,
-                        url: repo.html_url,
-                        spriteClass: spriteClasses[index % spriteClasses.length]
-                    };
-                    
-                    houses.push(house);
-                    renderHouseLabel(house);
-                });
-                
-                // Etiqueta de ciudad
-                const cityTitle = document.createElement('div');
-                cityTitle.className = 'city-title';
-                cityTitle.innerHTML = `🏙️ Ciudad ${language}<small>${repos.length} proyectos</small>`;
-                map.appendChild(cityTitle);
-                
-                // Actualizar HUD
-                updateHUD(`Ciudad ${language}`);
-                
-                // Posición inicial
-                playerX = Math.floor(MAP_COLS / 2);
-                playerY = MAP_ROWS - 4;
-                
-                updateCamera();
-                
-                console.log(`Loaded city ${language} with ${repos.length} houses`);
-            });
-        }
-        
-        // Volver a la estación
-        function returnToStation() {
-            screenTransition(() => {
-                const languages = Object.keys(citiesByLanguage).sort(
-                    (a, b) => citiesByLanguage[b].length - citiesByLanguage[a].length
-                );
-                loadTrainStation(languages);
-                updateCamera();
-            });
-        }
-        
-        // Mini estación en ciudades (compacta)
-        function addTrainStationToMap() {
-            const sy = MAP_ROWS - 3;
-            const sx = Math.floor(MAP_COLS / 2) - 2;
-            if (sy < 2 || sx < 1) return;
-            
-            const set = (y, x, t) => {
-                if (y >= 0 && y < MAP_ROWS && x >= 0 && x < MAP_COLS) MAP_DATA[y][x] = t;
-            };
-            
-            // Estructura: techo, pared con puerta, andén, vía
-            for (let i = 0; i < 5; i++) {
-                set(sy - 1, sx + i, 16);  // Techo
-                set(sy, sx + i, 17);      // Pared
-                set(sy + 1, sx + i, 19);  // Andén
-                set(sy + 2, sx + i, 13);  // Vía
-            }
-            set(sy, sx + 2, 18);          // Puerta
-            set(sy + 1, sx, 15);          // Cartel retorno
-        }
-        
-        function renderHouseLabel(house) {
-            const label = document.createElement('div');
-            label.className = 'house-label';
-            label.id = `label-${house.doorX}-${house.doorY}`;
-            label.textContent = house.name;
-            label.style.left = house.doorX * TILE_SIZE + 'px';
-            label.style.top = (house.doorY - 1) * TILE_SIZE + 'px';
-            map.appendChild(label);
-        }
-
-        function renderNpc(npc) {
-            const npcEl = document.createElement('div');
-            npcEl.className = 'npc';
-            npcEl.id = `npc-${npc.x}-${npc.y}`;
-            npcEl.style.left = npc.x * TILE_SIZE + 'px';
-            npcEl.style.top = npc.y * TILE_SIZE + 'px';
-            
-            // Create pixel art sprite
-            const spriteEl = document.createElement('div');
-            spriteEl.className = npc.spriteClass;
-            npcEl.appendChild(spriteEl);
-            
-            // Add name label
-            const label = document.createElement('div');
-            label.className = 'npc-label';
-            label.textContent = npc.name;
-            npcEl.appendChild(label);
-            
-            npcEl.dataset.name = npc.name;
-            map.appendChild(npcEl);
-        }
-
-        // ============== PLAYER MOVEMENT ==============
-        function handleKeyDown(e) {
-            if (gameState === 'intro') {
-                if (e.code === 'Space' || e.code === 'Enter') {
-                    startGame();
-                }
-                return;
-            }
-            
-            if (gameState === 'dialog') {
-                if (e.code === 'Space' || e.code === 'Enter') {
-                    // Si es colaborador, abrir su GitHub
-                    if (currentNpc && currentNpc.isCollaborator) {
-                        window.open(currentNpc.url, '_blank');
-                        dialogBox.style.display = 'none';
-                        gameState = 'walking';
-                    } else {
-                        startBattle(currentNpc);
-                    }
-                }
-                if (e.code === 'Escape') {
-                    dialogBox.style.display = 'none';
-                    gameState = 'walking';
-                }
-                return;
-            }
-            
-            if (gameState === 'battle') {
-                // Arrow key navigation in battle menu
-                handleBattleNavigation(e);
-                return;
-            }
-            
-            if (gameState === 'info') {
-                if (e.code === 'Escape' || e.code === 'Enter') {
-                    closeInfo();
-                }
-                return;
-            }
-            
-            if (gameState !== 'walking' || isMoving) return;
-            
-            // Toggle minimap
-            if (e.code === 'KeyM') {
-                toggleMinimap();
-                return;
-            }
-            
-            let newX = playerX;
-            let newY = playerY;
-            let moved = false;
-            
-            switch(e.code) {
-                case 'ArrowUp':
-                case 'KeyW':
-                    newY--;
-                    moved = true;
-                    break;
-                case 'ArrowDown':
-                case 'KeyS':
-                    newY++;
-                    moved = true;
-                    break;
-                case 'ArrowLeft':
-                case 'KeyA':
-                    newX--;
-                    moved = true;
-                    break;
-                case 'ArrowRight':
-                case 'KeyD':
-                    newX++;
-                    moved = true;
-                    break;
-                case 'Space':
-                case 'Enter':
-                    checkInteraction();
-                    return;
-            }
-            
-            if (!moved) return;
-            e.preventDefault();
-            
-            // Handle interior movement
-            if (currentLocation === 'inside') {
-                const rows = INTERIOR_MAP.length;
-                const cols = INTERIOR_MAP[0].length;
-                if (newX < 0 || newX >= cols || newY < 0 || newY >= rows) return;
-                
-                const tileType = INTERIOR_MAP[newY][newX];
-                if (INTERIOR_SOLID.includes(tileType)) return;
-                
-                // Check exit
-                if (tileType === 25 && newY === 5) {
-                    exitHouse();
-                    return;
-                }
-                
-                // Check NPC collision
-                const npcAtPos = npcs.find(n => n.x === newX && n.y === newY);
-                if (npcAtPos) return;
-                
-                movePlayer(newX, newY);
-                updateNpcProximity();
-                return;
-            }
-            
-            // Handle outside movement
-            if (newX < 0 || newX >= MAP_COLS || newY < 0 || newY >= MAP_ROWS) return;
-            
-            const tileType = MAP_DATA[newY][newX];
-            
-            // Check if entering a house door
-            if (tileType === 12) {
-                const house = houses.find(h => h.doorX === newX && h.doorY === newY);
-                if (house) {
-                    enterHouse(house);
-                    return;
-                }
-                // If door but no house data, still block movement
-                return;
-            }
-            
-            if (SOLID_TILES.includes(tileType)) return;
-            
-            movePlayer(newX, newY, playerX, playerY);
-            updateHouseLabels();
-        }
-        
-        function movePlayer(newX, newY, oldX, oldY) {
-            isMoving = true;
-            
-            // Crear efecto de polvo/hierba
-            createFootstepEffect(oldX || playerX, oldY || playerY);
-            
-            playerX = newX;
-            playerY = newY;
-            
-            player.classList.add('walking');
-            
-            // Visual sound effect
-            createVisualNote();
-            
-            updateCamera();
-            
-            setTimeout(() => {
-                isMoving = false;
-                player.classList.remove('walking');
-            }, 150);
-        }
-        
-        function createFootstepEffect(x, y) {
-            // Solo crear efecto en ciertos tiles y en exteriores
-            if (currentLocation === 'inside') return;
-            if (!MAP_DATA || !MAP_DATA[y]) return;
-            
-            const tile = MAP_DATA[y][x];
-            if (tile === undefined) return;
-            
-            // Efecto de polvo en caminos
-            if (tile === 5 || tile === 6) {
-                const dust = document.createElement('div');
-                dust.className = 'footstep-dust';
-                dust.style.left = (x * TILE_SIZE) + 'px';
-                dust.style.top = ((y + 1) * TILE_SIZE) + 'px';
-                map.appendChild(dust);
-                setTimeout(() => dust.remove(), 400);
-            }
-        }
-        
-        function updateHouseLabels() {
-            houses.forEach(house => {
-                const label = document.getElementById(`label-${house.doorX}-${house.doorY}`);
-                if (label) {
-                    const dist = Math.abs(playerX - house.doorX) + Math.abs(playerY - house.doorY);
-                    if (dist <= 2) {
-                        label.classList.add('visible');
-                    } else {
-                        label.classList.remove('visible');
-                    }
-                }
-            });
-        }
-        
-        function updateNpcProximity() {
-            npcs.forEach(npc => {
-                const npcEl = document.getElementById(`npc-${npc.x}-${npc.y}`);
-                if (npcEl) {
-                    const dist = Math.abs(playerX - npc.x) + Math.abs(playerY - npc.y);
-                    if (dist <= 2) {
-                        npcEl.classList.add('nearby');
-                    } else {
-                        npcEl.classList.remove('nearby');
-                    }
-                }
-            });
-        }
-        
-        // Screen transition effect - Premium style
-        function screenTransition(callback) {
-            const container = document.getElementById('game-container');
-            const transition = document.createElement('div');
-            transition.className = 'screen-transition';
-            transition.innerHTML = '<div class="transition-flash"></div>';
-            container.appendChild(transition);
-            
-            setTimeout(() => {
-                callback();
-                transition.classList.add('fade-out');
-                setTimeout(() => transition.remove(), 400);
-            }, 350);
-        }
-        
-        function enterHouse(house) {
-            screenTransition(async () => {
-                currentHouse = house;
-                currentLocation = 'inside';
-                npcs = [];
-                
-                // Generate interior
-                generateInterior(house);
-                
-                // Activate interior lighting
-                document.getElementById('interior-light-overlay').classList.add('active');
-                
-                // Actualizar HUD
-                updateHUD(house.name);
-                
-                // Trackear visita al proyecto
-                trackProjectVisit(house.name);
-                
-                // Cargar colaboradores de este repo (con cache)
-                await loadHouseCollaborators(house);
-                
-                // Position player at entrance (centered on exit mat)
-                playerX = 4;
-                playerY = 6;
-                
-                updateCamera();
-                updateNpcProximity();
-            });
-        }
-        
-        // Sistema de tracking de proyectos visitados
-        function trackProjectVisit(projectName) {
-            const wasNew = !visitedProjects.has(projectName);
-            visitedProjects.add(projectName);
-            
-            // Guardar en localStorage
-            localStorage.setItem('visitedProjects', JSON.stringify([...visitedProjects]));
-            
-            // Actualizar HUD
-            updateVisitedCount();
-            
-            // Mostrar logro si es primera visita
-            if (wasNew) {
-                showAchievement(`¡Nuevo proyecto descubierto!<br>${projectName}`);
-            }
-            
-            // Logro especial al visitar todos
-            if (visitedProjects.size === totalProjects && totalProjects > 0) {
-                setTimeout(() => {
-                    showAchievement('🎉 ¡COMPLETADO!<br>Has visitado todos los proyectos');
-                }, 3500);
-            }
-        }
-        
-        function updateVisitedCount() {
-            document.getElementById('hud-visited').textContent = visitedProjects.size;
-            document.getElementById('hud-total').textContent = totalProjects;
-        }
-        
-        function showAchievement(text) {
-            const popup = document.createElement('div');
-            popup.className = 'achievement-popup';
-            popup.innerHTML = text;
-            document.body.appendChild(popup);
-            
-            // Remover después de la animación
-            setTimeout(() => popup.remove(), 3100);
-        }
-        
-        function loadVisitedProjects() {
-            try {
-                const saved = localStorage.getItem('visitedProjects');
-                if (saved) {
-                    const projects = JSON.parse(saved);
-                    projects.forEach(p => visitedProjects.add(p));
-                }
-            } catch (e) {
-                console.log('No saved progress');
-            }
-            updateVisitedCount();
-        }
-        
-        // Cargar colaboradores para una casa específica
-        async function loadHouseCollaborators(house) {
-            const repoName = house.name;
-            const collaboratorSprites = ['npc-sprite-red', 'npc-sprite-yellow', 'npc-sprite-cyan', 'npc-sprite-pink'];
-            
-            // Verificar cache
-            if (collaboratorsCache[repoName]) {
-                renderCollaboratorsInHouse(collaboratorsCache[repoName], collaboratorSprites);
-                return;
-            }
-            
-            try {
-                const response = await fetch(`https://api.github.com/repos/${USERNAME}/${repoName}/contributors?per_page=5`);
-                if (!response.ok) return;
-                
-                const contributors = await response.json();
-                
-                // Filtrar al dueño
-                const collabs = contributors.filter(c => c.login.toLowerCase() !== USERNAME.toLowerCase()).slice(0, 3);
-                
-                // Guardar en cache
-                collaboratorsCache[repoName] = collabs;
-                
-                // Renderizar
-                renderCollaboratorsInHouse(collabs, collaboratorSprites);
-                
-                console.log(`Loaded ${collabs.length} collaborators for ${repoName}`);
-            } catch (e) {
-                console.log(`Could not fetch collaborators for ${repoName}:`, e);
-            }
-        }
-        
-        // Renderizar colaboradores dentro de la casa
-        function renderCollaboratorsInHouse(collabs, sprites) {
-            // Posiciones distribuidas en el interior 9x8
-            const positions = [
-                {x: 2, y: 2},   // Izquierda arriba
-                {x: 6, y: 2},   // Derecha arriba
-                {x: 2, y: 4},   // Izquierda abajo
-                {x: 6, y: 4}    // Derecha abajo
+            const houses = [
+                { x: 24, y: 64, type: 'stan' },
+                { x: 88, y: 64, type: 'kyle' },
+                { x: 280, y: 64, type: 'cartman' },
+                { x: 360, y: 64, type: 'kenny' }
             ];
-            
-            collabs.forEach((collab, index) => {
-                if (index >= positions.length) return;
-                
-                const pos = positions[index];
-                const npcData = {
-                    x: pos.x,
-                    y: pos.y,
-                    name: collab.login,
-                    url: collab.html_url,
-                    spriteClass: sprites[index % sprites.length],
-                    isCollaborator: true,
-                    contributions: collab.contributions || 0
-                };
-                
-                npcs.push(npcData);
-                renderNpc(npcData);
+
+            houses.forEach(h => {
+                const house = document.createElement('div');
+                house.className = `building house ${h.type}`;
+                house.style.left = h.x + 'px';
+                house.style.top = h.y + 'px';
+                house.innerHTML = `
+                    <div class="house-roof"></div>
+                    <div class="house-body">
+                        <div class="house-door"></div>
+                        <div class="house-window left"></div>
+                        <div class="house-window right"></div>
+                    </div>
+                `;
+                buildings.appendChild(house);
             });
+
+            // School
+            const school = document.createElement('div');
+            school.className = 'building school';
+            school.style.left = '160px';
+            school.style.top = '200px';
+            school.innerHTML = '<div class="school-door"></div>';
+            buildings.appendChild(school);
         }
-        
-        function exitHouse() {
-            screenTransition(() => {
-                currentLocation = 'outside';
-                npcs = [];
-                
-                // Deactivate interior lighting
-                document.getElementById('interior-light-overlay').classList.remove('active');
-                
-                // Restore outside map
-                generateMap();
-                
-                // Re-render house labels
-                houses.forEach(h => renderHouseLabel(h));
-                
-                // Position player in front of house door
-                playerX = currentHouse.doorX;
-                playerY = currentHouse.doorY + 1;
-                currentHouse = null;
-                
-                // Actualizar HUD
-                updateHUD(currentCity === 'STATION' ? 'ESTACIÓN CENTRAL' : `Ciudad ${currentCity}`);
-                
-                updateCamera();
-                updateHouseLabels();
+
+        // ===== NPCs =====
+        function createNPCs() {
+            const container = document.getElementById('characters');
+            const configs = [
+                { type: 'stan', x: 48, y: 120 },
+                { type: 'kyle', x: 112, y: 120 },
+                { type: 'cartman', x: 304, y: 120 },
+                { type: 'kenny', x: 384, y: 120 }
+            ];
+
+            configs.forEach((cfg, i) => {
+                const el = document.createElement('div');
+                el.className = `character ${CHARACTERS[cfg.type].class}`;
+                el.style.left = cfg.x + 'px';
+                el.style.top = cfg.y + 'px';
+                container.appendChild(el);
+
+                state.npcs.push({
+                    el,
+                    type: cfg.type,
+                    x: cfg.x,
+                    y: cfg.y,
+                    tx: cfg.x,
+                    ty: cfg.y,
+                    frame: 0,
+                    timer: Math.random() * 100
+                });
             });
         }
 
-        function updateCamera() {
-            const screenWidth = 480;
-            const screenHeight = 432;
-            
-            let mapCols, mapRows;
-            if (currentLocation === 'inside') {
-                mapCols = INTERIOR_MAP[0].length;
-                mapRows = INTERIOR_MAP.length;
-            } else {
-                mapCols = MAP_COLS;
-                mapRows = MAP_ROWS;
-            }
-            
-            // Center camera on player
-            cameraX = playerX * TILE_SIZE - screenWidth / 2 + TILE_SIZE / 2;
-            cameraY = playerY * TILE_SIZE - screenHeight / 2 + TILE_SIZE / 2;
-            
-            // Clamp camera
-            const maxX = mapCols * TILE_SIZE - screenWidth;
-            const maxY = mapRows * TILE_SIZE - screenHeight;
-            cameraX = Math.max(0, Math.min(cameraX, maxX));
-            cameraY = Math.max(0, Math.min(cameraY, maxY));
-            
-            map.style.transform = `translate(${-cameraX}px, ${-cameraY}px)`;
-            
-            // Position player relative to camera
-            player.style.left = (playerX * TILE_SIZE - cameraX) + 'px';
-            player.style.top = (playerY * TILE_SIZE - cameraY) + 'px';
-            
-            // Actualizar mini-mapa
-            updateMinimap(mapCols, mapRows);
+        // ===== PLAYER =====
+        function setupPlayer() {
+            const player = document.getElementById('player');
+            player.className = 'character char-stan';
+            updatePlayer();
         }
-        
-        // Sistema de mini-mapa
-        function updateMinimap(mapCols, mapRows) {
-            const canvas = document.getElementById('minimap-canvas');
-            const ctx = canvas.getContext('2d');
-            const minimap = document.getElementById('minimap');
-            const playerDot = document.getElementById('minimap-player');
-            
-            // Solo mostrar en exteriores
-            if (currentLocation === 'inside') {
-                minimap.style.display = 'none';
+
+        function updatePlayer() {
+            const p = document.getElementById('player');
+            p.style.left = state.player.x + 'px';
+            p.style.top = state.player.y + 'px';
+        }
+
+        // ===== CONTROLS =====
+        function setupControls() {
+            document.addEventListener('keydown', e => {
+                state.keys[e.key.toLowerCase()] = true;
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    interact();
+                }
+                if (e.key === 'Escape') closeDialogue();
+            });
+
+            document.addEventListener('keyup', e => {
+                state.keys[e.key.toLowerCase()] = false;
+            });
+
+            document.getElementById('game-container').addEventListener('click', e => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                state.target = {
+                    x: e.clientX - rect.left - CONFIG.SPRITE_W,
+                    y: e.clientY - rect.top - CONFIG.SPRITE_H
+                };
+            });
+        }
+
+        // ===== MOVEMENT =====
+        function movePlayer() {
+            if (state.dialogue) return;
+
+            let dx = 0, dy = 0;
+            if (state.keys['w'] || state.keys['arrowup']) dy = -CONFIG.PLAYER_SPEED;
+            if (state.keys['s'] || state.keys['arrowdown']) dy = CONFIG.PLAYER_SPEED;
+            if (state.keys['a'] || state.keys['arrowleft']) dx = -CONFIG.PLAYER_SPEED;
+            if (state.keys['d'] || state.keys['arrowright']) dx = CONFIG.PLAYER_SPEED;
+
+            // Click movement
+            if (state.target && dx === 0 && dy === 0) {
+                const diffX = state.target.x - state.player.x;
+                const diffY = state.target.y - state.player.y;
+                const dist = Math.sqrt(diffX * diffX + diffY * diffY);
+                if (dist > 4) {
+                    dx = (diffX / dist) * CONFIG.PLAYER_SPEED;
+                    dy = (diffY / dist) * CONFIG.PLAYER_SPEED;
+                } else {
+                    state.target = null;
+                }
+            }
+
+            if (dx !== 0 || dy !== 0) {
+                state.player.x = Math.max(0, Math.min(448, state.player.x + dx));
+                state.player.y = Math.max(48, Math.min(272, state.player.y + dy));
+                state.player.frame = (state.player.frame + 1) % 16;
+                updatePlayer();
+                
+                const p = document.getElementById('player');
+                const walk = state.player.frame < 8 ? 'walk1' : 'walk2';
+                p.className = `character char-stan ${walk}`;
+            }
+        }
+
+        // ===== NPC AI =====
+        function updateNPCs() {
+            state.npcs.forEach(npc => {
+                npc.timer++;
+                
+                if (npc.timer > 100 + Math.random() * 50) {
+                    npc.timer = 0;
+                    npc.tx = npc.x + (Math.random() - 0.5) * 50;
+                    npc.ty = npc.y + (Math.random() - 0.5) * 30;
+                    npc.tx = Math.max(16, Math.min(420, npc.tx));
+                    npc.ty = Math.max(60, Math.min(260, npc.ty));
+                }
+
+                const dx = npc.tx - npc.x;
+                const dy = npc.ty - npc.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist > 2) {
+                    npc.x += (dx / dist) * CONFIG.NPC_SPEED;
+                    npc.y += (dy / dist) * CONFIG.NPC_SPEED;
+                    npc.frame = (npc.frame + 1) % 16;
+                    
+                    npc.el.style.left = npc.x + 'px';
+                    npc.el.style.top = npc.y + 'px';
+                    
+                    const walk = npc.frame < 8 ? 'walk1' : 'walk2';
+                    npc.el.className = `character ${CHARACTERS[npc.type].class} ${walk}`;
+                }
+            });
+        }
+
+        // ===== INTERACTION =====
+        function interact() {
+            if (state.dialogue) {
+                closeDialogue();
                 return;
             }
-            minimap.style.display = 'block';
-            
-            // Ajustar canvas
-            canvas.width = 100;
-            canvas.height = 100;
-            
-            // Calcular escala
-            const scaleX = 100 / (mapCols * TILE_SIZE);
-            const scaleY = 100 / (mapRows * TILE_SIZE);
-            const scale = Math.min(scaleX, scaleY);
-            
-            // Limpiar
-            ctx.fillStyle = '#0f380f';
-            ctx.fillRect(0, 0, 100, 100);
-            
-            // Dibujar tiles simplificados
-            if (!MAP_DATA || MAP_DATA.length === 0) return;
-            
-            for (let y = 0; y < MAP_DATA.length; y++) {
-                if (!MAP_DATA[y]) continue;
-                for (let x = 0; x < MAP_DATA[y].length; x++) {
-                    const tile = MAP_DATA[y][x];
-                    let color;
-                    
-                    if (tile === 0) color = '#306230'; // Grass
-                    else if (tile === 3 || tile === 4) color = '#8b4513'; // House
-                    else if (tile === 5) color = '#555555'; // Road
-                    else if (tile === 14 || tile === 15) color = '#4a90d9'; // Water
-                    else if (tile >= 34 && tile <= 36) color = '#cc0000'; // Train
-                    else if (tile === 7 || tile === 8) color = '#306230'; // Trees
-                    else color = '#1a5a1a';
-                    
-                    ctx.fillStyle = color;
-                    ctx.fillRect(
-                        x * TILE_SIZE * scale,
-                        y * TILE_SIZE * scale,
-                        Math.max(1, TILE_SIZE * scale),
-                        Math.max(1, TILE_SIZE * scale)
-                    );
-                }
-            }
-            
-            // Marcar casas visitadas
-            houses.forEach(house => {
-                if (visitedProjects.has(house.name)) {
-                    ctx.fillStyle = '#00ff00';
-                    ctx.fillRect(
-                        house.x * TILE_SIZE * scale - 1,
-                        house.y * TILE_SIZE * scale - 1,
-                        3, 3
-                    );
-                }
-            });
-            
-            // Posición del jugador
-            const playerPosX = (playerX * TILE_SIZE * scale);
-            const playerPosY = (playerY * TILE_SIZE * scale);
-            playerDot.style.left = playerPosX + 'px';
-            playerDot.style.top = playerPosY + 'px';
-        }
-        
-        let minimapVisible = true;
-        function toggleMinimap() {
-            minimapVisible = !minimapVisible;
-            document.getElementById('minimap').style.display = minimapVisible ? 'block' : 'none';
-        }
 
-        // ============== INTERACTION ==============
-        function checkInteraction() {
-            // Check adjacent tiles
-            const adjacentPositions = [
-                {x: playerX, y: playerY - 1},
-                {x: playerX, y: playerY + 1},
-                {x: playerX - 1, y: playerY},
-                {x: playerX + 1, y: playerY}
-            ];
-            
-            // Verificar señales de tren y taxis
-            if (currentLocation === 'outside') {
-                for (const pos of adjacentPositions) {
-                    if (pos.y >= 0 && pos.y < MAP_ROWS && pos.x >= 0 && pos.x < MAP_COLS) {
-                        const tileType = MAP_DATA[pos.y][pos.x];
-                        
-                        // Señal de destino (ir a ciudad)
-                        if (tileType === 14 && currentCity === 'STATION') {
-                            const city = window.availableCities.find(c => c.x === pos.x && c.y === pos.y);
-                            if (city) {
-                                createInteractEffect(pos.x, pos.y, '🚂');
-                                loadCity(city.language);
-                                return;
-                            }
-                        }
-                        
-                        // Señal de retorno (volver a estación)
-                        if (tileType === 15 && currentCity !== 'STATION') {
-                            createInteractEffect(pos.x, pos.y, '🔙');
-                            returnToStation();
-                            return;
-                        }
-                        
-                        // Taxi (ir a página de GitHub Pages)
-                        if (tileType === 42 && window.taxiStops) {
-                            const taxi = window.taxiStops.find(t => t.x === pos.x && t.y === pos.y);
-                            if (taxi) {
-                                createInteractEffect(pos.x, pos.y, '🚕');
-                                window.open(taxi.url, '_blank');
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            // Verificar NPCs dentro de casas
-            for (const pos of adjacentPositions) {
-                const npc = npcs.find(n => n.x === pos.x && n.y === pos.y);
-                if (npc) {
-                    createInteractEffect(npc.x, npc.y, '💬');
-                    showDialog(npc);
+            const px = state.player.x + 16;
+            const py = state.player.y + 24;
+
+            for (const npc of state.npcs) {
+                const dist = Math.sqrt((px - npc.x - 16) ** 2 + (py - npc.y - 24) ** 2);
+                if (dist < 50) {
+                    showDialogue(npc.type);
                     return;
                 }
             }
-            
-            // Verificar colaboradores (NPCs adicionales dentro de casas)
-            if (currentLocation === 'inside') {
-                for (const pos of adjacentPositions) {
-                    const collab = npcs.find(n => n.x === pos.x && n.y === pos.y && n.isCollaborator);
-                    if (collab) {
-                        createInteractEffect(collab.x, collab.y, '👋');
-                        showCollaboratorDialog(collab);
-                        return;
-                    }
-                }
-            }
         }
 
-        function showCollaboratorDialog(collab) {
-            currentNpc = collab;
-            gameState = 'dialog';
-            dialogBox.style.display = 'block';
-            dialogText.innerHTML = `Hola! Soy <strong>${collab.name}</strong>, colaborador en este proyecto.<br>Presiona ENTER para ver mi GitHub o ESC para cerrar.`;
+        function showDialogue(type) {
+            const char = CHARACTERS[type];
+            const text = char.dialogues[Math.floor(Math.random() * char.dialogues.length)];
+            document.getElementById('dialogue-name').textContent = char.name;
+            document.getElementById('dialogue-text').textContent = text;
+            document.getElementById('dialogue-box').classList.add('active');
+            state.dialogue = true;
         }
 
-        // Frases únicas de cada personaje de South Park
-        const SP_DIALOGUES = {
-            'stan': [
-                "Dude, mira este proyecto: <strong>{project}</strong>!",
-                "Oh my God, esto es genial! <strong>{project}</strong> es lo mejor.",
-                "Wendy me ayudó con <strong>{project}</strong>, es súper útil."
-            ],
-            'kyle': [
-                "He analizado <strong>{project}</strong> y los datos son prometedores.",
-                "Cartman es un idiota, pero <strong>{project}</strong> es legítimo!",
-                "Mi mamá dice que <strong>{project}</strong> es muy educativo."
-            ],
-            'cartman': [
-                "Respeta mi autoridad! <strong>{project}</strong> es MÍO!",
-                "Screw you guys, <strong>{project}</strong> es el mejor proyecto ever!",
-                "Behold! <strong>{project}</strong>! Bow down to its awesomeness!"
-            ],
-            'kenny': [
-                "(Mmph mmph mmph <strong>{project}</strong> mmph!)",
-                "(Mmmmph! <strong>{project}</strong> mmph mmph!)",
-                "(Mmph mmph mmmmph <strong>{project}</strong>!)"
-            ],
-            'butters': [
-                "Oh hamburgers! <strong>{project}</strong> es súper genial!",
-                "Mis papás no saben que hice <strong>{project}</strong>, no les digas!",
-                "Gee whiz! <strong>{project}</strong> me hace muy feliz!"
-            ],
-            'wendy': [
-                "Como presidenta de la clase, presento <strong>{project}</strong>.",
-                "<strong>{project}</strong> representa la igualdad y el progreso!",
-                "Stan es tan sweet por ayudarme con <strong>{project}</strong>!"
-            ],
-            'randy': [
-                "Escucha, como geólogo experto, <strong>{project}</strong> es CIENCIA!",
-                "Ohhh I'm sorry, I thought this was AMERICA! <strong>{project}</strong>!",
-                "Sharon! Mira <strong>{project}</strong>! Es importante!"
-            ],
-            'garrison': [
-                "Okay children, hoy aprenderemos sobre <strong>{project}</strong>.",
-                "Sit down and shut up! <strong>{project}</strong> es la lección!",
-                "Mr. Hat dice que <strong>{project}</strong> es muy educativo."
-            ],
-            'chef': [
-                "Hello there, children! Let me tell you about <strong>{project}</strong>!",
-                "<strong>{project}</strong> es como hacer amor... con código!",
-                "♪ Ohhh <strong>{project}</strong>, I want to love you! ♪"
-            ]
-        };
-        
-        function getSPDialogue(character, projectName) {
-            const dialogues = SP_DIALOGUES[character] || SP_DIALOGUES['stan'];
-            const randomDialogue = dialogues[Math.floor(Math.random() * dialogues.length)];
-            return randomDialogue.replace('{project}', projectName);
+        function closeDialogue() {
+            document.getElementById('dialogue-box').classList.remove('active');
+            state.dialogue = false;
         }
 
-        function showDialog(npc) {
-            currentNpc = npc;
-            gameState = 'dialog';
-            dialogBox.style.display = 'block';
-            
-            // Si es un NPC de proyecto de South Park
-            if (npc.isProjectNpc && npc.character) {
-                const dialogue = getSPDialogue(npc.character, npc.projectName);
-                dialogText.innerHTML = `<strong>${npc.name}:</strong> ${dialogue}<br><small>⭐ ${npc.stars || 0} | 💻 ${npc.language || 'Unknown'}</small><br>Presiona ENTER para ver más!`;
-            } else {
-                dialogText.innerHTML = `Hola! Soy el encargado de <strong>${npc.name}</strong>.<br>Quieres que te cuente sobre este proyecto?`;
-            }
-        }
-
-        // ============== BATTLE ==============
-        let battleMenuIndex = 0;
-        const battleOptions = ['btn-info', 'btn-github', 'btn-stats', 'btn-run'];
-
-        function startBattle(npc) {
-            dialogBox.style.display = 'none';
-            battleScreen.style.display = 'flex';
-            gameState = 'battle';
-            battleMenuIndex = 0;
-            updateBattleMenuSelection();
-            
-            // Mostrar nombre del personaje SP y proyecto
-            const characterName = npc.characterName || 'Personaje';
-            const projectName = npc.projectName || npc.name;
-            document.getElementById('battle-enemy-name').textContent = `${characterName} presenta:`;
-            document.getElementById('battle-enemy-level').innerHTML = `📁 <strong>${projectName}</strong><br>💻 ${npc.language || 'Unknown'} | ⭐ ${npc.stars || 0}`;
-        }
-
-        function updateBattleMenuSelection() {
-            battleOptions.forEach((id, i) => {
-                const btn = document.getElementById(id);
-                if (i === battleMenuIndex) {
-                    btn.classList.add('selected');
-                    btn.textContent = '▶ ' + btn.textContent.substring(2);
-                } else {
-                    btn.classList.remove('selected');
-                    btn.textContent = '  ' + btn.textContent.substring(2);
-                }
-            });
-        }
-
-        function handleBattleNavigation(e) {
-            switch(e.code) {
-                case 'ArrowUp':
-                    battleMenuIndex = (battleMenuIndex - 2 + 4) % 4;
-                    updateBattleMenuSelection();
-                    break;
-                case 'ArrowDown':
-                    battleMenuIndex = (battleMenuIndex + 2) % 4;
-                    updateBattleMenuSelection();
-                    break;
-                case 'ArrowLeft':
-                    battleMenuIndex = (battleMenuIndex - 1 + 4) % 4;
-                    updateBattleMenuSelection();
-                    break;
-                case 'ArrowRight':
-                    battleMenuIndex = (battleMenuIndex + 1) % 4;
-                    updateBattleMenuSelection();
-                    break;
-                case 'Enter':
-                case 'Space':
-                    document.getElementById(battleOptions[battleMenuIndex]).click();
-                    break;
-                case 'Escape':
-                    closeBattle();
-                    break;
-            }
-        }
-
-        function closeBattle() {
-            battleScreen.style.display = 'none';
-            gameState = 'walking';
-            currentNpc = null;
-        }
-
-        // Battle menu buttons
-        document.getElementById('btn-info').addEventListener('click', () => {
-            showInfo(currentNpc);
-        });
-
-        document.getElementById('btn-github').addEventListener('click', () => {
-            if (currentNpc) {
-                window.open(currentNpc.url, '_blank');
-            }
-        });
-
-        document.getElementById('btn-stats').addEventListener('click', () => {
-            if (currentNpc) {
-                alert(`STATS de ${currentNpc.name}\n\nStars: ${currentNpc.stars}\nLenguaje: ${currentNpc.language}\n\n${currentNpc.description}`);
-            }
-        });
-
-        document.getElementById('btn-run').addEventListener('click', closeBattle);
-
-        // ============== INFO PANEL ==============
-        async function showInfo(npc) {
-            battleScreen.style.display = 'none';
-            infoPanel.style.display = 'flex';
-            gameState = 'info';
-            
-            document.getElementById('info-title').textContent = `${npc.name} - README.md`;
-            document.getElementById('info-content').innerHTML = 'Cargando README...';
-            
+        // ===== PROJECTS =====
+        async function loadProjects() {
             try {
-                const readmeRes = await fetch(`https://api.github.com/repos/MutenRos/${npc.name}/readme`, {
-                    headers: { 'Accept': 'application/vnd.github.raw' }
-                });
+                const res = await fetch('https://api.github.com/users/MutenRos/repos?sort=updated&per_page=8');
+                const repos = await res.json();
                 
-                if (readmeRes.ok) {
-                    const markdown = await readmeRes.text();
-                    document.getElementById('info-content').innerHTML = marked.parse(markdown);
-                } else {
-                    document.getElementById('info-content').innerHTML = `<p>No se encontró README.md</p><p>${npc.description}</p>`;
-                }
-            } catch (error) {
-                document.getElementById('info-content').innerHTML = `<p>Error al cargar: ${error.message}</p>`;
+                document.getElementById('repo-count').textContent = repos.length;
+                
+                const list = document.getElementById('projects-list');
+                list.innerHTML = repos.map(r => `
+                    <div class="project-item" onclick="window.open('${r.html_url}', '_blank')">
+                        <div class="project-name">${r.name.toUpperCase()}</div>
+                        <div class="project-desc">${r.description || 'No description'}</div>
+                        <div class="project-meta">
+                            <span class="project-lang">${r.language || '???'}</span>
+                            <span class="project-stats">★${r.stargazers_count} ⑂${r.forks_count}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                document.getElementById('projects-list').innerHTML = 
+                    '<div class="loading">ERROR LOADING</div>';
             }
         }
 
-        function closeInfo() {
-            infoPanel.style.display = 'none';
-            battleScreen.style.display = 'flex';
-            gameState = 'battle';
+        // ===== GAME LOOP =====
+        function gameLoop() {
+            movePlayer();
+            updateNPCs();
+            requestAnimationFrame(gameLoop);
         }
 
-        document.getElementById('info-back').addEventListener('click', closeInfo);
-
-        // ============== MOBILE CONTROLS ==============
-        document.getElementById('btn-up')?.addEventListener('click', () => simulateKey('ArrowUp'));
-        document.getElementById('btn-down')?.addEventListener('click', () => simulateKey('ArrowDown'));
-        document.getElementById('btn-left')?.addEventListener('click', () => simulateKey('ArrowLeft'));
-        document.getElementById('btn-right')?.addEventListener('click', () => simulateKey('ArrowRight'));
-        document.getElementById('btn-action')?.addEventListener('click', () => simulateKey('Space'));
-        document.getElementById('btn-cancel')?.addEventListener('click', () => simulateKey('Escape'));
-
-        function simulateKey(code) {
-            handleKeyDown({ code });
-        }
-
-        // Resize handling
-        window.addEventListener('resize', updateCamera);
+        // ===== START =====
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
