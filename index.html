@@ -3,898 +3,826 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dario Lacal Civera | GBC Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>MUTENROS // Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== GBC COLOR PALETTE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --gbc-black: #0f380f;
-            --gbc-dark: #306230;
-            --gbc-light: #8bac0f;
-            --gbc-white: #9bbc0f;
-            
-            /* Extended GBC palette */
-            --sky: #88c0e8;
-            --sky-dark: #5090b8;
-            --grass: #58a840;
-            --grass-dark: #306820;
-            --road: #505050;
-            --road-line: #f8e838;
-            --ui-bg: #181818;
-            --ui-border: #e8e8e8;
-            --accent: #f8d830;
-            --red: #e04040;
-            --blue: #4080c0;
-            --orange: #e08040;
-            --green: #40a040;
+            --neon-pink: #ff2a6d;
+            --neon-cyan: #05d9e8;
+            --neon-purple: #d300c5;
+            --neon-blue: #7b61ff;
+            --dark-bg: #0d0221;
+            --grid-color: rgba(5, 217, 232, 0.3);
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-
-        /* ===== FULL GBC STYLE ===== */
         body {
-            font-family: 'Press Start 2P', cursive;
-            background: var(--gbc-black);
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            overflow-x: hidden;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            image-rendering: pixelated;
-            -webkit-font-smoothing: none;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Scanline overlay effect */
-        body::after {
-            content: '';
+        /* Animated Background */
+        .bg-container {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .sun {
+            position: absolute;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(to bottom, #ff6b35, #ff2a6d, #d300c5);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 60px #ff2a6d,
+                0 0 100px #ff2a6d,
+                0 0 200px #d300c5;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .sun::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: repeating-linear-gradient(
-                0deg,
-                transparent 0px,
+                to bottom,
+                transparent,
+                transparent 8px,
+                var(--dark-bg) 8px,
+                var(--dark-bg) 12px
+            );
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        .sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(
+                to bottom,
+                #0d0221 0%,
+                #1a0533 30%,
+                #2d1b4e 50%,
+                #4a1942 70%,
+                #7b2d5b 100%
+            );
+        }
+
+        .grid-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45%;
+            perspective: 400px;
+            overflow: hidden;
+        }
+
+        .grid {
+            position: absolute;
+            bottom: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-color) 2px, transparent 2px),
+                linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+            background-size: 80px 40px;
+            transform: rotateX(60deg);
+            animation: gridMove 2s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: rotateX(60deg) translateY(0); }
+            100% { transform: rotateX(60deg) translateY(40px); }
+        }
+
+        .mountains {
+            position: absolute;
+            bottom: 40%;
+            left: 0;
+            width: 100%;
+            height: 200px;
+        }
+
+        .mountain {
+            position: absolute;
+            bottom: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 200px solid #1a0533;
+            filter: drop-shadow(0 0 20px rgba(211, 0, 197, 0.5));
+        }
+
+        .mountain::after {
+            content: '';
+            position: absolute;
+            left: -150px;
+            bottom: -200px;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 200px solid transparent;
+            border-bottom-color: rgba(123, 45, 91, 0.3);
+        }
+
+        .mountain:nth-child(1) { left: 5%; }
+        .mountain:nth-child(2) { left: 25%; transform: scale(0.7); }
+        .mountain:nth-child(3) { left: 50%; transform: scale(1.2); }
+        .mountain:nth-child(4) { left: 70%; transform: scale(0.8); }
+
+        /* Stars */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(13, 2, 33, 0.9), transparent);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(5, 217, 232, 0.5);
+            letter-spacing: 4px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        nav a {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(5, 217, 232, 0.5), inset 0 0 20px rgba(5, 217, 232, 0.1);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 10;
+            padding-top: 100px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 80px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #fff 0%, var(--neon-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(255, 42, 109, 0.5);
+            animation: glowText 3s ease-in-out infinite;
+        }
+
+        @keyframes glowText {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.8)); }
+            50% { filter: drop-shadow(0 0 40px rgba(5, 217, 232, 0.8)); }
+        }
+
+        .hero .subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--neon-cyan);
+            letter-spacing: 8px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .hero .tagline {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            margin-top: 50px;
+            padding: 15px 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            letter-spacing: 3px;
+            background: transparent;
+            border: 2px solid var(--neon-pink);
+            color: var(--neon-pink);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 42, 109, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-pink);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 50px;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #fff;
+            text-shadow: 0 0 30px var(--neon-purple);
+        }
+
+        .section-title span {
+            color: var(--neon-cyan);
+        }
+
+        /* About Section */
+        #about {
+            background: linear-gradient(to bottom, transparent, rgba(13, 2, 33, 0.95));
+        }
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            border: 3px solid var(--neon-cyan);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(5, 217, 232, 0.1), rgba(211, 0, 197, 0.1));
+        }
+
+        .about-image::before,
+        .about-image::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--neon-pink);
+        }
+
+        .about-image::before {
+            top: 10px;
+            left: 10px;
+        }
+
+        .about-image::after {
+            top: -10px;
+            left: -10px;
+        }
+
+        .about-image .placeholder {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 80px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+        .about-text h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            color: var(--neon-pink);
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        /* Skills Section */
+        #skills {
+            background: rgba(13, 2, 33, 0.98);
+        }
+
+        .skills-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background: linear-gradient(135deg, rgba(123, 97, 255, 0.1), rgba(211, 0, 197, 0.1));
+            border: 1px solid rgba(5, 217, 232, 0.3);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 20px 40px rgba(5, 217, 232, 0.2);
+        }
+
+        .skill-card .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .skill-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: var(--neon-cyan);
+            margin-bottom: 15px;
+        }
+
+        .skill-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Projects Section */
+        #projects {
+            background: linear-gradient(to bottom, rgba(13, 2, 33, 0.98), transparent);
+        }
+
+        .projects-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .project-card {
+            background: linear-gradient(180deg, rgba(26, 5, 51, 0.9), rgba(13, 2, 33, 0.9));
+            border: 1px solid rgba(255, 42, 109, 0.3);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: scale(1.02);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 40px rgba(255, 42, 109, 0.3);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .project-info {
+            padding: 30px;
+        }
+
+        .project-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .project-info p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .project-tags span {
+            padding: 5px 15px;
+            font-size: 12px;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Contact Section */
+        #contact {
+            background: rgba(13, 2, 33, 0.98);
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: var(--neon-cyan);
+            color: var(--dark-bg);
+            box-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: var(--dark-bg);
+            border-top: 1px solid rgba(5, 217, 232, 0.2);
+        }
+
+        footer p {
+            font-family: 'Orbitron', sans-serif;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        /* Scanlines Effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent,
                 transparent 2px,
                 rgba(0, 0, 0, 0.1) 2px,
                 rgba(0, 0, 0, 0.1) 4px
             );
-            pointer-events: none;
-            z-index: 9999;
         }
 
-        /* ===== GBC SCREEN FRAME ===== */
-        #gbc-frame {
-            background: #606060;
-            border-radius: 16px;
-            padding: 24px;
-            margin: 20px;
-            box-shadow: 
-                inset 4px 4px 0 #808080,
-                inset -4px -4px 0 #404040,
-                0 8px 32px rgba(0,0,0,0.5);
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 40px;
+            }
 
-        #screen-bezel {
-            background: #303030;
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 
-                inset 4px 4px 8px rgba(0,0,0,0.5),
-                inset -2px -2px 4px rgba(255,255,255,0.1);
-        }
+            .hero .subtitle {
+                font-size: 16px;
+                letter-spacing: 4px;
+            }
 
-        /* ===== HEADER BAR ===== */
-        #header-bar {
-            background: var(--gbc-dark);
-            border: 4px solid var(--gbc-black);
-            padding: 8px 16px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+            header {
+                padding: 15px 20px;
+            }
 
-        #header-bar h1 {
-            font-size: 8px;
-            color: var(--gbc-white);
-            text-shadow: 2px 2px 0 var(--gbc-black);
-        }
+            nav ul {
+                gap: 15px;
+            }
 
-        #header-bar .stats {
-            font-size: 6px;
-            color: var(--gbc-light);
-        }
+            nav a {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
 
-        /* ===== GAME SCREEN ===== */
-        #game-container {
-            width: 480px;
-            height: 320px;
-            background: var(--grass);
-            position: relative;
-            overflow: hidden;
-            image-rendering: pixelated;
-            cursor: crosshair;
-            border: 4px solid var(--gbc-black);
-        }
+            section {
+                padding: 60px 20px;
+            }
 
-        /* ===== GROUND TILES ===== */
-        .tile {
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            image-rendering: pixelated;
-        }
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
 
-        .tile-grass { background: var(--grass); }
-        .tile-grass-dark { background: var(--grass-dark); }
-        .tile-road { background: var(--road); }
-
-        .tile-road::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: repeating-linear-gradient(
-                180deg,
-                var(--road-line) 0px,
-                var(--road-line) 8px,
-                transparent 8px,
-                transparent 16px
-            );
-            transform: translateX(-50%);
-        }
-
-        .tile-road-h::after {
-            width: 100%;
-            height: 4px;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            background: repeating-linear-gradient(
-                90deg,
-                var(--road-line) 0px,
-                var(--road-line) 8px,
-                transparent 8px,
-                transparent 16px
-            );
-        }
-
-        /* ===== BUILDINGS - GBC STYLE ===== */
-        .building {
-            position: absolute;
-            image-rendering: pixelated;
-        }
-
-        .house {
-            width: 48px;
-            height: 48px;
-        }
-
-        .house-body {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 32px;
-            border: 2px solid var(--gbc-black);
-        }
-
-        .house-roof {
-            position: absolute;
-            top: 0;
-            left: -4px;
-            width: 56px;
-            height: 18px;
-            background: #604030;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
-
-        .house-door {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 16px;
-            background: #503020;
-            border: 2px solid var(--gbc-black);
-        }
-
-        .house-window {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--sky);
-            border: 2px solid var(--gbc-black);
-            top: 8px;
-        }
-
-        .house-window.left { left: 6px; }
-        .house-window.right { right: 6px; }
-
-        .house.stan .house-body { background: var(--blue); }
-        .house.kyle .house-body { background: var(--green); }
-        .house.cartman .house-body { background: var(--orange); }
-        .house.kenny .house-body { background: #c06030; }
-
-        /* School - GBC */
-        .school {
-            width: 96px;
-            height: 64px;
-            background: var(--red);
-            border: 4px solid var(--gbc-black);
-        }
-
-        .school::before {
-            content: 'SCHOOL';
-            position: absolute;
-            top: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 6px;
-            color: white;
-        }
-
-        .school-door {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 28px;
-            background: #503020;
-            border: 2px solid var(--gbc-black);
-        }
-
-        /* ===== SPRITES ===== */
-        .character {
-            position: absolute;
-            width: 16px;
-            height: 24px;
-            background-image: url('sprites/Kyle,%20Stan,%20Cartman%20&%20Kenny.png');
-            background-repeat: no-repeat;
-            image-rendering: pixelated;
-            transform: scale(2);
-            transform-origin: top left;
-            z-index: 10;
-        }
-
-        /* 
-         * Spritesheet: 512x896, each sprite 16x24
-         * Rows are 24px apart, each char has 3 rows (down/left/right)
-         */
-
-        /* Stan - Y=0 (blue/red hat) */
-        .char-stan { background-position: 0 0; }
-        .char-stan.walk1 { background-position: -17px 0; }
-        .char-stan.walk2 { background-position: -34px 0; }
-
-        /* Kyle - Y=72 (green ushanka) */
-        .char-kyle { background-position: 0 -72px; }
-        .char-kyle.walk1 { background-position: -17px -72px; }
-        .char-kyle.walk2 { background-position: -34px -72px; }
-
-        /* Cartman - Y=144 (fat, light blue hat) */
-        .char-cartman { background-position: 0 -144px; }
-        .char-cartman.walk1 { background-position: -17px -144px; }
-        .char-cartman.walk2 { background-position: -34px -144px; }
-
-        /* Kenny - Y=216 (orange parka) */
-        .char-kenny { background-position: 0 -216px; }
-        .char-kenny.walk1 { background-position: -17px -216px; }
-        .char-kenny.walk2 { background-position: -34px -216px; }
-
-        #player {
-            z-index: 100;
-            filter: drop-shadow(1px 1px 0 var(--gbc-black));
-        }
-
-        /* ===== MOUNTAINS BG ===== */
-        #mountains {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 48px;
-            background: var(--sky);
-            z-index: 1;
-        }
-
-        #mountains::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
-            background: 
-                linear-gradient(135deg, #607080 25%, transparent 25%) -16px 0,
-                linear-gradient(225deg, #607080 25%, transparent 25%) -16px 0,
-                linear-gradient(315deg, #708090 25%, transparent 25%),
-                linear-gradient(45deg, #708090 25%, transparent 25%);
-            background-size: 64px 40px;
-        }
-
-        #mountains::after {
-            content: '';
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            height: 16px;
-            background: 
-                linear-gradient(135deg, white 10%, transparent 10%) -8px 0,
-                linear-gradient(225deg, white 10%, transparent 10%) -8px 0;
-            background-size: 64px 40px;
-        }
-
-        /* ===== DIALOGUE BOX - GBC STYLE ===== */
-        #dialogue-box {
-            display: none;
-            position: absolute;
-            bottom: 8px;
-            left: 8px;
-            right: 8px;
-            background: var(--gbc-white);
-            border: 4px solid var(--gbc-black);
-            padding: 12px;
-            z-index: 200;
-        }
-
-        #dialogue-box.active { display: block; }
-
-        #dialogue-name {
-            font-size: 8px;
-            color: var(--gbc-black);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        #dialogue-text {
-            font-size: 7px;
-            color: var(--gbc-dark);
-            line-height: 1.8;
-        }
-
-        #dialogue-box::after {
-            content: '▼';
-            position: absolute;
-            bottom: 4px;
-            right: 8px;
-            font-size: 8px;
-            color: var(--gbc-black);
-            animation: blink 0.5s infinite;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        /* ===== CONTROLS INFO - GBC ===== */
-        #controls-bar {
-            background: var(--gbc-dark);
-            border: 4px solid var(--gbc-black);
-            padding: 8px 16px;
-            margin-top: 8px;
-            font-size: 6px;
-            color: var(--gbc-white);
-            text-align: center;
-            line-height: 2;
-        }
-
-        #controls-bar span {
-            color: var(--accent);
-        }
-
-        /* ===== PROJECTS SECTION - GBC STYLE ===== */
-        #projects-section {
-            width: 100%;
-            max-width: 512px;
-            margin-top: 16px;
-        }
-
-        .section-title {
-            background: var(--gbc-dark);
-            border: 4px solid var(--gbc-black);
-            padding: 8px 16px;
-            font-size: 8px;
-            color: var(--gbc-white);
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .project-item {
-            background: var(--gbc-light);
-            border: 4px solid var(--gbc-black);
-            padding: 12px;
-            cursor: pointer;
-            transition: background 0.1s;
-        }
-
-        .project-item:hover {
-            background: var(--gbc-white);
-        }
-
-        .project-item:active {
-            background: var(--gbc-dark);
-        }
-
-        .project-item:active .project-name,
-        .project-item:active .project-desc,
-        .project-item:active .project-lang {
-            color: var(--gbc-white);
-        }
-
-        .project-name {
-            font-size: 8px;
-            color: var(--gbc-black);
-            margin-bottom: 4px;
-        }
-
-        .project-desc {
-            font-size: 6px;
-            color: var(--gbc-dark);
-            margin-bottom: 8px;
-            line-height: 1.6;
-            max-height: 24px;
-            overflow: hidden;
-        }
-
-        .project-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .project-lang {
-            font-size: 6px;
-            color: var(--gbc-black);
-            background: var(--gbc-white);
-            padding: 2px 6px;
-            border: 2px solid var(--gbc-black);
-        }
-
-        .project-stats {
-            font-size: 6px;
-            color: var(--gbc-dark);
-        }
-
-        /* ===== FOOTER - GBC ===== */
-        #footer {
-            background: var(--gbc-dark);
-            border: 4px solid var(--gbc-black);
-            padding: 8px 16px;
-            margin-top: 8px;
-            margin-bottom: 20px;
-            font-size: 6px;
-            color: var(--gbc-light);
-            text-align: center;
-        }
-
-        #footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* ===== LOADING ===== */
-        .loading {
-            background: var(--gbc-light);
-            border: 4px solid var(--gbc-black);
-            padding: 16px;
-            text-align: center;
-            font-size: 8px;
-            color: var(--gbc-black);
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1s infinite;
-        }
-
-        @keyframes dots {
-            0% { content: '.'; }
-            33% { content: '..'; }
-            66% { content: '...'; }
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 560px) {
-            #gbc-frame { padding: 12px; margin: 10px; }
-            #screen-bezel { padding: 8px; }
-            #game-container { width: 320px; height: 240px; }
-            .character { transform: scale(1.5); }
-            .house { width: 36px; height: 36px; }
-            .school { width: 72px; height: 48px; }
+            .section-title {
+                font-size: 32px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- GBC Frame -->
-    <div id="gbc-frame">
-        <div id="screen-bezel">
-            <!-- Header Bar -->
-            <div id="header-bar">
-                <h1>DARIO DEV - PORTFOLIO</h1>
-                <div class="stats">REPOS: <span id="repo-count">--</span></div>
-            </div>
-
-            <!-- Game Screen -->
-            <div id="game-container">
-                <div id="mountains"></div>
-                <div id="ground"></div>
-                <div id="buildings"></div>
-                <div id="characters"></div>
-                <div class="character" id="player"></div>
-                <div id="dialogue-box">
-                    <div id="dialogue-name">???</div>
-                    <div id="dialogue-text">...</div>
-                </div>
-            </div>
-
-            <!-- Controls Bar -->
-            <div id="controls-bar">
-                <span>WASD/ARROWS</span> MOVE &nbsp;|&nbsp; 
-                <span>SPACE</span> TALK &nbsp;|&nbsp;
-                <span>CLICK</span> GO TO
-            </div>
+    <div class="scanlines"></div>
+    
+    <div class="bg-container">
+        <div class="sky"></div>
+        <div class="stars" id="stars"></div>
+        <div class="mountains">
+            <div class="mountain"></div>
+            <div class="mountain"></div>
+            <div class="mountain"></div>
+            <div class="mountain"></div>
+        </div>
+        <div class="sun"></div>
+        <div class="grid-container">
+            <div class="grid"></div>
         </div>
     </div>
 
-    <!-- Projects Section -->
-    <section id="projects-section">
-        <div class="section-title">★ MY PROJECTS ★</div>
-        <div class="projects-list" id="projects-list">
-            <div class="loading">LOADING</div>
-        </div>
-        <div id="footer">
-            MADE BY <a href="https://github.com/MutenRos" target="_blank">DARIO LACAL CIVERA</a> - 2026
-        </div>
-    </section>
+    <header>
+        <div class="logo">MUTENROS</div>
+        <nav>
+            <ul>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#skills">SKILLS</a></li>
+                <li><a href="#projects">PROJECTS</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <script>
-        // ===== CONFIG =====
-        const CONFIG = {
-            TILE_SIZE: 32,
-            MAP_WIDTH: 15,
-            MAP_HEIGHT: 10,
-            PLAYER_SPEED: 2.5,
-            NPC_SPEED: 0.8,
-            SPRITE_W: 16,
-            SPRITE_H: 24
-        };
+    <main>
+        <section class="hero">
+            <h1>MUTENROS</h1>
+            <p class="subtitle">DEVELOPER // CREATOR</p>
+            <p class="tagline">Construyendo el futuro digital, una línea de código a la vez. Especializado en crear experiencias web únicas y memorables.</p>
+            <button class="cta-button" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">VER PROYECTOS</button>
+        </section>
 
-        // ===== CHARACTERS =====
-        const CHARACTERS = {
-            stan: {
-                name: 'STAN',
-                class: 'char-stan',
-                dialogues: [
-                    "Dude, check out these projects!",
-                    "This portfolio is pretty cool.",
-                    "Oh my God, they killed Kenny!"
-                ]
-            },
-            kyle: {
-                name: 'KYLE',
-                class: 'char-kyle',
-                dialogues: [
-                    "You know, I learned something today...",
-                    "These repos are well documented!",
-                    "Shut up, Cartman!"
-                ]
-            },
-            cartman: {
-                name: 'CARTMAN',
-                class: 'char-cartman',
-                dialogues: [
-                    "Respect my authoritah!",
-                    "Screw you guys, I'm going home!",
-                    "Whatever! I do what I want!"
-                ]
-            },
-            kenny: {
-                name: 'KENNY',
-                class: 'char-kenny',
-                dialogues: [
-                    "(Mmph mmph mmph!)",
-                    "(Mmph mmph mmph mmph!)",
-                    "(Mmph!)"
-                ]
-            }
-        };
+        <section id="about">
+            <h2 class="section-title">SOBRE <span>MÍ</span></h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <span class="placeholder">👤</span>
+                </div>
+                <div class="about-text">
+                    <h3>¡Hola, soy MutenRos!</h3>
+                    <p>Desarrollador apasionado por crear experiencias digitales únicas. Me especializo en desarrollo web, con un amor especial por el diseño retro y la estética synthwave.</p>
+                    <p>Cuando no estoy programando, me puedes encontrar explorando nuevas tecnologías, jugando videojuegos clásicos o escuchando música de los 80s.</p>
+                </div>
+            </div>
+        </section>
 
-        // ===== GAME STATE =====
-        const state = {
-            player: { x: 220, y: 160, frame: 0 },
-            npcs: [],
-            keys: {},
-            dialogue: false,
-            target: null
-        };
+        <section id="skills">
+            <h2 class="section-title">SKILLS <span>&</span> TECH</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="icon">💻</div>
+                    <h3>FRONTEND</h3>
+                    <p>HTML5, CSS3, JavaScript, React, Vue.js. Creando interfaces modernas y responsivas.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="icon">⚙️</div>
+                    <h3>BACKEND</h3>
+                    <p>Node.js, Python, APIs RESTful. Arquitecturas escalables y eficientes.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="icon">🎨</div>
+                    <h3>DISEÑO</h3>
+                    <p>UI/UX, Figma, Adobe Creative Suite. Diseños que combinan estética y funcionalidad.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="icon">🗄️</div>
+                    <h3>DATABASES</h3>
+                    <p>MongoDB, PostgreSQL, MySQL. Gestión eficiente de datos.</p>
+                </div>
+            </div>
+        </section>
 
-        // ===== INIT =====
-        function init() {
-            createGround();
-            createBuildings();
-            createNPCs();
-            setupPlayer();
-            setupControls();
-            loadProjects();
-            requestAnimationFrame(gameLoop);
-        }
-
-        // ===== GROUND =====
-        function createGround() {
-            const ground = document.getElementById('ground');
-            
-            for (let y = 1; y < CONFIG.MAP_HEIGHT; y++) {
-                for (let x = 0; x < CONFIG.MAP_WIDTH; x++) {
-                    const tile = document.createElement('div');
-                    tile.className = 'tile ' + ((x + y) % 2 ? 'tile-grass' : 'tile-grass-dark');
-                    tile.style.left = x * CONFIG.TILE_SIZE + 'px';
-                    tile.style.top = (y + 0.5) * CONFIG.TILE_SIZE + 'px';
-                    ground.appendChild(tile);
-                }
-            }
-
-            // Horizontal road
-            for (let x = 0; x < CONFIG.MAP_WIDTH; x++) {
-                const road = document.createElement('div');
-                road.className = 'tile tile-road tile-road-h';
-                road.style.left = x * CONFIG.TILE_SIZE + 'px';
-                road.style.top = 5 * CONFIG.TILE_SIZE + 'px';
-                ground.appendChild(road);
-            }
-        }
-
-        // ===== BUILDINGS =====
-        function createBuildings() {
-            const buildings = document.getElementById('buildings');
-            
-            const houses = [
-                { x: 24, y: 64, type: 'stan' },
-                { x: 88, y: 64, type: 'kyle' },
-                { x: 280, y: 64, type: 'cartman' },
-                { x: 360, y: 64, type: 'kenny' }
-            ];
-
-            houses.forEach(h => {
-                const house = document.createElement('div');
-                house.className = `building house ${h.type}`;
-                house.style.left = h.x + 'px';
-                house.style.top = h.y + 'px';
-                house.innerHTML = `
-                    <div class="house-roof"></div>
-                    <div class="house-body">
-                        <div class="house-door"></div>
-                        <div class="house-window left"></div>
-                        <div class="house-window right"></div>
-                    </div>
-                `;
-                buildings.appendChild(house);
-            });
-
-            // School
-            const school = document.createElement('div');
-            school.className = 'building school';
-            school.style.left = '160px';
-            school.style.top = '200px';
-            school.innerHTML = '<div class="school-door"></div>';
-            buildings.appendChild(school);
-        }
-
-        // ===== NPCs =====
-        function createNPCs() {
-            const container = document.getElementById('characters');
-            const configs = [
-                { type: 'stan', x: 48, y: 120 },
-                { type: 'kyle', x: 112, y: 120 },
-                { type: 'cartman', x: 304, y: 120 },
-                { type: 'kenny', x: 384, y: 120 }
-            ];
-
-            configs.forEach((cfg, i) => {
-                const el = document.createElement('div');
-                el.className = `character ${CHARACTERS[cfg.type].class}`;
-                el.style.left = cfg.x + 'px';
-                el.style.top = cfg.y + 'px';
-                container.appendChild(el);
-
-                state.npcs.push({
-                    el,
-                    type: cfg.type,
-                    x: cfg.x,
-                    y: cfg.y,
-                    tx: cfg.x,
-                    ty: cfg.y,
-                    frame: 0,
-                    timer: Math.random() * 100
-                });
-            });
-        }
-
-        // ===== PLAYER =====
-        function setupPlayer() {
-            const player = document.getElementById('player');
-            player.className = 'character char-stan';
-            updatePlayer();
-        }
-
-        function updatePlayer() {
-            const p = document.getElementById('player');
-            p.style.left = state.player.x + 'px';
-            p.style.top = state.player.y + 'px';
-        }
-
-        // ===== CONTROLS =====
-        function setupControls() {
-            document.addEventListener('keydown', e => {
-                state.keys[e.key.toLowerCase()] = true;
-                if (e.code === 'Space') {
-                    e.preventDefault();
-                    interact();
-                }
-                if (e.key === 'Escape') closeDialogue();
-            });
-
-            document.addEventListener('keyup', e => {
-                state.keys[e.key.toLowerCase()] = false;
-            });
-
-            document.getElementById('game-container').addEventListener('click', e => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                state.target = {
-                    x: e.clientX - rect.left - CONFIG.SPRITE_W,
-                    y: e.clientY - rect.top - CONFIG.SPRITE_H
-                };
-            });
-        }
-
-        // ===== MOVEMENT =====
-        function movePlayer() {
-            if (state.dialogue) return;
-
-            let dx = 0, dy = 0;
-            if (state.keys['w'] || state.keys['arrowup']) dy = -CONFIG.PLAYER_SPEED;
-            if (state.keys['s'] || state.keys['arrowdown']) dy = CONFIG.PLAYER_SPEED;
-            if (state.keys['a'] || state.keys['arrowleft']) dx = -CONFIG.PLAYER_SPEED;
-            if (state.keys['d'] || state.keys['arrowright']) dx = CONFIG.PLAYER_SPEED;
-
-            // Click movement
-            if (state.target && dx === 0 && dy === 0) {
-                const diffX = state.target.x - state.player.x;
-                const diffY = state.target.y - state.player.y;
-                const dist = Math.sqrt(diffX * diffX + diffY * diffY);
-                if (dist > 4) {
-                    dx = (diffX / dist) * CONFIG.PLAYER_SPEED;
-                    dy = (diffY / dist) * CONFIG.PLAYER_SPEED;
-                } else {
-                    state.target = null;
-                }
-            }
-
-            if (dx !== 0 || dy !== 0) {
-                state.player.x = Math.max(0, Math.min(448, state.player.x + dx));
-                state.player.y = Math.max(48, Math.min(272, state.player.y + dy));
-                state.player.frame = (state.player.frame + 1) % 16;
-                updatePlayer();
-                
-                const p = document.getElementById('player');
-                const walk = state.player.frame < 8 ? 'walk1' : 'walk2';
-                p.className = `character char-stan ${walk}`;
-            }
-        }
-
-        // ===== NPC AI =====
-        function updateNPCs() {
-            state.npcs.forEach(npc => {
-                npc.timer++;
-                
-                if (npc.timer > 100 + Math.random() * 50) {
-                    npc.timer = 0;
-                    npc.tx = npc.x + (Math.random() - 0.5) * 50;
-                    npc.ty = npc.y + (Math.random() - 0.5) * 30;
-                    npc.tx = Math.max(16, Math.min(420, npc.tx));
-                    npc.ty = Math.max(60, Math.min(260, npc.ty));
-                }
-
-                const dx = npc.tx - npc.x;
-                const dy = npc.ty - npc.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist > 2) {
-                    npc.x += (dx / dist) * CONFIG.NPC_SPEED;
-                    npc.y += (dy / dist) * CONFIG.NPC_SPEED;
-                    npc.frame = (npc.frame + 1) % 16;
-                    
-                    npc.el.style.left = npc.x + 'px';
-                    npc.el.style.top = npc.y + 'px';
-                    
-                    const walk = npc.frame < 8 ? 'walk1' : 'walk2';
-                    npc.el.className = `character ${CHARACTERS[npc.type].class} ${walk}`;
-                }
-            });
-        }
-
-        // ===== INTERACTION =====
-        function interact() {
-            if (state.dialogue) {
-                closeDialogue();
-                return;
-            }
-
-            const px = state.player.x + 16;
-            const py = state.player.y + 24;
-
-            for (const npc of state.npcs) {
-                const dist = Math.sqrt((px - npc.x - 16) ** 2 + (py - npc.y - 24) ** 2);
-                if (dist < 50) {
-                    showDialogue(npc.type);
-                    return;
-                }
-            }
-        }
-
-        function showDialogue(type) {
-            const char = CHARACTERS[type];
-            const text = char.dialogues[Math.floor(Math.random() * char.dialogues.length)];
-            document.getElementById('dialogue-name').textContent = char.name;
-            document.getElementById('dialogue-text').textContent = text;
-            document.getElementById('dialogue-box').classList.add('active');
-            state.dialogue = true;
-        }
-
-        function closeDialogue() {
-            document.getElementById('dialogue-box').classList.remove('active');
-            state.dialogue = false;
-        }
-
-        // ===== PROJECTS =====
-        async function loadProjects() {
-            try {
-                const res = await fetch('https://api.github.com/users/MutenRos/repos?sort=updated&per_page=8');
-                const repos = await res.json();
-                
-                document.getElementById('repo-count').textContent = repos.length;
-                
-                const list = document.getElementById('projects-list');
-                list.innerHTML = repos.map(r => `
-                    <div class="project-item" onclick="window.open('${r.html_url}', '_blank')">
-                        <div class="project-name">${r.name.toUpperCase()}</div>
-                        <div class="project-desc">${r.description || 'No description'}</div>
-                        <div class="project-meta">
-                            <span class="project-lang">${r.language || '???'}</span>
-                            <span class="project-stats">★${r.stargazers_count} ⑂${r.forks_count}</span>
+        <section id="projects">
+            <h2 class="section-title">MIS <span>PROYECTOS</span></h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">[ PROYECTO 1 ]</div>
+                    <div class="project-info">
+                        <h3>Neon Dreams App</h3>
+                        <p>Aplicación web con estética cyberpunk para gestión de tareas y productividad personal.</p>
+                        <div class="project-tags">
+                            <span>REACT</span>
+                            <span>NODE.JS</span>
+                            <span>MONGODB</span>
                         </div>
                     </div>
-                `).join('');
-            } catch (err) {
-                document.getElementById('projects-list').innerHTML = 
-                    '<div class="loading">ERROR LOADING</div>';
+                </div>
+                <div class="project-card">
+                    <div class="project-image">[ PROYECTO 2 ]</div>
+                    <div class="project-info">
+                        <h3>Retro Wave Player</h3>
+                        <p>Reproductor de música online con visualizador de audio y biblioteca de synthwave.</p>
+                        <div class="project-tags">
+                            <span>VUE.JS</span>
+                            <span>WEB AUDIO API</span>
+                            <span>CSS3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">[ PROYECTO 3 ]</div>
+                    <div class="project-info">
+                        <h3>Pixel Art Generator</h3>
+                        <p>Herramienta para crear arte pixel con paletas de colores retro y exportación a múltiples formatos.</p>
+                        <div class="project-tags">
+                            <span>CANVAS</span>
+                            <span>JAVASCRIPT</span>
+                            <span>PWA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2 class="section-title">CONTACTO</h2>
+            <div class="contact-content">
+                <p>¿Tienes un proyecto en mente o simplemente quieres saludar? ¡No dudes en contactarme!</p>
+                <div class="contact-links">
+                    <a href="https://github.com/MutenRos" class="contact-link" target="_blank">
+                        <span>📂</span> GITHUB
+                    </a>
+                    <a href="mailto:tu@email.com" class="contact-link">
+                        <span>📧</span> EMAIL
+                    </a>
+                    <a href="https://linkedin.com" class="contact-link" target="_blank">
+                        <span>💼</span> LINKEDIN
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 MUTENROS // CRAFTED WITH 💜 & NEON LIGHTS</p>
+    </footer>
+
+    <script>
+        // Generate stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            star.style.width = Math.random() * 2 + 1 + 'px';
+            star.style.height = star.style.width;
+            starsContainer.appendChild(star);
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const sun = document.querySelector('.sun');
+            const mountains = document.querySelector('.mountains');
+            
+            if (sun) {
+                sun.style.transform = `translateX(-50%) translateY(${scrolled * 0.3}px)`;
             }
-        }
-
-        // ===== GAME LOOP =====
-        function gameLoop() {
-            movePlayer();
-            updateNPCs();
-            requestAnimationFrame(gameLoop);
-        }
-
-        // ===== START =====
-        window.addEventListener('DOMContentLoaded', init);
+            if (mountains) {
+                mountains.style.transform = `translateY(${scrolled * 0.2}px)`;
+            }
+        });
     </script>
 </body>
 </html>
