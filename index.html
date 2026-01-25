@@ -256,8 +256,7 @@
         .character {
             position: absolute;
             width: 16px;
-            height: 20px;
-            background-image: url('sprites/Kyle,%20Stan,%20Cartman%20&%20Kenny.png');
+            height: 22px;
             background-repeat: no-repeat;
             image-rendering: pixelated;
             transform: scale(2);
@@ -266,24 +265,24 @@
         }
 
         /* Stan - Row 0 (blue/red hat) */
-        .char-stan { background-position: -1px -1px; }
-        .char-stan.walk1 { background-position: -18px -1px; }
-        .char-stan.walk2 { background-position: -35px -1px; }
+        .char-stan { background-position: 0 0; }
+        .char-stan.walk1 { background-position: -17px 0; }
+        .char-stan.walk2 { background-position: -34px 0; }
 
-        /* Kyle - green hat - Row 4 (around y=88) */
-        .char-kyle { background-position: -1px -89px; }
-        .char-kyle.walk1 { background-position: -18px -89px; }
-        .char-kyle.walk2 { background-position: -35px -89px; }
+        /* Kyle - green hat - starts at row 3 */
+        .char-kyle { background-position: 0 -66px; }
+        .char-kyle.walk1 { background-position: -17px -66px; }
+        .char-kyle.walk2 { background-position: -34px -66px; }
 
-        /* Cartman - light blue hat, fat - Row 7 (around y=154) */
-        .char-cartman { background-position: -1px -155px; }
-        .char-cartman.walk1 { background-position: -18px -155px; }
-        .char-cartman.walk2 { background-position: -35px -155px; }
+        /* Cartman - fat - starts at row 6 */
+        .char-cartman { background-position: 0 -132px; }
+        .char-cartman.walk1 { background-position: -17px -132px; }
+        .char-cartman.walk2 { background-position: -34px -132px; }
 
-        /* Kenny - orange hood - Row 10 (around y=220) */
-        .char-kenny { background-position: -1px -221px; }
-        .char-kenny.walk1 { background-position: -18px -221px; }
-        .char-kenny.walk2 { background-position: -35px -221px; }
+        /* Kenny - orange hood - starts at row 9 */
+        .char-kenny { background-position: 0 -198px; }
+        .char-kenny.walk1 { background-position: -17px -198px; }
+        .char-kenny.walk2 { background-position: -34px -198px; }
 
         #player {
             z-index: 100;
@@ -616,15 +615,65 @@
             npcs: [],
             keys: {},
             dialogue: false,
-            target: null
+            target: null,
+            spriteReady: false
         };
 
+        // ===== PROCESS SPRITE (Remove Magenta) =====
+        let processedSpriteUrl = null;
+        
+        function loadAndProcessSprite() {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+                    
+                    // Remove magenta (255, 0, 255) - make transparent
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        
+                        // Check for magenta/pink background
+                        if (r > 200 && g < 100 && b > 200) {
+                            data[i + 3] = 0; // Set alpha to 0
+                        }
+                    }
+                    
+                    ctx.putImageData(imageData, 0, 0);
+                    processedSpriteUrl = canvas.toDataURL();
+                    
+                    // Apply to all characters
+                    document.querySelectorAll('.character').forEach(el => {
+                        el.style.backgroundImage = `url(${processedSpriteUrl})`;
+                    });
+                    
+                    state.spriteReady = true;
+                    resolve();
+                };
+                img.onerror = function() {
+                    console.error('Failed to load sprite');
+                    resolve();
+                };
+                img.src = 'sprites/Kyle, Stan, Cartman & Kenny.png';
+            });
+        }
+
         // ===== INIT =====
-        function init() {
+        async function init() {
             createGround();
             createBuildings();
             createNPCs();
             setupPlayer();
+            await loadAndProcessSprite();
             setupControls();
             loadProjects();
             requestAnimationFrame(gameLoop);
