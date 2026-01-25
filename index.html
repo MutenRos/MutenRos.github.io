@@ -255,43 +255,39 @@
         /* ===== SPRITES ===== */
         .character {
             position: absolute;
-            width: 15px;
-            height: 21px;
+            width: 16px;
+            height: 24px;
             background-repeat: no-repeat;
             image-rendering: pixelated;
-            transform: scale(2.5);
+            transform: scale(2);
             transform-origin: top left;
             z-index: 10;
         }
 
         /* 
-         * Spritesheet: 512x896
-         * Each sprite appears to be ~16x22 with 1px gap
-         * Rows: Stan(0-2), Kyle(3-5), Cartman(6-8), Kenny(9-11)
+         * Spritesheet: 512x896, each sprite 16x24
+         * Rows are 24px apart, each char has 3 rows (down/left/right)
          */
 
-        /* Stan - Row 0 - blue/red hat */
-        .char-stan { background-position: -1px -1px; }
-        .char-stan.walk1 { background-position: -18px -1px; }
-        .char-stan.walk2 { background-position: -35px -1px; }
-        .char-stan.down { background-position: -1px -1px; }
-        .char-stan.left { background-position: -1px -23px; }
-        .char-stan.right { background-position: -1px -45px; }
+        /* Stan - Y=0 (blue/red hat) */
+        .char-stan { background-position: 0 0; }
+        .char-stan.walk1 { background-position: -17px 0; }
+        .char-stan.walk2 { background-position: -34px 0; }
 
-        /* Kyle - Row 3-5 - green ushanka */
-        .char-kyle { background-position: -1px -67px; }
-        .char-kyle.walk1 { background-position: -18px -67px; }
-        .char-kyle.walk2 { background-position: -35px -67px; }
+        /* Kyle - Y=72 (green ushanka) */
+        .char-kyle { background-position: 0 -72px; }
+        .char-kyle.walk1 { background-position: -17px -72px; }
+        .char-kyle.walk2 { background-position: -34px -72px; }
 
-        /* Cartman - Row 6-8 - fat boy, light blue hat */
-        .char-cartman { background-position: -1px -133px; }
-        .char-cartman.walk1 { background-position: -18px -133px; }
-        .char-cartman.walk2 { background-position: -35px -133px; }
+        /* Cartman - Y=144 (fat, light blue hat) */
+        .char-cartman { background-position: 0 -144px; }
+        .char-cartman.walk1 { background-position: -17px -144px; }
+        .char-cartman.walk2 { background-position: -34px -144px; }
 
-        /* Kenny - Row 9-11 - orange parka */
-        .char-kenny { background-position: -1px -199px; }
-        .char-kenny.walk1 { background-position: -18px -199px; }
-        .char-kenny.walk2 { background-position: -35px -199px; }
+        /* Kenny - Y=216 (orange parka) */
+        .char-kenny { background-position: 0 -216px; }
+        .char-kenny.walk1 { background-position: -17px -216px; }
+        .char-kenny.walk2 { background-position: -34px -216px; }
 
         #player {
             z-index: 100;
