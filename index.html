@@ -256,34 +256,34 @@
         .character {
             position: absolute;
             width: 16px;
-            height: 22px;
+            height: 20px;
             background-image: url('sprites/Kyle,%20Stan,%20Cartman%20&%20Kenny.png');
             background-repeat: no-repeat;
             image-rendering: pixelated;
-            transform: scale(2.5);
+            transform: scale(2);
             transform-origin: top left;
             z-index: 10;
         }
 
-        /* Row 1: Stan (blue hat) - frames at y=0 */
-        .char-stan { background-position: 0 0; }
-        .char-stan.walk1 { background-position: -17px 0; }
-        .char-stan.walk2 { background-position: -34px 0; }
+        /* Stan - Row 0 (blue/red hat) */
+        .char-stan { background-position: -1px -1px; }
+        .char-stan.walk1 { background-position: -18px -1px; }
+        .char-stan.walk2 { background-position: -35px -1px; }
 
-        /* Row 4: Kyle (green hat) - approx y=66 */
-        .char-kyle { background-position: 0 -66px; }
-        .char-kyle.walk1 { background-position: -17px -66px; }
-        .char-kyle.walk2 { background-position: -34px -66px; }
+        /* Kyle - green hat - Row 4 (around y=88) */
+        .char-kyle { background-position: -1px -89px; }
+        .char-kyle.walk1 { background-position: -18px -89px; }
+        .char-kyle.walk2 { background-position: -35px -89px; }
 
-        /* Row 7: Cartman (fat, light blue hat) - approx y=132 */
-        .char-cartman { background-position: 0 -132px; }
-        .char-cartman.walk1 { background-position: -17px -132px; }
-        .char-cartman.walk2 { background-position: -34px -132px; }
+        /* Cartman - light blue hat, fat - Row 7 (around y=154) */
+        .char-cartman { background-position: -1px -155px; }
+        .char-cartman.walk1 { background-position: -18px -155px; }
+        .char-cartman.walk2 { background-position: -35px -155px; }
 
-        /* Row 10: Kenny (orange hood) - approx y=198 */
-        .char-kenny { background-position: 0 -198px; }
-        .char-kenny.walk1 { background-position: -17px -198px; }
-        .char-kenny.walk2 { background-position: -34px -198px; }
+        /* Kenny - orange hood - Row 10 (around y=220) */
+        .char-kenny { background-position: -1px -221px; }
+        .char-kenny.walk1 { background-position: -18px -221px; }
+        .char-kenny.walk2 { background-position: -35px -221px; }
 
         #player {
             z-index: 100;
