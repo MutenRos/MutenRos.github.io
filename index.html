@@ -733,7 +733,7 @@
             <ul>
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#skills">SKILLS</a></li>
-                <li><a href="#projects">PROJECTS</a></li>
+                <li><a href="#projects">PROJECTS</a></li>    
                 <li><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
@@ -1017,15 +1017,15 @@
         // Proyectos para las puertas (la primera es misteriosa)
         const matrixDoors = [
             { name: '???', url: null, color: '#ff0000', mystery: true, desc: '' },
-            { name: 'Bombas Ideal', url: 'https://mutenros.github.io/BI', color: '#00aaff', desc: 'Esta puerta conduce a una empresa de bombas hidráulicas. Un sistema complejo de catálogos y selectores de productos. Código muy... organizado.' },
-            { name: 'Bombas Asoin', url: 'https://mutenros.github.io/BA', color: '#00ff88', desc: 'Aquí encontrarás una tienda online. Carritos de compra, productos, categorías... Todo fluye como el agua que bombean.' },
-            { name: 'Bombas Bloch', url: 'https://mutenros.github.io/BB', color: '#ff6600', desc: 'Una puerta antigua. Lleva a un fabricante desde 1915. Historia, catálogos técnicos, descargas... Un legado digitalizado.' },
-            { name: 'CuevasMotor', url: 'https://mutenros.github.io/CuevasMotorSport', color: '#ff0066', desc: 'Velocidad. Esta puerta vibra con motores. Grúas 24 horas, coches deportivos... JavaScript puro en acción.' },
-            { name: 'Espectáculos', url: 'https://mutenros.github.io/Espectaculos-Dani', color: '#aa00ff', desc: 'Magia y entretenimiento. Shows, eventos, animación... Una puerta llena de color y alegría.' },
-            { name: 'Arraez', url: 'https://mutenros.github.io/Arraez-Portfolio', color: '#ffaa00', desc: 'Un portfolio anterior. Cada puerta cuenta una historia, y esta cuenta la evolución de un desarrollador.' },
-            { name: 'Excusas', url: 'https://mutenros.github.io/Generador-de-Excusas-Premium', color: '#00ffaa', desc: 'Ah, esta es curiosa. Genera excusas. Aleatorias. Premium. Para cuando la creatividad falla... el código no.' },
-            { name: 'MenuSpreader', url: 'https://mutenros.github.io/MenuSpreader', color: '#ff00aa', desc: 'Una herramienta de menús. Organiza, distribuye, expande. Útil para restaurantes y negocios gastronómicos.' },
-            { name: 'Tokenizer', url: 'https://mutenros.github.io/TokenMinimizer', color: '#aaff00', desc: 'Optimización de tokens. Para cuando cada carácter cuenta. Minificación, compresión... Eficiencia pura.' },
+            { name: 'Bombas Ideal', url: 'https://mutenros.github.io/BI', color: '#00aaff', desc: 'Catálogo de bombas hidráulicas.' },
+            { name: 'Bombas Asoin', url: 'https://mutenros.github.io/BA', color: '#00ff88', desc: 'Tienda online de bombas.' },
+            { name: 'Bombas Bloch', url: 'https://mutenros.github.io/BB', color: '#ff6600', desc: 'Fabricante desde 1915.' },
+            { name: 'CuevasMotor', url: 'https://mutenros.github.io/CuevasMotorSport', color: '#ff0066', desc: 'Taller y grúa 24 horas.' },
+            { name: 'Espectáculos', url: 'https://mutenros.github.io/Espectaculos-Dani', color: '#aa00ff', desc: 'Shows y animación.' },
+            { name: 'Arraez', url: 'https://mutenros.github.io/Arraez-Portfolio', color: '#ffaa00', desc: 'Portfolio anterior.' },
+            { name: 'Excusas', url: 'https://mutenros.github.io/Generador-de-Excusas-Premium', color: '#00ffaa', desc: 'Generador de excusas.' },
+            { name: 'MenuSpreader', url: 'https://mutenros.github.io/MenuSpreader', color: '#ff00aa', desc: 'Gestor de menús.' },
+            { name: 'Tokenizer', url: 'https://mutenros.github.io/TokenMinimizer', color: '#aaff00', desc: 'Optimizador de tokens.' },
         ];
 
         function startMatrixEasterEgg() {
@@ -1441,62 +1441,47 @@
                 const doorH = 30 * P;
                 
                 if (project.mystery) {
-                    // Puerta roja misteriosa - pixel art
-                    ctx.fillStyle = isNear ? '#440000' : '#220000';
+                    // Puerta roja misteriosa
+                    ctx.fillStyle = '#330000';
                     ctx.fillRect(x - 2*P, y - 2*P, doorW + 4*P, doorH + 4*P);
                     
-                    ctx.fillStyle = '#110000';
+                    ctx.fillStyle = '#1a0000';
                     ctx.fillRect(x, y, doorW, doorH);
                     
-                    // Cadenas pixeladas
+                    // Candado pixelado
                     ctx.fillStyle = '#444444';
-                    for (let i = 0; i < 3; i++) {
-                        const chainY = y + 6*P + i * 8*P;
-                        for (let c = 0; c < 10; c++) {
-                            ctx.fillRect(x - P + c * 2*P, chainY, P, P);
-                        }
-                    }
+                    ctx.fillRect(x + 7*P, y + 12*P, 4*P, 6*P);
+                    ctx.fillRect(x + 8*P, y + 10*P, 2*P, 2*P);
                     
-                    // Símbolo ? pixelado
-                    ctx.fillStyle = isNear ? '#ff0000' : '#660000';
-                    ctx.font = '40px "Press Start 2P"';
+                    // Símbolo ?
+                    ctx.fillStyle = isNear ? '#ff0000' : '#880000';
+                    ctx.font = '30px "Press Start 2P"';
                     ctx.textAlign = 'center';
-                    ctx.fillText('?', x + doorW/2, y + doorH/2 + 15);
+                    ctx.fillText('?', x + doorW/2, y + 8*P);
                     
-                    // Borde rojo pixelado cuando cerca
                     if (isNear) {
                         ctx.fillStyle = '#ff0000';
-                        ctx.fillRect(x, y, doorW, P);
-                        ctx.fillRect(x, y + doorH - P, doorW, P);
-                        ctx.fillRect(x, y, P, doorH);
-                        ctx.fillRect(x + doorW - P, y, P, doorH);
-                        
-                        ctx.fillStyle = '#ff0000';
                         ctx.font = '8px "Press Start 2P"';
-                        ctx.fillText('BLOQUEADA', x + doorW/2, y + doorH + 20);
+                        ctx.fillText('BLOQUEADA', x + doorW/2, y + doorH + 18);
                     }
                     return;
                 }
                 
-                // Sombra 3D pixelada (derecha)
-                ctx.fillStyle = '#050505';
-                ctx.fillRect(x + doorW, y + P, 2*P, doorH - 2*P);
+                // Sombra pixelada
+                ctx.fillStyle = '#cccccc';
+                ctx.fillRect(x + doorW, y + P, 2*P, doorH);
+                ctx.fillRect(x, y + doorH, doorW + 2*P, 2*P);
                 
-                // Sombra 3D pixelada (abajo)
-                ctx.fillStyle = '#030303';
-                ctx.fillRect(x + P, y + doorH, doorW, 2*P);
-                
-                // Marco con color del proyecto
-                const frameColor = isNear ? project.color : '#333333';
-                ctx.fillStyle = frameColor;
+                // Marco de la puerta - blanco
+                ctx.fillStyle = isNear ? project.color : '#888888';
                 ctx.fillRect(x - 2*P, y - 2*P, doorW + 4*P, doorH + 4*P);
                 
-                // Puerta principal
-                ctx.fillStyle = isNear ? '#2a2a2a' : '#1a1a1a';
+                // Puerta principal - blanca
+                ctx.fillStyle = isNear ? '#ffffff' : '#e8e8e8';
                 ctx.fillRect(x, y, doorW, doorH);
                 
-                // Paneles superiores
-                ctx.fillStyle = isNear ? '#333333' : '#1f1f1f';
+                // Paneles superiores (más oscuros)
+                ctx.fillStyle = isNear ? '#f0f0f0' : '#d8d8d8';
                 ctx.fillRect(x + 2*P, y + 2*P, 6*P, 10*P);
                 ctx.fillRect(x + 10*P, y + 2*P, 6*P, 10*P);
                 
@@ -1504,30 +1489,17 @@
                 ctx.fillRect(x + 2*P, y + 14*P, 6*P, 10*P);
                 ctx.fillRect(x + 10*P, y + 14*P, 6*P, 10*P);
                 
-                // Highlight pixelado en paneles
-                if (isNear) {
-                    ctx.fillStyle = '#444444';
-                    ctx.fillRect(x + 2*P, y + 2*P, 6*P, P);
-                    ctx.fillRect(x + 10*P, y + 2*P, 6*P, P);
-                }
-                
-                // Pomo dorado pixelado
-                ctx.fillStyle = isNear ? '#ffd700' : '#665500';
+                // Pomo dorado
+                ctx.fillStyle = isNear ? '#ffd700' : '#c0a000';
                 ctx.fillRect(x + 14*P, y + 14*P, 2*P, 2*P);
                 
-                // Brillo pomo
+                // Brillo del pomo
                 if (isNear) {
                     ctx.fillStyle = '#ffff88';
                     ctx.fillRect(x + 14*P, y + 14*P, P, P);
                 }
                 
-                // Cerradura pixelada
-                ctx.fillStyle = isNear ? '#c0c0c0' : '#444444';
-                ctx.fillRect(x + 14*P, y + 17*P, 2*P, 2*P);
-                ctx.fillStyle = '#000000';
-                ctx.fillRect(x + 14*P + P/2, y + 17*P + P/2, P, P);
-                
-                // Borde brillante cuando cerca
+                // Borde de color cuando está cerca
                 if (isNear) {
                     ctx.fillStyle = project.color;
                     ctx.fillRect(x, y, doorW, P);
@@ -1537,15 +1509,15 @@
                 }
                 
                 // Número de puerta
-                ctx.fillStyle = isNear ? '#ffffff' : '#444444';
-                ctx.font = '12px "Press Start 2P"';
+                ctx.fillStyle = isNear ? '#000000' : '#666666';
+                ctx.font = '10px "Press Start 2P"';
                 ctx.textAlign = 'center';
-                ctx.fillText(String(index).padStart(2, '0'), x + doorW/2, y - 10);
+                ctx.fillText(String(index).padStart(2, '0'), x + doorW/2, y - 8);
                 
                 // Nombre del proyecto
-                ctx.fillStyle = isNear ? project.color : '#444444';
-                ctx.font = isNear ? '10px "Press Start 2P"' : '8px "Press Start 2P"';
-                ctx.fillText(project.name, x + doorW/2, y + doorH + 22);
+                ctx.fillStyle = isNear ? '#000000' : '#666666';
+                ctx.font = isNear ? '9px "Press Start 2P"' : '7px "Press Start 2P"';
+                ctx.fillText(project.name, x + doorW/2, y + doorH + 18);
             }
             
             function drawMatrixRain() {
@@ -1617,63 +1589,40 @@
                     }
                     
                 } else if (gameState === 'hallway') {
-                    // Fondo negro profundo
-                    ctx.fillStyle = '#020202';
+                    // Fondo blanco brillante - como en la película
+                    ctx.fillStyle = '#f8f8f8';
                     ctx.fillRect(0, 0, 1000, 600);
                     
-                    // Lluvia de código Matrix
-                    drawMatrixRain();
+                    // Techo blanco con líneas
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, 1000, 80);
                     
-                    // Techo con lámparas
-                    ctx.fillStyle = '#0a0a0a';
-                    ctx.fillRect(0, 0, 1000, 70);
-                    
-                    // Lámparas fluorescentes
-                    for (let i = 0; i < 12; i++) {
-                        const lx = i * 150 - (hallwayScroll * 0.3 % 150) + 50;
-                        if (lx > -50 && lx < 1050) {
-                            // Luz
-                            const lampGlow = ctx.createRadialGradient(lx, 80, 0, lx, 80, 100);
-                            lampGlow.addColorStop(0, 'rgba(0,255,0,0.15)');
-                            lampGlow.addColorStop(1, 'rgba(0,255,0,0)');
-                            ctx.fillStyle = lampGlow;
-                            ctx.fillRect(lx - 100, 0, 200, 200);
-                            
-                            // Lámpara
-                            ctx.fillStyle = '#1a1a1a';
-                            ctx.fillRect(lx - 40, 55, 80, 15);
-                            ctx.fillStyle = `rgba(0, 255, 65, ${0.7 + Math.sin(animTime * 0.1 + i) * 0.3})`;
-                            ctx.fillRect(lx - 35, 60, 70, 8);
-                        }
+                    // Líneas del techo (fluorescentes)
+                    ctx.fillStyle = '#e0e0e0';
+                    for (let i = 0; i < 15; i++) {
+                        const lx = i * 120 - (hallwayScroll * 0.5 % 120);
+                        ctx.fillRect(lx, 40, 80, 8);
                     }
                     
-                    // Paredes con textura
-                    ctx.fillStyle = '#0f0f0f';
-                    ctx.fillRect(0, 70, 1000, 30);
-                    ctx.fillRect(0, 500, 1000, 30);
+                    // Paredes blancas
+                    ctx.fillStyle = '#f0f0f0';
+                    ctx.fillRect(0, 80, 1000, 40);
+                    ctx.fillRect(0, 480, 1000, 40);
                     
-                    // Molduras
-                    ctx.fillStyle = '#1a1a1a';
-                    ctx.fillRect(0, 95, 1000, 8);
-                    ctx.fillRect(0, 497, 1000, 8);
+                    // Molduras pixeladas
+                    ctx.fillStyle = '#e0e0e0';
+                    ctx.fillRect(0, 115, 1000, PIXEL);
+                    ctx.fillRect(0, 475, 1000, PIXEL);
                     
-                    // Suelo reflectante
-                    const floorGrad = ctx.createLinearGradient(0, 430, 0, 600);
-                    floorGrad.addColorStop(0, '#151515');
-                    floorGrad.addColorStop(0.3, '#0f0f0f');
-                    floorGrad.addColorStop(1, '#050505');
-                    ctx.fillStyle = floorGrad;
-                    ctx.fillRect(0, 430, 1000, 170);
+                    // Suelo blanco brillante
+                    ctx.fillStyle = '#fafafa';
+                    ctx.fillRect(0, 440, 1000, 160);
                     
-                    // Líneas del suelo
-                    ctx.strokeStyle = 'rgba(0,255,0,0.1)';
-                    ctx.lineWidth = 1;
-                    for (let i = 0; i < 20; i++) {
-                        const lx = i * 100 - (hallwayScroll % 100);
-                        ctx.beginPath();
-                        ctx.moveTo(lx, 430);
-                        ctx.lineTo(lx, 600);
-                        ctx.stroke();
+                    // Reflejos en el suelo (líneas sutiles)
+                    ctx.fillStyle = '#f0f0f0';
+                    for (let i = 0; i < 25; i++) {
+                        const lx = i * 80 - (hallwayScroll % 80);
+                        ctx.fillRect(lx, 440, 2, 160);
                     }
                     
                     // Puertas
@@ -1695,17 +1644,17 @@
                     // Neo
                     drawNeo(neo.x, neo.y + 10, neo.direction, neo.walking, neo.breathe, true);
                     
-                    // UI
-                    ctx.fillStyle = '#0f0';
-                    ctx.font = '11px "Press Start 2P"';
+                    // UI oscuro para fondo blanco
+                    ctx.fillStyle = '#333';
+                    ctx.font = '10px "Press Start 2P"';
                     ctx.textAlign = 'left';
-                    ctx.fillText('█ PASILLO DEL CERRAJERO', 15, 30);
+                    ctx.fillText('PASILLO DE LAS PUERTAS', 15, 25);
                     
-                    ctx.fillStyle = '#080';
-                    ctx.font = '9px "Press Start 2P"';
-                    ctx.fillText(`PUERTA: ${Math.max(1, Math.floor((neo.x + hallwayScroll) / 200) + 1)} / ${matrixDoors.length}`, 15, 50);
+                    ctx.fillStyle = '#666';
+                    ctx.font = '8px "Press Start 2P"';
+                    ctx.fillText(`${Math.max(1, Math.floor((neo.x + hallwayScroll) / 180) + 1)} / ${matrixDoors.length}`, 15, 42);
                     
-                    // Mostrar descripción del Keymaker
+                    // Mostrar descripción al acercarse
                     if (nearDoorIndex > 0 && !matrixDoors[nearDoorIndex].mystery) {
                         if (!keymakerExplained.has(nearDoorIndex)) {
                             keymakerExplained.add(nearDoorIndex);
@@ -1787,7 +1736,7 @@
                                 hideDialogue();
                                 canvas.style.filter = 'brightness(1) blur(0)';
                                 setTimeout(() => {
-                                showDialogue('CERRAJERO', 'Bienvenido al Pasillo de las Puertas. Soy el Cerrajero. Cada puerta es única... como cada llave.');
+                                showDialogue('CERRAJERO', 'Bienvenido. Cada puerta lleva a un proyecto diferente.');
                                 }, 500);
                             }, 800);
                         }
@@ -1795,12 +1744,12 @@
                         if (currentDoorIndex >= 0) {
                             const project = matrixDoors[currentDoorIndex];
                             if (project.mystery) {
-                                showDialogue('CERRAJERO', 'Esta puerta... no tengo llave para ella. Ni siquiera yo sé qué hay detrás. Quizás el Arquitecto... o quizás nadie.');
+                                showDialogue('CERRAJERO', 'No tengo llave para esta puerta.');
                             } else if (project.url) {
-                                showDialogue('CERRAJERO', 'Esta es la puerta correcta. Ve, Neo. El camino está abierto.');
+                                showDialogue('CERRAJERO', 'Esta es.');
                                 setTimeout(() => {
                                     window.open(project.url, '_blank');
-                                }, 1500);
+                                }, 800);
                             }
                         }
                     }
