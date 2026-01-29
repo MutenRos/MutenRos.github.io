@@ -907,11 +907,10 @@
                 const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=30`);
                 const repos = await response.json();
                 
-                // Filter: only repos with GitHub Pages, exclude portfolio itself and forks
+                // Filter: exclude portfolio itself and forks
                 const filteredRepos = repos.filter(repo => 
                     repo.name !== `${username}.github.io` && 
-                    !repo.fork && 
-                    repo.has_pages === true
+                    !repo.fork
                 );
                 
                 // Combinar repos públicos con proyectos privados
@@ -945,7 +944,8 @@
                             </div>
                         `;
                     } else {
-                        // Repo público con Pages
+                        // Repo público
+                        const hasDemo = project.has_pages || project.homepage;
                         const demoUrl = project.homepage || `https://mutenros.github.io/${project.name}`;
                         return `
                             <div class="project-card">
@@ -964,7 +964,7 @@
                                         <span>🍴 ${project.forks_count}</span>
                                     </div>
                                     <a href="${project.html_url}" target="_blank" class="project-link">VER CÓDIGO</a>
-                                    <a href="${demoUrl}" target="_blank" class="project-link" style="margin-left: 10px; border-color: var(--neon-cyan); color: var(--neon-cyan);">DEMO</a>
+                                    ${hasDemo ? `<a href="${demoUrl}" target="_blank" class="project-link" style="margin-left: 10px; border-color: var(--neon-cyan); color: var(--neon-cyan);">DEMO</a>` : ''}
                                 </div>
                             </div>
                         `;
