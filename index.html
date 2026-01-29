@@ -1159,7 +1159,7 @@
             // Estado del juego
             let gameState = 'white_room';
             let neo = { x: 120, y: 340, direction: 1, frame: 0, walking: false, breathe: 0, legFrame: 0 };
-            let morpheus = { x: 620, y: 295, breathe: 0 };
+            let morpheus = { x: 700, y: 340, breathe: 0 };
             let keymaker = { x: 0, y: 340, breathe: 0, talking: false };
             let door = { x: 460, y: 180, visible: false, glow: 0 };
             let dialogueState = 0;
@@ -1203,381 +1203,179 @@
                 { speaker: 'MORPHEUS', text: 'Buena suerte, Neo. Nos veremos del otro lado.' },
             ];
             
-            const PIXEL = 6;
+            const PIXEL = 5;
             
             // ═══════════════════════════════════════════════════════════
-            // SPRITES MEJORADOS CON ANIMACIÓN
+            // SPRITES 16-BIT PIXEL ART PURO - SOLO fillRect
             // ═══════════════════════════════════════════════════════════
             
-            function drawNeo(x, y, direction, walking, breathe, inHallway = false) {
-                ctx.save();
-                const breatheOffset = Math.sin(breathe * 0.06) * 2;
-                const scale = inHallway ? 0.85 : 1;
-                
-                if (direction === -1) {
-                    ctx.translate(x + 80 * scale, y + breatheOffset);
-                    ctx.scale(-scale, scale);
-                } else {
-                    ctx.translate(x, y + breatheOffset);
-                    ctx.scale(scale, scale);
-                }
-                
-                // Sombra dinámica
-                ctx.fillStyle = 'rgba(0,0,0,0.4)';
-                ctx.beginPath();
-                ctx.ellipse(45, 130, 35, 10, 0, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Animación de piernas
-                const legOffset = walking ? Math.sin(neo.legFrame * 0.4) * 8 : 0;
-                
-                // Gabardina ondeando
-                const coatWave = walking ? Math.sin(neo.legFrame * 0.3) * 3 : 0;
-                
-                // NEO - Sprite detallado
-                // Cabeza y pelo
-                ctx.fillStyle = '#0a0a0a';
-                for (let i = 0; i < 3; i++) {
-                    ctx.fillRect(25 + i * PIXEL, 0, PIXEL, PIXEL * 2);
-                }
-                ctx.fillRect(19, PIXEL, PIXEL * 8, PIXEL);
-                ctx.fillRect(13, PIXEL * 2, PIXEL * 10, PIXEL * 2);
-                
-                // Cara
-                ctx.fillStyle = '#e8c4a0';
-                ctx.fillRect(19, PIXEL * 3, PIXEL * 6, PIXEL * 3);
-                ctx.fillRect(25, PIXEL * 6, PIXEL * 3, PIXEL);
-                
-                // Gafas de sol
-                ctx.fillStyle = '#000';
-                ctx.fillRect(16, PIXEL * 3.5, PIXEL * 7, PIXEL * 1.2);
-                ctx.fillStyle = '#1a3a1a';
-                ctx.fillRect(18, PIXEL * 3.6, PIXEL * 2, PIXEL);
-                ctx.fillRect(30, PIXEL * 3.6, PIXEL * 2, PIXEL);
-                
-                // Cuello
-                ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(25, PIXEL * 7, PIXEL * 3, PIXEL);
-                
-                // Gabardina - cuerpo principal
-                ctx.fillStyle = '#0f0f0f';
-                ctx.fillRect(10, PIXEL * 8, PIXEL * 10, PIXEL * 2);
-                ctx.fillRect(7, PIXEL * 10, PIXEL * 13, PIXEL * 8);
-                
-                // Gabardina - faldones con movimiento
-                ctx.fillRect(4 + coatWave, PIXEL * 18, PIXEL * 5, PIXEL * 4);
-                ctx.fillRect(52 - coatWave, PIXEL * 18, PIXEL * 5, PIXEL * 4);
-                
-                // Detalles de la gabardina
-                ctx.fillStyle = '#1a1a1a';
-                ctx.fillRect(28, PIXEL * 10, PIXEL * 2, PIXEL * 8);
-                
-                // Cinturón
-                ctx.fillStyle = '#2a2a2a';
-                ctx.fillRect(10, PIXEL * 13, PIXEL * 10, PIXEL);
-                ctx.fillStyle = '#c0c0c0';
-                ctx.fillRect(25, PIXEL * 13, PIXEL * 2, PIXEL);
-                
-                // Piernas con animación
-                ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(16 - legOffset/2, PIXEL * 18, PIXEL * 3, PIXEL * 4);
-                ctx.fillRect(38 + legOffset/2, PIXEL * 18, PIXEL * 3, PIXEL * 4);
-                
-                // Botas
-                ctx.fillStyle = '#050505';
-                ctx.fillRect(13 - legOffset/2, PIXEL * 21.5, PIXEL * 4, PIXEL * 1.5);
-                ctx.fillRect(35 + legOffset/2, PIXEL * 21.5, PIXEL * 4, PIXEL * 1.5);
-                
-                // Highlights
-                ctx.fillStyle = 'rgba(255,255,255,0.08)';
-                ctx.fillRect(7, PIXEL * 10, PIXEL, PIXEL * 8);
-                ctx.fillRect(10, PIXEL * 8, PIXEL * 10, 2);
-                
-                ctx.restore();
+            // Colores de los sprites
+            const COLORS = {
+                // Neo
+                '1': '#0a0a0a',   // Negro pelo/gabardina
+                '2': '#1a1a1a',   // Gris oscuro gabardina
+                '3': '#2a2a2a',   // Gris medio
+                'F': '#e8c4a0',   // Piel
+                'G': '#1a3a1a',   // Cristal gafas
+                'B': '#050505',   // Botas negro
+                'S': '#c0c0c0',   // Plateado hebilla
+                // Morpheus
+                'M': '#0a0a15',   // Azul muy oscuro traje
+                'T': '#12121f',   // Azul oscuro solapas
+                'W': '#f0f0f0',   // Blanco camisa
+                'R': '#660000',   // Rojo corbata
+                'K': '#6b4423',   // Piel oscura
+                'H': '#8b5a2b',   // Piel clara
+                'L': '#888888',   // Gafas marco
+                // Keymaker
+                'C': '#3d3020',   // Túnica marrón
+                'D': '#4a3d2a',   // Túnica clara
+                'P': '#888888',   // Pelo gris
+                'A': '#d4a574',   // Piel asiática
+                'Y': '#c0a000',   // Dorado llaves
+            };
+            
+            // NEO SPRITE - De pie, pixel art puro
+            const NEO_SPRITE = [
+                "    111     ",
+                "   11111    ",
+                "   11111    ",
+                "   FFFFF    ",
+                "   FG1GF    ",
+                "   FFFFF    ",
+                "    FFF     ",
+                "    111     ",
+                "  1111111   ",
+                "  1211112   ",
+                "  1211112   ",
+                "  1211112   ",
+                "  12SSS12   ",
+                "  1211112   ",
+                "  1211112   ",
+                "  1211112   ",
+                "   11 11    ",
+                "   11 11    ",
+                "   11 11    ",
+                "   BB BB    ",
+            ];
+            
+            // MORPHEUS SPRITE - De pie, pixel art puro
+            const MORPHEUS_SPRITE = [
+                "    KKK     ",
+                "   KKKKK    ",
+                "   KKKKK    ",
+                "   HHHHH    ",
+                "   HLHLH    ",
+                "   H L H    ",
+                "   HHHHH    ",
+                "    HHH     ",
+                "    MMM     ",
+                "  MMWRWMM   ",
+                "  MTWRWTM   ",
+                "  MTWRWTM   ",
+                "  MMWRWMM   ",
+                "  MMMMMMM   ",
+                "  MMMMMMM   ",
+                "  MMMMMMM   ",
+                "   MM MM    ",
+                "   MM MM    ",
+                "   MM MM    ",
+                "   BB BB    ",
+            ];
+            
+            // KEYMAKER SPRITE - Más pequeño
+            const KEYMAKER_SPRITE = [
+                "   PPP    ",
+                "  PPPPP   ",
+                "  AAAAA   ",
+                "  A1 1A   ",
+                "  AAAAA   ",
+                "   AAA    ",
+                "   CCC    ",
+                "  CCDCC   ",
+                "  CCDCC   ",
+                "  CCDCC   ",
+                " YCCCCCY  ",
+                " Y CCC Y  ",
+                "   C C    ",
+                "   C C    ",
+                "   B B    ",
+            ];
+            
+            function drawPixelSprite(sprite, x, y, pixelSize, flipX = false) {
+                const width = sprite[0].length;
+                sprite.forEach((row, py) => {
+                    [...row].forEach((pixel, px) => {
+                        if (COLORS[pixel]) {
+                            ctx.fillStyle = COLORS[pixel];
+                            const drawX = flipX ? x + (width - 1 - px) * pixelSize : x + px * pixelSize;
+                            ctx.fillRect(drawX, y + py * pixelSize, pixelSize, pixelSize);
+                        }
+                    });
+                });
             }
             
-            function drawMorpheusInChair(x, y, breathe) {
-                const breatheOffset = Math.sin(breathe * 0.04) * 1.5;
+            function drawNeo(x, y, direction, walking, breathe, inHallway = false) {
+                const scale = inHallway ? 0.85 : 1;
+                const pxSize = Math.floor(PIXEL * scale);
+                const breatheOffset = Math.floor(Math.sin(breathe * 0.06) * 2);
                 
-                // Sombra del sillón
+                // Sombra pixelada
                 ctx.fillStyle = 'rgba(0,0,0,0.3)';
-                ctx.beginPath();
-                ctx.ellipse(x + 75, y + 180, 90, 20, 0, 0, Math.PI * 2);
-                ctx.fill();
+                const shadowWidth = 10 * pxSize;
+                const shadowHeight = 2 * pxSize;
+                ctx.fillRect(x + pxSize, y + 20 * pxSize + breatheOffset, shadowWidth, shadowHeight);
                 
-                // SILLÓN CHESTERFIELD
-                // Respaldo curvo
-                ctx.fillStyle = '#1a0f0a';
-                ctx.beginPath();
-                ctx.moveTo(x - 20, y + 120);
-                ctx.quadraticCurveTo(x + 75, y - 60, x + 170, y + 120);
-                ctx.lineTo(x + 170, y + 80);
-                ctx.quadraticCurveTo(x + 75, y - 30, x - 20, y + 80);
-                ctx.fill();
+                // Dibujar sprite
+                drawPixelSprite(NEO_SPRITE, x, y + breatheOffset, pxSize, direction === -1);
                 
-                // Interior respaldo
-                ctx.fillStyle = '#2d1a12';
-                ctx.beginPath();
-                ctx.moveTo(x - 5, y + 110);
-                ctx.quadraticCurveTo(x + 75, y - 20, x + 155, y + 110);
-                ctx.lineTo(x + 155, y + 70);
-                ctx.quadraticCurveTo(x + 75, y, x - 5, y + 70);
-                ctx.fill();
-                
-                // Capitoné
-                ctx.fillStyle = '#3d2518';
-                for (let row = 0; row < 2; row++) {
-                    for (let col = 0; col < 4; col++) {
-                        const bx = x + 15 + col * 35;
-                        const by = y + 20 + row * 40;
-                        ctx.beginPath();
-                        ctx.arc(bx, by, 10, 0, Math.PI * 2);
-                        ctx.fill();
+                // Animación de piernas al caminar
+                if (walking) {
+                    const legFrame = Math.floor(neo.legFrame / 5) % 2;
+                    ctx.fillStyle = COLORS['1'];
+                    if (legFrame === 0) {
+                        // Pierna izquierda adelante
+                        const lx = direction === -1 ? x + 5 * pxSize : x + 3 * pxSize;
+                        ctx.fillRect(lx, y + 17 * pxSize + breatheOffset, pxSize * 2, pxSize);
+                    } else {
+                        // Pierna derecha adelante
+                        const lx = direction === -1 ? x + 3 * pxSize : x + 7 * pxSize;
+                        ctx.fillRect(lx, y + 17 * pxSize + breatheOffset, pxSize * 2, pxSize);
                     }
                 }
+            }
+            
+            function drawMorpheus(x, y, breathe) {
+                const breatheOffset = Math.floor(Math.sin(breathe * 0.04) * 1.5);
                 
-                // Asiento
-                ctx.fillStyle = '#1a0f0a';
-                ctx.fillRect(x - 25, y + 100, 200, 40);
-                ctx.fillStyle = '#2d1a12';
-                ctx.fillRect(x - 15, y + 105, 180, 30);
+                // Sombra pixelada
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.fillRect(x + PIXEL, y + 20 * PIXEL + breatheOffset, 10 * PIXEL, 2 * PIXEL);
                 
-                // Cojín
-                ctx.fillStyle = '#3d2518';
-                ctx.beginPath();
-                ctx.ellipse(x + 75, y + 115, 70, 15, 0, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Brazos del sillón
-                ctx.fillStyle = '#1a0f0a';
-                ctx.fillRect(x - 40, y + 30, 35, 115);
-                ctx.fillRect(x + 155, y + 30, 35, 115);
-                
-                // Reposabrazos curvos
-                ctx.fillStyle = '#2d1a12';
-                ctx.beginPath();
-                ctx.ellipse(x - 22, y + 35, 18, 12, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.ellipse(x + 172, y + 35, 18, 12, 0, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Patas del sillón
-                ctx.fillStyle = '#0a0505';
-                ctx.fillRect(x - 15, y + 140, 20, 40);
-                ctx.fillRect(x + 145, y + 140, 20, 40);
-                
-                // ═══ MORPHEUS ═══
-                const mx = x + 40;
-                const my = y - 10 + breatheOffset;
-                
-                // Piernas cruzadas
-                ctx.fillStyle = '#0a0a15';
-                ctx.fillRect(mx + 10, my + 110, 80, 25);
-                ctx.beginPath();
-                ctx.moveTo(mx + 70, my + 100);
-                ctx.lineTo(mx + 100, my + 90);
-                ctx.lineTo(mx + 100, my + 115);
-                ctx.lineTo(mx + 70, my + 125);
-                ctx.fill();
-                
-                // Zapatos elegantes
-                ctx.fillStyle = '#050505';
-                ctx.fillRect(mx + 5, my + 130, 30, 12);
-                ctx.fillRect(mx + 90, my + 95, 25, 12);
-                
-                // Torso/Abrigo
-                ctx.fillStyle = '#0a0a15';
-                ctx.fillRect(mx + 15, my + 55, 70, 60);
-                
-                // Solapas del abrigo
-                ctx.fillStyle = '#12121f';
-                ctx.beginPath();
-                ctx.moveTo(mx + 15, my + 55);
-                ctx.lineTo(mx + 40, my + 85);
-                ctx.lineTo(mx + 15, my + 85);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.moveTo(mx + 85, my + 55);
-                ctx.lineTo(mx + 60, my + 85);
-                ctx.lineTo(mx + 85, my + 85);
-                ctx.fill();
-                
-                // Camisa
-                ctx.fillStyle = '#f0f0f0';
-                ctx.fillRect(mx + 38, my + 55, 24, 30);
-                
-                // Corbata
-                ctx.fillStyle = '#600';
-                ctx.beginPath();
-                ctx.moveTo(mx + 50, my + 55);
-                ctx.lineTo(mx + 55, my + 85);
-                ctx.lineTo(mx + 50, my + 90);
-                ctx.lineTo(mx + 45, my + 85);
-                ctx.fill();
-                
-                // Cabeza calva
-                ctx.fillStyle = '#6b4423';
-                ctx.beginPath();
-                ctx.ellipse(mx + 50, my + 30, 28, 32, 0, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Brillo de la calva
-                ctx.fillStyle = 'rgba(255,255,255,0.15)';
-                ctx.beginPath();
-                ctx.ellipse(mx + 45, my + 15, 15, 12, -0.3, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Cara
-                ctx.fillStyle = '#8b5a2b';
-                ctx.fillRect(mx + 30, my + 28, 40, 35);
-                
-                // Cejas
-                ctx.fillStyle = '#2a1a0a';
-                ctx.fillRect(mx + 32, my + 32, 12, 3);
-                ctx.fillRect(mx + 56, my + 32, 12, 3);
-                
-                // Gafas icónicas
-                ctx.strokeStyle = '#c0c0c0';
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.arc(mx + 38, my + 40, 10, 0, Math.PI * 2);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.arc(mx + 62, my + 40, 10, 0, Math.PI * 2);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(mx + 48, my + 40);
-                ctx.lineTo(mx + 52, my + 40);
-                ctx.stroke();
-                
-                // Cristales oscuros
-                ctx.fillStyle = 'rgba(0,0,0,0.85)';
-                ctx.beginPath();
-                ctx.arc(mx + 38, my + 40, 8, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(mx + 62, my + 40, 8, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Reflejo en gafas
-                ctx.fillStyle = 'rgba(0,255,0,0.1)';
-                ctx.beginPath();
-                ctx.arc(mx + 36, my + 38, 4, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.beginPath();
-                ctx.arc(mx + 60, my + 38, 4, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Nariz
-                ctx.fillStyle = '#7a4a1f';
-                ctx.fillRect(mx + 47, my + 45, 6, 12);
-                
-                // Boca seria
-                ctx.fillStyle = '#3a2010';
-                ctx.fillRect(mx + 42, my + 58, 16, 3);
-                
-                // Barba/sombra
-                ctx.fillStyle = 'rgba(0,0,0,0.2)';
-                ctx.fillRect(mx + 32, my + 55, 36, 8);
-                
-                // Brazos apoyados
-                ctx.fillStyle = '#0a0a15';
-                ctx.fillRect(mx - 10, my + 60, 25, 50);
-                ctx.fillRect(mx + 85, my + 60, 25, 50);
-                
-                // Manos
-                ctx.fillStyle = '#8b5a2b';
-                ctx.fillRect(mx - 5, my + 105, 20, 15);
-                ctx.fillRect(mx + 85, my + 105, 20, 15);
+                // Dibujar sprite de Morpheus
+                drawPixelSprite(MORPHEUS_SPRITE, x, y + breatheOffset, PIXEL, false);
             }
             
             // KEYMAKER / CERRAJERO
             function drawKeymaker(x, y, breathe, direction = 1) {
-                ctx.save();
-                const breatheOffset = Math.sin(breathe * 0.05) * 1.5;
+                const pxSize = Math.floor(PIXEL * 0.8);
+                const breatheOffset = Math.floor(Math.sin(breathe * 0.05) * 1.5);
                 
-                if (direction === -1) {
-                    ctx.translate(x + 60, y + breatheOffset);
-                    ctx.scale(-0.75, 0.75);
-                } else {
-                    ctx.translate(x, y + breatheOffset);
-                    ctx.scale(0.75, 0.75);
-                }
-                
-                // Sombra
+                // Sombra pixelada
                 ctx.fillStyle = 'rgba(0,255,0,0.15)';
-                ctx.beginPath();
-                ctx.ellipse(35, 125, 25, 8, 0, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillRect(x + pxSize, y + 15 * pxSize + breatheOffset, 8 * pxSize, pxSize);
                 
-                // Cuerpo - túnica marrón desgastada
-                ctx.fillStyle = '#3d3020';
-                ctx.fillRect(15, PIXEL * 8, PIXEL * 8, PIXEL * 10);
+                // Dibujar sprite
+                drawPixelSprite(KEYMAKER_SPRITE, x, y + breatheOffset, pxSize, direction === -1);
                 
-                // Detalles túnica
-                ctx.fillStyle = '#4a3d2a';
-                ctx.fillRect(18, PIXEL * 8, PIXEL * 2, PIXEL * 10);
-                ctx.fillRect(40, PIXEL * 8, PIXEL * 2, PIXEL * 10);
-                
-                // Cabeza - pelo canoso despeinado
-                ctx.fillStyle = '#888';
-                ctx.fillRect(20, 0, PIXEL * 6, PIXEL * 2);
-                ctx.fillRect(15, PIXEL, PIXEL * 8, PIXEL * 2);
-                ctx.fillRect(18, PIXEL * 2, PIXEL * 7, PIXEL);
-                
-                // Cara asiática
-                ctx.fillStyle = '#d4a574';
-                ctx.fillRect(20, PIXEL * 2.5, PIXEL * 5, PIXEL * 4);
-                
-                // Ojos pequeños y sabios
-                ctx.fillStyle = '#1a1a1a';
-                ctx.fillRect(22, PIXEL * 3.5, PIXEL * 1.2, PIXEL * 0.8);
-                ctx.fillRect(34, PIXEL * 3.5, PIXEL * 1.2, PIXEL * 0.8);
-                
-                // Arrugas de expresión
-                ctx.fillStyle = 'rgba(0,0,0,0.2)';
-                ctx.fillRect(20, PIXEL * 3, PIXEL * 5, 1);
-                ctx.fillRect(20, PIXEL * 5, PIXEL * 5, 1);
-                
-                // Boca pequeña
-                ctx.fillStyle = '#8a5a3a';
-                ctx.fillRect(27, PIXEL * 5.5, PIXEL * 2, PIXEL * 0.5);
-                
-                // Cuello
-                ctx.fillStyle = '#3d3020';
-                ctx.fillRect(25, PIXEL * 6.5, PIXEL * 3, PIXEL * 1.5);
-                
-                // Brazos
-                ctx.fillStyle = '#3d3020';
-                ctx.fillRect(8, PIXEL * 9, PIXEL * 2, PIXEL * 6);
-                ctx.fillRect(52, PIXEL * 9, PIXEL * 2, PIXEL * 6);
-                
-                // Manos con llaves
-                ctx.fillStyle = '#d4a574';
-                ctx.fillRect(6, PIXEL * 14, PIXEL * 2.5, PIXEL * 2);
-                ctx.fillRect(52, PIXEL * 14, PIXEL * 2.5, PIXEL * 2);
-                
-                // Llavero con muchas llaves
-                ctx.fillStyle = '#c0a000';
-                for (let i = 0; i < 5; i++) {
-                    ctx.fillRect(0 + i * 4, PIXEL * 15 + i * 2, 3, 8);
-                    ctx.beginPath();
-                    ctx.arc(1.5 + i * 4, PIXEL * 15 + i * 2, 2, 0, Math.PI * 2);
-                    ctx.fill();
+                // Llaves animadas pixeladas
+                ctx.fillStyle = COLORS['Y'];
+                const keyX = direction === -1 ? x + 8 * pxSize : x;
+                for (let i = 0; i < 3; i++) {
+                    const keyY = y + (10 + i) * pxSize + breatheOffset + Math.sin(breathe * 0.1 + i) * 2;
+                    ctx.fillRect(keyX, keyY, pxSize, pxSize * 2);
+                    ctx.fillRect(keyX - pxSize, keyY, pxSize, pxSize);
                 }
-                
-                // Piernas
-                ctx.fillStyle = '#2a2015';
-                ctx.fillRect(20, PIXEL * 17, PIXEL * 2.5, PIXEL * 4);
-                ctx.fillRect(35, PIXEL * 17, PIXEL * 2.5, PIXEL * 4);
-                
-                // Sandalias
-                ctx.fillStyle = '#1a1510';
-                ctx.fillRect(18, PIXEL * 20.5, PIXEL * 3, PIXEL * 1);
-                ctx.fillRect(33, PIXEL * 20.5, PIXEL * 3, PIXEL * 1);
-                
-                ctx.restore();
             }
             
             // Puerta con efecto 3D mejorado
@@ -1822,14 +1620,14 @@
                         drawMysteryDoor(door.x, door.y, door.glow);
                     }
                     
-                    // Morpheus
-                    drawMorpheusInChair(morpheus.x, morpheus.y, morpheus.breathe);
+                    // Morpheus de pie
+                    drawMorpheus(morpheus.x, morpheus.y, morpheus.breathe);
                     
                     // Neo
                     drawNeo(neo.x, neo.y, neo.direction, neo.walking, neo.breathe);
                     
                     // Hints
-                    if (Math.abs(neo.x - morpheus.x - 40) < 150 && dialogueState < dialogues.length) {
+                    if (Math.abs(neo.x - morpheus.x) < 200 && dialogueState < dialogues.length) {
                         hint.textContent = '[ ESPACIO ] Hablar';
                         hint.style.display = 'block';
                     } else if (door.visible && Math.abs(neo.x - door.x - 55) < 90) {
