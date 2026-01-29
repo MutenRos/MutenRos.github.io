@@ -1635,6 +1635,11 @@
                             drawHallwayDoor(doorX, 260, project, isNear, i + 1);
                         }
                     });
+                    
+                    // Mostrar descripción cada vez que cambia la puerta cercana
+                    if (nearDoorIndex > 0 && nearDoorIndex !== currentDoorIndex && !matrixDoors[nearDoorIndex].mystery) {
+                        showDialogue('CERRAJERO', matrixDoors[nearDoorIndex].desc);
+                    }
                     currentDoorIndex = nearDoorIndex;
                     
                     // Keymaker caminando junto a Neo
@@ -1653,14 +1658,6 @@
                     ctx.fillStyle = '#666';
                     ctx.font = '8px "Press Start 2P"';
                     ctx.fillText(`${Math.max(1, Math.floor((neo.x + hallwayScroll) / 180) + 1)} / ${matrixDoors.length}`, 15, 42);
-                    
-                    // Mostrar descripción al acercarse
-                    if (nearDoorIndex > 0 && !matrixDoors[nearDoorIndex].mystery) {
-                        if (!keymakerExplained.has(nearDoorIndex)) {
-                            keymakerExplained.add(nearDoorIndex);
-                            showDialogue('CERRAJERO', matrixDoors[nearDoorIndex].desc);
-                        }
-                    }
                     
                     hint.style.display = 'none';
                 }
