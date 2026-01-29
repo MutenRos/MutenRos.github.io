@@ -1014,25 +1014,27 @@
             }
         });
 
-        // Proyectos para las puertas
+        // Proyectos para las puertas (la primera es misteriosa)
         const matrixDoors = [
+            { name: '???', url: null, color: '#ff0000', mystery: true },
             { name: 'Bombas Ideal', url: 'https://mutenros.github.io/BI', color: '#00aaff' },
             { name: 'Bombas Asoin', url: 'https://mutenros.github.io/BA', color: '#00ff88' },
             { name: 'Bombas Bloch', url: 'https://mutenros.github.io/BB', color: '#ff6600' },
-            { name: 'Cuevas MotorSport', url: 'https://mutenros.github.io/CuevasMotorSport', color: '#ff0066' },
-            { name: 'Espectáculos Dani', url: 'https://mutenros.github.io/Espectaculos-Dani', color: '#aa00ff' },
-            { name: 'Arraez Portfolio', url: 'https://mutenros.github.io/Arraez-Portfolio', color: '#ffaa00' },
-            { name: 'Generador Excusas', url: 'https://mutenros.github.io/Generador-de-Excusas-Premium', color: '#00ffaa' },
+            { name: 'CuevasMotor', url: 'https://mutenros.github.io/CuevasMotorSport', color: '#ff0066' },
+            { name: 'Espectáculos', url: 'https://mutenros.github.io/Espectaculos-Dani', color: '#aa00ff' },
+            { name: 'Arraez', url: 'https://mutenros.github.io/Arraez-Portfolio', color: '#ffaa00' },
+            { name: 'Excusas', url: 'https://mutenros.github.io/Generador-de-Excusas-Premium', color: '#00ffaa' },
             { name: 'MenuSpreader', url: 'https://mutenros.github.io/MenuSpreader', color: '#ff00aa' },
-            { name: 'TokenMinimizer', url: 'https://mutenros.github.io/TokenMinimizer', color: '#aaff00' },
+            { name: 'Tokenizer', url: 'https://mutenros.github.io/TokenMinimizer', color: '#aaff00' },
         ];
 
         function startMatrixEasterEgg() {
-            // Crear overlay
             const overlay = document.createElement('div');
             overlay.id = 'matrix-overlay';
             overlay.innerHTML = `
                 <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+                    
                     #matrix-overlay {
                         position: fixed;
                         top: 0;
@@ -1045,366 +1047,746 @@
                         flex-direction: column;
                         align-items: center;
                         justify-content: center;
-                        font-family: 'Press Start 2P', 'Courier New', monospace;
+                        font-family: 'Press Start 2P', monospace;
                         overflow: hidden;
                     }
                     #matrix-canvas {
                         image-rendering: pixelated;
                         image-rendering: crisp-edges;
+                        box-shadow: 0 0 60px rgba(0,0,0,0.1);
                     }
                     #matrix-dialogue {
                         position: absolute;
-                        bottom: 80px;
+                        bottom: 60px;
                         left: 50%;
                         transform: translateX(-50%);
-                        background: rgba(0,0,0,0.9);
-                        color: #0f0;
-                        padding: 20px 30px;
-                        border: 3px solid #0f0;
-                        font-size: 14px;
-                        max-width: 600px;
-                        text-align: center;
+                        background: linear-gradient(180deg, rgba(0,20,0,0.95) 0%, rgba(0,10,0,0.98) 100%);
+                        color: #00ff41;
+                        padding: 25px 40px;
+                        border: 4px solid #00ff41;
+                        box-shadow: 0 0 30px rgba(0,255,65,0.3), inset 0 0 30px rgba(0,255,65,0.1);
+                        font-size: 12px;
+                        max-width: 700px;
+                        text-align: left;
                         display: none;
-                        line-height: 1.8;
+                        line-height: 2;
+                        letter-spacing: 1px;
+                    }
+                    #matrix-dialogue::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: repeating-linear-gradient(
+                            0deg,
+                            rgba(0,0,0,0.1) 0px,
+                            rgba(0,0,0,0.1) 1px,
+                            transparent 1px,
+                            transparent 2px
+                        );
+                        pointer-events: none;
+                    }
+                    #matrix-speaker {
+                        color: #fff;
+                        margin-bottom: 10px;
+                        text-shadow: 0 0 10px #00ff41;
                     }
                     #matrix-instructions {
                         position: absolute;
-                        top: 20px;
+                        top: 15px;
                         left: 50%;
                         transform: translateX(-50%);
-                        color: #333;
-                        font-size: 10px;
+                        color: #666;
+                        font-size: 8px;
                         text-align: center;
+                        letter-spacing: 2px;
                     }
                     #matrix-exit {
                         position: absolute;
-                        top: 20px;
+                        top: 15px;
                         right: 20px;
-                        background: #333;
-                        color: #0f0;
-                        border: 2px solid #0f0;
-                        padding: 10px 15px;
+                        background: transparent;
+                        color: #00ff41;
+                        border: 2px solid #00ff41;
+                        padding: 8px 15px;
                         cursor: pointer;
                         font-family: inherit;
-                        font-size: 10px;
+                        font-size: 8px;
+                        transition: all 0.3s;
                     }
                     #matrix-exit:hover {
-                        background: #0f0;
+                        background: #00ff41;
                         color: #000;
+                        box-shadow: 0 0 20px #00ff41;
+                    }
+                    .matrix-hint {
+                        position: absolute;
+                        bottom: 180px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        color: #999;
+                        font-size: 8px;
+                        animation: blink 1s infinite;
+                    }
+                    @keyframes blink {
+                        50% { opacity: 0.3; }
                     }
                 </style>
-                <canvas id="matrix-canvas"></canvas>
-                <div id="matrix-dialogue"></div>
-                <div id="matrix-instructions">← → para mover | ESPACIO para interactuar | Acércate a los personajes y puertas</div>
-                <button id="matrix-exit">ESC - SALIR</button>
+                <canvas id="matrix-canvas" width="900" height="550"></canvas>
+                <div id="matrix-dialogue"><div id="matrix-speaker"></div><div id="matrix-text"></div></div>
+                <div id="matrix-instructions">◄ ► MOVER  |  ESPACIO INTERACTUAR  |  ESC SALIR</div>
+                <button id="matrix-exit">[ESC] DESPERTAR</button>
+                <div class="matrix-hint" id="matrix-hint"></div>
             `;
             document.body.appendChild(overlay);
             document.body.style.overflow = 'hidden';
             
             const canvas = document.getElementById('matrix-canvas');
             const ctx = canvas.getContext('2d');
-            const dialogue = document.getElementById('matrix-dialogue');
-            
-            canvas.width = 800;
-            canvas.height = 500;
+            const dialogueBox = document.getElementById('matrix-dialogue');
+            const dialogueSpeaker = document.getElementById('matrix-speaker');
+            const dialogueText = document.getElementById('matrix-text');
+            const hint = document.getElementById('matrix-hint');
             
             // Estado del juego
-            let gameState = 'white_room'; // white_room, hallway
-            let neo = { x: 200, y: 350, direction: 1, frame: 0 };
-            let morpheus = { x: 550, y: 350 };
-            let door = { x: 380, y: 280, visible: false };
+            let gameState = 'white_room';
+            let neo = { x: 150, y: 320, direction: 1, frame: 0, walking: false, breathe: 0 };
+            let morpheus = { x: 580, y: 295, breathe: 0 };
+            let door = { x: 420, y: 200, visible: false, glow: 0 };
             let dialogueState = 0;
             let canInteract = true;
             let hallwayScroll = 0;
+            let animTime = 0;
             
-            // Diálogos inspirados en Matrix (parafraseados)
+            // Diálogos fieles a la película
             const dialogues = [
-                "MORPHEUS: Por fin nos encontramos, Neo...",
-                "MORPHEUS: Déjame decirte por qué estás aquí.",
-                "MORPHEUS: Estás aquí porque sabes algo.",
-                "MORPHEUS: Lo que sabes no puedes explicarlo, pero lo sientes.",
-                "MORPHEUS: Hay algo especial en este portfolio...",
-                "MORPHEUS: ¿Quieres ver hasta dónde llega la madriguera?",
-                "MORPHEUS: Detrás de esa puerta hay un pasillo...",
-                "MORPHEUS: Cada puerta lleva a un proyecto diferente.",
-                "MORPHEUS: Elige sabiamente, Neo."
+                { speaker: 'MORPHEUS', text: 'Por fin... Bienvenido, Neo. Como seguro habrás adivinado, soy Morpheus.' },
+                { speaker: 'MORPHEUS', text: 'Imagino que ahora mismo te sientes un poco como Alicia... cayendo por la madriguera del conejo.' },
+                { speaker: 'NEO', text: 'Se podría decir que sí...' },
+                { speaker: 'MORPHEUS', text: 'Puedo verlo en tus ojos. Tienes la mirada de un hombre que acepta lo que ve porque espera despertar.' },
+                { speaker: 'MORPHEUS', text: 'Irónicamente, no estás lejos de la verdad.' },
+                { speaker: 'MORPHEUS', text: '¿Crees en el destino, Neo?' },
+                { speaker: 'NEO', text: 'No.' },
+                { speaker: 'MORPHEUS', text: 'Sabes por qué estás aquí. Sabes algo. Lo que sabes no puedes explicarlo.' },
+                { speaker: 'MORPHEUS', text: 'Pero lo sientes. Lo has sentido toda tu vida.' },
+                { speaker: 'MORPHEUS', text: 'Hay algo que no funciona en el mundo. No sabes lo que es, pero ahí está...' },
+                { speaker: 'MORPHEUS', text: '...como una astilla clavada en tu mente, volviéndote loco.' },
+                { speaker: 'MORPHEUS', text: '¿Quieres saber lo que es... "la Matrix"?' },
+                { speaker: 'MORPHEUS', text: 'La Matrix nos rodea. Está en todas partes. Incluso ahora, en esta habitación.' },
+                { speaker: 'MORPHEUS', text: 'Puedes verla cuando miras por la ventana, o cuando enciendes la televisión.' },
+                { speaker: 'MORPHEUS', text: 'Puedes sentirla cuando vas a trabajar, cuando vas a la iglesia, cuando pagas tus impuestos.' },
+                { speaker: 'MORPHEUS', text: 'Es el mundo que ha sido puesto ante tus ojos... para ocultarte la verdad.' },
+                { speaker: 'NEO', text: '¿Qué verdad?' },
+                { speaker: 'MORPHEUS', text: 'Que eres un esclavo, Neo. Igual que los demás, naciste en una prisión que no puedes ver.' },
+                { speaker: 'MORPHEUS', text: 'Una prisión... para tu mente.' },
+                { speaker: 'MORPHEUS', text: 'Por desgracia, no se puede explicar lo que es la Matrix. Tienes que verla con tus propios ojos.' },
+                { speaker: 'MORPHEUS', text: 'Esta es tu última oportunidad. Después de esto, no hay vuelta atrás.' },
+                { speaker: 'MORPHEUS', text: 'Detrás de ti aparecerá una puerta. Puedes cruzarla... y ver hasta dónde llega la madriguera.' },
+                { speaker: 'MORPHEUS', text: 'Recuerda: lo único que te ofrezco es la verdad. Nada más.' },
             ];
             
-            // Sprites 8-bit (arrays de colores para dibujar pixel por pixel)
-            function drawNeo(x, y, direction, frame) {
+            // Sprites mejorados con efecto 3D (sombras y highlights)
+            const PIXEL = 5;
+            
+            // NEO - Sprite grande con animación
+            function drawNeo(x, y, direction, frame, breathe) {
                 ctx.save();
+                const offsetY = Math.sin(breathe * 0.05) * 2;
+                
                 if (direction === -1) {
-                    ctx.translate(x + 24, y);
+                    ctx.translate(x + 70, y + offsetY);
                     ctx.scale(-1, 1);
-                    x = 0;
                 } else {
-                    ctx.translate(x, y);
-                    x = 0;
+                    ctx.translate(x, y + offsetY);
                 }
                 
-                // Neo - traje negro, pelo negro
-                const neoSprite = [
-                    "    1111    ",
-                    "   111111   ",
-                    "   1FF1F1   ",
-                    "   1FFFF1   ",
-                    "    1111    ",
-                    "   222222   ",
-                    "  22222222  ",
-                    "  22222222  ",
-                    "  22212122  ",
-                    "   222222   ",
-                    "   22  22   ",
-                    "   22  22   ",
-                    "   11  11   "
+                // Sombra en el suelo (efecto 3D)
+                ctx.fillStyle = 'rgba(0,0,0,0.15)';
+                ctx.beginPath();
+                ctx.ellipse(35, 115, 30, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                const walkOffset = neo.walking ? Math.sin(frame * 0.3) * 3 : 0;
+                
+                // Neo pixel art grande - gabardina negra estilo Matrix
+                const sprite = [
+                    "      11111111      ",
+                    "     1111111111     ",
+                    "    111111111111    ",
+                    "    11FFFFF1FF11    ",
+                    "    11FFFFFFFF11    ",
+                    "    111FFFFFF111    ",
+                    "     1111111111     ",
+                    "      11111111      ",
+                    "     2222222222     ",
+                    "    222222222222    ",
+                    "   22222222222222   ",
+                    "  2222222222222222  ",
+                    "  2222222222222222  ",
+                    "  2222222332222222  ",
+                    "  2222222222222222  ",
+                    "  2222222222222222  ",
+                    " 22222222222222222  ",
+                    " 22222222222222222  ",
+                    "  2222222222222222  ",
+                    "   22222    22222   ",
+                    "   22222    22222   ",
+                    "   11111    11111   ",
                 ];
                 
-                const colors = { '1': '#1a1a1a', '2': '#0a0a0a', 'F': '#e8c9a0' };
-                const pixelSize = 4;
+                const colors = {
+                    '1': '#1a1a1a', // Pelo negro
+                    '2': '#0f0f0f', // Gabardina negra
+                    '3': '#1a1a1a', // Cinturón
+                    'F': '#deb887', // Piel
+                };
                 
-                neoSprite.forEach((row, py) => {
+                // Dibujar con efecto 3D (highlight en bordes)
+                sprite.forEach((row, py) => {
                     [...row].forEach((pixel, px) => {
                         if (colors[pixel]) {
+                            // Sombra (offset abajo-derecha)
+                            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                            ctx.fillRect(px * PIXEL + 2, py * PIXEL + 2, PIXEL, PIXEL);
+                            
+                            // Pixel principal
                             ctx.fillStyle = colors[pixel];
-                            ctx.fillRect(px * pixelSize, py * pixelSize, pixelSize, pixelSize);
+                            ctx.fillRect(px * PIXEL, py * PIXEL, PIXEL, PIXEL);
+                            
+                            // Highlight (borde superior izquierdo)
+                            if (pixel === '2' || pixel === '1') {
+                                ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                                ctx.fillRect(px * PIXEL, py * PIXEL, PIXEL, 1);
+                                ctx.fillRect(px * PIXEL, py * PIXEL, 1, PIXEL);
+                            }
                         }
                     });
                 });
+                
+                // Gafas de sol
+                ctx.fillStyle = '#000';
+                ctx.fillRect(7 * PIXEL, 3 * PIXEL, 6 * PIXEL, PIXEL);
+                ctx.fillStyle = '#333';
+                ctx.fillRect(8 * PIXEL, 3 * PIXEL, 2 * PIXEL, PIXEL);
+                ctx.fillRect(12 * PIXEL, 3 * PIXEL, 2 * PIXEL, PIXEL);
                 
                 ctx.restore();
             }
             
-            function drawMorpheus(x, y) {
-                // Morpheus - abrigo largo, calvo, gafas
-                const morpheusSprite = [
-                    "    3333    ",
-                    "   333333   ",
-                    "   3FF3F3   ",
-                    "   3G33G3   ",
-                    "    3333    ",
-                    "   444444   ",
-                    "  44444444  ",
-                    " 4444444444 ",
-                    " 4444444444 ",
-                    "  44444444  ",
-                    "   44  44   ",
-                    "   44  44   ",
-                    "   33  33   "
+            // MORPHEUS sentado en sillón
+            function drawMorpheusInChair(x, y, breathe) {
+                const offsetY = Math.sin(breathe * 0.03) * 1.5;
+                
+                // Sombra grande del sillón
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.beginPath();
+                ctx.ellipse(x + 60, y + 160, 70, 15, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // SILLÓN - estilo clásico de cuero
+                // Respaldo
+                ctx.fillStyle = '#2a1810';
+                ctx.fillRect(x - 10, y - 40, 140, 100);
+                ctx.fillStyle = '#3d241a';
+                ctx.fillRect(x, y - 30, 120, 80);
+                
+                // Capitoné del respaldo
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 2; j++) {
+                        ctx.fillStyle = '#4a2d20';
+                        ctx.beginPath();
+                        ctx.arc(x + 20 + i * 40, y - 10 + j * 35, 12, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+                
+                // Asiento
+                ctx.fillStyle = '#2a1810';
+                ctx.fillRect(x - 15, y + 55, 150, 50);
+                ctx.fillStyle = '#3d241a';
+                ctx.fillRect(x - 5, y + 60, 130, 35);
+                
+                // Brazos del sillón
+                ctx.fillStyle = '#2a1810';
+                ctx.fillRect(x - 30, y + 10, 30, 100);
+                ctx.fillRect(x + 120, y + 10, 30, 100);
+                ctx.fillStyle = '#4a2d20';
+                ctx.fillRect(x - 25, y + 15, 20, 40);
+                ctx.fillRect(x + 125, y + 15, 20, 40);
+                
+                // Patas
+                ctx.fillStyle = '#1a0a05';
+                ctx.fillRect(x - 10, y + 105, 15, 50);
+                ctx.fillRect(x + 115, y + 105, 15, 50);
+                
+                // MORPHEUS sentado
+                const mx = x + 25;
+                const my = y - 20 + offsetY;
+                
+                // Piernas cruzadas
+                ctx.fillStyle = '#1a1a2a';
+                ctx.fillRect(mx + 10, my + 95, 70, 20);
+                ctx.fillRect(mx + 20, my + 85, 50, 15);
+                
+                // Zapatos
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(mx + 5, my + 110, 25, 10);
+                ctx.fillRect(mx + 70, my + 100, 25, 10);
+                
+                // Cuerpo (sentado, abrigo largo)
+                const morphSprite = [
+                    "      SSSSSS      ",
+                    "     SSSSSSSS     ",
+                    "    SSSSSSSSSS    ",
+                    "    SSFFFFFFSS    ",
+                    "    SGFFFFFFGS    ",
+                    "    SSFFFFFFSS    ",
+                    "     SSSSSSSS     ",
+                    "      SSSSSS      ",
+                    "    4444444444    ",
+                    "   444444444444   ",
+                    "  44444444444444  ",
+                    "  44444444444444  ",
+                    " 4444444FF444444  ",
+                    "  44444444444444  ",
+                    "  44444444444444  ",
                 ];
                 
-                const colors = { '3': '#2a1a0a', '4': '#1a1a2a', 'F': '#8b6914', 'G': '#333' };
-                const pixelSize = 4;
+                const colors = {
+                    'S': '#3d2817', // Cabeza calva
+                    '4': '#1a1a2a', // Abrigo oscuro
+                    'F': '#8b5a2b', // Piel
+                    'G': '#111',    // Gafas
+                };
                 
-                morpheusSprite.forEach((row, py) => {
+                morphSprite.forEach((row, py) => {
                     [...row].forEach((pixel, px) => {
                         if (colors[pixel]) {
+                            ctx.fillStyle = 'rgba(0,0,0,0.25)';
+                            ctx.fillRect(mx + px * PIXEL + 2, my + py * PIXEL + 2, PIXEL, PIXEL);
+                            
                             ctx.fillStyle = colors[pixel];
-                            ctx.fillRect(x + px * pixelSize, y + py * pixelSize, pixelSize, pixelSize);
+                            ctx.fillRect(mx + px * PIXEL, my + py * PIXEL, PIXEL, PIXEL);
+                            
+                            if (pixel === 'S') {
+                                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                                ctx.fillRect(mx + px * PIXEL, my + py * PIXEL, PIXEL, 2);
+                            }
                         }
                     });
                 });
+                
+                // Gafas redondas características
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(mx + 7 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
+                ctx.arc(mx + 11 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#444';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(mx + 7 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(mx + 11 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Brazos apoyados
+                ctx.fillStyle = '#1a1a2a';
+                ctx.fillRect(mx - 15, my + 50, 20, 40);
+                ctx.fillRect(mx + 75, my + 50, 20, 40);
+                
+                // Manos
+                ctx.fillStyle = '#8b5a2b';
+                ctx.fillRect(mx - 15, my + 85, 15, 12);
+                ctx.fillRect(mx + 78, my + 85, 15, 12);
             }
             
-            function drawDoor(x, y, glowing = false) {
-                // Puerta pixelada
-                ctx.fillStyle = glowing ? '#00ff00' : '#2a2a2a';
-                ctx.fillRect(x, y, 60, 100);
-                ctx.fillStyle = glowing ? '#00aa00' : '#1a1a1a';
-                ctx.fillRect(x + 5, y + 5, 50, 90);
-                ctx.fillStyle = glowing ? '#88ff88' : '#ffcc00';
-                ctx.fillRect(x + 45, y + 45, 8, 8);
-            }
-            
-            function drawHallwayDoor(x, y, project, isNear) {
-                const doorWidth = 80;
-                const doorHeight = 140;
+            // Puerta misteriosa con glow
+            function drawMysteryDoor(x, y, glow) {
+                const glowIntensity = Math.sin(glow * 0.05) * 0.3 + 0.7;
+                
+                // Glow exterior
+                const gradient = ctx.createRadialGradient(x + 45, y + 70, 0, x + 45, y + 70, 120);
+                gradient.addColorStop(0, `rgba(0, 255, 65, ${0.3 * glowIntensity})`);
+                gradient.addColorStop(1, 'rgba(0, 255, 65, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x - 60, y - 50, 210, 240);
                 
                 // Marco de puerta
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(x - 10, y - 10, 110, 160);
+                
+                // Puerta principal
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(x, y, 90, 140);
+                
+                // Paneles de la puerta
+                ctx.fillStyle = '#151515';
+                ctx.fillRect(x + 10, y + 10, 30, 50);
+                ctx.fillRect(x + 50, y + 10, 30, 50);
+                ctx.fillRect(x + 10, y + 70, 30, 50);
+                ctx.fillRect(x + 50, y + 70, 30, 50);
+                
+                // Borde luminoso
+                ctx.strokeStyle = `rgba(0, 255, 65, ${glowIntensity})`;
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x, y, 90, 140);
+                
+                // Pomo con glow
+                ctx.fillStyle = `rgba(0, 255, 65, ${glowIntensity})`;
+                ctx.beginPath();
+                ctx.arc(x + 78, y + 75, 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Luz saliendo por los bordes
+                ctx.fillStyle = `rgba(0, 255, 65, ${0.5 * glowIntensity})`;
+                ctx.fillRect(x - 2, y, 2, 140);
+                ctx.fillRect(x + 90, y, 2, 140);
+                ctx.fillRect(x, y + 138, 90, 2);
+            }
+            
+            // Puerta del pasillo con efecto 3D
+            function drawHallwayDoor(x, y, project, isNear) {
+                const doorWidth = 90;
+                const doorHeight = 160;
+                const glow = isNear ? 1 : 0;
+                
+                if (project.mystery) {
+                    // Puerta misteriosa - solo muestra ???
+                    ctx.fillStyle = isNear ? '#300' : '#200';
+                    ctx.fillRect(x - 8, y - 8, doorWidth + 16, doorHeight + 16);
+                    
+                    ctx.fillStyle = '#100';
+                    ctx.fillRect(x, y, doorWidth, doorHeight);
+                    
+                    // Símbolo de interrogación
+                    ctx.fillStyle = isNear ? '#f00' : '#600';
+                    ctx.font = 'bold 40px "Press Start 2P"';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('?', x + doorWidth/2, y + doorHeight/2 + 15);
+                    
+                    if (isNear) {
+                        ctx.strokeStyle = '#f00';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(x, y, doorWidth, doorHeight);
+                        
+                        ctx.fillStyle = '#f00';
+                        ctx.font = '10px "Press Start 2P"';
+                        ctx.fillText('BLOQUEADA', x + doorWidth/2, y + doorHeight + 25);
+                    }
+                    return;
+                }
+                
+                // Perspectiva 3D (sombra lateral)
+                ctx.fillStyle = '#0a0505';
+                ctx.beginPath();
+                ctx.moveTo(x + doorWidth, y);
+                ctx.lineTo(x + doorWidth + 15, y - 15);
+                ctx.lineTo(x + doorWidth + 15, y + doorHeight - 15);
+                ctx.lineTo(x + doorWidth, y + doorHeight);
+                ctx.fill();
+                
+                // Marco
                 ctx.fillStyle = isNear ? project.color : '#333';
-                ctx.fillRect(x - 5, y - 5, doorWidth + 10, doorHeight + 10);
+                ctx.fillRect(x - 8, y - 8, doorWidth + 16, doorHeight + 16);
                 
                 // Puerta
-                ctx.fillStyle = isNear ? '#1a1a1a' : '#0a0a0a';
+                const doorGradient = ctx.createLinearGradient(x, y, x + doorWidth, y);
+                doorGradient.addColorStop(0, isNear ? '#2a2a2a' : '#1a1a1a');
+                doorGradient.addColorStop(1, isNear ? '#1a1a1a' : '#0a0a0a');
+                ctx.fillStyle = doorGradient;
                 ctx.fillRect(x, y, doorWidth, doorHeight);
+                
+                // Paneles
+                ctx.fillStyle = isNear ? '#333' : '#222';
+                ctx.fillRect(x + 10, y + 15, 30, 55);
+                ctx.fillRect(x + 50, y + 15, 30, 55);
+                ctx.fillRect(x + 10, y + 85, 30, 55);
+                ctx.fillRect(x + 50, y + 85, 30, 55);
                 
                 // Pomo
                 ctx.fillStyle = isNear ? '#fff' : '#666';
-                ctx.fillRect(x + doorWidth - 20, y + doorHeight/2, 10, 10);
+                ctx.beginPath();
+                ctx.arc(x + doorWidth - 15, y + doorHeight/2, 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                if (isNear) {
+                    ctx.shadowColor = project.color;
+                    ctx.shadowBlur = 20;
+                    ctx.strokeStyle = project.color;
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x, y, doorWidth, doorHeight);
+                    ctx.shadowBlur = 0;
+                }
                 
                 // Nombre
-                ctx.fillStyle = isNear ? project.color : '#666';
-                ctx.font = '10px "Press Start 2P", monospace';
+                ctx.fillStyle = isNear ? project.color : '#555';
+                ctx.font = isNear ? 'bold 11px "Press Start 2P"' : '10px "Press Start 2P"';
                 ctx.textAlign = 'center';
-                ctx.fillText(project.name, x + doorWidth/2, y + doorHeight + 20);
+                ctx.fillText(project.name, x + doorWidth/2, y + doorHeight + 25);
+                
+                if (isNear) {
+                    ctx.fillStyle = '#888';
+                    ctx.font = '8px "Press Start 2P"';
+                    ctx.fillText('[ESPACIO]', x + doorWidth/2, y + doorHeight + 40);
+                }
             }
             
             function render() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                animTime++;
+                neo.breathe++;
+                morpheus.breathe++;
+                if (door.visible) door.glow++;
                 
                 if (gameState === 'white_room') {
-                    // Fondo blanco con ligera textura
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    // Fondo blanco infinito con gradiente sutil
+                    const bgGradient = ctx.createRadialGradient(450, 275, 0, 450, 275, 500);
+                    bgGradient.addColorStop(0, '#ffffff');
+                    bgGradient.addColorStop(1, '#f0f0f0');
+                    ctx.fillStyle = bgGradient;
+                    ctx.fillRect(0, 0, 900, 550);
                     
-                    // Línea de suelo sutil
-                    ctx.strokeStyle = '#ddd';
-                    ctx.beginPath();
-                    ctx.moveTo(0, 420);
-                    ctx.lineTo(800, 420);
-                    ctx.stroke();
+                    // Reflejo en el suelo
+                    ctx.fillStyle = 'rgba(0,0,0,0.03)';
+                    ctx.fillRect(0, 450, 900, 100);
                     
-                    // Dibujar puerta si es visible
-                    if (door.visible) {
-                        drawDoor(door.x, door.y, Math.abs(neo.x - door.x) < 80);
-                    }
-                    
-                    // Dibujar personajes
-                    drawMorpheus(morpheus.x, morpheus.y);
-                    drawNeo(neo.x, neo.y, neo.direction, neo.frame);
-                    
-                } else if (gameState === 'hallway') {
-                    // Pasillo infinito
-                    ctx.fillStyle = '#0a0a0a';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    // Suelo
-                    ctx.fillStyle = '#1a1a1a';
-                    ctx.fillRect(0, 400, canvas.width, 100);
-                    
-                    // Líneas de perspectiva
-                    ctx.strokeStyle = '#0f0';
+                    // Grid sutil en el suelo (efecto Construct)
+                    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
                     ctx.lineWidth = 1;
-                    for (let i = 0; i < 10; i++) {
+                    for (let i = 0; i < 20; i++) {
                         ctx.beginPath();
-                        ctx.moveTo(i * 80 - (hallwayScroll % 80), 400);
-                        ctx.lineTo(i * 80 - (hallwayScroll % 80), 500);
+                        ctx.moveTo(i * 50, 450);
+                        ctx.lineTo(i * 50 - 100, 550);
                         ctx.stroke();
                     }
                     
+                    // Puerta si es visible
+                    if (door.visible) {
+                        drawMysteryDoor(door.x, door.y, door.glow);
+                    }
+                    
+                    // Morpheus en su sillón
+                    drawMorpheusInChair(morpheus.x, morpheus.y, morpheus.breathe);
+                    
+                    // Neo
+                    drawNeo(neo.x, neo.y, neo.direction, neo.frame, neo.breathe);
+                    
+                    // Indicador de interacción
+                    if (Math.abs(neo.x - morpheus.x - 25) < 120 && dialogueState < dialogues.length) {
+                        hint.textContent = '[ ESPACIO ] Hablar con Morpheus';
+                        hint.style.display = 'block';
+                    } else if (door.visible && Math.abs(neo.x - door.x - 45) < 70) {
+                        hint.textContent = '[ ESPACIO ] Entrar';
+                        hint.style.display = 'block';
+                    } else {
+                        hint.style.display = 'none';
+                    }
+                    
+                } else if (gameState === 'hallway') {
+                    // Pasillo oscuro estilo Matrix
+                    ctx.fillStyle = '#050505';
+                    ctx.fillRect(0, 0, 900, 550);
+                    
+                    // Techo
+                    ctx.fillStyle = '#0a0a0a';
+                    ctx.fillRect(0, 0, 900, 80);
+                    
+                    // Líneas de neón en el techo
+                    ctx.strokeStyle = '#003300';
+                    ctx.lineWidth = 2;
+                    for (let i = 0; i < 15; i++) {
+                        const lx = i * 120 - (hallwayScroll * 0.5 % 120);
+                        ctx.beginPath();
+                        ctx.moveTo(lx, 70);
+                        ctx.lineTo(lx + 80, 70);
+                        ctx.stroke();
+                    }
+                    
+                    // Suelo reflectante
+                    const floorGradient = ctx.createLinearGradient(0, 420, 0, 550);
+                    floorGradient.addColorStop(0, '#1a1a1a');
+                    floorGradient.addColorStop(1, '#0a0a0a');
+                    ctx.fillStyle = floorGradient;
+                    ctx.fillRect(0, 420, 900, 130);
+                    
+                    // Líneas en el suelo
+                    ctx.strokeStyle = '#0f0';
+                    ctx.lineWidth = 1;
+                    ctx.globalAlpha = 0.3;
+                    for (let i = 0; i < 15; i++) {
+                        const lx = i * 120 - (hallwayScroll % 120);
+                        ctx.beginPath();
+                        ctx.moveTo(lx, 420);
+                        ctx.lineTo(lx, 550);
+                        ctx.stroke();
+                    }
+                    ctx.globalAlpha = 1;
+                    
                     // Dibujar puertas
                     matrixDoors.forEach((project, i) => {
-                        const doorX = 100 + i * 200 - hallwayScroll;
-                        if (doorX > -100 && doorX < 900) {
-                            const isNear = Math.abs(neo.x + hallwayScroll - (100 + i * 200)) < 60;
-                            drawHallwayDoor(doorX, 260, project, isNear);
+                        const doorX = 80 + i * 180 - hallwayScroll;
+                        if (doorX > -120 && doorX < 950) {
+                            const isNear = Math.abs(neo.x + hallwayScroll - (125 + i * 180)) < 70;
+                            drawHallwayDoor(doorX, 250, project, isNear);
                         }
                     });
                     
-                    // Neo en el centro
-                    drawNeo(neo.x, neo.y, neo.direction, neo.frame);
+                    // Neo
+                    drawNeo(neo.x, neo.y + 15, neo.direction, neo.frame, neo.breathe);
                     
-                    // Indicador de progreso
+                    // UI
                     ctx.fillStyle = '#0f0';
-                    ctx.font = '10px monospace';
-                    ctx.fillText(`Pasillo de Proyectos`, 10, 30);
+                    ctx.font = '12px "Press Start 2P"';
+                    ctx.textAlign = 'left';
+                    ctx.fillText('ARQUITECTO://PASILLO_DE_PUERTAS', 20, 40);
+                    
+                    ctx.fillStyle = '#666';
+                    ctx.font = '10px "Press Start 2P"';
+                    ctx.fillText(`PUERTA ${Math.floor((neo.x + hallwayScroll) / 180) + 1} / ${matrixDoors.length}`, 20, 60);
+                    
+                    hint.style.display = 'none';
                 }
             }
             
-            function showDialogue(text) {
-                dialogue.style.display = 'block';
-                dialogue.textContent = '';
+            function showDialogue(speaker, text) {
+                dialogueBox.style.display = 'block';
+                dialogueSpeaker.textContent = speaker + ':';
+                dialogueSpeaker.style.color = speaker === 'NEO' ? '#00aaff' : '#00ff41';
+                dialogueText.textContent = '';
+                canInteract = false;
+                
                 let i = 0;
                 const typeWriter = setInterval(() => {
-                    dialogue.textContent += text[i];
+                    dialogueText.textContent += text[i];
                     i++;
                     if (i >= text.length) {
                         clearInterval(typeWriter);
-                        canInteract = true;
+                        setTimeout(() => { canInteract = true; }, 300);
                     }
-                }, 50);
+                }, 35);
             }
             
             function hideDialogue() {
-                dialogue.style.display = 'none';
+                dialogueBox.style.display = 'none';
             }
             
             // Controles
             const keys = {};
-            document.addEventListener('keydown', (e) => {
+            
+            function handleKeyDown(e) {
                 if (!document.getElementById('matrix-overlay')) return;
                 keys[e.key] = true;
                 
                 if (e.key === 'Escape') {
-                    document.getElementById('matrix-overlay').remove();
-                    document.body.style.overflow = '';
+                    cleanup();
                 }
                 
                 if (e.key === ' ' && canInteract) {
                     e.preventDefault();
                     
                     if (gameState === 'white_room') {
-                        // Interactuar con Morpheus
-                        if (Math.abs(neo.x - morpheus.x) < 100) {
-                            canInteract = false;
-                            if (dialogueState < dialogues.length) {
-                                showDialogue(dialogues[dialogueState]);
-                                dialogueState++;
-                                if (dialogueState >= dialogues.length) {
+                        if (Math.abs(neo.x - morpheus.x - 25) < 120 && dialogueState < dialogues.length) {
+                            const d = dialogues[dialogueState];
+                            showDialogue(d.speaker, d.text);
+                            dialogueState++;
+                            
+                            if (dialogueState >= dialogues.length) {
+                                setTimeout(() => {
                                     door.visible = true;
-                                }
+                                    hideDialogue();
+                                }, 2000);
                             }
-                        }
-                        // Entrar por la puerta
-                        if (door.visible && Math.abs(neo.x - door.x) < 80) {
-                            gameState = 'hallway';
-                            neo.x = 400;
-                            neo.y = 350;
-                            hallwayScroll = 0;
-                            hideDialogue();
+                        } else if (door.visible && Math.abs(neo.x - door.x - 45) < 70) {
+                            // Transición al pasillo
+                            canvas.style.transition = 'filter 0.5s';
+                            canvas.style.filter = 'brightness(0)';
+                            setTimeout(() => {
+                                gameState = 'hallway';
+                                neo.x = 400;
+                                neo.y = 305;
+                                hallwayScroll = 0;
+                                hideDialogue();
+                                canvas.style.filter = 'brightness(1)';
+                            }, 500);
                         }
                     } else if (gameState === 'hallway') {
-                        // Entrar en una puerta del pasillo
                         matrixDoors.forEach((project, i) => {
-                            const doorCenterX = 140 + i * 200;
-                            if (Math.abs(neo.x + hallwayScroll - doorCenterX) < 60) {
-                                window.open(project.url, '_blank');
+                            const doorCenterX = 125 + i * 180;
+                            if (Math.abs(neo.x + hallwayScroll - doorCenterX) < 70) {
+                                if (project.mystery) {
+                                    showDialogue('SISTEMA', 'Acceso denegado. Esta puerta está bloqueada por el Arquitecto.');
+                                } else if (project.url) {
+                                    window.open(project.url, '_blank');
+                                }
                             }
                         });
                     }
                 }
-            });
+            }
             
-            document.addEventListener('keyup', (e) => {
+            function handleKeyUp(e) {
                 keys[e.key] = false;
-            });
+            }
             
-            document.getElementById('matrix-exit').onclick = () => {
+            document.addEventListener('keydown', handleKeyDown);
+            document.addEventListener('keyup', handleKeyUp);
+            
+            function cleanup() {
+                document.removeEventListener('keydown', handleKeyDown);
+                document.removeEventListener('keyup', handleKeyUp);
                 overlay.remove();
                 document.body.style.overflow = '';
-            };
+            }
+            
+            document.getElementById('matrix-exit').onclick = cleanup;
             
             // Game loop
             function gameLoop() {
                 if (!document.getElementById('matrix-overlay')) return;
                 
-                // Movimiento
+                const speed = 5;
+                neo.walking = false;
+                
                 if (gameState === 'white_room') {
-                    if (keys['ArrowLeft'] || keys['a']) {
-                        neo.x -= 4;
+                    if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
+                        neo.x -= speed;
                         neo.direction = -1;
+                        neo.walking = true;
+                        neo.frame++;
                     }
-                    if (keys['ArrowRight'] || keys['d']) {
-                        neo.x += 4;
+                    if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+                        neo.x += speed;
                         neo.direction = 1;
+                        neo.walking = true;
+                        neo.frame++;
                     }
-                    neo.x = Math.max(50, Math.min(750, neo.x));
+                    neo.x = Math.max(30, Math.min(800, neo.x));
+                    
                 } else if (gameState === 'hallway') {
-                    if (keys['ArrowLeft'] || keys['a']) {
-                        if (neo.x > 200) {
-                            neo.x -= 4;
-                        } else {
-                            hallwayScroll = Math.max(0, hallwayScroll - 4);
+                    if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
+                        if (neo.x > 250) {
+                            neo.x -= speed;
+                        } else if (hallwayScroll > 0) {
+                            hallwayScroll -= speed;
                         }
                         neo.direction = -1;
+                        neo.walking = true;
+                        neo.frame++;
                     }
-                    if (keys['ArrowRight'] || keys['d']) {
-                        const maxScroll = matrixDoors.length * 200 - 400;
-                        if (neo.x < 600) {
-                            neo.x += 4;
-                        } else {
-                            hallwayScroll = Math.min(maxScroll, hallwayScroll + 4);
+                    if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+                        const maxScroll = matrixDoors.length * 180 - 300;
+                        if (neo.x < 650) {
+                            neo.x += speed;
+                        } else if (hallwayScroll < maxScroll) {
+                            hallwayScroll += speed;
                         }
                         neo.direction = 1;
+                        neo.walking = true;
+                        neo.frame++;
                     }
                 }
                 
@@ -1412,16 +1794,10 @@
                 requestAnimationFrame(gameLoop);
             }
             
-            // Cargar fuente pixel
-            const link = document.createElement('link');
-            link.href = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap';
-            link.rel = 'stylesheet';
-            document.head.appendChild(link);
-            
             setTimeout(() => {
-                showDialogue("Bienvenido a la Matriz... Acércate a Morpheus.");
+                showDialogue('SISTEMA', 'Has entrado en el Construct. Acércate a Morpheus...');
                 gameLoop();
-            }, 500);
+            }, 800);
         }
     </script>
 </body>
