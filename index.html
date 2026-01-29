@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- ↑↑↓↓←→←→ B A ... ¿Recuerdas los viejos tiempos? -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -721,14 +722,14 @@
             <div class="mountain"></div>
             <div class="mountain"></div>
         </div>
-        <div class="sun"></div>
+        <div class="sun" data-secret="konami"></div>
         <div class="grid-container">
             <div class="grid"></div>
         </div>
     </div>
 
     <header>
-        <div class="logo">MUTENROS</div>
+        <div class="logo" title="↑↑↓↓←→←→...">MUTENROS</div>
         <nav>
             <ul>
                 <li><a href="#about">ABOUT</a></li>
@@ -743,7 +744,7 @@
         <section class="hero">
             <h1>MUTENROS</h1>
             <p class="subtitle">DEVELOPER // CREATOR</p>
-            <p class="tagline">Construyendo el futuro digital, una línea de código a la vez. Especializado en crear experiencias web únicas y memorables.</p>
+            <p class="tagline">Construyendo el futuro digital, una línea de código a la vez. Especializado en crear experiencias web únicas y memorables. <span style="opacity: 0.3; font-size: 12px;">Sigue al conejo blanco.</span></p>
             <button class="cta-button" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">VER PROYECTOS</button>
         </section>
 
@@ -751,13 +752,13 @@
             <h2 class="section-title">SOBRE <span>MÍ</span></h2>
             <div class="about-content">
                 <div class="about-image">
-                    <span class="placeholder">👤</span>
+                    <span class="placeholder" title="↑↑↓↓←→←→BA = ?">-D-</span>
                 </div>
                 <div class="about-text">
                     <h3>¡Hola, soy Darío!</h3>
                     <h4>(a.k.a. MutenRos)</h4>
                     <p>Desarrollador apasionado por crear experiencias digitales únicas. Me especializo en desarrollo web, con un amor especial por el diseño retro y la estética synthwave.</p>
-                    <p>Cuando no estoy programando, me puedes encontrar explorando nuevas tecnologías, jugando videojuegos clásicos o escuchando música de los 80s.</p>
+                    <p>Cuando no estoy programando, me puedes encontrar explorando nuevas tecnologías, jugando videojuegos clásicos o escuchando música de los 80s. <em style="opacity: 0.4; font-size: 12px;">A veces, los códigos de antog¤o siguen funcionando...</em></p>
                 </div>
             </div>
         </section>
@@ -780,6 +781,11 @@
                     <h3>DATABASES</h3>
                     <p>MongoDB, PostgreSQL, MySQL. Gestión eficiente de datos.</p>
                 </div>
+                <div class="skill-card" style="opacity: 0.15; pointer-events: none;">
+                    <div class="icon">🔑</div>
+                    <h3>???</h3>
+                    <p>↑↑↓↓←→←→BA</p>
+                </div>
             </div>
         </section>
 
@@ -796,7 +802,7 @@
         <section id="contact">
             <h2 class="section-title">CONTACTO</h2>
             <div class="contact-content">
-                <p>¿Tienes un proyecto en mente o simplemente quieres saludar? ¡No dudes en contactarme!</p>
+                <p>¿Tienes un proyecto en mente o simplemente quieres saludar? ¡No dudes en contactarme! <span style="font-size: 10px; opacity: 0.25;">O prueba el código de 30 vidas...</span></p>
                 <div class="contact-links">
                     <a href="https://github.com/MutenRos" class="contact-link" target="_blank">
                         <span>📂</span> GITHUB
@@ -814,11 +820,17 @@
 
     <footer>
         <p>© 2026 MUTENROS // CRAFTED WITH 💜 & NEON LIGHTS</p>
+        <p style="font-size: 6px; opacity: 0.1; margin-top: 10px; letter-spacing: 1px;">arriba arriba abajo abajo izquierda derecha izquierda derecha B A</p>
     </footer>
 
     <script>
         // Generate stars
         const starsContainer = document.getElementById('stars');
+        
+        // ¿Buscas algo oculto? Los gamers de los 80 sabían cómo encontrar secretos...
+        console.log('%c↑↑↓↓←→←→BA', 'color: #00ff41; font-size: 8px; opacity: 0.5;');
+        console.log('%cHay cosas que solo se revelan a quienes conocen el código...', 'color: #333; font-size: 10px;');
+        
         for (let i = 0; i < 100; i++) {
             const star = document.createElement('div');
             star.className = 'star';
