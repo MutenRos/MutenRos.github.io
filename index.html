@@ -1197,9 +1197,8 @@
                 { speaker: 'MORPHEUS', text: 'Si hablas de lo que puedes sentir, oler, saborear y ver...' },
                 { speaker: 'MORPHEUS', text: '...entonces lo real son simples señales eléctricas interpretadas por tu cerebro.' },
                 { speaker: 'MORPHEUS', text: 'Bienvenido... al desierto de lo real.' },
-                { speaker: 'MORPHEUS', text: 'Detrás de ti aparecerá una puerta.' },
-                { speaker: 'MORPHEUS', text: 'Al otro lado te espera el Cerrajero. Él te guiará.' },
-                { speaker: 'MORPHEUS', text: 'Cada puerta lleva a un mundo diferente. A un proyecto distinto.' },
+                { speaker: 'MORPHEUS', text: 'Hay una puerta, Neo. Solo tú puedes abrirla.' },
+                { speaker: 'MORPHEUS', text: 'Yo solo puedo mostrarte el camino. Tú debes recorrerlo.' },
                 { speaker: 'MORPHEUS', text: 'Buena suerte, Neo. Nos veremos del otro lado.' },
             ];
             
@@ -1378,195 +1377,175 @@
                 }
             }
             
-            // Puerta con efecto 3D mejorado
+            // Puerta 16-bit pixel art
             function drawMysteryDoor(x, y, glow) {
-                const glowIntensity = Math.sin(glow * 0.06) * 0.4 + 0.6;
+                const P = PIXEL;
+                const glowOn = Math.floor(glow / 15) % 2 === 0;
                 
-                // Aura exterior
-                const gradient = ctx.createRadialGradient(x + 55, y + 85, 0, x + 55, y + 85, 180);
-                gradient.addColorStop(0, `rgba(0, 255, 65, ${0.4 * glowIntensity})`);
-                gradient.addColorStop(0.5, `rgba(0, 255, 65, ${0.15 * glowIntensity})`);
-                gradient.addColorStop(1, 'rgba(0, 255, 65, 0)');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(x - 100, y - 80, 310, 340);
+                // Aura pixelada pulsante
+                if (glowOn) {
+                    ctx.fillStyle = 'rgba(0, 255, 65, 0.15)';
+                    ctx.fillRect(x - 4*P, y - 4*P, 26*P, 38*P);
+                    ctx.fillStyle = 'rgba(0, 255, 65, 0.08)';
+                    ctx.fillRect(x - 6*P, y - 6*P, 30*P, 42*P);
+                }
                 
-                // Marco exterior 3D
+                // Marco exterior
                 ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(x - 20, y - 20, 150, 200);
+                ctx.fillRect(x - 2*P, y - 2*P, 22*P, 34*P);
                 
                 // Marco interior
-                ctx.fillStyle = '#151515';
-                ctx.fillRect(x - 12, y - 12, 134, 184);
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(x - P, y - P, 20*P, 32*P);
                 
                 // Puerta principal
-                const doorGradient = ctx.createLinearGradient(x, y, x + 110, y);
-                doorGradient.addColorStop(0, '#1a1a1a');
-                doorGradient.addColorStop(0.5, '#0f0f0f');
-                doorGradient.addColorStop(1, '#0a0a0a');
-                ctx.fillStyle = doorGradient;
-                ctx.fillRect(x, y, 110, 160);
+                ctx.fillStyle = '#0f0f0f';
+                ctx.fillRect(x, y, 18*P, 30*P);
                 
-                // Paneles de la puerta con profundidad
-                ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(x + 10, y + 12, 38, 60);
-                ctx.fillRect(x + 62, y + 12, 38, 60);
-                ctx.fillRect(x + 10, y + 88, 38, 55);
-                ctx.fillRect(x + 62, y + 88, 38, 55);
+                // Paneles superiores
+                ctx.fillStyle = '#080808';
+                ctx.fillRect(x + 2*P, y + 2*P, 6*P, 10*P);
+                ctx.fillRect(x + 10*P, y + 2*P, 6*P, 10*P);
                 
-                // Highlight en paneles
-                ctx.fillStyle = 'rgba(0,255,0,0.05)';
-                ctx.fillRect(x + 10, y + 12, 38, 2);
-                ctx.fillRect(x + 62, y + 12, 38, 2);
+                // Paneles inferiores
+                ctx.fillRect(x + 2*P, y + 14*P, 6*P, 10*P);
+                ctx.fillRect(x + 10*P, y + 14*P, 6*P, 10*P);
                 
-                // Borde luminoso pulsante
-                ctx.strokeStyle = `rgba(0, 255, 65, ${glowIntensity})`;
-                ctx.lineWidth = 4;
-                ctx.strokeRect(x, y, 110, 160);
+                // Borde luminoso pixelado
+                const glowColor = glowOn ? '#00ff41' : '#006618';
+                ctx.fillStyle = glowColor;
+                // Borde superior
+                ctx.fillRect(x, y, 18*P, P);
+                // Borde inferior
+                ctx.fillRect(x, y + 29*P, 18*P, P);
+                // Borde izquierdo
+                ctx.fillRect(x, y, P, 30*P);
+                // Borde derecho
+                ctx.fillRect(x + 17*P, y, P, 30*P);
                 
-                // Luz interior
-                ctx.fillStyle = `rgba(0, 255, 65, ${0.3 * glowIntensity})`;
-                ctx.fillRect(x + 2, y + 158, 106, 2);
-                ctx.fillRect(x - 2, y + 2, 2, 156);
-                ctx.fillRect(x + 110, y + 2, 2, 156);
+                // Pomo pixelado
+                ctx.fillStyle = glowOn ? '#00ff41' : '#008822';
+                ctx.fillRect(x + 14*P, y + 14*P, 2*P, 2*P);
                 
-                // Pomo brillante
-                ctx.fillStyle = `rgba(0, 255, 65, ${glowIntensity})`;
-                ctx.beginPath();
-                ctx.arc(x + 95, y + 85, 8, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Reflejo en el pomo
-                ctx.fillStyle = '#fff';
-                ctx.beginPath();
-                ctx.arc(x + 93, y + 83, 3, 0, Math.PI * 2);
-                ctx.fill();
+                // Brillo del pomo
+                if (glowOn) {
+                    ctx.fillStyle = '#aaffaa';
+                    ctx.fillRect(x + 14*P, y + 14*P, P, P);
+                }
             }
             
-            // Puertas del pasillo estilo Keymaker
+            // Puertas del pasillo - Pixel Art 16-bit
             function drawHallwayDoor(x, y, project, isNear, index) {
-                const doorWidth = 100;
-                const doorHeight = 180;
+                const P = PIXEL;
+                const doorW = 18 * P;
+                const doorH = 30 * P;
                 
                 if (project.mystery) {
-                    // Puerta roja misteriosa
-                    ctx.fillStyle = isNear ? '#400' : '#200';
-                    ctx.fillRect(x - 10, y - 10, doorWidth + 20, doorHeight + 20);
+                    // Puerta roja misteriosa - pixel art
+                    ctx.fillStyle = isNear ? '#440000' : '#220000';
+                    ctx.fillRect(x - 2*P, y - 2*P, doorW + 4*P, doorH + 4*P);
                     
-                    ctx.fillStyle = '#100';
-                    ctx.fillRect(x, y, doorWidth, doorHeight);
+                    ctx.fillStyle = '#110000';
+                    ctx.fillRect(x, y, doorW, doorH);
                     
-                    // Cadenas
-                    ctx.strokeStyle = '#444';
-                    ctx.lineWidth = 4;
+                    // Cadenas pixeladas
+                    ctx.fillStyle = '#444444';
                     for (let i = 0; i < 3; i++) {
-                        ctx.beginPath();
-                        ctx.moveTo(x - 10, y + 40 + i * 50);
-                        ctx.lineTo(x + doorWidth + 10, y + 40 + i * 50);
-                        ctx.stroke();
+                        const chainY = y + 6*P + i * 8*P;
+                        for (let c = 0; c < 10; c++) {
+                            ctx.fillRect(x - P + c * 2*P, chainY, P, P);
+                        }
                     }
                     
-                    // Símbolo
-                    ctx.fillStyle = isNear ? '#f00' : '#600';
-                    ctx.font = 'bold 50px "Press Start 2P"';
+                    // Símbolo ? pixelado
+                    ctx.fillStyle = isNear ? '#ff0000' : '#660000';
+                    ctx.font = '40px "Press Start 2P"';
                     ctx.textAlign = 'center';
-                    ctx.fillText('?', x + doorWidth/2, y + doorHeight/2 + 20);
+                    ctx.fillText('?', x + doorW/2, y + doorH/2 + 15);
                     
+                    // Borde rojo pixelado cuando cerca
                     if (isNear) {
-                        ctx.strokeStyle = '#f00';
-                        ctx.lineWidth = 3;
-                        ctx.strokeRect(x, y, doorWidth, doorHeight);
+                        ctx.fillStyle = '#ff0000';
+                        ctx.fillRect(x, y, doorW, P);
+                        ctx.fillRect(x, y + doorH - P, doorW, P);
+                        ctx.fillRect(x, y, P, doorH);
+                        ctx.fillRect(x + doorW - P, y, P, doorH);
                         
-                        ctx.fillStyle = '#f00';
-                        ctx.font = '10px "Press Start 2P"';
-                        ctx.fillText('▲ BLOQUEADA ▲', x + doorWidth/2, y + doorHeight + 30);
+                        ctx.fillStyle = '#ff0000';
+                        ctx.font = '8px "Press Start 2P"';
+                        ctx.fillText('BLOQUEADA', x + doorW/2, y + doorH + 20);
                     }
                     return;
                 }
                 
-                // Perspectiva 3D
+                // Sombra 3D pixelada (derecha)
                 ctx.fillStyle = '#050505';
-                ctx.beginPath();
-                ctx.moveTo(x + doorWidth, y);
-                ctx.lineTo(x + doorWidth + 20, y - 25);
-                ctx.lineTo(x + doorWidth + 20, y + doorHeight - 25);
-                ctx.lineTo(x + doorWidth, y + doorHeight);
-                ctx.fill();
+                ctx.fillRect(x + doorW, y + P, 2*P, doorH - 2*P);
                 
-                // Parte superior 3D
-                ctx.fillStyle = '#080808';
-                ctx.beginPath();
-                ctx.moveTo(x, y);
-                ctx.lineTo(x + 20, y - 25);
-                ctx.lineTo(x + doorWidth + 20, y - 25);
-                ctx.lineTo(x + doorWidth, y);
-                ctx.fill();
+                // Sombra 3D pixelada (abajo)
+                ctx.fillStyle = '#030303';
+                ctx.fillRect(x + P, y + doorH, doorW, 2*P);
                 
                 // Marco con color del proyecto
-                const frameColor = isNear ? project.color : '#333';
+                const frameColor = isNear ? project.color : '#333333';
                 ctx.fillStyle = frameColor;
-                ctx.fillRect(x - 12, y - 12, doorWidth + 24, doorHeight + 24);
+                ctx.fillRect(x - 2*P, y - 2*P, doorW + 4*P, doorH + 4*P);
                 
                 // Puerta principal
-                const doorGrad = ctx.createLinearGradient(x, y, x + doorWidth, y);
-                doorGrad.addColorStop(0, isNear ? '#2a2a2a' : '#1a1a1a');
-                doorGrad.addColorStop(1, isNear ? '#1a1a1a' : '#0a0a0a');
-                ctx.fillStyle = doorGrad;
-                ctx.fillRect(x, y, doorWidth, doorHeight);
+                ctx.fillStyle = isNear ? '#2a2a2a' : '#1a1a1a';
+                ctx.fillRect(x, y, doorW, doorH);
                 
-                // Paneles decorativos
-                ctx.fillStyle = isNear ? '#333' : '#1f1f1f';
-                ctx.fillRect(x + 12, y + 15, 32, 65);
-                ctx.fillRect(x + 56, y + 15, 32, 65);
-                ctx.fillRect(x + 12, y + 100, 32, 60);
-                ctx.fillRect(x + 56, y + 100, 32, 60);
+                // Paneles superiores
+                ctx.fillStyle = isNear ? '#333333' : '#1f1f1f';
+                ctx.fillRect(x + 2*P, y + 2*P, 6*P, 10*P);
+                ctx.fillRect(x + 10*P, y + 2*P, 6*P, 10*P);
                 
-                // Highlights en paneles
+                // Paneles inferiores
+                ctx.fillRect(x + 2*P, y + 14*P, 6*P, 10*P);
+                ctx.fillRect(x + 10*P, y + 14*P, 6*P, 10*P);
+                
+                // Highlight pixelado en paneles
                 if (isNear) {
-                    ctx.fillStyle = 'rgba(255,255,255,0.05)';
-                    ctx.fillRect(x + 12, y + 15, 32, 3);
-                    ctx.fillRect(x + 56, y + 15, 32, 3);
+                    ctx.fillStyle = '#444444';
+                    ctx.fillRect(x + 2*P, y + 2*P, 6*P, P);
+                    ctx.fillRect(x + 10*P, y + 2*P, 6*P, P);
                 }
                 
-                // Pomo dorado
+                // Pomo dorado pixelado
                 ctx.fillStyle = isNear ? '#ffd700' : '#665500';
-                ctx.beginPath();
-                ctx.arc(x + doorWidth - 18, y + doorHeight/2, 8, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillRect(x + 14*P, y + 14*P, 2*P, 2*P);
                 
-                // Reflejo pomo
+                // Brillo pomo
                 if (isNear) {
-                    ctx.fillStyle = '#fff';
-                    ctx.beginPath();
-                    ctx.arc(x + doorWidth - 20, y + doorHeight/2 - 2, 3, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.fillStyle = '#ffff88';
+                    ctx.fillRect(x + 14*P, y + 14*P, P, P);
                 }
                 
-                // Cerradura
-                ctx.fillStyle = isNear ? '#c0c0c0' : '#444';
-                ctx.fillRect(x + doorWidth - 22, y + doorHeight/2 + 15, 8, 12);
-                ctx.fillStyle = '#000';
-                ctx.fillRect(x + doorWidth - 20, y + doorHeight/2 + 18, 4, 6);
+                // Cerradura pixelada
+                ctx.fillStyle = isNear ? '#c0c0c0' : '#444444';
+                ctx.fillRect(x + 14*P, y + 17*P, 2*P, 2*P);
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(x + 14*P + P/2, y + 17*P + P/2, P, P);
                 
-                // Glow cuando está cerca
+                // Borde brillante cuando cerca
                 if (isNear) {
-                    ctx.shadowColor = project.color;
-                    ctx.shadowBlur = 30;
-                    ctx.strokeStyle = project.color;
-                    ctx.lineWidth = 3;
-                    ctx.strokeRect(x, y, doorWidth, doorHeight);
-                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = project.color;
+                    ctx.fillRect(x, y, doorW, P);
+                    ctx.fillRect(x, y + doorH - P, doorW, P);
+                    ctx.fillRect(x, y, P, doorH);
+                    ctx.fillRect(x + doorW - P, y, P, doorH);
                 }
                 
                 // Número de puerta
-                ctx.fillStyle = isNear ? '#fff' : '#444';
-                ctx.font = '14px "Press Start 2P"';
+                ctx.fillStyle = isNear ? '#ffffff' : '#444444';
+                ctx.font = '12px "Press Start 2P"';
                 ctx.textAlign = 'center';
-                ctx.fillText(String(index).padStart(2, '0'), x + doorWidth/2, y - 20);
+                ctx.fillText(String(index).padStart(2, '0'), x + doorW/2, y - 10);
                 
                 // Nombre del proyecto
-                ctx.fillStyle = isNear ? project.color : '#444';
-                ctx.font = isNear ? 'bold 12px "Press Start 2P"' : '10px "Press Start 2P"';
-                ctx.fillText(project.name, x + doorWidth/2, y + doorHeight + 28);
+                ctx.fillStyle = isNear ? project.color : '#444444';
+                ctx.font = isNear ? '10px "Press Start 2P"' : '8px "Press Start 2P"';
+                ctx.fillText(project.name, x + doorW/2, y + doorH + 22);
             }
             
             function drawMatrixRain() {
@@ -1700,11 +1679,11 @@
                     // Puertas
                     let nearDoorIndex = -1;
                     matrixDoors.forEach((project, i) => {
-                        const doorX = 100 + i * 200 - hallwayScroll;
+                        const doorX = 100 + i * 180 - hallwayScroll;
                         if (doorX > -150 && doorX < 1050) {
-                            const isNear = Math.abs(neo.x + hallwayScroll - (150 + i * 200)) < 80;
+                            const isNear = Math.abs(neo.x + hallwayScroll - (140 + i * 180)) < 70;
                             if (isNear) nearDoorIndex = i;
-                            drawHallwayDoor(doorX, 240, project, isNear, i + 1);
+                            drawHallwayDoor(doorX, 260, project, isNear, i + 1);
                         }
                     });
                     currentDoorIndex = nearDoorIndex;
@@ -1808,7 +1787,7 @@
                                 hideDialogue();
                                 canvas.style.filter = 'brightness(1) blur(0)';
                                 setTimeout(() => {
-                                    showDialogue('CERRAJERO', 'Bienvenido al Pasillo de las Puertas. Soy el Cerrajero. Cada puerta es única... como cada llave. Te explicaré lo que hay detrás de cada una.');
+                                showDialogue('CERRAJERO', 'Bienvenido al Pasillo de las Puertas. Soy el Cerrajero. Cada puerta es única... como cada llave.');
                                 }, 500);
                             }, 800);
                         }
