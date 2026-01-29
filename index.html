@@ -861,22 +861,45 @@
             // Proyectos con código privado pero con Pages públicas
             // Añade aquí tus proyectos privados con su URL de demo
             const privateProjects = [
-                // {
-                //     name: 'Mi Proyecto Privado',
-                //     description: 'Descripción del proyecto',
-                //     language: 'JavaScript',
-                //     homepage: 'https://mutenros.github.io/proyecto',
-                //     icon: '🔒'
-                // },
+                {
+                    name: 'Bombas Ideal',
+                    description: 'Web corporativa para empresa líder en bombas hidráulicas. Catálogo de productos, selector BIPS y gestión empresarial.',
+                    language: 'HTML',
+                    homepage: 'https://mutenros.github.io/BI',
+                    icon: '💧'
+                },
+                {
+                    name: 'Bombas Asoin',
+                    description: 'Tienda online de bombas de agua para riego, abastecimiento, achique y piscinas. Sistema de carrito integrado.',
+                    language: 'HTML',
+                    homepage: 'https://mutenros.github.io/BA',
+                    icon: '🛒'
+                },
+                {
+                    name: 'Bombas Bloch',
+                    description: 'Web corporativa para fabricante de sistemas de bombeo desde 1915. Catálogo, tienda y descargas técnicas.',
+                    language: 'HTML',
+                    homepage: 'https://mutenros.github.io/BB',
+                    icon: '🏭'
+                },
+                {
+                    name: 'Cuevas MotorSport',
+                    description: 'Servicio de grúa 24/7, alquiler de vehículos deportivos y plataformas portacoches.',
+                    language: 'JavaScript',
+                    homepage: 'https://mutenros.github.io/CuevasMotorSport',
+                    icon: '🏎️'
+                },
             ];
             
             try {
-                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=12`);
+                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=30`);
                 const repos = await response.json();
                 
-                // Filter out the portfolio repo itself and forks
+                // Filter: only repos with GitHub Pages, exclude portfolio itself and forks
                 const filteredRepos = repos.filter(repo => 
-                    repo.name !== `${username}.github.io` && !repo.fork
+                    repo.name !== `${username}.github.io` && 
+                    !repo.fork && 
+                    repo.has_pages === true
                 );
                 
                 // Combinar repos públicos con proyectos privados
@@ -910,7 +933,8 @@
                             </div>
                         `;
                     } else {
-                        // Repo público
+                        // Repo público con Pages
+                        const demoUrl = project.homepage || `https://mutenros.github.io/${project.name}`;
                         return `
                             <div class="project-card">
                                 <div class="project-image">
@@ -928,7 +952,7 @@
                                         <span>🍴 ${project.forks_count}</span>
                                     </div>
                                     <a href="${project.html_url}" target="_blank" class="project-link">VER CÓDIGO</a>
-                                    ${project.homepage ? `<a href="${project.homepage}" target="_blank" class="project-link" style="margin-left: 10px; border-color: var(--neon-cyan); color: var(--neon-cyan);">DEMO</a>` : ''}
+                                    <a href="${demoUrl}" target="_blank" class="project-link" style="margin-left: 10px; border-color: var(--neon-cyan); color: var(--neon-cyan);">DEMO</a>
                                 </div>
                             </div>
                         `;
