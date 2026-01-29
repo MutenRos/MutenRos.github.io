@@ -1016,16 +1016,16 @@
 
         // Proyectos para las puertas (la primera es misteriosa)
         const matrixDoors = [
-            { name: '???', url: null, color: '#ff0000', mystery: true },
-            { name: 'Bombas Ideal', url: 'https://mutenros.github.io/BI', color: '#00aaff' },
-            { name: 'Bombas Asoin', url: 'https://mutenros.github.io/BA', color: '#00ff88' },
-            { name: 'Bombas Bloch', url: 'https://mutenros.github.io/BB', color: '#ff6600' },
-            { name: 'CuevasMotor', url: 'https://mutenros.github.io/CuevasMotorSport', color: '#ff0066' },
-            { name: 'Espectáculos', url: 'https://mutenros.github.io/Espectaculos-Dani', color: '#aa00ff' },
-            { name: 'Arraez', url: 'https://mutenros.github.io/Arraez-Portfolio', color: '#ffaa00' },
-            { name: 'Excusas', url: 'https://mutenros.github.io/Generador-de-Excusas-Premium', color: '#00ffaa' },
-            { name: 'MenuSpreader', url: 'https://mutenros.github.io/MenuSpreader', color: '#ff00aa' },
-            { name: 'Tokenizer', url: 'https://mutenros.github.io/TokenMinimizer', color: '#aaff00' },
+            { name: '???', url: null, color: '#ff0000', mystery: true, desc: '' },
+            { name: 'Bombas Ideal', url: 'https://mutenros.github.io/BI', color: '#00aaff', desc: 'Esta puerta conduce a una empresa de bombas hidráulicas. Un sistema complejo de catálogos y selectores de productos. Código muy... organizado.' },
+            { name: 'Bombas Asoin', url: 'https://mutenros.github.io/BA', color: '#00ff88', desc: 'Aquí encontrarás una tienda online. Carritos de compra, productos, categorías... Todo fluye como el agua que bombean.' },
+            { name: 'Bombas Bloch', url: 'https://mutenros.github.io/BB', color: '#ff6600', desc: 'Una puerta antigua. Lleva a un fabricante desde 1915. Historia, catálogos técnicos, descargas... Un legado digitalizado.' },
+            { name: 'CuevasMotor', url: 'https://mutenros.github.io/CuevasMotorSport', color: '#ff0066', desc: 'Velocidad. Esta puerta vibra con motores. Grúas 24 horas, coches deportivos... JavaScript puro en acción.' },
+            { name: 'Espectáculos', url: 'https://mutenros.github.io/Espectaculos-Dani', color: '#aa00ff', desc: 'Magia y entretenimiento. Shows, eventos, animación... Una puerta llena de color y alegría.' },
+            { name: 'Arraez', url: 'https://mutenros.github.io/Arraez-Portfolio', color: '#ffaa00', desc: 'Un portfolio anterior. Cada puerta cuenta una historia, y esta cuenta la evolución de un desarrollador.' },
+            { name: 'Excusas', url: 'https://mutenros.github.io/Generador-de-Excusas-Premium', color: '#00ffaa', desc: 'Ah, esta es curiosa. Genera excusas. Aleatorias. Premium. Para cuando la creatividad falla... el código no.' },
+            { name: 'MenuSpreader', url: 'https://mutenros.github.io/MenuSpreader', color: '#ff00aa', desc: 'Una herramienta de menús. Organiza, distribuye, expande. Útil para restaurantes y negocios gastronómicos.' },
+            { name: 'Tokenizer', url: 'https://mutenros.github.io/TokenMinimizer', color: '#aaff00', desc: 'Optimización de tokens. Para cuando cada carácter cuenta. Minificación, compresión... Eficiencia pura.' },
         ];
 
         function startMatrixEasterEgg() {
@@ -1041,7 +1041,7 @@
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        background: #fff;
+                        background: #000;
                         z-index: 99999;
                         display: flex;
                         flex-direction: column;
@@ -1053,23 +1053,25 @@
                     #matrix-canvas {
                         image-rendering: pixelated;
                         image-rendering: crisp-edges;
-                        box-shadow: 0 0 60px rgba(0,0,0,0.1);
+                        border: 4px solid #0f0;
+                        box-shadow: 0 0 50px rgba(0,255,0,0.3), inset 0 0 100px rgba(0,255,0,0.1);
                     }
                     #matrix-dialogue {
                         position: absolute;
-                        bottom: 60px;
+                        bottom: 40px;
                         left: 50%;
                         transform: translateX(-50%);
-                        background: linear-gradient(180deg, rgba(0,20,0,0.95) 0%, rgba(0,10,0,0.98) 100%);
+                        background: linear-gradient(180deg, rgba(0,30,0,0.97) 0%, rgba(0,15,0,0.99) 100%);
                         color: #00ff41;
-                        padding: 25px 40px;
-                        border: 4px solid #00ff41;
-                        box-shadow: 0 0 30px rgba(0,255,65,0.3), inset 0 0 30px rgba(0,255,65,0.1);
-                        font-size: 12px;
-                        max-width: 700px;
+                        padding: 20px 35px;
+                        border: 3px solid #00ff41;
+                        box-shadow: 0 0 40px rgba(0,255,65,0.4), inset 0 0 40px rgba(0,255,65,0.15);
+                        font-size: 11px;
+                        max-width: 750px;
+                        min-width: 600px;
                         text-align: left;
                         display: none;
-                        line-height: 2;
+                        line-height: 1.9;
                         letter-spacing: 1px;
                     }
                     #matrix-dialogue::before {
@@ -1079,65 +1081,69 @@
                         left: 0;
                         right: 0;
                         bottom: 0;
-                        background: repeating-linear-gradient(
-                            0deg,
-                            rgba(0,0,0,0.1) 0px,
-                            rgba(0,0,0,0.1) 1px,
-                            transparent 1px,
-                            transparent 2px
-                        );
+                        background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px);
                         pointer-events: none;
+                        animation: scanlines 0.1s linear infinite;
+                    }
+                    @keyframes scanlines {
+                        0% { transform: translateY(0); }
+                        100% { transform: translateY(3px); }
                     }
                     #matrix-speaker {
                         color: #fff;
-                        margin-bottom: 10px;
-                        text-shadow: 0 0 10px #00ff41;
+                        margin-bottom: 12px;
+                        text-shadow: 0 0 15px #00ff41;
+                        font-size: 13px;
                     }
                     #matrix-instructions {
                         position: absolute;
-                        top: 15px;
+                        top: 12px;
                         left: 50%;
                         transform: translateX(-50%);
-                        color: #666;
+                        color: #0f0;
                         font-size: 8px;
                         text-align: center;
-                        letter-spacing: 2px;
+                        letter-spacing: 3px;
+                        text-shadow: 0 0 10px #0f0;
                     }
                     #matrix-exit {
                         position: absolute;
-                        top: 15px;
-                        right: 20px;
+                        top: 12px;
+                        right: 15px;
                         background: transparent;
-                        color: #00ff41;
-                        border: 2px solid #00ff41;
-                        padding: 8px 15px;
+                        color: #f00;
+                        border: 2px solid #f00;
+                        padding: 8px 12px;
                         cursor: pointer;
                         font-family: inherit;
                         font-size: 8px;
                         transition: all 0.3s;
+                        text-shadow: 0 0 10px #f00;
                     }
                     #matrix-exit:hover {
-                        background: #00ff41;
+                        background: #f00;
                         color: #000;
-                        box-shadow: 0 0 20px #00ff41;
+                        box-shadow: 0 0 30px #f00;
                     }
                     .matrix-hint {
                         position: absolute;
-                        bottom: 180px;
+                        bottom: 160px;
                         left: 50%;
                         transform: translateX(-50%);
-                        color: #999;
-                        font-size: 8px;
-                        animation: blink 1s infinite;
+                        color: #0f0;
+                        font-size: 10px;
+                        text-shadow: 0 0 10px #0f0;
+                        animation: pulse 1.5s ease-in-out infinite;
                     }
-                    @keyframes blink {
-                        50% { opacity: 0.3; }
+                    @keyframes pulse {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.4; }
                     }
                 </style>
-                <canvas id="matrix-canvas" width="900" height="550"></canvas>
+                <canvas id="matrix-canvas" width="1000" height="600"></canvas>
                 <div id="matrix-dialogue"><div id="matrix-speaker"></div><div id="matrix-text"></div></div>
-                <div id="matrix-instructions">◄ ► MOVER  |  ESPACIO INTERACTUAR  |  ESC SALIR</div>
-                <button id="matrix-exit">[ESC] DESPERTAR</button>
+                <div id="matrix-instructions">◄ ► MOVER  │  ESPACIO INTERACTUAR  │  ESC SALIR</div>
+                <button id="matrix-exit">■ DESPERTAR</button>
                 <div class="matrix-hint" id="matrix-hint"></div>
             `;
             document.body.appendChild(overlay);
@@ -1152,387 +1158,632 @@
             
             // Estado del juego
             let gameState = 'white_room';
-            let neo = { x: 150, y: 320, direction: 1, frame: 0, walking: false, breathe: 0 };
-            let morpheus = { x: 580, y: 295, breathe: 0 };
-            let door = { x: 420, y: 200, visible: false, glow: 0 };
+            let neo = { x: 120, y: 340, direction: 1, frame: 0, walking: false, breathe: 0, legFrame: 0 };
+            let morpheus = { x: 620, y: 295, breathe: 0 };
+            let keymaker = { x: 0, y: 340, breathe: 0, talking: false };
+            let door = { x: 460, y: 180, visible: false, glow: 0 };
             let dialogueState = 0;
             let canInteract = true;
             let hallwayScroll = 0;
             let animTime = 0;
+            let currentDoorIndex = -1;
+            let keymakerExplained = new Set();
             
-            // Diálogos fieles a la película
+            // Partículas de código Matrix
+            let particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * 1000,
+                    y: Math.random() * 600,
+                    speed: 1 + Math.random() * 3,
+                    char: String.fromCharCode(0x30A0 + Math.random() * 96),
+                    opacity: Math.random()
+                });
+            }
+            
+            // Diálogos de Morpheus
             const dialogues = [
-                { speaker: 'MORPHEUS', text: 'Por fin... Bienvenido, Neo. Como seguro habrás adivinado, soy Morpheus.' },
-                { speaker: 'MORPHEUS', text: 'Imagino que ahora mismo te sientes un poco como Alicia... cayendo por la madriguera del conejo.' },
-                { speaker: 'NEO', text: 'Se podría decir que sí...' },
-                { speaker: 'MORPHEUS', text: 'Puedo verlo en tus ojos. Tienes la mirada de un hombre que acepta lo que ve porque espera despertar.' },
-                { speaker: 'MORPHEUS', text: 'Irónicamente, no estás lejos de la verdad.' },
-                { speaker: 'MORPHEUS', text: '¿Crees en el destino, Neo?' },
-                { speaker: 'NEO', text: 'No.' },
-                { speaker: 'MORPHEUS', text: 'Sabes por qué estás aquí. Sabes algo. Lo que sabes no puedes explicarlo.' },
-                { speaker: 'MORPHEUS', text: 'Pero lo sientes. Lo has sentido toda tu vida.' },
-                { speaker: 'MORPHEUS', text: 'Hay algo que no funciona en el mundo. No sabes lo que es, pero ahí está...' },
-                { speaker: 'MORPHEUS', text: '...como una astilla clavada en tu mente, volviéndote loco.' },
-                { speaker: 'MORPHEUS', text: '¿Quieres saber lo que es... "la Matrix"?' },
-                { speaker: 'MORPHEUS', text: 'La Matrix nos rodea. Está en todas partes. Incluso ahora, en esta habitación.' },
-                { speaker: 'MORPHEUS', text: 'Puedes verla cuando miras por la ventana, o cuando enciendes la televisión.' },
-                { speaker: 'MORPHEUS', text: 'Puedes sentirla cuando vas a trabajar, cuando vas a la iglesia, cuando pagas tus impuestos.' },
-                { speaker: 'MORPHEUS', text: 'Es el mundo que ha sido puesto ante tus ojos... para ocultarte la verdad.' },
-                { speaker: 'NEO', text: '¿Qué verdad?' },
-                { speaker: 'MORPHEUS', text: 'Que eres un esclavo, Neo. Igual que los demás, naciste en una prisión que no puedes ver.' },
-                { speaker: 'MORPHEUS', text: 'Una prisión... para tu mente.' },
-                { speaker: 'MORPHEUS', text: 'Por desgracia, no se puede explicar lo que es la Matrix. Tienes que verla con tus propios ojos.' },
-                { speaker: 'MORPHEUS', text: 'Esta es tu última oportunidad. Después de esto, no hay vuelta atrás.' },
-                { speaker: 'MORPHEUS', text: 'Detrás de ti aparecerá una puerta. Puedes cruzarla... y ver hasta dónde llega la madriguera.' },
-                { speaker: 'MORPHEUS', text: 'Recuerda: lo único que te ofrezco es la verdad. Nada más.' },
+                { speaker: 'MORPHEUS', text: 'Al fin nos encontramos, Neo.' },
+                { speaker: 'MORPHEUS', text: 'Sé por qué estás aquí. Sé lo que has estado buscando.' },
+                { speaker: 'MORPHEUS', text: 'La pregunta que nos mueve, Neo. La conoces igual que yo.' },
+                { speaker: 'NEO', text: '¿Qué es la Matrix?' },
+                { speaker: 'MORPHEUS', text: 'La respuesta está ahí fuera, Neo. Te está buscando.' },
+                { speaker: 'MORPHEUS', text: 'Y te encontrará... si tú quieres.' },
+                { speaker: 'MORPHEUS', text: '¿Alguna vez has tenido un sueño que parecía tan real...?' },
+                { speaker: 'MORPHEUS', text: '¿Y si no pudieras despertar de ese sueño?' },
+                { speaker: 'MORPHEUS', text: '¿Cómo distinguirías el mundo de los sueños... de la realidad?' },
+                { speaker: 'NEO', text: 'Esto no puede ser real...' },
+                { speaker: 'MORPHEUS', text: '¿Qué es real? ¿Cómo defines lo real?' },
+                { speaker: 'MORPHEUS', text: 'Si hablas de lo que puedes sentir, oler, saborear y ver...' },
+                { speaker: 'MORPHEUS', text: '...entonces lo real son simples señales eléctricas interpretadas por tu cerebro.' },
+                { speaker: 'MORPHEUS', text: 'Bienvenido... al desierto de lo real.' },
+                { speaker: 'MORPHEUS', text: 'Detrás de ti aparecerá una puerta.' },
+                { speaker: 'MORPHEUS', text: 'Al otro lado te espera el Cerrajero. Él te guiará.' },
+                { speaker: 'MORPHEUS', text: 'Cada puerta lleva a un mundo diferente. A un proyecto distinto.' },
+                { speaker: 'MORPHEUS', text: 'Buena suerte, Neo. Nos veremos del otro lado.' },
             ];
             
-            // Sprites mejorados con efecto 3D (sombras y highlights)
-            const PIXEL = 5;
+            const PIXEL = 6;
             
-            // NEO - Sprite grande con animación
-            function drawNeo(x, y, direction, frame, breathe) {
+            // ═══════════════════════════════════════════════════════════
+            // SPRITES MEJORADOS CON ANIMACIÓN
+            // ═══════════════════════════════════════════════════════════
+            
+            function drawNeo(x, y, direction, walking, breathe, inHallway = false) {
                 ctx.save();
-                const offsetY = Math.sin(breathe * 0.05) * 2;
+                const breatheOffset = Math.sin(breathe * 0.06) * 2;
+                const scale = inHallway ? 0.85 : 1;
                 
                 if (direction === -1) {
-                    ctx.translate(x + 70, y + offsetY);
-                    ctx.scale(-1, 1);
+                    ctx.translate(x + 80 * scale, y + breatheOffset);
+                    ctx.scale(-scale, scale);
                 } else {
-                    ctx.translate(x, y + offsetY);
+                    ctx.translate(x, y + breatheOffset);
+                    ctx.scale(scale, scale);
                 }
                 
-                // Sombra en el suelo (efecto 3D)
-                ctx.fillStyle = 'rgba(0,0,0,0.15)';
+                // Sombra dinámica
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
                 ctx.beginPath();
-                ctx.ellipse(35, 115, 30, 8, 0, 0, Math.PI * 2);
+                ctx.ellipse(45, 130, 35, 10, 0, 0, Math.PI * 2);
                 ctx.fill();
                 
-                const walkOffset = neo.walking ? Math.sin(frame * 0.3) * 3 : 0;
+                // Animación de piernas
+                const legOffset = walking ? Math.sin(neo.legFrame * 0.4) * 8 : 0;
                 
-                // Neo pixel art grande - gabardina negra estilo Matrix
-                const sprite = [
-                    "      11111111      ",
-                    "     1111111111     ",
-                    "    111111111111    ",
-                    "    11FFFFF1FF11    ",
-                    "    11FFFFFFFF11    ",
-                    "    111FFFFFF111    ",
-                    "     1111111111     ",
-                    "      11111111      ",
-                    "     2222222222     ",
-                    "    222222222222    ",
-                    "   22222222222222   ",
-                    "  2222222222222222  ",
-                    "  2222222222222222  ",
-                    "  2222222332222222  ",
-                    "  2222222222222222  ",
-                    "  2222222222222222  ",
-                    " 22222222222222222  ",
-                    " 22222222222222222  ",
-                    "  2222222222222222  ",
-                    "   22222    22222   ",
-                    "   22222    22222   ",
-                    "   11111    11111   ",
-                ];
+                // Gabardina ondeando
+                const coatWave = walking ? Math.sin(neo.legFrame * 0.3) * 3 : 0;
                 
-                const colors = {
-                    '1': '#1a1a1a', // Pelo negro
-                    '2': '#0f0f0f', // Gabardina negra
-                    '3': '#1a1a1a', // Cinturón
-                    'F': '#deb887', // Piel
-                };
+                // NEO - Sprite detallado
+                // Cabeza y pelo
+                ctx.fillStyle = '#0a0a0a';
+                for (let i = 0; i < 3; i++) {
+                    ctx.fillRect(25 + i * PIXEL, 0, PIXEL, PIXEL * 2);
+                }
+                ctx.fillRect(19, PIXEL, PIXEL * 8, PIXEL);
+                ctx.fillRect(13, PIXEL * 2, PIXEL * 10, PIXEL * 2);
                 
-                // Dibujar con efecto 3D (highlight en bordes)
-                sprite.forEach((row, py) => {
-                    [...row].forEach((pixel, px) => {
-                        if (colors[pixel]) {
-                            // Sombra (offset abajo-derecha)
-                            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-                            ctx.fillRect(px * PIXEL + 2, py * PIXEL + 2, PIXEL, PIXEL);
-                            
-                            // Pixel principal
-                            ctx.fillStyle = colors[pixel];
-                            ctx.fillRect(px * PIXEL, py * PIXEL, PIXEL, PIXEL);
-                            
-                            // Highlight (borde superior izquierdo)
-                            if (pixel === '2' || pixel === '1') {
-                                ctx.fillStyle = 'rgba(255,255,255,0.1)';
-                                ctx.fillRect(px * PIXEL, py * PIXEL, PIXEL, 1);
-                                ctx.fillRect(px * PIXEL, py * PIXEL, 1, PIXEL);
-                            }
-                        }
-                    });
-                });
+                // Cara
+                ctx.fillStyle = '#e8c4a0';
+                ctx.fillRect(19, PIXEL * 3, PIXEL * 6, PIXEL * 3);
+                ctx.fillRect(25, PIXEL * 6, PIXEL * 3, PIXEL);
                 
                 // Gafas de sol
                 ctx.fillStyle = '#000';
-                ctx.fillRect(7 * PIXEL, 3 * PIXEL, 6 * PIXEL, PIXEL);
-                ctx.fillStyle = '#333';
-                ctx.fillRect(8 * PIXEL, 3 * PIXEL, 2 * PIXEL, PIXEL);
-                ctx.fillRect(12 * PIXEL, 3 * PIXEL, 2 * PIXEL, PIXEL);
+                ctx.fillRect(16, PIXEL * 3.5, PIXEL * 7, PIXEL * 1.2);
+                ctx.fillStyle = '#1a3a1a';
+                ctx.fillRect(18, PIXEL * 3.6, PIXEL * 2, PIXEL);
+                ctx.fillRect(30, PIXEL * 3.6, PIXEL * 2, PIXEL);
+                
+                // Cuello
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(25, PIXEL * 7, PIXEL * 3, PIXEL);
+                
+                // Gabardina - cuerpo principal
+                ctx.fillStyle = '#0f0f0f';
+                ctx.fillRect(10, PIXEL * 8, PIXEL * 10, PIXEL * 2);
+                ctx.fillRect(7, PIXEL * 10, PIXEL * 13, PIXEL * 8);
+                
+                // Gabardina - faldones con movimiento
+                ctx.fillRect(4 + coatWave, PIXEL * 18, PIXEL * 5, PIXEL * 4);
+                ctx.fillRect(52 - coatWave, PIXEL * 18, PIXEL * 5, PIXEL * 4);
+                
+                // Detalles de la gabardina
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(28, PIXEL * 10, PIXEL * 2, PIXEL * 8);
+                
+                // Cinturón
+                ctx.fillStyle = '#2a2a2a';
+                ctx.fillRect(10, PIXEL * 13, PIXEL * 10, PIXEL);
+                ctx.fillStyle = '#c0c0c0';
+                ctx.fillRect(25, PIXEL * 13, PIXEL * 2, PIXEL);
+                
+                // Piernas con animación
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(16 - legOffset/2, PIXEL * 18, PIXEL * 3, PIXEL * 4);
+                ctx.fillRect(38 + legOffset/2, PIXEL * 18, PIXEL * 3, PIXEL * 4);
+                
+                // Botas
+                ctx.fillStyle = '#050505';
+                ctx.fillRect(13 - legOffset/2, PIXEL * 21.5, PIXEL * 4, PIXEL * 1.5);
+                ctx.fillRect(35 + legOffset/2, PIXEL * 21.5, PIXEL * 4, PIXEL * 1.5);
+                
+                // Highlights
+                ctx.fillStyle = 'rgba(255,255,255,0.08)';
+                ctx.fillRect(7, PIXEL * 10, PIXEL, PIXEL * 8);
+                ctx.fillRect(10, PIXEL * 8, PIXEL * 10, 2);
                 
                 ctx.restore();
             }
             
-            // MORPHEUS sentado en sillón
             function drawMorpheusInChair(x, y, breathe) {
-                const offsetY = Math.sin(breathe * 0.03) * 1.5;
+                const breatheOffset = Math.sin(breathe * 0.04) * 1.5;
                 
-                // Sombra grande del sillón
-                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                // Sombra del sillón
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
                 ctx.beginPath();
-                ctx.ellipse(x + 60, y + 160, 70, 15, 0, 0, Math.PI * 2);
+                ctx.ellipse(x + 75, y + 180, 90, 20, 0, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // SILLÓN - estilo clásico de cuero
-                // Respaldo
-                ctx.fillStyle = '#2a1810';
-                ctx.fillRect(x - 10, y - 40, 140, 100);
-                ctx.fillStyle = '#3d241a';
-                ctx.fillRect(x, y - 30, 120, 80);
+                // SILLÓN CHESTERFIELD
+                // Respaldo curvo
+                ctx.fillStyle = '#1a0f0a';
+                ctx.beginPath();
+                ctx.moveTo(x - 20, y + 120);
+                ctx.quadraticCurveTo(x + 75, y - 60, x + 170, y + 120);
+                ctx.lineTo(x + 170, y + 80);
+                ctx.quadraticCurveTo(x + 75, y - 30, x - 20, y + 80);
+                ctx.fill();
                 
-                // Capitoné del respaldo
-                for (let i = 0; i < 3; i++) {
-                    for (let j = 0; j < 2; j++) {
-                        ctx.fillStyle = '#4a2d20';
+                // Interior respaldo
+                ctx.fillStyle = '#2d1a12';
+                ctx.beginPath();
+                ctx.moveTo(x - 5, y + 110);
+                ctx.quadraticCurveTo(x + 75, y - 20, x + 155, y + 110);
+                ctx.lineTo(x + 155, y + 70);
+                ctx.quadraticCurveTo(x + 75, y, x - 5, y + 70);
+                ctx.fill();
+                
+                // Capitoné
+                ctx.fillStyle = '#3d2518';
+                for (let row = 0; row < 2; row++) {
+                    for (let col = 0; col < 4; col++) {
+                        const bx = x + 15 + col * 35;
+                        const by = y + 20 + row * 40;
                         ctx.beginPath();
-                        ctx.arc(x + 20 + i * 40, y - 10 + j * 35, 12, 0, Math.PI * 2);
+                        ctx.arc(bx, by, 10, 0, Math.PI * 2);
                         ctx.fill();
                     }
                 }
                 
                 // Asiento
-                ctx.fillStyle = '#2a1810';
-                ctx.fillRect(x - 15, y + 55, 150, 50);
-                ctx.fillStyle = '#3d241a';
-                ctx.fillRect(x - 5, y + 60, 130, 35);
+                ctx.fillStyle = '#1a0f0a';
+                ctx.fillRect(x - 25, y + 100, 200, 40);
+                ctx.fillStyle = '#2d1a12';
+                ctx.fillRect(x - 15, y + 105, 180, 30);
+                
+                // Cojín
+                ctx.fillStyle = '#3d2518';
+                ctx.beginPath();
+                ctx.ellipse(x + 75, y + 115, 70, 15, 0, 0, Math.PI * 2);
+                ctx.fill();
                 
                 // Brazos del sillón
-                ctx.fillStyle = '#2a1810';
-                ctx.fillRect(x - 30, y + 10, 30, 100);
-                ctx.fillRect(x + 120, y + 10, 30, 100);
-                ctx.fillStyle = '#4a2d20';
-                ctx.fillRect(x - 25, y + 15, 20, 40);
-                ctx.fillRect(x + 125, y + 15, 20, 40);
+                ctx.fillStyle = '#1a0f0a';
+                ctx.fillRect(x - 40, y + 30, 35, 115);
+                ctx.fillRect(x + 155, y + 30, 35, 115);
                 
-                // Patas
-                ctx.fillStyle = '#1a0a05';
-                ctx.fillRect(x - 10, y + 105, 15, 50);
-                ctx.fillRect(x + 115, y + 105, 15, 50);
+                // Reposabrazos curvos
+                ctx.fillStyle = '#2d1a12';
+                ctx.beginPath();
+                ctx.ellipse(x - 22, y + 35, 18, 12, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(x + 172, y + 35, 18, 12, 0, 0, Math.PI * 2);
+                ctx.fill();
                 
-                // MORPHEUS sentado
-                const mx = x + 25;
-                const my = y - 20 + offsetY;
+                // Patas del sillón
+                ctx.fillStyle = '#0a0505';
+                ctx.fillRect(x - 15, y + 140, 20, 40);
+                ctx.fillRect(x + 145, y + 140, 20, 40);
+                
+                // ═══ MORPHEUS ═══
+                const mx = x + 40;
+                const my = y - 10 + breatheOffset;
                 
                 // Piernas cruzadas
-                ctx.fillStyle = '#1a1a2a';
-                ctx.fillRect(mx + 10, my + 95, 70, 20);
-                ctx.fillRect(mx + 20, my + 85, 50, 15);
-                
-                // Zapatos
-                ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(mx + 5, my + 110, 25, 10);
-                ctx.fillRect(mx + 70, my + 100, 25, 10);
-                
-                // Cuerpo (sentado, abrigo largo)
-                const morphSprite = [
-                    "      SSSSSS      ",
-                    "     SSSSSSSS     ",
-                    "    SSSSSSSSSS    ",
-                    "    SSFFFFFFSS    ",
-                    "    SGFFFFFFGS    ",
-                    "    SSFFFFFFSS    ",
-                    "     SSSSSSSS     ",
-                    "      SSSSSS      ",
-                    "    4444444444    ",
-                    "   444444444444   ",
-                    "  44444444444444  ",
-                    "  44444444444444  ",
-                    " 4444444FF444444  ",
-                    "  44444444444444  ",
-                    "  44444444444444  ",
-                ];
-                
-                const colors = {
-                    'S': '#3d2817', // Cabeza calva
-                    '4': '#1a1a2a', // Abrigo oscuro
-                    'F': '#8b5a2b', // Piel
-                    'G': '#111',    // Gafas
-                };
-                
-                morphSprite.forEach((row, py) => {
-                    [...row].forEach((pixel, px) => {
-                        if (colors[pixel]) {
-                            ctx.fillStyle = 'rgba(0,0,0,0.25)';
-                            ctx.fillRect(mx + px * PIXEL + 2, my + py * PIXEL + 2, PIXEL, PIXEL);
-                            
-                            ctx.fillStyle = colors[pixel];
-                            ctx.fillRect(mx + px * PIXEL, my + py * PIXEL, PIXEL, PIXEL);
-                            
-                            if (pixel === 'S') {
-                                ctx.fillStyle = 'rgba(255,255,255,0.15)';
-                                ctx.fillRect(mx + px * PIXEL, my + py * PIXEL, PIXEL, 2);
-                            }
-                        }
-                    });
-                });
-                
-                // Gafas redondas características
-                ctx.fillStyle = '#000';
+                ctx.fillStyle = '#0a0a15';
+                ctx.fillRect(mx + 10, my + 110, 80, 25);
                 ctx.beginPath();
-                ctx.arc(mx + 7 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
-                ctx.arc(mx + 11 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
+                ctx.moveTo(mx + 70, my + 100);
+                ctx.lineTo(mx + 100, my + 90);
+                ctx.lineTo(mx + 100, my + 115);
+                ctx.lineTo(mx + 70, my + 125);
                 ctx.fill();
-                ctx.strokeStyle = '#444';
-                ctx.lineWidth = 2;
+                
+                // Zapatos elegantes
+                ctx.fillStyle = '#050505';
+                ctx.fillRect(mx + 5, my + 130, 30, 12);
+                ctx.fillRect(mx + 90, my + 95, 25, 12);
+                
+                // Torso/Abrigo
+                ctx.fillStyle = '#0a0a15';
+                ctx.fillRect(mx + 15, my + 55, 70, 60);
+                
+                // Solapas del abrigo
+                ctx.fillStyle = '#12121f';
                 ctx.beginPath();
-                ctx.arc(mx + 7 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
+                ctx.moveTo(mx + 15, my + 55);
+                ctx.lineTo(mx + 40, my + 85);
+                ctx.lineTo(mx + 15, my + 85);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(mx + 85, my + 55);
+                ctx.lineTo(mx + 60, my + 85);
+                ctx.lineTo(mx + 85, my + 85);
+                ctx.fill();
+                
+                // Camisa
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(mx + 38, my + 55, 24, 30);
+                
+                // Corbata
+                ctx.fillStyle = '#600';
+                ctx.beginPath();
+                ctx.moveTo(mx + 50, my + 55);
+                ctx.lineTo(mx + 55, my + 85);
+                ctx.lineTo(mx + 50, my + 90);
+                ctx.lineTo(mx + 45, my + 85);
+                ctx.fill();
+                
+                // Cabeza calva
+                ctx.fillStyle = '#6b4423';
+                ctx.beginPath();
+                ctx.ellipse(mx + 50, my + 30, 28, 32, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Brillo de la calva
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                ctx.beginPath();
+                ctx.ellipse(mx + 45, my + 15, 15, 12, -0.3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Cara
+                ctx.fillStyle = '#8b5a2b';
+                ctx.fillRect(mx + 30, my + 28, 40, 35);
+                
+                // Cejas
+                ctx.fillStyle = '#2a1a0a';
+                ctx.fillRect(mx + 32, my + 32, 12, 3);
+                ctx.fillRect(mx + 56, my + 32, 12, 3);
+                
+                // Gafas icónicas
+                ctx.strokeStyle = '#c0c0c0';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(mx + 38, my + 40, 10, 0, Math.PI * 2);
                 ctx.stroke();
                 ctx.beginPath();
-                ctx.arc(mx + 11 * PIXEL, my + 4 * PIXEL + 2, 8, 0, Math.PI * 2);
+                ctx.arc(mx + 62, my + 40, 10, 0, Math.PI * 2);
                 ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(mx + 48, my + 40);
+                ctx.lineTo(mx + 52, my + 40);
+                ctx.stroke();
+                
+                // Cristales oscuros
+                ctx.fillStyle = 'rgba(0,0,0,0.85)';
+                ctx.beginPath();
+                ctx.arc(mx + 38, my + 40, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(mx + 62, my + 40, 8, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Reflejo en gafas
+                ctx.fillStyle = 'rgba(0,255,0,0.1)';
+                ctx.beginPath();
+                ctx.arc(mx + 36, my + 38, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(mx + 60, my + 38, 4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Nariz
+                ctx.fillStyle = '#7a4a1f';
+                ctx.fillRect(mx + 47, my + 45, 6, 12);
+                
+                // Boca seria
+                ctx.fillStyle = '#3a2010';
+                ctx.fillRect(mx + 42, my + 58, 16, 3);
+                
+                // Barba/sombra
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.fillRect(mx + 32, my + 55, 36, 8);
                 
                 // Brazos apoyados
-                ctx.fillStyle = '#1a1a2a';
-                ctx.fillRect(mx - 15, my + 50, 20, 40);
-                ctx.fillRect(mx + 75, my + 50, 20, 40);
+                ctx.fillStyle = '#0a0a15';
+                ctx.fillRect(mx - 10, my + 60, 25, 50);
+                ctx.fillRect(mx + 85, my + 60, 25, 50);
                 
                 // Manos
                 ctx.fillStyle = '#8b5a2b';
-                ctx.fillRect(mx - 15, my + 85, 15, 12);
-                ctx.fillRect(mx + 78, my + 85, 15, 12);
+                ctx.fillRect(mx - 5, my + 105, 20, 15);
+                ctx.fillRect(mx + 85, my + 105, 20, 15);
             }
             
-            // Puerta misteriosa con glow
-            function drawMysteryDoor(x, y, glow) {
-                const glowIntensity = Math.sin(glow * 0.05) * 0.3 + 0.7;
+            // KEYMAKER / CERRAJERO
+            function drawKeymaker(x, y, breathe, direction = 1) {
+                ctx.save();
+                const breatheOffset = Math.sin(breathe * 0.05) * 1.5;
                 
-                // Glow exterior
-                const gradient = ctx.createRadialGradient(x + 45, y + 70, 0, x + 45, y + 70, 120);
-                gradient.addColorStop(0, `rgba(0, 255, 65, ${0.3 * glowIntensity})`);
-                gradient.addColorStop(1, 'rgba(0, 255, 65, 0)');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(x - 60, y - 50, 210, 240);
+                if (direction === -1) {
+                    ctx.translate(x + 60, y + breatheOffset);
+                    ctx.scale(-0.75, 0.75);
+                } else {
+                    ctx.translate(x, y + breatheOffset);
+                    ctx.scale(0.75, 0.75);
+                }
                 
-                // Marco de puerta
-                ctx.fillStyle = '#1a1a1a';
-                ctx.fillRect(x - 10, y - 10, 110, 160);
-                
-                // Puerta principal
-                ctx.fillStyle = '#0a0a0a';
-                ctx.fillRect(x, y, 90, 140);
-                
-                // Paneles de la puerta
-                ctx.fillStyle = '#151515';
-                ctx.fillRect(x + 10, y + 10, 30, 50);
-                ctx.fillRect(x + 50, y + 10, 30, 50);
-                ctx.fillRect(x + 10, y + 70, 30, 50);
-                ctx.fillRect(x + 50, y + 70, 30, 50);
-                
-                // Borde luminoso
-                ctx.strokeStyle = `rgba(0, 255, 65, ${glowIntensity})`;
-                ctx.lineWidth = 3;
-                ctx.strokeRect(x, y, 90, 140);
-                
-                // Pomo con glow
-                ctx.fillStyle = `rgba(0, 255, 65, ${glowIntensity})`;
+                // Sombra
+                ctx.fillStyle = 'rgba(0,255,0,0.15)';
                 ctx.beginPath();
-                ctx.arc(x + 78, y + 75, 6, 0, Math.PI * 2);
+                ctx.ellipse(35, 125, 25, 8, 0, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Luz saliendo por los bordes
-                ctx.fillStyle = `rgba(0, 255, 65, ${0.5 * glowIntensity})`;
-                ctx.fillRect(x - 2, y, 2, 140);
-                ctx.fillRect(x + 90, y, 2, 140);
-                ctx.fillRect(x, y + 138, 90, 2);
+                // Cuerpo - túnica marrón desgastada
+                ctx.fillStyle = '#3d3020';
+                ctx.fillRect(15, PIXEL * 8, PIXEL * 8, PIXEL * 10);
+                
+                // Detalles túnica
+                ctx.fillStyle = '#4a3d2a';
+                ctx.fillRect(18, PIXEL * 8, PIXEL * 2, PIXEL * 10);
+                ctx.fillRect(40, PIXEL * 8, PIXEL * 2, PIXEL * 10);
+                
+                // Cabeza - pelo canoso despeinado
+                ctx.fillStyle = '#888';
+                ctx.fillRect(20, 0, PIXEL * 6, PIXEL * 2);
+                ctx.fillRect(15, PIXEL, PIXEL * 8, PIXEL * 2);
+                ctx.fillRect(18, PIXEL * 2, PIXEL * 7, PIXEL);
+                
+                // Cara asiática
+                ctx.fillStyle = '#d4a574';
+                ctx.fillRect(20, PIXEL * 2.5, PIXEL * 5, PIXEL * 4);
+                
+                // Ojos pequeños y sabios
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(22, PIXEL * 3.5, PIXEL * 1.2, PIXEL * 0.8);
+                ctx.fillRect(34, PIXEL * 3.5, PIXEL * 1.2, PIXEL * 0.8);
+                
+                // Arrugas de expresión
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.fillRect(20, PIXEL * 3, PIXEL * 5, 1);
+                ctx.fillRect(20, PIXEL * 5, PIXEL * 5, 1);
+                
+                // Boca pequeña
+                ctx.fillStyle = '#8a5a3a';
+                ctx.fillRect(27, PIXEL * 5.5, PIXEL * 2, PIXEL * 0.5);
+                
+                // Cuello
+                ctx.fillStyle = '#3d3020';
+                ctx.fillRect(25, PIXEL * 6.5, PIXEL * 3, PIXEL * 1.5);
+                
+                // Brazos
+                ctx.fillStyle = '#3d3020';
+                ctx.fillRect(8, PIXEL * 9, PIXEL * 2, PIXEL * 6);
+                ctx.fillRect(52, PIXEL * 9, PIXEL * 2, PIXEL * 6);
+                
+                // Manos con llaves
+                ctx.fillStyle = '#d4a574';
+                ctx.fillRect(6, PIXEL * 14, PIXEL * 2.5, PIXEL * 2);
+                ctx.fillRect(52, PIXEL * 14, PIXEL * 2.5, PIXEL * 2);
+                
+                // Llavero con muchas llaves
+                ctx.fillStyle = '#c0a000';
+                for (let i = 0; i < 5; i++) {
+                    ctx.fillRect(0 + i * 4, PIXEL * 15 + i * 2, 3, 8);
+                    ctx.beginPath();
+                    ctx.arc(1.5 + i * 4, PIXEL * 15 + i * 2, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Piernas
+                ctx.fillStyle = '#2a2015';
+                ctx.fillRect(20, PIXEL * 17, PIXEL * 2.5, PIXEL * 4);
+                ctx.fillRect(35, PIXEL * 17, PIXEL * 2.5, PIXEL * 4);
+                
+                // Sandalias
+                ctx.fillStyle = '#1a1510';
+                ctx.fillRect(18, PIXEL * 20.5, PIXEL * 3, PIXEL * 1);
+                ctx.fillRect(33, PIXEL * 20.5, PIXEL * 3, PIXEL * 1);
+                
+                ctx.restore();
             }
             
-            // Puerta del pasillo con efecto 3D
-            function drawHallwayDoor(x, y, project, isNear) {
-                const doorWidth = 90;
-                const doorHeight = 160;
-                const glow = isNear ? 1 : 0;
+            // Puerta con efecto 3D mejorado
+            function drawMysteryDoor(x, y, glow) {
+                const glowIntensity = Math.sin(glow * 0.06) * 0.4 + 0.6;
+                
+                // Aura exterior
+                const gradient = ctx.createRadialGradient(x + 55, y + 85, 0, x + 55, y + 85, 180);
+                gradient.addColorStop(0, `rgba(0, 255, 65, ${0.4 * glowIntensity})`);
+                gradient.addColorStop(0.5, `rgba(0, 255, 65, ${0.15 * glowIntensity})`);
+                gradient.addColorStop(1, 'rgba(0, 255, 65, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x - 100, y - 80, 310, 340);
+                
+                // Marco exterior 3D
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(x - 20, y - 20, 150, 200);
+                
+                // Marco interior
+                ctx.fillStyle = '#151515';
+                ctx.fillRect(x - 12, y - 12, 134, 184);
+                
+                // Puerta principal
+                const doorGradient = ctx.createLinearGradient(x, y, x + 110, y);
+                doorGradient.addColorStop(0, '#1a1a1a');
+                doorGradient.addColorStop(0.5, '#0f0f0f');
+                doorGradient.addColorStop(1, '#0a0a0a');
+                ctx.fillStyle = doorGradient;
+                ctx.fillRect(x, y, 110, 160);
+                
+                // Paneles de la puerta con profundidad
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(x + 10, y + 12, 38, 60);
+                ctx.fillRect(x + 62, y + 12, 38, 60);
+                ctx.fillRect(x + 10, y + 88, 38, 55);
+                ctx.fillRect(x + 62, y + 88, 38, 55);
+                
+                // Highlight en paneles
+                ctx.fillStyle = 'rgba(0,255,0,0.05)';
+                ctx.fillRect(x + 10, y + 12, 38, 2);
+                ctx.fillRect(x + 62, y + 12, 38, 2);
+                
+                // Borde luminoso pulsante
+                ctx.strokeStyle = `rgba(0, 255, 65, ${glowIntensity})`;
+                ctx.lineWidth = 4;
+                ctx.strokeRect(x, y, 110, 160);
+                
+                // Luz interior
+                ctx.fillStyle = `rgba(0, 255, 65, ${0.3 * glowIntensity})`;
+                ctx.fillRect(x + 2, y + 158, 106, 2);
+                ctx.fillRect(x - 2, y + 2, 2, 156);
+                ctx.fillRect(x + 110, y + 2, 2, 156);
+                
+                // Pomo brillante
+                ctx.fillStyle = `rgba(0, 255, 65, ${glowIntensity})`;
+                ctx.beginPath();
+                ctx.arc(x + 95, y + 85, 8, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Reflejo en el pomo
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(x + 93, y + 83, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Puertas del pasillo estilo Keymaker
+            function drawHallwayDoor(x, y, project, isNear, index) {
+                const doorWidth = 100;
+                const doorHeight = 180;
                 
                 if (project.mystery) {
-                    // Puerta misteriosa - solo muestra ???
-                    ctx.fillStyle = isNear ? '#300' : '#200';
-                    ctx.fillRect(x - 8, y - 8, doorWidth + 16, doorHeight + 16);
+                    // Puerta roja misteriosa
+                    ctx.fillStyle = isNear ? '#400' : '#200';
+                    ctx.fillRect(x - 10, y - 10, doorWidth + 20, doorHeight + 20);
                     
                     ctx.fillStyle = '#100';
                     ctx.fillRect(x, y, doorWidth, doorHeight);
                     
-                    // Símbolo de interrogación
+                    // Cadenas
+                    ctx.strokeStyle = '#444';
+                    ctx.lineWidth = 4;
+                    for (let i = 0; i < 3; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(x - 10, y + 40 + i * 50);
+                        ctx.lineTo(x + doorWidth + 10, y + 40 + i * 50);
+                        ctx.stroke();
+                    }
+                    
+                    // Símbolo
                     ctx.fillStyle = isNear ? '#f00' : '#600';
-                    ctx.font = 'bold 40px "Press Start 2P"';
+                    ctx.font = 'bold 50px "Press Start 2P"';
                     ctx.textAlign = 'center';
-                    ctx.fillText('?', x + doorWidth/2, y + doorHeight/2 + 15);
+                    ctx.fillText('?', x + doorWidth/2, y + doorHeight/2 + 20);
                     
                     if (isNear) {
                         ctx.strokeStyle = '#f00';
-                        ctx.lineWidth = 2;
+                        ctx.lineWidth = 3;
                         ctx.strokeRect(x, y, doorWidth, doorHeight);
                         
                         ctx.fillStyle = '#f00';
                         ctx.font = '10px "Press Start 2P"';
-                        ctx.fillText('BLOQUEADA', x + doorWidth/2, y + doorHeight + 25);
+                        ctx.fillText('▲ BLOQUEADA ▲', x + doorWidth/2, y + doorHeight + 30);
                     }
                     return;
                 }
                 
-                // Perspectiva 3D (sombra lateral)
-                ctx.fillStyle = '#0a0505';
+                // Perspectiva 3D
+                ctx.fillStyle = '#050505';
                 ctx.beginPath();
                 ctx.moveTo(x + doorWidth, y);
-                ctx.lineTo(x + doorWidth + 15, y - 15);
-                ctx.lineTo(x + doorWidth + 15, y + doorHeight - 15);
+                ctx.lineTo(x + doorWidth + 20, y - 25);
+                ctx.lineTo(x + doorWidth + 20, y + doorHeight - 25);
                 ctx.lineTo(x + doorWidth, y + doorHeight);
                 ctx.fill();
                 
-                // Marco
-                ctx.fillStyle = isNear ? project.color : '#333';
-                ctx.fillRect(x - 8, y - 8, doorWidth + 16, doorHeight + 16);
-                
-                // Puerta
-                const doorGradient = ctx.createLinearGradient(x, y, x + doorWidth, y);
-                doorGradient.addColorStop(0, isNear ? '#2a2a2a' : '#1a1a1a');
-                doorGradient.addColorStop(1, isNear ? '#1a1a1a' : '#0a0a0a');
-                ctx.fillStyle = doorGradient;
-                ctx.fillRect(x, y, doorWidth, doorHeight);
-                
-                // Paneles
-                ctx.fillStyle = isNear ? '#333' : '#222';
-                ctx.fillRect(x + 10, y + 15, 30, 55);
-                ctx.fillRect(x + 50, y + 15, 30, 55);
-                ctx.fillRect(x + 10, y + 85, 30, 55);
-                ctx.fillRect(x + 50, y + 85, 30, 55);
-                
-                // Pomo
-                ctx.fillStyle = isNear ? '#fff' : '#666';
+                // Parte superior 3D
+                ctx.fillStyle = '#080808';
                 ctx.beginPath();
-                ctx.arc(x + doorWidth - 15, y + doorHeight/2, 6, 0, Math.PI * 2);
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + 20, y - 25);
+                ctx.lineTo(x + doorWidth + 20, y - 25);
+                ctx.lineTo(x + doorWidth, y);
                 ctx.fill();
                 
+                // Marco con color del proyecto
+                const frameColor = isNear ? project.color : '#333';
+                ctx.fillStyle = frameColor;
+                ctx.fillRect(x - 12, y - 12, doorWidth + 24, doorHeight + 24);
+                
+                // Puerta principal
+                const doorGrad = ctx.createLinearGradient(x, y, x + doorWidth, y);
+                doorGrad.addColorStop(0, isNear ? '#2a2a2a' : '#1a1a1a');
+                doorGrad.addColorStop(1, isNear ? '#1a1a1a' : '#0a0a0a');
+                ctx.fillStyle = doorGrad;
+                ctx.fillRect(x, y, doorWidth, doorHeight);
+                
+                // Paneles decorativos
+                ctx.fillStyle = isNear ? '#333' : '#1f1f1f';
+                ctx.fillRect(x + 12, y + 15, 32, 65);
+                ctx.fillRect(x + 56, y + 15, 32, 65);
+                ctx.fillRect(x + 12, y + 100, 32, 60);
+                ctx.fillRect(x + 56, y + 100, 32, 60);
+                
+                // Highlights en paneles
+                if (isNear) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                    ctx.fillRect(x + 12, y + 15, 32, 3);
+                    ctx.fillRect(x + 56, y + 15, 32, 3);
+                }
+                
+                // Pomo dorado
+                ctx.fillStyle = isNear ? '#ffd700' : '#665500';
+                ctx.beginPath();
+                ctx.arc(x + doorWidth - 18, y + doorHeight/2, 8, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Reflejo pomo
+                if (isNear) {
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(x + doorWidth - 20, y + doorHeight/2 - 2, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Cerradura
+                ctx.fillStyle = isNear ? '#c0c0c0' : '#444';
+                ctx.fillRect(x + doorWidth - 22, y + doorHeight/2 + 15, 8, 12);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(x + doorWidth - 20, y + doorHeight/2 + 18, 4, 6);
+                
+                // Glow cuando está cerca
                 if (isNear) {
                     ctx.shadowColor = project.color;
-                    ctx.shadowBlur = 20;
+                    ctx.shadowBlur = 30;
                     ctx.strokeStyle = project.color;
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 3;
                     ctx.strokeRect(x, y, doorWidth, doorHeight);
                     ctx.shadowBlur = 0;
                 }
                 
-                // Nombre
-                ctx.fillStyle = isNear ? project.color : '#555';
-                ctx.font = isNear ? 'bold 11px "Press Start 2P"' : '10px "Press Start 2P"';
+                // Número de puerta
+                ctx.fillStyle = isNear ? '#fff' : '#444';
+                ctx.font = '14px "Press Start 2P"';
                 ctx.textAlign = 'center';
-                ctx.fillText(project.name, x + doorWidth/2, y + doorHeight + 25);
+                ctx.fillText(String(index).padStart(2, '0'), x + doorWidth/2, y - 20);
                 
-                if (isNear) {
-                    ctx.fillStyle = '#888';
-                    ctx.font = '8px "Press Start 2P"';
-                    ctx.fillText('[ESPACIO]', x + doorWidth/2, y + doorHeight + 40);
-                }
+                // Nombre del proyecto
+                ctx.fillStyle = isNear ? project.color : '#444';
+                ctx.font = isNear ? 'bold 12px "Press Start 2P"' : '10px "Press Start 2P"';
+                ctx.fillText(project.name, x + doorWidth/2, y + doorHeight + 28);
+            }
+            
+            function drawMatrixRain() {
+                ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                particles.forEach(p => {
+                    p.y += p.speed;
+                    if (p.y > 600) {
+                        p.y = 0;
+                        p.x = Math.random() * 1000;
+                        p.char = String.fromCharCode(0x30A0 + Math.random() * 96);
+                    }
+                    ctx.fillStyle = `rgba(0, 255, 65, ${p.opacity * 0.5})`;
+                    ctx.font = '14px monospace';
+                    ctx.fillText(p.char, p.x, p.y);
+                });
             }
             
             function render() {
@@ -1540,113 +1791,150 @@
                 animTime++;
                 neo.breathe++;
                 morpheus.breathe++;
+                keymaker.breathe++;
+                if (neo.walking) neo.legFrame++;
                 if (door.visible) door.glow++;
                 
                 if (gameState === 'white_room') {
-                    // Fondo blanco infinito con gradiente sutil
-                    const bgGradient = ctx.createRadialGradient(450, 275, 0, 450, 275, 500);
+                    // Fondo blanco infinito
+                    const bgGradient = ctx.createRadialGradient(500, 300, 0, 500, 300, 600);
                     bgGradient.addColorStop(0, '#ffffff');
-                    bgGradient.addColorStop(1, '#f0f0f0');
+                    bgGradient.addColorStop(0.7, '#f5f5f5');
+                    bgGradient.addColorStop(1, '#e8e8e8');
                     ctx.fillStyle = bgGradient;
-                    ctx.fillRect(0, 0, 900, 550);
+                    ctx.fillRect(0, 0, 1000, 600);
                     
-                    // Reflejo en el suelo
-                    ctx.fillStyle = 'rgba(0,0,0,0.03)';
-                    ctx.fillRect(0, 450, 900, 100);
-                    
-                    // Grid sutil en el suelo (efecto Construct)
-                    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+                    // Grid del Construct
+                    ctx.strokeStyle = 'rgba(0,0,0,0.03)';
                     ctx.lineWidth = 1;
-                    for (let i = 0; i < 20; i++) {
-                        ctx.beginPath();
-                        ctx.moveTo(i * 50, 450);
-                        ctx.lineTo(i * 50 - 100, 550);
-                        ctx.stroke();
+                    for (let i = 0; i < 25; i++) {
+                        for (let j = 0; j < 15; j++) {
+                            ctx.strokeRect(i * 50 - 25, j * 50, 50, 50);
+                        }
                     }
                     
-                    // Puerta si es visible
+                    // Reflejo en suelo
+                    ctx.fillStyle = 'rgba(0,0,0,0.02)';
+                    ctx.fillRect(0, 480, 1000, 120);
+                    
+                    // Puerta
                     if (door.visible) {
                         drawMysteryDoor(door.x, door.y, door.glow);
                     }
                     
-                    // Morpheus en su sillón
+                    // Morpheus
                     drawMorpheusInChair(morpheus.x, morpheus.y, morpheus.breathe);
                     
                     // Neo
-                    drawNeo(neo.x, neo.y, neo.direction, neo.frame, neo.breathe);
+                    drawNeo(neo.x, neo.y, neo.direction, neo.walking, neo.breathe);
                     
-                    // Indicador de interacción
-                    if (Math.abs(neo.x - morpheus.x - 25) < 120 && dialogueState < dialogues.length) {
-                        hint.textContent = '[ ESPACIO ] Hablar con Morpheus';
+                    // Hints
+                    if (Math.abs(neo.x - morpheus.x - 40) < 150 && dialogueState < dialogues.length) {
+                        hint.textContent = '[ ESPACIO ] Hablar';
                         hint.style.display = 'block';
-                    } else if (door.visible && Math.abs(neo.x - door.x - 45) < 70) {
-                        hint.textContent = '[ ESPACIO ] Entrar';
+                    } else if (door.visible && Math.abs(neo.x - door.x - 55) < 90) {
+                        hint.textContent = '[ ESPACIO ] Cruzar la puerta';
                         hint.style.display = 'block';
                     } else {
                         hint.style.display = 'none';
                     }
                     
                 } else if (gameState === 'hallway') {
-                    // Pasillo oscuro estilo Matrix
-                    ctx.fillStyle = '#050505';
-                    ctx.fillRect(0, 0, 900, 550);
+                    // Fondo negro profundo
+                    ctx.fillStyle = '#020202';
+                    ctx.fillRect(0, 0, 1000, 600);
                     
-                    // Techo
+                    // Lluvia de código Matrix
+                    drawMatrixRain();
+                    
+                    // Techo con lámparas
                     ctx.fillStyle = '#0a0a0a';
-                    ctx.fillRect(0, 0, 900, 80);
+                    ctx.fillRect(0, 0, 1000, 70);
                     
-                    // Líneas de neón en el techo
-                    ctx.strokeStyle = '#003300';
-                    ctx.lineWidth = 2;
-                    for (let i = 0; i < 15; i++) {
-                        const lx = i * 120 - (hallwayScroll * 0.5 % 120);
-                        ctx.beginPath();
-                        ctx.moveTo(lx, 70);
-                        ctx.lineTo(lx + 80, 70);
-                        ctx.stroke();
+                    // Lámparas fluorescentes
+                    for (let i = 0; i < 12; i++) {
+                        const lx = i * 150 - (hallwayScroll * 0.3 % 150) + 50;
+                        if (lx > -50 && lx < 1050) {
+                            // Luz
+                            const lampGlow = ctx.createRadialGradient(lx, 80, 0, lx, 80, 100);
+                            lampGlow.addColorStop(0, 'rgba(0,255,0,0.15)');
+                            lampGlow.addColorStop(1, 'rgba(0,255,0,0)');
+                            ctx.fillStyle = lampGlow;
+                            ctx.fillRect(lx - 100, 0, 200, 200);
+                            
+                            // Lámpara
+                            ctx.fillStyle = '#1a1a1a';
+                            ctx.fillRect(lx - 40, 55, 80, 15);
+                            ctx.fillStyle = `rgba(0, 255, 65, ${0.7 + Math.sin(animTime * 0.1 + i) * 0.3})`;
+                            ctx.fillRect(lx - 35, 60, 70, 8);
+                        }
                     }
+                    
+                    // Paredes con textura
+                    ctx.fillStyle = '#0f0f0f';
+                    ctx.fillRect(0, 70, 1000, 30);
+                    ctx.fillRect(0, 500, 1000, 30);
+                    
+                    // Molduras
+                    ctx.fillStyle = '#1a1a1a';
+                    ctx.fillRect(0, 95, 1000, 8);
+                    ctx.fillRect(0, 497, 1000, 8);
                     
                     // Suelo reflectante
-                    const floorGradient = ctx.createLinearGradient(0, 420, 0, 550);
-                    floorGradient.addColorStop(0, '#1a1a1a');
-                    floorGradient.addColorStop(1, '#0a0a0a');
-                    ctx.fillStyle = floorGradient;
-                    ctx.fillRect(0, 420, 900, 130);
+                    const floorGrad = ctx.createLinearGradient(0, 430, 0, 600);
+                    floorGrad.addColorStop(0, '#151515');
+                    floorGrad.addColorStop(0.3, '#0f0f0f');
+                    floorGrad.addColorStop(1, '#050505');
+                    ctx.fillStyle = floorGrad;
+                    ctx.fillRect(0, 430, 1000, 170);
                     
-                    // Líneas en el suelo
-                    ctx.strokeStyle = '#0f0';
+                    // Líneas del suelo
+                    ctx.strokeStyle = 'rgba(0,255,0,0.1)';
                     ctx.lineWidth = 1;
-                    ctx.globalAlpha = 0.3;
-                    for (let i = 0; i < 15; i++) {
-                        const lx = i * 120 - (hallwayScroll % 120);
+                    for (let i = 0; i < 20; i++) {
+                        const lx = i * 100 - (hallwayScroll % 100);
                         ctx.beginPath();
-                        ctx.moveTo(lx, 420);
-                        ctx.lineTo(lx, 550);
+                        ctx.moveTo(lx, 430);
+                        ctx.lineTo(lx, 600);
                         ctx.stroke();
                     }
-                    ctx.globalAlpha = 1;
                     
-                    // Dibujar puertas
+                    // Puertas
+                    let nearDoorIndex = -1;
                     matrixDoors.forEach((project, i) => {
-                        const doorX = 80 + i * 180 - hallwayScroll;
-                        if (doorX > -120 && doorX < 950) {
-                            const isNear = Math.abs(neo.x + hallwayScroll - (125 + i * 180)) < 70;
-                            drawHallwayDoor(doorX, 250, project, isNear);
+                        const doorX = 100 + i * 200 - hallwayScroll;
+                        if (doorX > -150 && doorX < 1050) {
+                            const isNear = Math.abs(neo.x + hallwayScroll - (150 + i * 200)) < 80;
+                            if (isNear) nearDoorIndex = i;
+                            drawHallwayDoor(doorX, 240, project, isNear, i + 1);
                         }
                     });
+                    currentDoorIndex = nearDoorIndex;
+                    
+                    // Keymaker caminando junto a Neo
+                    const kmX = neo.x - 80;
+                    drawKeymaker(kmX, neo.y + 25, keymaker.breathe, neo.direction);
                     
                     // Neo
-                    drawNeo(neo.x, neo.y + 15, neo.direction, neo.frame, neo.breathe);
+                    drawNeo(neo.x, neo.y + 10, neo.direction, neo.walking, neo.breathe, true);
                     
                     // UI
                     ctx.fillStyle = '#0f0';
-                    ctx.font = '12px "Press Start 2P"';
+                    ctx.font = '11px "Press Start 2P"';
                     ctx.textAlign = 'left';
-                    ctx.fillText('ARQUITECTO://PASILLO_DE_PUERTAS', 20, 40);
+                    ctx.fillText('█ PASILLO DEL CERRAJERO', 15, 30);
                     
-                    ctx.fillStyle = '#666';
-                    ctx.font = '10px "Press Start 2P"';
-                    ctx.fillText(`PUERTA ${Math.floor((neo.x + hallwayScroll) / 180) + 1} / ${matrixDoors.length}`, 20, 60);
+                    ctx.fillStyle = '#080';
+                    ctx.font = '9px "Press Start 2P"';
+                    ctx.fillText(`PUERTA: ${Math.max(1, Math.floor((neo.x + hallwayScroll) / 200) + 1)} / ${matrixDoors.length}`, 15, 50);
+                    
+                    // Mostrar descripción del Keymaker
+                    if (nearDoorIndex > 0 && !matrixDoors[nearDoorIndex].mystery) {
+                        if (!keymakerExplained.has(nearDoorIndex)) {
+                            keymakerExplained.add(nearDoorIndex);
+                            showDialogue('CERRAJERO', matrixDoors[nearDoorIndex].desc);
+                        }
+                    }
                     
                     hint.style.display = 'none';
                 }
@@ -1655,26 +1943,37 @@
             function showDialogue(speaker, text) {
                 dialogueBox.style.display = 'block';
                 dialogueSpeaker.textContent = speaker + ':';
-                dialogueSpeaker.style.color = speaker === 'NEO' ? '#00aaff' : '#00ff41';
+                
+                if (speaker === 'NEO') {
+                    dialogueSpeaker.style.color = '#00aaff';
+                } else if (speaker === 'CERRAJERO') {
+                    dialogueSpeaker.style.color = '#ffd700';
+                } else if (speaker === 'SISTEMA') {
+                    dialogueSpeaker.style.color = '#ff0000';
+                } else {
+                    dialogueSpeaker.style.color = '#00ff41';
+                }
+                
                 dialogueText.textContent = '';
                 canInteract = false;
                 
                 let i = 0;
+                const speed = speaker === 'CERRAJERO' ? 25 : 30;
                 const typeWriter = setInterval(() => {
-                    dialogueText.textContent += text[i];
-                    i++;
-                    if (i >= text.length) {
+                    if (i < text.length) {
+                        dialogueText.textContent += text[i];
+                        i++;
+                    } else {
                         clearInterval(typeWriter);
-                        setTimeout(() => { canInteract = true; }, 300);
+                        setTimeout(() => { canInteract = true; }, 400);
                     }
-                }, 35);
+                }, speed);
             }
             
             function hideDialogue() {
                 dialogueBox.style.display = 'none';
             }
             
-            // Controles
             const keys = {};
             
             function handleKeyDown(e) {
@@ -1689,7 +1988,7 @@
                     e.preventDefault();
                     
                     if (gameState === 'white_room') {
-                        if (Math.abs(neo.x - morpheus.x - 25) < 120 && dialogueState < dialogues.length) {
+                        if (Math.abs(neo.x - morpheus.x - 40) < 150 && dialogueState < dialogues.length) {
                             const d = dialogues[dialogueState];
                             showDialogue(d.speaker, d.text);
                             dialogueState++;
@@ -1698,32 +1997,35 @@
                                 setTimeout(() => {
                                     door.visible = true;
                                     hideDialogue();
-                                }, 2000);
+                                }, 2500);
                             }
-                        } else if (door.visible && Math.abs(neo.x - door.x - 45) < 70) {
-                            // Transición al pasillo
-                            canvas.style.transition = 'filter 0.5s';
-                            canvas.style.filter = 'brightness(0)';
+                        } else if (door.visible && Math.abs(neo.x - door.x - 55) < 90) {
+                            canvas.style.transition = 'filter 0.8s';
+                            canvas.style.filter = 'brightness(3) blur(10px)';
                             setTimeout(() => {
                                 gameState = 'hallway';
-                                neo.x = 400;
-                                neo.y = 305;
+                                neo.x = 450;
+                                neo.y = 320;
                                 hallwayScroll = 0;
                                 hideDialogue();
-                                canvas.style.filter = 'brightness(1)';
-                            }, 500);
+                                canvas.style.filter = 'brightness(1) blur(0)';
+                                setTimeout(() => {
+                                    showDialogue('CERRAJERO', 'Bienvenido al Pasillo de las Puertas. Soy el Cerrajero. Cada puerta es única... como cada llave. Te explicaré lo que hay detrás de cada una.');
+                                }, 500);
+                            }, 800);
                         }
                     } else if (gameState === 'hallway') {
-                        matrixDoors.forEach((project, i) => {
-                            const doorCenterX = 125 + i * 180;
-                            if (Math.abs(neo.x + hallwayScroll - doorCenterX) < 70) {
-                                if (project.mystery) {
-                                    showDialogue('SISTEMA', 'Acceso denegado. Esta puerta está bloqueada por el Arquitecto.');
-                                } else if (project.url) {
+                        if (currentDoorIndex >= 0) {
+                            const project = matrixDoors[currentDoorIndex];
+                            if (project.mystery) {
+                                showDialogue('CERRAJERO', 'Esta puerta... no tengo llave para ella. Ni siquiera yo sé qué hay detrás. Quizás el Arquitecto... o quizás nadie.');
+                            } else if (project.url) {
+                                showDialogue('CERRAJERO', 'Esta es la puerta correcta. Ve, Neo. El camino está abierto.');
+                                setTimeout(() => {
                                     window.open(project.url, '_blank');
-                                }
+                                }, 1500);
                             }
-                        });
+                        }
                     }
                 }
             }
@@ -1744,11 +2046,10 @@
             
             document.getElementById('matrix-exit').onclick = cleanup;
             
-            // Game loop
             function gameLoop() {
                 if (!document.getElementById('matrix-overlay')) return;
                 
-                const speed = 5;
+                const speed = 6;
                 neo.walking = false;
                 
                 if (gameState === 'white_room') {
@@ -1756,37 +2057,33 @@
                         neo.x -= speed;
                         neo.direction = -1;
                         neo.walking = true;
-                        neo.frame++;
                     }
                     if (keys['ArrowRight'] || keys['d'] || keys['D']) {
                         neo.x += speed;
                         neo.direction = 1;
                         neo.walking = true;
-                        neo.frame++;
                     }
-                    neo.x = Math.max(30, Math.min(800, neo.x));
+                    neo.x = Math.max(30, Math.min(900, neo.x));
                     
                 } else if (gameState === 'hallway') {
                     if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
-                        if (neo.x > 250) {
+                        if (neo.x > 300) {
                             neo.x -= speed;
                         } else if (hallwayScroll > 0) {
                             hallwayScroll -= speed;
                         }
                         neo.direction = -1;
                         neo.walking = true;
-                        neo.frame++;
                     }
                     if (keys['ArrowRight'] || keys['d'] || keys['D']) {
-                        const maxScroll = matrixDoors.length * 180 - 300;
-                        if (neo.x < 650) {
+                        const maxScroll = matrixDoors.length * 200 - 200;
+                        if (neo.x < 700) {
                             neo.x += speed;
                         } else if (hallwayScroll < maxScroll) {
                             hallwayScroll += speed;
                         }
                         neo.direction = 1;
                         neo.walking = true;
-                        neo.frame++;
                     }
                 }
                 
@@ -1795,9 +2092,9 @@
             }
             
             setTimeout(() => {
-                showDialogue('SISTEMA', 'Has entrado en el Construct. Acércate a Morpheus...');
+                showDialogue('SISTEMA', 'Programa de entrenamiento cargado... Acércate a Morpheus.');
                 gameLoop();
-            }, 800);
+            }, 1000);
         }
     </script>
 </body>
