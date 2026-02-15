@@ -123,6 +123,11 @@
     position: relative;
 }
 
+/* Compensar header fijo en navegacion por anclas */
+section[id] {
+    scroll-margin-top: 120px;
+}
+
 .section__title {
     font-family: var(--font-display);
     font-size: var(--font-size-h1);

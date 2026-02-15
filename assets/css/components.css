@@ -275,6 +275,13 @@
     box-shadow: 0 0 20px var(--color-neon-pink);
 }
 
+/* Accesibilidad - estilo visible en foco por teclado */
+.project-card__link:focus-visible {
+    outline: 2px solid var(--color-neon-cyan);
+    outline-offset: 3px;
+    box-shadow: 0 0 15px var(--color-neon-cyan);
+}
+
 .project-card__link--demo {
     border-color: var(--color-neon-cyan);
     color: var(--color-neon-cyan);
@@ -351,4 +358,15 @@
     text-align: center;
     padding: var(--spacing-xl);
     color: var(--color-text-muted);
+}
+
+/* Mensaje para navegadores sin JavaScript */
+.noscript-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--color-neon-pink);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    border: 1px dashed var(--color-neon-pink);
 }

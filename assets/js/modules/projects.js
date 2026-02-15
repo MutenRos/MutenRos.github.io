@@ -256,7 +256,7 @@ class GitHubProjects {
                         </span>
                     </div>
                     <div class="project-card__links">
-                        <a href="${escapeHtml(project.html_url)}" target="_blank" rel="noopener noreferrer" class="project-card__link">VER CODIGO</a>
+                        <a href="${escapeHtml(project.html_url)}" target="_blank" rel="noopener noreferrer" class="project-card__link" aria-label="Ver codigo de ${escapeHtml(project.name)}">VER CODIGO</a>
                         ${demoLink}
                     </div>
                 </div>
